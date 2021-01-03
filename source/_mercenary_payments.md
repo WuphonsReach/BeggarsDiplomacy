@@ -25,7 +25,7 @@ Contains the code for the initial offer to become a mercenary.  The default is p
         (str_store_faction_name, s9, "$g_talk_troop_faction"),
         (str_store_troop_name, s10, ":faction_leader"),
 
-In my branch, I've boosted the 100 to 600 for the base.  Plus added 2x the player's renown as additional incentive.
+In my branch, I've boosted the 100 to 600 for the base.  Plus added 1.5x the player's renown as additional incentive.
 
 ### module_presentations.py
 
@@ -38,4 +38,4 @@ The calculation on the budget report is as follows.  It is also used to calculat
         (call_script, "script_round_value", ":offer_value"),
         (val_add, ":net_change", reg0),
 
-In my branch, the changed rate is "party strength / 2" + 300 + "player renown".
+In my branch, the changed rate is "party strength / 2" + 400 + "player renown".

@@ -13371,7 +13371,7 @@ presentations = [
         (call_script, "script_party_calculate_strength", "p_main_party", 0),
         (assign, ":offer_value", reg0),
         (val_div, ":offer_value", 2),
-        (val_add, ":offer_value", 300),
+        (val_add, ":offer_value", 400),
         (troop_get_slot, ":offer_renown", "trp_player", slot_troop_renown),
         (val_add, ":offer_value", ":offer_renown"),
         (call_script, "script_round_value", ":offer_value"),
