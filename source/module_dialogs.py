@@ -18501,7 +18501,7 @@ Everyone said that you were a capable warrior, but appearently, they were wrong.
 (call_script, "script_change_player_relation_with_troop", "$g_talk_troop", 2),
 (quest_get_slot, ":quest_target_amount", "qst_deliver_cattle_to_army", slot_quest_target_amount),
 #TODO: Change reward
-(store_mul, ":reward", ":quest_target_amount", 100),
+(store_mul, ":reward", ":quest_target_amount", 200),
 (call_script, "script_troop_add_gold", "trp_player", ":reward"),
 (val_div, ":reward", 5),
 (add_xp_as_reward, ":reward"),
