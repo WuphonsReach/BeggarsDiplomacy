@@ -40243,7 +40243,7 @@ I suppose there are plenty of bounty hunters around to get the job done . . .", 
     (val_add, ":xp_reward", 100),
     (add_xp_as_reward, ":xp_reward"),
     (call_script, "script_change_troop_renown", "trp_player", 3),
-    (call_script, "script_change_player_relation_with_center", "$current_town", 2),
+    (call_script, "script_change_player_relation_with_center", "$current_town", 4),
     (call_script, "script_end_quest", "qst_kidnapped_girl"),
     ]],
 
