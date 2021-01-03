@@ -29350,7 +29350,10 @@ Hand over my {reg19} denars, if you please, and end our business together.", "lo
 
   [anyone,"lord_propose_mercenary", [(call_script, "script_party_calculate_strength", "p_main_party", 0),
                                      (assign, ":offer_value", reg0),
-                                     (val_add, ":offer_value", 100),
+                                     (val_add, ":offer_value", 600),
+                                     (troop_get_slot, ":offer_renown", "trp_player", slot_troop_renown),
+                                     (val_mul, ":offer_renown", 2),
+                                     (val_add, ":offer_value", ":offer_renown"),
                                      (call_script, "script_round_value", ":offer_value"),
                                      (assign, ":offer_value", reg0),
                                      (assign, "$temp", ":offer_value"),
