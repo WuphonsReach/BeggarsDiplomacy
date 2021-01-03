@@ -42708,7 +42708,7 @@ I suppose there are plenty of bounty hunters around to get the job done . . .", 
   [anyone,"village_elder_deliver_cattle_mission_accept", [(call_script, "script_dplmc_print_subordinate_says_sir_madame_to_s0"),], "Thank you, {s0}. We'll be praying for you night and day.", "close_window",
   ##diplomacy end+
    [(assign, "$g_leave_encounter",1),
-    (call_script, "script_change_player_relation_with_center", "$current_town", 3),
+    (call_script, "script_change_player_relation_with_center", "$current_town", 9),
     (call_script, "script_start_quest", "$random_quest_no", "$g_talk_troop"),
     ]],
 
