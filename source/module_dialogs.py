@@ -45061,7 +45061,7 @@ I suppose there are plenty of bounty hunters around to get the job done . . .", 
 	(call_script, "script_start_quest", "qst_save_town_from_bandits", "$g_talk_troop"),
 	#Finish quest 4
 	(assign, "$current_startup_quest_phase", 4),
-	(call_script, "script_change_player_relation_with_center", "$g_starting_town", 1),
+	(call_script, "script_change_player_relation_with_center", "$g_starting_town", 5),
 	(troop_add_gold, "trp_player", 200),
     (call_script, "script_succeed_quest", "qst_save_town_from_bandits"),
     (call_script, "script_end_quest", "qst_save_town_from_bandits"),
