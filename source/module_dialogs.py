@@ -29889,7 +29889,7 @@ Hand over my {reg19} denars, if you please, and end our business together.", "lo
   ], "I appreciate it, {playername}. Here's the letter, and a small sum to cover your travel expenses. Give my regards to {s13} when you see {reg0?her:him}.", "close_window",
   ##diplomacy end+
    [(call_script, "script_start_quest", "$random_quest_no", "$g_talk_troop"),
-    (call_script, "script_troop_add_gold", "trp_player", 30),    (assign, "$g_leave_encounter",1),
+    (call_script, "script_troop_add_gold", "trp_player", 150),    (assign, "$g_leave_encounter",1),
    ]],
 
   [anyone,"lord_mission_deliver_message_rejected", [], "Ah, all right then. Well, I am sure I will find someone else.", "lord_pretalk",
