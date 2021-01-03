@@ -30203,6 +30203,7 @@ Hand over my {reg19} denars, if you please, and end our business together.", "lo
     #SB : calculate the actual amount of upgrade cost, for most recruits this starts off at 20 apiece
     (call_script, "script_game_get_upgrade_cost", ":recruit_troop"),
     (store_mul, ":amount", reg0, ":num_recruits"),
+    (val_add, ":amount", 500),
     (call_script, "script_troop_add_gold", "trp_player", ":amount"),
     (party_add_members, "p_main_party", ":recruit_troop", ":num_recruits"),
     (call_script, "script_change_player_relation_with_troop","$g_talk_troop",1),
