@@ -42626,7 +42626,7 @@ I suppose there are plenty of bounty hunters around to get the job done . . .", 
    "Thank you, {s0}. We'll be praying for you night and day.", "close_window",
   ##diplomacy end+
    [(assign, "$g_leave_encounter",1),
-    (call_script, "script_change_player_relation_with_center", "$current_town", 5),
+    (call_script, "script_change_player_relation_with_center", "$current_town", 10),
     (call_script, "script_start_quest", "$random_quest_no", "$g_talk_troop"),
     ]],
 
