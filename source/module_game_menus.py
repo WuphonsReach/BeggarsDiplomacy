@@ -16016,6 +16016,7 @@ goods, and books will never be sold. ^^You can change some settings here freely.
          #  (try_end),
          #(try_end),
 
+         (assign, "$g_mt_mode", tcm_default), # clear any disguses
          (set_camera_follow_party, "$capturer_party"),
          (assign, "$g_player_is_captive", 1),
          (store_random_in_range, ":random_hours", 18, 30),
@@ -16090,6 +16091,7 @@ goods, and books will never be sold. ^^You can change some settings here freely.
     [
       ("continue",[],"Continue...",
        [
+           (assign, "$g_mt_mode", tcm_default), # clear any disguses
            (assign, "$g_player_is_captive", 1),
            (store_random_in_range, ":random_hours", 16, 22),
            (call_script, "script_event_player_captured_as_prisoner"),
@@ -16119,6 +16121,7 @@ goods, and books will never be sold. ^^You can change some settings here freely.
     [
       ("continue",[],"Continue...",
        [
+           (assign, "$g_mt_mode", tcm_default), # clear any disguses
            (assign, "$g_player_is_captive", 1),
            (store_random_in_range, ":random_hours", 16, 22),
            (call_script, "script_event_player_captured_as_prisoner"),
