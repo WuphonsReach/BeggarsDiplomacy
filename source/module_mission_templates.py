@@ -55,7 +55,7 @@ bodyguard_trigger_a = (
     [
         # Get number of bodyguards
 
-        (store_skill_level, ":leadership", skl_leadership, "trp_player"),
+        (store_skill_level, ":leadership", "skl_leadership", "trp_player"),
         (troop_get_slot, ":renown", "trp_player", slot_troop_renown),
         (val_div, ":leadership", 3),
         (val_div, ":renown", 400),
