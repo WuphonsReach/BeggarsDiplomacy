@@ -39,3 +39,10 @@ The calculation on the budget report is as follows.  It is also used to calculat
         (val_add, ":net_change", reg0),
 
 In my branch, the changed rate is "party strength / 2" + 400 + "player renown".
+
+## Test results
+
+~400 renown, ~2500/wk party cost, ~120 troops = 1700/wk wages
+
+~170 renown, ~1600/wk party cost, ~65 troops = 2000 sign-up bonus, 1100/wk wages
+
