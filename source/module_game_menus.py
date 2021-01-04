@@ -16019,7 +16019,7 @@ goods, and books will never be sold. ^^You can change some settings here freely.
          (assign, "$g_mt_mode", tcm_default), # clear any disguses
          (set_camera_follow_party, "$capturer_party"),
          (assign, "$g_player_is_captive", 1),
-         (store_random_in_range, ":random_hours", 18, 30),
+         (store_random_in_range, ":random_hours", 18, 48),
          (call_script, "script_event_player_captured_as_prisoner"),
          (call_script, "script_stay_captive_for_hours", ":random_hours"),
          (assign,"$auto_menu","mnu_captivity_wilderness_check"),
@@ -16093,7 +16093,7 @@ goods, and books will never be sold. ^^You can change some settings here freely.
        [
            (assign, "$g_mt_mode", tcm_default), # clear any disguses
            (assign, "$g_player_is_captive", 1),
-           (store_random_in_range, ":random_hours", 16, 22),
+           (store_random_in_range, ":random_hours", 16, 60),
            (call_script, "script_event_player_captured_as_prisoner"),
            (call_script, "script_stay_captive_for_hours", ":random_hours"),
            (assign,"$auto_menu", "mnu_captivity_castle_check"),
@@ -16123,7 +16123,7 @@ goods, and books will never be sold. ^^You can change some settings here freely.
        [
            (assign, "$g_mt_mode", tcm_default), # clear any disguses
            (assign, "$g_player_is_captive", 1),
-           (store_random_in_range, ":random_hours", 16, 22),
+           (store_random_in_range, ":random_hours", 16, 72),
            (call_script, "script_event_player_captured_as_prisoner"),
            (call_script, "script_stay_captive_for_hours", ":random_hours"),
            (assign,"$auto_menu", "mnu_captivity_castle_check"),
@@ -16344,7 +16344,7 @@ goods, and books will never be sold. ^^You can change some settings here freely.
       ],"Refuse him, wait for something better.",
       [
         (assign, "$g_player_is_captive", 1),
-        (store_random_in_range, reg(8), 16, 22),
+        (store_random_in_range, reg(8), 16, 72),
         (call_script, "script_stay_captive_for_hours", reg8),
         (assign,"$auto_menu", "mnu_captivity_castle_check"),
         (change_screen_return),
@@ -16367,7 +16367,7 @@ goods, and books will never be sold. ^^You can change some settings here freely.
           (set_background_mesh, "mesh_pic_prisoner_man"),
         (try_end),
 		  ##diplomacy end+
-        (store_random_in_range, ":random_hours", 16, 22),
+        (store_random_in_range, ":random_hours", 16, 72),
         (call_script, "script_stay_captive_for_hours", ":random_hours"),
         (assign,"$auto_menu", "mnu_captivity_castle_check"),
 
