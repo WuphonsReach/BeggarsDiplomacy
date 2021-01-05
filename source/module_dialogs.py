@@ -44952,7 +44952,7 @@ I suppose there are plenty of bounty hunters around to get the job done . . .", 
   [
     (assign, "$dialog_with_merchant_ended", 1),
     #SB : slight relationship bonus
-    (call_script, "script_change_player_relation_with_center", "$g_starting_town", 4),
+    (call_script, "script_change_player_relation_with_center", "$g_starting_town", 3),
   ]],
 
 
