@@ -7,7 +7,7 @@ pt_hero_party Hero_Party 2 0 1 7 -1 -1 -1 -1 -1 -1
 pt_village_defenders Village_Defenders 6 0 1 7 25 10 20 0 133 0 4 0 -1 -1 -1 -1 
 pt_cattle_herd Cattle_Herd 2814749767106598 0 3 7 24 80 120 0 -1 -1 -1 -1 -1 
 pt_looters Looters 2251799813685257 0 2 312 113 3 45 0 -1 -1 -1 -1 -1 
-pt_manhunters Manhunters 2 0 25 137 123 9 40 0 -1 -1 -1 -1 -1 
+pt_manhunters Manhunters 2 0 25 137 123 20 75 0 -1 -1 -1 -1 -1 
 pt_steppe_bandits Steppe_Bandits 562949953421320 0 2 312 119 4 58 0 -1 -1 -1 -1 -1 
 pt_taiga_bandits Tundra_Bandits 562949953421321 0 2 312 120 4 58 0 -1 -1 -1 -1 -1 
 pt_desert_bandits Desert_Bandits 562949953421319 0 2 312 121 4 58 0 -1 -1 -1 -1 -1 
