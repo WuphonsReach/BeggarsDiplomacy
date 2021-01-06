@@ -1931,7 +1931,7 @@ cmenu_winbattle = 15
 
 # Town center modes - resets in game menus during the options
 tcm_default 		= 0
-tcm_disguised 		= 1
+tcm_disguised 		= 99
 tcm_prison_break 	= 2
 tcm_escape      	= 3
 
