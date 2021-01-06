@@ -30206,9 +30206,11 @@ Hand over my {reg19} denars, if you please, and end our business together.", "lo
     (quest_get_slot, ":num_recruits", "$random_quest_no", slot_quest_target_amount),
     #SB : calculate the actual amount of upgrade cost, for most recruits this starts off at 20 apiece
     (call_script, "script_game_get_upgrade_cost", ":recruit_troop"),
+    (val_add, reg0, 20),
     (store_mul, ":amount", reg0, ":num_recruits"),
-    (val_add, ":amount", 500),
+    (val_add, ":amount", 300),
     (call_script, "script_troop_add_gold", "trp_player", ":amount"),
+    #TODO: figure out how to get the base troop type for the recruits instead of the lord's troop type
     (party_add_members, "p_main_party", ":recruit_troop", ":num_recruits"),
     (call_script, "script_change_player_relation_with_troop","$g_talk_troop",1),
     (assign, "$g_leave_encounter",1),
