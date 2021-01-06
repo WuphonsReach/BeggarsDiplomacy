@@ -17145,7 +17145,8 @@ scripts = [
             (val_add, ":cur_price", average_price_factor),
             (val_div, ":cur_price", 3),
           (try_end),
-
+          #TODO: Consider using store_sqrt on :cur_price to make more expensive items more common in loot
+          #TODO: Alternately, put a maximum on the price
           (assign, ":cur_probability", 100),
           (val_mul, ":cur_probability", average_price_factor),
           (val_div, ":cur_probability", ":cur_price"),
