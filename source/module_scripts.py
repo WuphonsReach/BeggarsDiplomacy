@@ -25340,6 +25340,7 @@ scripts = [
           (try_end),
           (party_add_template, ":result", ":reinforcements_b"),
           (party_add_template, ":result", ":reinforcements_b"),
+          #TODO: As player levels up, add more reinforcements/mercenaries to kingdom caravans to offset bandits
           (party_set_ai_behavior,":result",ai_bhvr_travel_to_party),
           (party_set_ai_object,":result",":spawn_center"),
           (party_set_flags, ":result", pf_default_behavior, 1),
