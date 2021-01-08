@@ -30066,6 +30066,7 @@ scripts = [
       (try_end),
 
 	  (try_begin), #add truce
+    #TODO: Consider varying the number of truce days instead of always being dplmc_treaty_truce_days_initial
 		(store_add, ":truce_slot", ":kingdom_a", slot_faction_truce_days_with_factions_begin),
 		(val_sub, ":truce_slot", kingdoms_begin),
 		##diplomacy begin
