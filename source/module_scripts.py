@@ -20124,7 +20124,7 @@ scripts = [
                 (gt, ":num_villagers", ":quest_target_amount"), #+1 for village elder
 	            (assign, ":quest_target_center", ":giver_center_no"),
 	            (assign, ":quest_expiration_days", 20),
-	            (assign, ":quest_dont_give_again_period", 90),
+	            (assign, ":quest_dont_give_again_period", 40),
 	            (assign, ":result", ":quest_no"),
 	          (try_end),
 	        (else_try),
