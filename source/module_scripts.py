@@ -17122,17 +17122,20 @@ scripts = [
           (reset_item_probabilities, 100),
           (assign, ":range_min", trade_goods_begin),
           (assign, ":range_max", trade_goods_end),
+          #TODO: consider adding to :plunder_amount based on player level
         (else_try),
           (party_slot_eq, "$g_enemy_party", slot_party_type, spt_bandit_lair),
           (val_div, ":plunder_amount", 2),
           (reset_item_probabilities, 1),
           (assign, ":range_min", food_begin),
           (assign, ":range_max", food_end),
+          #TODO: consider adding to :plunder_amount based on player level
         (else_try),
           (val_div, ":plunder_amount", 5),
           (reset_item_probabilities, 1),
           (assign, ":range_min", food_begin),
           (assign, ":range_max", food_end),
+          #TODO: consider adding to :plunder_amount based on player level
         (try_end),
         (store_sub, ":item_to_price_slot", slot_town_trade_good_prices_begin, trade_goods_begin),
         (try_for_range, ":cur_goods", ":range_min", ":range_max"),
@@ -17253,6 +17256,8 @@ scripts = [
       (val_div, ":player_party_xp_gain", 100),
 
       (party_add_xp, "p_main_party", ":player_party_xp_gain"),
+
+      #TODO: Increase gold if it was a caravan party, and add based on size of party
 
       (store_mul, ":player_gold_gain", ":total_gain", player_loot_share),
       (val_min, ":player_gold_gain", 60000), #eliminate negative results
