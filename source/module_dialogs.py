@@ -42673,7 +42673,7 @@ I suppose there are plenty of bounty hunters around to get the job done . . .", 
    [
      (assign, "$g_leave_encounter",1),
      #TODO: Change this value
-     (call_script, "script_change_player_relation_with_center", "$current_town", 6),
+     (call_script, "script_change_player_relation_with_center", "$current_town", 3),
      (call_script, "script_start_quest", "$random_quest_no", "$g_talk_troop"),
      ]],
 
