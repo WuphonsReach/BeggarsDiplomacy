@@ -20141,11 +20141,12 @@ scripts = [
 	          (is_between, ":giver_center_no", centers_begin, centers_end),
 	          (store_random_party_in_range, ":quest_target_center", towns_begin, towns_end),
 	          (store_distance_to_party_from_party, ":dist", ":giver_center_no",":quest_target_center"),
+            (val_add, ":dist", 50),
 	          (assign, ":quest_gold_reward", ":dist"),
 	          (val_add, ":quest_gold_reward", 25),
 	          (val_mul, ":quest_gold_reward", 30),
 	          (val_div, ":quest_gold_reward", 20),
-            (val_add, ":quest_gold_reward", 200),
+            (val_add, ":quest_gold_reward", 400),
 	          (store_random_in_range, ":quest_target_amount", 6, 12),
 	          # (assign, "$escort_merchant_caravan_mode", 0), #SB : useless global, use quest slots if necessary
 	          (assign, ":result", ":quest_no"),
@@ -20163,10 +20164,10 @@ scripts = [
               (try_end),
               (store_random_in_range, ":quest_target_amount", 6, 12),
               (store_distance_to_party_from_party, ":dist", ":giver_center_no",":quest_target_center"),
+              (val_add, ":dist", 50),
 
               #SB : also, instead of emptying target center of merchandise, pick one that's actually missing food
               (assign, ":quest_gold_reward", ":dist"),
-              (val_add, ":quest_gold_reward", 15),
               (assign, ":multiplier", 5),
               (val_add, ":multiplier", ":quest_target_amount"),
               (val_mul, ":quest_gold_reward", ":multiplier"),
