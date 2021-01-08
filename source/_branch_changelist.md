@@ -32,6 +32,8 @@ Any commit hashes likely only appear in the [WuphonsReach fork on Github](https:
 - Purchasing cattle for a village gives +9 (up from +3) due to the cost.
 - Giving grain to a village gives +6 (up from +3).
 - Giving 300 gold to a poor inhabitant gives +2 (up from +1).  These inhabitants wander and are tedious to talk to.
+- "Train the peasants" quest has shorter wait intervals (3-5 hours, down from 6-12 hours) between quest steps.
+- Even if you fail during a "train the peasants" training round, the quest will still advance one step.
 - Eliminating bandits in a village gives +4 if you just show up, +9 if it was due to a quest.
 - Lose -2 or -4 for force-taking supplies from a village.
 
