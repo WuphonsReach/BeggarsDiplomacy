@@ -20200,20 +20200,25 @@ scripts = [
 	          (assign, ":result", ":quest_no"),
 	        (else_try),
 	          (eq, ":quest_no", "qst_kidnapped_girl"),
+            # quest_target_amount is the bounty
+            # quest_gold_reward is the reward
 	          (is_between, ":giver_center_no", centers_begin, centers_end),
 	          (store_random_in_range, ":quest_target_center", villages_begin, villages_end),
 	          (store_character_level, ":quest_target_amount"),
-	          (val_add, ":quest_target_amount", 15),
+	          (val_div, ":quest_target_amount", 5),
+            (val_add, ":quest_target_amount", 1),
+            (val_mul, ":quest_target_amount", 100), # bonus on player level is: (level/5 * 50) or 100-1200 gold
 	          (store_distance_to_party_from_party, ":dist", ":giver_center_no", ":quest_target_center"),
-	          (val_add, ":dist", 150),
-	          (val_mul, ":dist", 2),
-	          (val_mul, ":quest_target_amount", ":dist"),
-	          (val_div, ":quest_target_amount",100),
-	          (val_mul, ":quest_target_amount",10),
+	          (val_add, ":dist", 100), # dist will end up in the [100 to 400] range
+	          (val_mul, ":dist", 4), # bonus on distance is: 400-1600 gold
+	          (val_add, ":quest_target_amount", ":dist"),
+            (val_add, ":quest_target_amount", 500), # add a flat 500 gold
+            (call_script, "script_round_value", ":quest_target_amount"),
+            (assign, ":quest_target_amount", reg0),
 	          (assign, ":quest_gold_reward", ":quest_target_amount"),
-	          (val_div, ":quest_gold_reward", 40),
-	          (val_mul, ":quest_gold_reward", 10),
-            (val_add, ":quest_gold_reward", 300),
+            (val_div, ":quest_gold_reward", 6),
+            (call_script, "script_round_value", ":quest_gold_reward"),
+            (assign, ":quest_gold_reward", reg0),
             (assign, ":quest_expiration_days", 15),
             (store_random_in_range, ":random_period", 20, 50),
             (assign, ":quest_dont_give_again_period", ":random_period"),
