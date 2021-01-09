@@ -20293,8 +20293,13 @@ scripts = [
               (assign, ":quest_gold_reward", 500),
               (assign, ":quest_xp_reward", 500),
               (assign, ":quest_expiration_days", 20),
-              (assign, ":quest_dont_give_again_period", 30),
-          ##diplomacy start+
+              (assign, ":quest_dont_give_again_period", 20),
+              (try_begin),
+                (this_or_next|troop_slot_ge, "trp_player", slot_troop_renown, 125),
+                (ge, ":player_level", 10),
+                (store_random_in_range, ":bother_with_less_trivia_period", 5, ":player_level"),
+                (val_add, ":quest_dont_give_again_period", ":bother_with_less_trivia_period"),
+              (try_end),
               (try_begin),
               #don't give full quest reward if outside the normal level range
                  (ge, ":player_level", 15),
@@ -20302,10 +20307,7 @@ scripts = [
                  (val_mul, ":quest_xp_award", -10),
                  (val_add, ":quest_xp_award", 500),
                  (val_max, ":quest_xp_award", 100),#XP drops by 10 per level over limit, until level 40
-                 #To avoid being pestered with trivia, increase :quest_dont_give_again_period with the player's level
-                 (store_add, ":quest_dont_give_again_period", ":player_level", 16),
               (try_end),
-              ##diplomacy end+
               (assign, ":result", ":quest_no"),
             (else_try),
               (eq, ":quest_no", "qst_deal_with_night_bandits"),
@@ -20318,13 +20320,12 @@ scripts = [
               (assign, ":quest_target_center", ":giver_center_no"),
               (assign, ":quest_expiration_days", 4),
               (assign, ":quest_dont_give_again_period", 15),
-              ##diplomacy start+
               (try_begin),
-               #To avoid being pestered with trivia, increase :quest_dont_give_again_period with the player's level
-                 (ge, ":player_level", 15),
-                 (store_add, ":quest_dont_give_again_period", ":player_level", 1),
+                (this_or_next|troop_slot_ge, "trp_player", slot_troop_renown, 125),
+                (ge, ":player_level", 10),
+                (store_random_in_range, ":bother_with_less_trivia_period", 5, ":player_level"),
+                (val_add, ":quest_dont_give_again_period", ":bother_with_less_trivia_period"),
               (try_end),
-              ##diplomacy end+
               (assign, ":result", ":quest_no"),
             (else_try),
               # Lady quests
@@ -20584,15 +20585,16 @@ scripts = [
 	            (assign, ":quest_target_troop", ":cur_target_troop"),
 	            (assign, ":quest_xp_reward", 30),
 	            (assign, ":quest_gold_reward", 40),
-	            (assign, ":quest_dont_give_again_period", 10),
-				##diplomacy start+
+
+              (store_random_in_range, ":random_period", 5, 15),
+	            (assign, ":quest_dont_give_again_period", ":random_period"),
+
 				(try_begin),
 					(this_or_next|troop_slot_ge, "trp_player", slot_troop_renown, 125),
-						(ge, ":player_level", 20),
-					(assign, ":quest_dont_give_again_period", ":player_level"),
-					(val_clamp, ":quest_dont_give_again_period", 10, 61),
+                (ge, ":player_level", 10),
+                (store_random_in_range, ":bother_with_less_trivia_period", 5, ":player_level"),
+                (val_add, ":quest_dont_give_again_period", ":bother_with_less_trivia_period"),
 				(try_end),
-				##diplomacy end+
 
 	            (assign, ":result", ":quest_no"),
 
