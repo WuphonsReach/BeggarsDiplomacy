@@ -22798,16 +22798,16 @@ scripts = [
           (eq, "$g_dplmc_terrain_advantage", DPLMC_TERRAIN_ADVANTAGE_DISABLE),
           (try_begin),
             (eq, ":is_bandit", 1),
-            (assign, ":join_distance", 5), #day/not bandit
+            (assign, ":join_distance", 6), #day/not bandit
             (try_begin),
               (is_currently_night),
-              (assign, ":join_distance", 3), #nigh/not bandit
+              (assign, ":join_distance", 4), #nigh/not bandit
             (try_end),
           (else_try),
-            (assign, ":join_distance", 3), #day/bandit
+            (assign, ":join_distance", 4), #day/bandit
             (try_begin),
               (is_currently_night),
-              (assign, ":join_distance", 2), #night/bandit
+              (assign, ":join_distance", 3), #night/bandit
             (try_end),
           (try_end),
         (else_try), #SB : new distance calculation, based on spotting
@@ -22823,12 +22823,12 @@ scripts = [
             (val_sub, ":join_distance", 1), #day/bandit, value of 3
             (val_sub, ":join_distance", ":join_sub"), #can reduce it down to 1 on easy mode
             (is_currently_night), #night/bandit
-            (val_add, ":join_distance", 1), #less sharp penalty, value of 2
+            (val_add, ":join_distance", 2), #less sharp penalty, value of 2
           (try_end),
           #booster to patrols etc. that makes up for new base of 4
           (try_begin),
             (eq, ":template_id", "pt_patrol_party"),
-            (val_add, ":join_distance", 1), #always true
+            (val_add, ":join_distance", 2), #always true
             (try_begin),
               (get_party_ai_object, ":obj", ":party_no"),#just in case
               (eq, ":behavior", ai_bhvr_escort_party),
@@ -22842,7 +22842,7 @@ scripts = [
             (this_or_next|eq, ":behavior", ai_bhvr_patrol_party),
             (this_or_next|eq, ":behavior", ai_bhvr_patrol_location),
             (eq, ":behavior", ai_bhvr_escort_party),
-            (val_add, ":join_distance", 1),
+            (val_add, ":join_distance", 2),
           (try_end),
         (try_end),
 
