@@ -17095,6 +17095,8 @@ scripts = [
 
       (call_script, "script_calculate_main_party_shares"),
       (assign, ":num_player_party_shares", reg0),
+      (call_script, "script_get_max_skill_of_player_party", "skl_looting"),
+      (assign, ":player_party_loot_skill", reg0),
 
       (try_for_range, ":i_loot", 0, num_party_loot_slots),
         (store_add, ":cur_loot_slot", ":i_loot", slot_party_looted_item_1),
@@ -17117,26 +17119,32 @@ scripts = [
         (val_mul, ":plunder_amount", "$g_strength_contribution_of_player"),
         (val_div, ":plunder_amount", 100),
         (val_div, ":plunder_amount", ":num_player_party_shares"),
+        (val_clamp, ":plunder_amount", 0, 10),
+
+        # add random amount of plunder based on party type / stacks
+        # this is also the easiest way to give the player more money by party type (versus giving gold)
+        (assign, ":plunder_add_max", 1),
         (try_begin),
           (party_slot_eq, "$g_enemy_party", slot_party_type, spt_kingdom_caravan),
           (reset_item_probabilities, 100),
           (assign, ":range_min", trade_goods_begin),
           (assign, ":range_max", trade_goods_end),
-          #TODO: consider adding to :plunder_amount based on player level
+          (val_add, ":plunder_add_max", 5),
         (else_try),
           (party_slot_eq, "$g_enemy_party", slot_party_type, spt_bandit_lair),
           (val_div, ":plunder_amount", 2),
           (reset_item_probabilities, 1),
           (assign, ":range_min", food_begin),
           (assign, ":range_max", food_end),
-          #TODO: consider adding to :plunder_amount based on player level
+          (val_add, ":plunder_add_max", 10),
         (else_try),
           (val_div, ":plunder_amount", 5),
           (reset_item_probabilities, 1),
           (assign, ":range_min", food_begin),
           (assign, ":range_max", food_end),
-          #TODO: consider adding to :plunder_amount based on player level
         (try_end),
+
+        # Calculate the goods price -> probabilities
         (store_sub, ":item_to_price_slot", slot_town_trade_good_prices_begin, trade_goods_begin),
         (try_for_range, ":cur_goods", ":range_min", ":range_max"),
           (try_begin),
@@ -17148,14 +17156,19 @@ scripts = [
             (val_add, ":cur_price", average_price_factor),
             (val_div, ":cur_price", 3),
           (try_end),
-          #TODO: Consider using store_sqrt on :cur_price to make more expensive items more common in loot
-          #TODO: Alternately, put a maximum on the price
+          (val_max, ":cur_price", 1),
+          (store_sqrt, ":cur_price", ":cur_price"), # a 1:100 item now has a 1:10 chance, 1:10000 -> 1:100 chance
           (assign, ":cur_probability", 100),
           (val_mul, ":cur_probability", average_price_factor),
           (val_div, ":cur_probability", ":cur_price"),
-          (assign, reg0, ":cur_probability"),
+          (assign, reg0, ":cur_probability"), # chance (1 in X) that an item will show up in the loot
           (set_item_probability_in_merchandise, ":cur_goods", ":cur_probability"),
         (try_end),
+
+        # Randomize the plundered merchandise quantity
+        (store_random_in_range, ":plunder_amount_add", 0, ":plunder_add_max"),
+        (val_add, ":plunder_amount", ":plunder_amount_add"),
+        (val_clamp, ":plunder_amount", 0, ":player_party_loot_skill"), # never more than "loot skill"
         (troop_add_merchandise, "trp_temp_troop", itp_type_goods, ":plunder_amount"),
         (val_add, ":num_looted_items", ":plunder_amount"),
       (try_end),
@@ -17256,8 +17269,6 @@ scripts = [
       (val_div, ":player_party_xp_gain", 100),
 
       (party_add_xp, "p_main_party", ":player_party_xp_gain"),
-
-      #TODO: Increase gold if it was a caravan party, and add based on size of party
 
       (store_mul, ":player_gold_gain", ":total_gain", player_loot_share),
       (val_min, ":player_gold_gain", 60000), #eliminate negative results
