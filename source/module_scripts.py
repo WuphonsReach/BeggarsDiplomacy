@@ -25211,7 +25211,7 @@ scripts = [
   # script_create_kingdom_party_if_below_limit
   # Input: arg1 = faction_no, arg2 = party_type (variables beginning with spt_)
   # Output: reg0 = party_no
-  ("create_kingdom_party_if_below_limit",
+  ("create_kingdom_party_if_below_limit", #NOTE: Only for kingdom caravans
     [
       (store_script_param_1, ":faction_no"),
       (store_script_param_2, ":party_type"),
@@ -25224,18 +25224,6 @@ scripts = [
       (faction_get_slot, ":num_towns", ":faction_no", slot_faction_num_towns),
 
       (try_begin),
-##        (eq, ":party_type", spt_forager),
-##        (assign, ":party_count_limit", 1),
-##      (else_try),
-##        (eq, ":party_type", spt_scout),
-##        (assign, ":party_count_limit", 1),
-##      (else_try),
-##        (eq, ":party_type", spt_patrol),
-##        (assign, ":party_count_limit", 1),
-##      (else_try),
-##        (eq, ":party_type", spt_messenger),
-##        (assign, ":party_count_limit", 1),
-##      (else_try),
         (eq, ":party_type", spt_kingdom_caravan),
         (try_begin),
           (eq, ":num_towns", 0),
@@ -25249,16 +25237,10 @@ scripts = [
         (else_try),
           (assign, ":party_count_limit", 5),
         (try_end),
-        ##diplomacy begin
-          #overwriting party count limit MAX(2 * X - 1, 0)
+
         (store_mul, ":party_count_limit", ":num_towns", 2),
         (val_sub, ":party_count_limit", 1),
         (val_max, ":party_count_limit", 0),
-        ##diplomacy end
-
-##      (else_try),
-##        (eq, ":party_type", spt_prisoner_train),
-##        (assign, ":party_count_limit", 1),
       (try_end),
 
       (assign, reg0, -1),
@@ -25272,7 +25254,7 @@ scripts = [
   # script_cf_create_kingdom_party
   # Input: arg1 = faction_no, arg2 = party_type (variables beginning with spt_)
   # Output: reg0 = party_no
-  ("cf_create_kingdom_party",
+  ("cf_create_kingdom_party", #NOTE: this currently only creates kingdom caravans
     [
       (store_script_param_1, ":faction_no"),
       (store_script_param_2, ":party_type"),
@@ -25280,87 +25262,90 @@ scripts = [
       (str_store_faction_name, s7, ":faction_no"),
       (assign, ":party_name_str", "str_no_string"),
 
-##      (faction_get_slot, ":reinforcements_a", ":faction_no", slot_faction_reinforcements_a),
+      (faction_get_slot, ":reinforcements_a", ":faction_no", slot_faction_reinforcements_a),
       (faction_get_slot, ":reinforcements_b", ":faction_no", slot_faction_reinforcements_b),
-##      (faction_get_slot, ":reinforcements_c", ":faction_no", slot_faction_reinforcements_c),
 
       (try_begin),
-##        (eq, ":party_type", spt_forager),
-##        (assign, ":party_template", "pt_forager_party"),
-#        (assign, ":party_name_str", "str_s7_foragers"),
-##      (else_try),
-##        (eq, ":party_type", spt_scout),
-##        (assign, ":party_template", "pt_scout_party"),
-#        (assign, ":party_name_str", "str_s7_scouts"),
-##      (else_try),
-##        (eq, ":party_type", spt_patrol),
-##        (assign, ":party_template", "pt_patrol_party"),
-#        (assign, ":party_name_str", "str_s7_patrol"),
-##      (else_try),
         (eq, ":party_type", spt_kingdom_caravan),
         (assign, ":party_template", "pt_kingdom_caravan_party"),
-#        (assign, ":party_name_str", "str_s7_caravan"),
-##      (else_try),
-##        (eq, ":party_type", spt_messenger),
-##        (assign, ":party_template", "pt_messenger_party"),
-#        (assign, ":party_name_str", "str_s7_messenger"),
-##      (else_try),
-##        (eq, ":party_type", spt_raider),
-##        (assign, ":party_template", "pt_raider_party"),
-##        (assign, ":party_name_str", "str_s7_raiders"),
-##      (else_try),
-##        (eq, ":party_type", spt_prisoner_train),
-##        (assign, ":party_template", "pt_prisoner_train_party"),
-#        (assign, ":party_name_str", "str_s7_prisoner_train"),
       (try_end),
 
       (assign, ":result", -1),
       (try_begin),
-        (try_begin),
           (eq, ":party_type", spt_kingdom_caravan),
           (call_script,"script_cf_select_random_town_with_faction", ":faction_no", -1),
           (set_spawn_radius, 0),
-        (else_try), #not used at the moment
-          (call_script,"script_cf_select_random_walled_center_with_faction", ":faction_no", -1),
-          (set_spawn_radius, 1),
-        (try_end),
+
         (assign, ":spawn_center", reg0),
         (is_between, ":spawn_center", centers_begin, centers_end),
         (spawn_around_party,":spawn_center",":party_template"),
         (assign, ":result", reg0),
         (party_set_faction, ":result", ":faction_no"),
-        (try_begin),
-          (eq, ":party_type", spt_kingdom_caravan),
+
           (party_set_slot, ":result", slot_party_home_center, ":spawn_center"),
           (party_set_slot, ":result", slot_party_last_traded_center, ":spawn_center"),
-		(try_end),
         (party_set_slot, ":result", slot_party_type, ":party_type"),
         (party_set_slot, ":result", slot_party_ai_state, spai_undefined),
+
         (try_begin),
           (neq, ":party_name_str", "str_no_string"),
           (party_set_name, ":result", ":party_name_str"),
         (try_end),
 
         (try_begin),
-##          (eq, ":party_type", spt_forager),
-##          (party_add_template, ":result", ":reinforcements_a"),
-##        (else_try),
-##          (eq, ":party_type", spt_scout),
-##          (party_add_template, ":result", ":reinforcements_c"),
-##        (else_try),
-##          (eq, ":party_type", spt_patrol),
-##          (party_add_template, ":result", ":reinforcements_a"),
-##          (party_add_template, ":result", ":reinforcements_b"),
-##        (else_try),
           (eq, ":party_type", spt_kingdom_caravan),
           (try_begin),
             (eq, ":faction_no", "fac_player_supporters_faction"),
             (party_get_slot, ":reinforcement_faction", ":spawn_center", slot_center_original_faction),
+            (faction_get_slot, ":reinforcements_a", ":reinforcement_faction", slot_faction_reinforcements_a),
             (faction_get_slot, ":reinforcements_b", ":reinforcement_faction", slot_faction_reinforcements_b),
           (try_end),
+          (store_character_level, ":player_level", "trp_player"),
+
+          # add more caravan_guards (averages adding 10 past level 40, but could add up to 40)
+          (store_div, ":reinforcement_cg_count", ":player_level", 10),
+          (val_clamp, ":reinforcement_cg_count", 0, 4), # stop adding more after level 40 (4 x 10)
+          (store_random_in_range, ":reinforcement_count", 0, ":reinforcement_cg_count"),
+          (try_for_range, ":reinforce_party", 0, ":reinforcement_count"),
+            (party_add_template, ":result", "pt_caravan_guards"),
+          (try_end),
+          
+          # add caravan_civilians
+          (store_div, ":reinforcement_civs_count", ":player_level", 15),
+          (store_random_in_range, ":reinforcement_count", 0, ":reinforcement_civs_count"),  
+          (try_for_range, ":reinforce_party", 0, ":reinforcement_count"),
+            (party_add_template, ":result", "pt_caravan_civilians"),
+          (try_end),
+
+          # add tier a troops
+          (store_div, ":reinforcement_a_count", ":player_level", 8),
+          (val_clamp, ":reinforcement_a_count", 0, 3), # stop adding more after level 24 (3 x 8)
+          (store_random_in_range, ":reinforcement_count", 0, ":reinforcement_a_count"),  
+          (try_for_range, ":reinforce_party", 0, ":reinforcement_count"),
+            (party_add_template, ":result", ":reinforcements_a"),
+          (try_end),
+          
+          # add tier 2 troops
+          (store_div, ":reinforcement_b_count", ":player_level", 25),
+          (store_random_in_range, ":reinforcement_count", 0, ":reinforcement_b_count"),  
+          (try_for_range, ":reinforce_party", 0, ":reinforcement_count"),
           (party_add_template, ":result", ":reinforcements_b"),
-          (party_add_template, ":result", ":reinforcements_b"),
-          #TODO: As player levels up, add more reinforcements/mercenaries to kingdom caravans to offset bandits
+          (try_end),
+          
+          # add male_mercenaries
+          (store_div, ":reinforcement_mm_count", ":player_level", 18),
+          (store_random_in_range, ":reinforcement_count", 0, ":reinforcement_mm_count"),  
+          (try_for_range, ":reinforce_party", 0, ":reinforcement_count"),
+            (party_add_template, ":result", "pt_male_mercenaries"),
+          (try_end),
+          
+          # add female_mercenaries
+          (store_div, ":reinforcement_fm_count", ":player_level", 25),
+          (store_random_in_range, ":reinforcement_count", 0, ":reinforcement_fm_count"),  
+          (try_for_range, ":reinforce_party", 0, ":reinforcement_count"),
+            (party_add_template, ":result", "pt_female_mercenaries"),
+          (try_end),
+          
           (party_set_ai_behavior,":result",ai_bhvr_travel_to_party),
           (party_set_ai_object,":result",":spawn_center"),
           (party_set_flags, ":result", pf_default_behavior, 1),
@@ -25369,35 +25354,6 @@ scripts = [
             (store_add, ":cur_goods_price_slot", ":cur_goods", ":item_to_price_slot"),
             (party_set_slot, ":result", ":cur_goods_price_slot", average_price_factor),
           (try_end),
-##        (else_try),
-##          (eq, ":party_type", spt_messenger),
-##          (faction_get_slot, ":messenger_troop", ":faction_no", slot_faction_messenger_troop),
-##          (party_add_leader, ":result", ":messenger_troop"),
-##          (party_set_ai_behavior,":result",ai_bhvr_travel_to_party),
-##          (party_set_ai_object,":result",":spawn_center"),
-##          (party_set_flags, ":result", pf_default_behavior, 0),
-##        (else_try),
-##          (eq, ":party_type", spt_raider),
-##          (party_add_template, ":result", ":reinforcements_c"),
-##          (party_add_template, ":result", ":reinforcements_b"),
-##          (party_add_template, ":result", "pt_raider_captives"),
-##        (else_try),
-##          (eq, ":party_type", spt_prisoner_train),
-##          (party_add_template, ":result", ":reinforcements_b"),
-##          (party_add_template, ":result", ":reinforcements_a"),
-##          (try_begin),
-##            (call_script,"script_cf_faction_get_random_enemy_faction",":faction_no"),
-##            (store_random_in_range,":r",0,3),
-##            (try_begin),
-##              (lt, ":r", 1),
-##              (faction_get_slot, ":captive_reinforcements", reg0, slot_faction_reinforcements_b),
-##            (else_try),
-##              (faction_get_slot, ":captive_reinforcements", reg0, slot_faction_reinforcements_a),
-##            (try_end),
-##            (party_add_template, ":result", ":captive_reinforcements",1),
-##          (else_try),
-##            (party_add_template, ":result", "pt_default_prisoners"),
-##          (try_end),
         (try_end),
       (try_end),
       (ge, ":result", 0),

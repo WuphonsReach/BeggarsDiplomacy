@@ -64,3 +64,7 @@ pt_leaded_looters = 62
 pt_dplmc_spouse = 63
 pt_dplmc_gift_caravan = 64
 pt_dplmc_recruiter = 65
+pt_caravan_civilians = 66
+pt_caravan_guards = 67
+pt_female_mercenaries = 68
+pt_male_mercenaries = 69

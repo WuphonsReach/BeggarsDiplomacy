@@ -168,4 +168,10 @@ party_templates = [
    ("dplmc_recruiter","Recruiter",icon_flagbearer_b|pf_show_faction,0,fac_neutral,merchant_personality,[(trp_dplmc_recruiter,1,1)]),
 #recruiter kit end
    ##diplomacy end
+
+# Parties added to kingdom caravans
+  ("caravan_civilians","Caravan Civilians",icon_peasant|carries_goods(5),0,fac_commoners,merchant_personality,[(trp_farmer,0,4),(trp_peasant_woman,0,2),(trp_follower_woman,0,1)]),
+  ("caravan_guards","Caravan Guards",icon_gray_knight|carries_goods(2),0,fac_commoners,soldier_personality,[(trp_caravan_guard,0,10)]),
+  ("female_mercenaries","Mercenaries",icon_gray_knight|carries_goods(2),0,fac_commoners,soldier_personality,[(trp_hunter_woman,0,2),(trp_fighter_woman,0,3),(trp_sword_sister,0,4)]),
+  ("male_mercenaries","Mercenaries",icon_gray_knight|carries_goods(2),0,fac_commoners,soldier_personality,[(trp_mercenary_crossbowman,0,2),(trp_mercenary_swordsman,0,3),(trp_mercenary_horseman,0,4)]),
 ]
