@@ -38009,48 +38009,31 @@ I suppose there are plenty of bounty hunters around to get the job done . . .", 
 
   [anyone|plyr, "tavern_traveler_companion_location_ask_money", [], "Never mind, I don't want to know.", "tavern_traveler_pretalk", []],
 
-  [anyone, "tavern_traveler_companion_location_tell", [], "{s15} is currently at {s11}.{s12}", "tavern_traveler_pretalk",
+  [anyone, "tavern_traveler_companion_location_tell", [], "{s15}.", "tavern_traveler_pretalk",
    [
-     (str_store_troop_name, s15, "$temp"),
+     (str_store_troop_name, s4, "$temp"),
+     (call_script, "script_dplmc_store_troop_is_female_reg", "$temp", 4), #SB : script call for gender to reg4
 
      (try_begin),
        (troop_slot_ge, "$temp", slot_troop_cur_center, 1),
        (troop_get_slot, ":cur_center", "$temp", slot_troop_cur_center),
-       (str_store_string, s12, "str_space"),
+       (str_store_party_name_link, s5, ":cur_center"),
+       (str_store_string, s15, "str_s4_is_at_s5"),
+       (call_script, "script_add_rumor_string_to_troop_notes", "$temp", -1, s15),
      (else_try),
        (troop_get_slot, ":cur_center", "$temp", slot_troop_prisoner_of_party),
-
+       (str_store_party_name_link, s5, ":cur_center"),
        (try_begin),
          (is_between, ":cur_center", towns_begin, towns_end),
          (str_store_string, s13, "str_town"),
        (else_try),
          (str_store_string, s13, "str_castle"),
        (try_end),
-	   (call_script, "script_dplmc_store_troop_is_female_reg", "$temp", 4), #SB : script call for gender to reg4
-       (str_store_string, s12, "str__but_he_is_holding_there_as_a_prisoner_at_dungeon_of_s13"), #[TODO : Control Grammer] New text, control grammer of text later. s13 can be "castle" or "town".
-     (try_end),
-
-
-     #SB : rumour string since we can't confirm or deny anything from troop notes
-     (str_store_string_reg, s4, s15),
-     (try_begin),
-       (is_between, ":cur_center", centers_begin, centers_end),
-       (str_store_party_name_link, s5, ":cur_center"),
+       (str_store_string, s15, "str_s4_is_at_s5_but_reg4_he_she_is_held_as_a_prisoner_at_s13_dungeon"),
+       (call_script, "script_add_rumor_string_to_troop_notes", "$temp", -1, s15),
      (else_try),
-       (str_store_string, s5, "str_prisoner_at_large"),
+       (str_store_string, s15, "str_i_dont_know_where_s4_is"),
      (try_end),
-     (str_store_string, s15, "str_s4_is_at_s5"),
-     #copy string
-     (str_store_string_reg, s16, s5),
-     (call_script, "script_add_rumor_string_to_troop_notes", "$temp", -1, 15),
-     (str_store_string_reg, s11, s16),
-	 # #s10, s11 etc used above, refresh sreg
-     # (try_begin),
-		# (party_is_active, ":cur_center"),
-		# (str_store_party_name, s11, ":cur_center"),
-	 # (else_try),
-		# (str_store_party_name, s11, "str_prisoner_at_large"),
-	 # (try_end),
      ]],
 
   [anyone|plyr, "tavern_traveler_talk", [],
