@@ -16065,7 +16065,7 @@ presentations = [
           (position_set_y, pos1, ":text_y"),
           (overlay_set_position, reg1, pos1),
           # number_box
-          (create_number_box_overlay, reg1, 0, 9),
+          (create_number_box_overlay, reg1, 0, 16), # allow values of 0-15
           (store_add, ":number_box_x", ":pos_x", 115),
           (store_add, ":number_box_y", ":pos_y", 30),
           (position_set_x, pos1, ":number_box_x"),
