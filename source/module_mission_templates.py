@@ -16738,8 +16738,10 @@ mission_templates = [
 	   ],
 	   [
           (store_character_level, ":player_level", "trp_player"),
+          (val_clamp, ":player_level", 1, 40),
           (store_add, ":number_of_bandits_will_be_spawned_at_each_period", 5, ":player_level"),
-          (val_div, ":number_of_bandits_will_be_spawned_at_each_period", 3),
+          (store_random_in_range, ":random_to_spawn_in", 3, 4),
+          (val_div, ":number_of_bandits_will_be_spawned_at_each_period", ":random_to_spawn_in"),
 
           (lt, "$bandits_spawned_extra", ":number_of_bandits_will_be_spawned_at_each_period"),
           (val_add, "$bandits_spawned_extra", 1),
@@ -16824,8 +16826,10 @@ mission_templates = [
           (val_add, "$defender_reinforcement_stage", 1),
 
           (store_character_level, ":player_level", "trp_player"),
+          (val_clamp, ":player_level", 1, 40),
           (store_add, ":number_of_bandits_will_be_spawned_at_each_period", 5, ":player_level"),
-          (val_div, ":number_of_bandits_will_be_spawned_at_each_period", 3),
+          (store_random_in_range, ":random_to_spawn_in", 3, 4),
+          (val_div, ":number_of_bandits_will_be_spawned_at_each_period", ":random_to_spawn_in"),
           (try_begin),
             (ge, "$defender_reinforcement_stage", 2),
             (val_sub, ":number_of_bandits_will_be_spawned_at_each_period", "$bandits_spawned_extra"),
