@@ -25322,7 +25322,8 @@ scripts = [
           (try_end),
           
           # add caravan_civilians
-          (store_div, ":reinforcement_civs_count", ":player_level", 15),
+          (store_div, ":reinforcement_civs_count", ":player_level", 12),
+          (val_clamp, ":reinforcement_civs_count", 0, 4), # maximum of 4 parties
           (store_random_in_range, ":reinforcement_count", 0, ":reinforcement_civs_count"),  
           (try_for_range, ":reinforce_party", 0, ":reinforcement_count"),
             (party_add_template, ":result", "pt_caravan_civilians"),
