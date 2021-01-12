@@ -64062,7 +64062,7 @@ scripts = [
       (is_between, ":item", ":valid_items_begin", ":valid_items_end"),
       (neg|is_between, ":type", books_begin, books_end),
       (this_or_next|neg|is_between, ":type", food_begin, food_end),
-        (eq, ":imod", imod_rotten),
+        (ge, ":imod", imod_rotten),
       (neg|is_between, ":type", trade_goods_begin, trade_goods_end),
       (neq, ":imod", imod_lordly),#dplmc+: never sell "lordly" items
       #dplmc+ end added constraints
@@ -64382,7 +64382,7 @@ scripts = [
       (gt, ":item", -1),
       (is_between, ":item", food_begin, food_end),
       (troop_get_inventory_slot_modifier, ":imod", ":customer", ":i_slot"),
-      (eq, ":imod", imod_rotten),
+      (ge, ":imod", imod_rotten), # this could also be imod_smelling
       (store_free_inventory_capacity, ":free_inv_cap", ":merchant_troop"),
       (gt, ":free_inv_cap", 0),
 
