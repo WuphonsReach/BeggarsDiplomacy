@@ -3184,8 +3184,9 @@ simple_triggers = [
 
        (troop_get_inventory_slot_modifier, ":modifier", "trp_player", ":i_slot"),
        (try_begin),
-         (is_between, ":modifier", imod_fresh, imod_rotten),
+         (ge, ":modifier", imod_fresh),
          (val_add, ":modifier", 1),
+         (val_min, ":modifier", imod_rotten),
          (try_begin), # SB : spoilage, objection
            (eq, ":modifier", imod_rotten),
            (troop_inventory_slot_get_item_amount, ":amount", "trp_player", ":i_slot"),
