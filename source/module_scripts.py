@@ -17129,19 +17129,20 @@ scripts = [
           (reset_item_probabilities, 100),
           (assign, ":range_min", trade_goods_begin),
           (assign, ":range_max", trade_goods_end),
-          (val_add, ":plunder_add_max", 5),
+          (val_add, ":plunder_add_max", 6),
         (else_try),
           (party_slot_eq, "$g_enemy_party", slot_party_type, spt_bandit_lair),
           (val_div, ":plunder_amount", 2),
           (reset_item_probabilities, 1),
           (assign, ":range_min", food_begin),
           (assign, ":range_max", food_end),
-          (val_add, ":plunder_add_max", 10),
+          (val_add, ":plunder_add_max", 8),
         (else_try),
           (val_div, ":plunder_amount", 5),
           (reset_item_probabilities, 1),
           (assign, ":range_min", food_begin),
           (assign, ":range_max", food_end),
+          (val_add, ":plunder_add_max", 1),
         (try_end),
 
         # Calculate the goods price -> probabilities
@@ -17165,7 +17166,7 @@ scripts = [
           (set_item_probability_in_merchandise, ":cur_goods", ":cur_probability"),
         (try_end),
 
-        # Randomize the plundered merchandise quantity
+        # Randomize the plundered merchandise quantity, The upper end for store_random_in_range is exclusive
         (store_random_in_range, ":plunder_amount_add", 0, ":plunder_add_max"),
         (val_add, ":plunder_amount", ":plunder_amount_add"),
         (val_clamp, ":plunder_amount", 0, ":player_party_loot_skill"), # never more than "loot skill"
@@ -22809,10 +22810,10 @@ scripts = [
           (eq, "$g_dplmc_terrain_advantage", DPLMC_TERRAIN_ADVANTAGE_DISABLE),
           (try_begin),
             (eq, ":is_bandit", 1),
-            (assign, ":join_distance", 6), #day/not bandit
+            (assign, ":join_distance", 5), #day/not bandit
             (try_begin),
               (is_currently_night),
-              (assign, ":join_distance", 4), #nigh/not bandit
+              (assign, ":join_distance", 3), #nigh/not bandit
             (try_end),
           (else_try),
             (assign, ":join_distance", 4), #day/bandit
@@ -25313,9 +25314,12 @@ scripts = [
           (try_end),
           (store_character_level, ":player_level", "trp_player"),
 
+          #NOTE: The upper end for store_random_in_range is exclusive
+
           # add more caravan_guards (averages adding 10 past level 40, but could add up to 40)
           (store_div, ":reinforcement_cg_count", ":player_level", 10),
-          (val_clamp, ":reinforcement_cg_count", 0, 4), # stop adding more after level 40 (4 x 10)
+          (val_clamp, ":reinforcement_cg_count", 0, 4), # stop adding more after level 30 (3 x 10)
+          (val_add, ":reinforcement_cg_count", 1),
           (store_random_in_range, ":reinforcement_count", 0, ":reinforcement_cg_count"),
           (try_for_range, ":reinforce_party", 0, ":reinforcement_count"),
             (party_add_template, ":result", "pt_caravan_guards"),
@@ -25324,6 +25328,7 @@ scripts = [
           # add caravan_civilians
           (store_div, ":reinforcement_civs_count", ":player_level", 12),
           (val_clamp, ":reinforcement_civs_count", 0, 4), # maximum of 4 parties
+          (val_add, ":reinforcement_civs_count", 1),
           (store_random_in_range, ":reinforcement_count", 0, ":reinforcement_civs_count"),  
           (try_for_range, ":reinforce_party", 0, ":reinforcement_count"),
             (party_add_template, ":result", "pt_caravan_civilians"),
@@ -25332,13 +25337,17 @@ scripts = [
           # add tier a troops
           (store_div, ":reinforcement_a_count", ":player_level", 8),
           (val_clamp, ":reinforcement_a_count", 0, 3), # stop adding more after level 24 (3 x 8)
+          (val_add, ":reinforcement_a_count", 1),
           (store_random_in_range, ":reinforcement_count", 0, ":reinforcement_a_count"),  
           (try_for_range, ":reinforce_party", 0, ":reinforcement_count"),
             (party_add_template, ":result", ":reinforcements_a"),
           (try_end),
           
           # add tier 2 troops
-          (store_div, ":reinforcement_b_count", ":player_level", 25),
+          (store_div, ":reinforcement_b_count", ":player_level", 10),
+          (val_sub, ":reinforcement_a_count", 2),
+          (val_clamp, ":reinforcement_a_count", 0, 2),
+          (val_add, ":reinforcement_b_count", 1),
           (store_random_in_range, ":reinforcement_count", 0, ":reinforcement_b_count"),  
           (try_for_range, ":reinforce_party", 0, ":reinforcement_count"),
           (party_add_template, ":result", ":reinforcements_b"),
@@ -25346,6 +25355,8 @@ scripts = [
           
           # add male_mercenaries
           (store_div, ":reinforcement_mm_count", ":player_level", 18),
+          (val_clamp, ":reinforcement_a_count", 0, 2),
+          (val_add, ":reinforcement_mm_count", 1),
           (store_random_in_range, ":reinforcement_count", 0, ":reinforcement_mm_count"),  
           (try_for_range, ":reinforce_party", 0, ":reinforcement_count"),
             (party_add_template, ":result", "pt_male_mercenaries"),
@@ -25353,6 +25364,8 @@ scripts = [
           
           # add female_mercenaries
           (store_div, ":reinforcement_fm_count", ":player_level", 25),
+          (val_clamp, ":reinforcement_a_count", 0, 2),
+          (val_add, ":reinforcement_fm_count", 1),
           (store_random_in_range, ":reinforcement_count", 0, ":reinforcement_fm_count"),  
           (try_for_range, ":reinforce_party", 0, ":reinforcement_count"),
             (party_add_template, ":result", "pt_female_mercenaries"),
