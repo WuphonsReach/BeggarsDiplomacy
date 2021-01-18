@@ -18190,7 +18190,7 @@ goods, and books will never be sold. ^^You can change some settings here freely.
 
         (store_character_level, ":player_level", "trp_player"),
         (store_add, ":number_of_bandits_will_be_spawned_at_each_period", 5, ":player_level"),
-        (store_random_in_range, ":random_to_spawn_in", 3, 4),
+        (store_random_in_range, ":random_to_spawn_in", 3, 5),
         (val_div, ":number_of_bandits_will_be_spawned_at_each_period", ":random_to_spawn_in"),
 
         (try_for_range, ":unused", 0, ":number_of_bandits_will_be_spawned_at_each_period"),
