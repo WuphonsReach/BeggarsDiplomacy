@@ -30060,34 +30060,28 @@ scripts = [
         (assign, "$g_recalculate_ais", 1),
       (try_end),
 
+    (assign, ":truce_duration", dplmc_treaty_truce_days_initial),
+    (store_random_in_range, ":half_truce", 0, 4),
+    (try_begin),
+      (eq, ":half_truce", 0),
+      (assign, ":truce_duration", dplmc_treaty_truce_days_half_done),
+    (try_end),
 	  (try_begin), #add truce
-    #TODO: Consider varying the number of truce days instead of always being dplmc_treaty_truce_days_initial
-		(store_add, ":truce_slot", ":kingdom_a", slot_faction_truce_days_with_factions_begin),
-		(val_sub, ":truce_slot", kingdoms_begin),
-		##diplomacy begin
-	    #(faction_set_slot, ":kingdom_b", ":truce_slot", 40),
-        ##nested diplomacy start+ replace "20" with constant for truce length
-#        (faction_set_slot, ":kingdom_b", ":truce_slot", 20),
-        (faction_set_slot, ":kingdom_b", ":truce_slot", dplmc_treaty_truce_days_initial),
-        ##nested diplomacy end+
-	    ##diplomacy end
-		(store_add, ":truce_slot", ":kingdom_b", slot_faction_truce_days_with_factions_begin),
-		(val_sub, ":truce_slot", kingdoms_begin),
-	    ##diplomacy begin
-	    #(faction_set_slot, ":kingdom_a", ":truce_slot", 40),
-        ##nested diplomacy start+ replace "20" with constant for truce length
-        #(faction_set_slot, ":kingdom_a", ":truce_slot", 20),
-        (faction_set_slot, ":kingdom_a", ":truce_slot", dplmc_treaty_truce_days_initial),
-        ##nested diplomacy end+
-        ##diplomacy end
-		(store_add, ":slot_war_damage_inflicted_on_b", ":kingdom_b", slot_faction_war_damage_inflicted_on_factions_begin),
-		(val_sub, ":slot_war_damage_inflicted_on_b", kingdoms_begin),
-		#(faction_get_slot, ":damage_inflicted_by_a", ":kingdom_a", ":slot_war_damage_inflicted_on_b"),
-		(faction_set_slot, ":kingdom_a", ":slot_war_damage_inflicted_on_b", 0),
-		(store_add, ":slot_war_damage_inflicted_on_a", ":kingdom_a", slot_faction_war_damage_inflicted_on_factions_begin),
-		(val_sub, ":slot_war_damage_inflicted_on_a", kingdoms_begin),
-		#(faction_get_slot, ":damage_inflicted_by_b", ":kingdom_b", ":slot_war_damage_inflicted_on_a"),
-		(faction_set_slot, ":kingdom_b", ":slot_war_damage_inflicted_on_a", 0),
+  		(store_add, ":truce_slot", ":kingdom_a", slot_faction_truce_days_with_factions_begin),
+	  	(val_sub, ":truce_slot", kingdoms_begin),
+      (faction_set_slot, ":kingdom_b", ":truce_slot", ":truce_duration"),
+
+  		(store_add, ":truce_slot", ":kingdom_b", slot_faction_truce_days_with_factions_begin),
+		  (val_sub, ":truce_slot", kingdoms_begin),
+      (faction_set_slot, ":kingdom_a", ":truce_slot", ":truce_duration"),
+
+  		(store_add, ":slot_war_damage_inflicted_on_b", ":kingdom_b", slot_faction_war_damage_inflicted_on_factions_begin),
+	  	(val_sub, ":slot_war_damage_inflicted_on_b", kingdoms_begin),
+  		(faction_set_slot, ":kingdom_a", ":slot_war_damage_inflicted_on_b", 0),
+
+	  	(store_add, ":slot_war_damage_inflicted_on_a", ":kingdom_a", slot_faction_war_damage_inflicted_on_factions_begin),
+		  (val_sub, ":slot_war_damage_inflicted_on_a", kingdoms_begin),
+		  (faction_set_slot, ":kingdom_b", ":slot_war_damage_inflicted_on_a", 0),
 	  (try_end),
   ]),
 
@@ -30167,7 +30161,7 @@ scripts = [
   ]),
 
   # script_randomly_start_war_peace
-  # Input: arg1 = initializing_war_peace_cond (1 = true, 0 = false)
+  # Input: arg1 = initializing_war_peace_cond (1 = true, 0 = false / game start)
   # Output: none
 
   #Aims to introduce a slightly simpler system in which the AI kings' reasoning could be made more  transparent to the player. At the start of the game, this may lead to less variation in outcomes, though
@@ -59328,7 +59322,7 @@ scripts = [
   ]),
 
 #script_dplmc_start_alliance_between_kingdoms, 20 days alliance, 40 days truce after that
-  # Input: arg1 = kingdom_1, arg2 = kingdom_2, arg3 = initializing_war_peace_cond
+  # Input: arg1 = kingdom_1, arg2 = kingdom_2, arg3 = initializing_war_peace_cond (0=game start)
   # Output: none
   ("dplmc_start_alliance_between_kingdoms", #sets relations between two kingdoms
     [
@@ -59386,19 +59380,26 @@ scripts = [
 
       (try_end),
 
+    (assign, ":truce_duration", dplmc_treaty_alliance_days_initial),
+    (try_begin),
+      (eq, ":initializing_war_peace_cond", 0), # if game startup
+      (store_random_in_range, ":truce_duration", dplmc_treaty_alliance_days_expire, dplmc_treaty_alliance_days_initial),
+      (val_add, ":truce_duration", 1),
+    (try_end),
+
 	  (try_begin), #add truce
 		(store_add, ":truce_slot", ":kingdom_a", slot_faction_truce_days_with_factions_begin),
 		(val_sub, ":truce_slot", kingdoms_begin),
 	    ##nested diplomacy start+ replace 80 with a named constant
 	    #(faction_set_slot, ":kingdom_b", ":truce_slot", 80),
-	    (faction_set_slot, ":kingdom_b", ":truce_slot", dplmc_treaty_alliance_days_initial),
+	    (faction_set_slot, ":kingdom_b", ":truce_slot", ":truce_duration"),
 	    ##nested diplomacy end+
 
 		(store_add, ":truce_slot", ":kingdom_b", slot_faction_truce_days_with_factions_begin),
 		(val_sub, ":truce_slot", kingdoms_begin),
 	    ##nested diplomacy start+ replace 80 with a named constant
 	    #(faction_set_slot, ":kingdom_a", ":truce_slot", 80),
-	    (faction_set_slot, ":kingdom_a", ":truce_slot", dplmc_treaty_alliance_days_initial),
+	    (faction_set_slot, ":kingdom_a", ":truce_slot", ":truce_duration"),
 	    ##nested diplomacy end+
 
 		(store_add, ":slot_war_damage_inflicted_on_b", ":kingdom_b", slot_faction_war_damage_inflicted_on_factions_begin),
@@ -59502,19 +59503,26 @@ scripts = [
 
       (try_end),
 
+    (assign, ":truce_duration", dplmc_treaty_defense_days_initial),
+    (try_begin),
+      (eq, ":initializing_war_peace_cond", 0), # if game startup
+      (store_random_in_range, ":truce_duration", dplmc_treaty_defense_days_expire, dplmc_treaty_defense_days_initial),
+      (val_add, ":truce_duration", 1),
+    (try_end),
+
 	  (try_begin), #add truce
 		(store_add, ":truce_slot", ":kingdom_a", slot_faction_truce_days_with_factions_begin),
 		(val_sub, ":truce_slot", kingdoms_begin),
 	    ##diplomacy start+ replace 60 with named variable
 	    #(faction_set_slot, ":kingdom_b", ":truce_slot", 60),
-	    (faction_set_slot, ":kingdom_b", ":truce_slot", dplmc_treaty_defense_days_initial),
+	    (faction_set_slot, ":kingdom_b", ":truce_slot", ":truce_duration"),
 	    ##diplomacy end+
 
 		(store_add, ":truce_slot", ":kingdom_b", slot_faction_truce_days_with_factions_begin),
 		(val_sub, ":truce_slot", kingdoms_begin),
 	    ##diplomacy start+ replace 60 with named variable
 	    #(faction_set_slot, ":kingdom_a", ":truce_slot", 60),
-	    (faction_set_slot, ":kingdom_a", ":truce_slot", dplmc_treaty_defense_days_initial),
+	    (faction_set_slot, ":kingdom_a", ":truce_slot", ":truce_duration"),
 	    ##diplomacy end+
 
 		(store_add, ":slot_war_damage_inflicted_on_b", ":kingdom_b", slot_faction_war_damage_inflicted_on_factions_begin),
@@ -59594,19 +59602,26 @@ scripts = [
 
       (try_end),
 
+    (assign, ":truce_duration", dplmc_treaty_trade_days_initial),
+    (try_begin),
+      (eq, ":initializing_war_peace_cond", 0), # if game startup
+      (store_random_in_range, ":truce_duration", dplmc_treaty_trade_days_expire, dplmc_treaty_trade_days_initial),
+      (val_add, ":truce_duration", 1),
+    (try_end),
+
 	  (try_begin), #add truce
 		(store_add, ":truce_slot", ":kingdom_a", slot_faction_truce_days_with_factions_begin),
 		(val_sub, ":truce_slot", kingdoms_begin),
 	    ##nested diplomacy start+ replace hardcoded number of days with a variable
 	    #(faction_set_slot, ":kingdom_b", ":truce_slot", 40),
-	    (faction_set_slot, ":kingdom_b", ":truce_slot", dplmc_treaty_trade_days_initial),
+	    (faction_set_slot, ":kingdom_b", ":truce_slot", ":truce_duration"),
 	    ##nested diplomacy end+
 
 		(store_add, ":truce_slot", ":kingdom_b", slot_faction_truce_days_with_factions_begin),
 		(val_sub, ":truce_slot", kingdoms_begin),
 	    ##nested diplomacy start+ replace hardcoded number of days with a variable
 	    #(faction_set_slot, ":kingdom_a", ":truce_slot", 40),
-	    (faction_set_slot, ":kingdom_a", ":truce_slot", dplmc_treaty_trade_days_initial),
+	    (faction_set_slot, ":kingdom_a", ":truce_slot", ":truce_duration"),
 	    ##nested diplomacy end+
 
 		(store_add, ":slot_war_damage_inflicted_on_b", ":kingdom_b", slot_faction_war_damage_inflicted_on_factions_begin),
@@ -59686,38 +59701,42 @@ scripts = [
 
       (try_end),
 
+    (assign, ":truce_duration", dplmc_treaty_truce_days_initial),
+    (try_begin),
+      (eq, ":initializing_war_peace_cond", 0), # if game startup
+      (store_random_in_range, ":truce_duration", dplmc_treaty_truce_days_expire, dplmc_treaty_truce_days_initial),
+      (val_add, ":truce_duration", 1),
+    (else_try),
+      (store_random_in_range, ":half_truce", 0, 2),
+      (try_begin),
+        (eq, ":half_truce", 0),
+        (assign, ":truce_duration", dplmc_treaty_truce_days_half_done),
+      (try_end),
+    (try_end),
 	  (try_begin), #add truce
-		(store_add, ":truce_slot", ":kingdom_a", slot_faction_truce_days_with_factions_begin),
-		(val_sub, ":truce_slot", kingdoms_begin),
-	    ##nested diplomacy start+ replace hardcoded number with a variable
-	    #(faction_set_slot, ":kingdom_b", ":truce_slot", 20),
-	    (faction_set_slot, ":kingdom_b", ":truce_slot", dplmc_treaty_truce_days_initial),
-	    ##nested diplomacy end+
+  		(store_add, ":truce_slot", ":kingdom_a", slot_faction_truce_days_with_factions_begin),
+	  	(val_sub, ":truce_slot", kingdoms_begin),
+	    (faction_set_slot, ":kingdom_b", ":truce_slot", ":truce_duration"),
 
-		(store_add, ":truce_slot", ":kingdom_b", slot_faction_truce_days_with_factions_begin),
-		(val_sub, ":truce_slot", kingdoms_begin),
-	    ##nested diplomacy start+ replace hardcoded number with a variable
-	    #(faction_set_slot, ":kingdom_a", ":truce_slot", 20),
-	    (faction_set_slot, ":kingdom_a", ":truce_slot", dplmc_treaty_truce_days_initial),
-	    ##nested diplomacy end+
+  		(store_add, ":truce_slot", ":kingdom_b", slot_faction_truce_days_with_factions_begin),
+	  	(val_sub, ":truce_slot", kingdoms_begin),
+	    (faction_set_slot, ":kingdom_a", ":truce_slot", ":truce_duration"),
+	  
+      (store_add, ":slot_war_damage_inflicted_on_b", ":kingdom_b", slot_faction_war_damage_inflicted_on_factions_begin),
+      (val_sub, ":slot_war_damage_inflicted_on_b", kingdoms_begin),
+      (faction_get_slot, ":damage_inflicted_by_a", ":kingdom_a", ":slot_war_damage_inflicted_on_b"),
+      (try_begin),
+        (lt, ":damage_inflicted_by_a", 100),			
+      (try_end),
+      (faction_set_slot, ":kingdom_a", ":slot_war_damage_inflicted_on_b", 0),
 
-		(store_add, ":slot_war_damage_inflicted_on_b", ":kingdom_b", slot_faction_war_damage_inflicted_on_factions_begin),
-		(val_sub, ":slot_war_damage_inflicted_on_b", kingdoms_begin),
-		(faction_get_slot, ":damage_inflicted_by_a", ":kingdom_a", ":slot_war_damage_inflicted_on_b"),
-		(try_begin),
-			(lt, ":damage_inflicted_by_a", 100),
-			#controversial policy
-		(try_end),
-		(faction_set_slot, ":kingdom_a", ":slot_war_damage_inflicted_on_b", 0),
-
-		(store_add, ":slot_war_damage_inflicted_on_a", ":kingdom_a", slot_faction_war_damage_inflicted_on_factions_begin),
-		(val_sub, ":slot_war_damage_inflicted_on_a", kingdoms_begin),
-		(faction_get_slot, ":damage_inflicted_by_b", ":kingdom_b", ":slot_war_damage_inflicted_on_a"),
-		(try_begin),
-			(lt, ":damage_inflicted_by_b", 100),
-			#controversial policy
-		(try_end),
-		(faction_set_slot, ":kingdom_b", ":slot_war_damage_inflicted_on_a", 0),
+      (store_add, ":slot_war_damage_inflicted_on_a", ":kingdom_a", slot_faction_war_damage_inflicted_on_factions_begin),
+      (val_sub, ":slot_war_damage_inflicted_on_a", kingdoms_begin),
+      (faction_get_slot, ":damage_inflicted_by_b", ":kingdom_b", ":slot_war_damage_inflicted_on_a"),
+      (try_begin),
+        (lt, ":damage_inflicted_by_b", 100),
+      (try_end),
+      (faction_set_slot, ":kingdom_b", ":slot_war_damage_inflicted_on_a", 0),
 
 	  (try_end),
   ]),
