@@ -20787,35 +20787,38 @@ scripts = [
 ##            (assign, ":quest_gold_reward", 200),
 ##            (assign, ":result", ":quest_no"),
 ##          (try_end),
+
 	        (else_try),
 	          (eq, ":quest_no", "qst_deliver_message_to_enemy_lord"),
 	          (try_begin),
 	            (ge, "$g_talk_troop_faction_relation", 0),
-				##diplomacy start+
-				#remove upper level limit to increase play variety
-	            #(is_between, ":player_level", 5,25),
-				(ge, ":player_level", 5),
-				##diplomacy end+
-	            (call_script, "script_cf_get_random_lord_from_another_faction_in_a_center", ":giver_faction_no"),#Can fail
+      				(ge, ":player_level", 5),
+			        (call_script, "script_cf_get_random_lord_from_another_faction_in_a_center", ":giver_faction_no"),#Can fail
 	            (assign, ":cur_target_troop", reg0),
 	            (call_script, "script_get_troop_attached_party", ":cur_target_troop"),
 	            (assign, ":quest_target_center", reg0),#quest_target_center will definitely be a valid center
 	            (assign, ":quest_target_troop", ":cur_target_troop"),
 	            (assign, ":quest_importance", 1),
 	            (assign, ":quest_xp_reward", 200),
-				##diplomacy start+
-				#decrease XP reward as you exceed the maximum level
-				(try_begin),
-					(ge, ":player_level", 26),
-					(store_sub, ":quest_xp_reward", 25, ":player_level"),
-					(val_add, ":quest_xp_reward", 200),
-					(val_max, ":quest_xp_reward", 50),#minus 10 xp for every level above 25, to a minimum of 50 XP at level 40
-				(try_end),
-				##diplomacy end+
-	            (assign, ":quest_gold_reward", 0),
+			      	(try_begin),
+					      (ge, ":player_level", 26),
+					      (store_sub, ":quest_xp_reward", 25, ":player_level"),
+					      (val_add, ":quest_xp_reward", 200),
+					      (val_max, ":quest_xp_reward", 50),#minus 10 xp for every level above 25, to a minimum of 50 XP at level 40
+				      (try_end),
+				      (assign, ":quest_gold_reward", 0),
+              (store_random_in_range, ":random_period", 5, 15),
+	            (assign, ":quest_dont_give_again_period", ":random_period"),
+      				(try_begin),
+			      		(this_or_next|troop_slot_ge, "trp_player", slot_troop_renown, 125),
+                (ge, ":player_level", 10),
+                (store_random_in_range, ":bother_with_less_trivia_period", 5, ":player_level"),
+                (val_add, ":quest_dont_give_again_period", ":bother_with_less_trivia_period"),
+      				(try_end),
 	            (assign, ":result", ":quest_no"),
 	            (assign, ":quest_expiration_days", 40),
 	          (try_end),
+
 ##        (else_try),
 ##          (eq, ":quest_no", "qst_bring_prisoners_to_enemy"),
 ##          (try_begin),
