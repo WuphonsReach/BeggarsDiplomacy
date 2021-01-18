@@ -25316,55 +25316,59 @@ scripts = [
 
           #NOTE: The upper end for store_random_in_range is exclusive
 
-          # add more caravan_guards (averages adding 10 past level 40, but could add up to 40)
-          (store_div, ":reinforcement_cg_count", ":player_level", 10),
-          (val_clamp, ":reinforcement_cg_count", 0, 4), # stop adding more after level 30 (3 x 10)
+          # add more caravan_guards - starting at level 10
+          (store_div, ":reinforcement_cg_count", ":player_level", 5),
+          (val_sub, ":reinforcement_cg_count", 1),
+          (val_clamp, ":reinforcement_cg_count", 0, 3),
           (val_add, ":reinforcement_cg_count", 1),
           (store_random_in_range, ":reinforcement_count", 0, ":reinforcement_cg_count"),
           (try_for_range, ":reinforce_party", 0, ":reinforcement_count"),
             (party_add_template, ":result", "pt_caravan_guards"),
           (try_end),
           
-          # add caravan_civilians
-          (store_div, ":reinforcement_civs_count", ":player_level", 12),
-          (val_clamp, ":reinforcement_civs_count", 0, 4), # maximum of 4 parties
+          # add caravan_civilians - starting at level 12
+          (store_div, ":reinforcement_civs_count", ":player_level", 6),
+          (val_sub, ":reinforcement_civs_count", 1),
+          (val_clamp, ":reinforcement_civs_count", 0, 3),
           (val_add, ":reinforcement_civs_count", 1),
           (store_random_in_range, ":reinforcement_count", 0, ":reinforcement_civs_count"),  
           (try_for_range, ":reinforce_party", 0, ":reinforcement_count"),
             (party_add_template, ":result", "pt_caravan_civilians"),
           (try_end),
 
-          # add tier a troops
+          # add tier a troops - starting at level 8
           (store_div, ":reinforcement_a_count", ":player_level", 8),
-          (val_clamp, ":reinforcement_a_count", 0, 3), # stop adding more after level 24 (3 x 8)
+          (val_clamp, ":reinforcement_a_count", 0, 3),
           (val_add, ":reinforcement_a_count", 1),
           (store_random_in_range, ":reinforcement_count", 0, ":reinforcement_a_count"),  
           (try_for_range, ":reinforce_party", 0, ":reinforcement_count"),
             (party_add_template, ":result", ":reinforcements_a"),
           (try_end),
           
-          # add tier 2 troops
+          # add tier 2 troops - starting at level 20
           (store_div, ":reinforcement_b_count", ":player_level", 10),
-          (val_sub, ":reinforcement_a_count", 2),
-          (val_clamp, ":reinforcement_a_count", 0, 2),
+          (val_sub, ":reinforcement_b_count", 1),
+          (val_clamp, ":reinforcement_b_count", 0, 5),
           (val_add, ":reinforcement_b_count", 1),
           (store_random_in_range, ":reinforcement_count", 0, ":reinforcement_b_count"),  
           (try_for_range, ":reinforce_party", 0, ":reinforcement_count"),
           (party_add_template, ":result", ":reinforcements_b"),
           (try_end),
           
-          # add male_mercenaries
-          (store_div, ":reinforcement_mm_count", ":player_level", 18),
-          (val_clamp, ":reinforcement_a_count", 0, 2),
+          # add male_mercenaries - starting at level 12
+          (store_div, ":reinforcement_mm_count", ":player_level", 12),
+          # (val_sub, ":reinforcement_mm_count", 1),
+          (val_clamp, ":reinforcement_mm_count", 0, 2),
           (val_add, ":reinforcement_mm_count", 1),
           (store_random_in_range, ":reinforcement_count", 0, ":reinforcement_mm_count"),  
           (try_for_range, ":reinforce_party", 0, ":reinforcement_count"),
             (party_add_template, ":result", "pt_male_mercenaries"),
           (try_end),
           
-          # add female_mercenaries
-          (store_div, ":reinforcement_fm_count", ":player_level", 25),
-          (val_clamp, ":reinforcement_a_count", 0, 2),
+          # add female_mercenaries - starting at level 24
+          (store_div, ":reinforcement_fm_count", ":player_level", 8),
+          (val_sub, ":reinforcement_fm_count", 2),
+          (val_clamp, ":reinforcement_fm_count", 0, 2),
           (val_add, ":reinforcement_fm_count", 1),
           (store_random_in_range, ":reinforcement_count", 0, ":reinforcement_fm_count"),  
           (try_for_range, ":reinforce_party", 0, ":reinforcement_count"),
