@@ -38120,9 +38120,8 @@ scripts = [
          #SB : prosperity linked infestation
          (try_begin),
            (ge, "$g_dplmc_gold_changes", DPLMC_GOLD_CHANGES_MEDIUM),
-           (party_get_slot, ":prosperity", ":village_no", slot_town_prosperity),
-           (val_div, ":prosperity", 2), #0 to 50
-           (val_add, ":prosperity", 75), #75 to 125
+           (party_get_slot, ":prosperity", ":village_no", slot_town_prosperity), # 0 to 100
+           (val_add, ":prosperity", 50), #50 to 150
            (store_random_in_range, ":random_no", 0, ":prosperity"),
          (else_try),
            (store_random_in_range, ":random_no", 0, 100),
