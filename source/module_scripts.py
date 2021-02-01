@@ -17122,27 +17122,27 @@ scripts = [
         (val_clamp, ":plunder_amount", 0, 10),
 
         # add random amount of plunder based on party type / stacks
-        # this is also the easiest way to give the player more money by party type (versus giving gold)
+        # this is an easy way to give the player more money by party type (versus giving gold)
         (assign, ":plunder_add_max", 1),
         (try_begin),
           (party_slot_eq, "$g_enemy_party", slot_party_type, spt_kingdom_caravan),
           (reset_item_probabilities, 100),
           (assign, ":range_min", trade_goods_begin),
           (assign, ":range_max", trade_goods_end),
-          (val_add, ":plunder_add_max", 6),
+          (val_add, ":plunder_add_max", 9),
         (else_try),
           (party_slot_eq, "$g_enemy_party", slot_party_type, spt_bandit_lair),
           (val_div, ":plunder_amount", 2),
           (reset_item_probabilities, 1),
           (assign, ":range_min", food_begin),
           (assign, ":range_max", food_end),
-          (val_add, ":plunder_add_max", 8),
+          (val_add, ":plunder_add_max", 9),
         (else_try),
           (val_div, ":plunder_amount", 5),
           (reset_item_probabilities, 1),
           (assign, ":range_min", food_begin),
           (assign, ":range_max", food_end),
-          (val_add, ":plunder_add_max", 1),
+          (val_add, ":plunder_add_max", 2),
         (try_end),
 
         # Calculate the goods price -> probabilities
