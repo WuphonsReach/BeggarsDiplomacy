@@ -27008,6 +27008,8 @@ scripts = [
           (lt, ":improvement_no", walled_center_improvements_begin),
           (assign, ":continue", 0),
         (try_end),
+        (store_random_in_range, ":build_improvement_gate", 0, 10), # lower the chance of building the improvement even more
+        (eq, ":build_improvement_gate", 0),
         (eq, ":continue", 1),
         (call_script, "script_get_improvement_details", ":improvement_no"),
         (assign, ":improvement_cost", reg0), # 4000-9000
