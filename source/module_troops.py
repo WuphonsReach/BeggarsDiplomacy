@@ -1844,11 +1844,11 @@ troops = [
 
 
 
-  ["spy","Ordinary Townsman","Ordinary Townsmen", tf_mounted|tf_guarantee_boots|tf_guarantee_armor|tf_guarantee_gloves|tf_guarantee_horse,0,0,fac_neutral,
+  ["spy","Ordinary Townsman","Ordinary Townsmen", tf_unkillable|tf_mounted|tf_guarantee_boots|tf_guarantee_armor|tf_guarantee_gloves|tf_guarantee_horse,0,0,fac_neutral,
    [itm_sword_viking_1,itm_leather_jerkin,itm_leather_boots,itm_courser,itm_leather_gloves],
    def_attrib|agi_11|level(20),wp(130),knows_common,man_face_middle_1, man_face_older_2],
 
-  ["spy_partner","Unremarkable Townsman","Unremarkable Townsmen", tf_mounted|tf_guarantee_boots|tf_guarantee_armor|tf_guarantee_gloves|tf_guarantee_horse,0,0,fac_neutral,
+  ["spy_partner","Unremarkable Townsman","Unremarkable Townsmen", tf_unkillable|tf_mounted|tf_guarantee_boots|tf_guarantee_armor|tf_guarantee_gloves|tf_guarantee_horse,0,0,fac_neutral,
    [itm_sword_medieval_b,itm_leather_jerkin,itm_leather_boots,itm_courser,itm_leather_gloves],
    def_attrib|agi_11|level(10),wp(130),knows_common,vaegir_face1, vaegir_face2],
 
