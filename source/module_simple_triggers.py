@@ -6110,7 +6110,7 @@ simple_triggers = [
             (party_set_ai_patrol_radius, ":party_no", 1),
             (party_set_ai_target_position, ":party_no", pos1),
           (try_end),
-          
+
         # (else_try),
           # #remove party?
         (try_end),

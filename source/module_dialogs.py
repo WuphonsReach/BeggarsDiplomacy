@@ -1883,6 +1883,13 @@ or you won't be able to hang on to a single man you catch.", "ramun_ask_about_ca
 [party_tpl|pt_manhunters,"manhunter_talk_b1", [], "I knew it! Come on, lads, lets go get these bastards! Thanks a lot, friend.", "close_window",[(assign, "$g_leave_encounter",1)]],
 [party_tpl|pt_manhunters|plyr,"manhunter_talk_b", [], "No, haven't seen any outlaws lately.", "manhunter_talk_b2",[]],
 [party_tpl|pt_manhunters,"manhunter_talk_b2", [], "Bah. They're holed up in this country like rats, but we'll smoke them out yet. Sooner or later.", "close_window",[(assign, "$g_leave_encounter",1)]],
+[party_tpl|pt_manhunters|plyr,"manhunter_talk_b", [], "I wish to collect on the bounties of some criminals i have captured.", "manhunter_talk_b3",
+[[change_screen_trade_prisoners]]],
+[party_tpl|pt_manhunters,"manhunter_talk_b3", [], "There's your bounty. Now me and the lads are going to hunt down more criminals.", "close_window",[(assign, "$g_leave_encounter",1)]],
+[party_tpl|pt_manhunters|plyr,"manhunter_talk_b", [], "Kiss my arse.", "manhunter_talk_b4",[]],
+[party_tpl|pt_manhunters,"manhunter_talk_b4", [], "How dare you! Prepare to die.", "close_window",
+[[encounter_attack]]],
+
 
 [party_tpl|pt_looters|auto_proceed,"start", [(eq,"$talk_context",tc_party_encounter),(encountered_party_is_attacker),], "{!}Warning: This line should never be displayed.", "looters_1",[
 (str_store_string, s11, "@It's your money or your life, {mate/girlie}. No sudden moves or we'll run you through."),
@@ -2489,20 +2496,21 @@ Still I am sorry that I'll leave you soon. You must promise me, you'll come visi
 [anyone,"member_question", [], "Very well. What did you want to ask?", "member_question_2",[]],
 
 #SB : quest delegation
-[anyone|plyr,"member_question_2", [
-    #has an active quest, coarse range check
-    (assign, ":end", delegate_quests_end),
-    (try_for_range, ":quest_no", delegate_quests_begin, ":end"),
-      (check_quest_active, ":quest_no"),
-      (neg|quest_slot_eq, slot_quest_delegate_level, -1),
-      (assign, ":end", delegate_quests_begin),
-    (try_end),
-    (neq, ":end", delegate_quests_end),
-], "I have a job I'd like for you to handle...", "member_delegate_quest", [
-  (call_script, "script_dplmc_init_quest_delegate_states"), #older savegames
-  (troop_get_slot, ":honorific", "$g_talk_troop", slot_troop_honorific),
-  (str_store_string, s5, ":honorific"),
-]],
+#DA : commented out because it seems to have issues
+# [anyone|plyr,"member_question_2", [
+#     #has an active quest, coarse range check
+#     (assign, ":end", delegate_quests_end),
+#     (try_for_range, ":quest_no", delegate_quests_begin, ":end"),
+#       (check_quest_active, ":quest_no"),
+#       (neg|quest_slot_eq, slot_quest_delegate_level, -1),
+#       (assign, ":end", delegate_quests_begin),
+#     (try_end),
+#     (neq, ":end", delegate_quests_end),
+# ], "I have a job I'd like for you to handle...", "member_delegate_quest", [
+#   (call_script, "script_dplmc_init_quest_delegate_states"), #older savegames
+#   (troop_get_slot, ":honorific", "$g_talk_troop", slot_troop_honorific),
+#   (str_store_string, s5, ":honorific"),
+# ]],
 [anyone|plyr,"member_question_2", [], "How do you feel about the way things are going in this company?", "member_morale",[]],
 #SB : removed duplicate member_background_recap
 [anyone|plyr,"member_question_2", [
@@ -2681,7 +2689,7 @@ Still I am sorry that I'll leave you soon. You must promise me, you'll come visi
  (else_try), #own city, unassigned, etc instead of defaulting to ruler
    (assign, reg18, 0),
  (try_end),
- 
+
  #use cached instability value
  (faction_get_slot, ":instability", ":contact_town_faction", slot_faction_instability), #0 to 100
  (val_min, ":instability", 60), #no descriptor past that point
@@ -4280,7 +4288,8 @@ Still I am sorry that I'll leave you soon. You must promise me, you'll come visi
 
 
 [anyone, "start", [(is_between, "$g_talk_troop", companions_begin, companions_end),
-               (this_or_next|eq, "$talk_context", tc_tavern_talk),
+               (this_or_next|eq, "$talk_context", tc_tavern_talk), 
+                   (this_or_next|eq, "$talk_context", tc_town_talk), #ADD THIS LINE FOR BODYGUARD COD
             (eq, "$talk_context", tc_court_talk),
                (main_party_has_troop, "$g_talk_troop")],
 "Let's leave whenever you are ready.", "close_window", []],
@@ -5291,9 +5300,7 @@ Still I am sorry that I'll leave you soon. You must promise me, you'll come visi
 ],
 "Greetings. I am currently delivering {s12} to {s13}.", "dplmc_gift_talk", []],
 
-#SB : fix monologue
-[anyone|plyr, "dplmc_gift_talk", [], "Very well! Have a nice trip.", "dplmc_gift_talk_farewell",[]],
-# [anyone|plyr, "dplmc_gift_talk", [], "On second thought, I want those back in the treasury...", "dplmc_gift_talk_regret",[]],
+[pt_dplmc_gift_caravan|party_tpl, "dplmc_gift_talk", [], "Very well! Have a nice trip.", "dplmc_gift_talk_farewell",[]],
 
 [pt_dplmc_gift_caravan|party_tpl, "dplmc_gift_talk_farewell", [], "Thank you. Farewell!", "close_window", [(assign, "$g_leave_encounter", 1),]],
 
@@ -8624,7 +8631,8 @@ What kind of recruits do you want?", "dplmc_constable_recruit_select",
 "I have some prisoners -- can you sell them for me?", "dplmc_constable_prisoner",[]],
 
 ##SB : convenience feature of selling prisoners in garrison
-[anyone|plyr,"dplmc_constable_talk", #DA: for some reason it always returns the number of prisoners in the player's party
+
+[anyone|plyr,"dplmc_constable_talk", 
 [(party_get_num_prisoners,":prisoners", "$current_town"),(ge,":prisoners",1)],
 "We have prisoners in the dungeon -- let's have a look over them.", "dplmc_constable_garrison_prisoner_manage",[
 #move prisoner
@@ -8645,9 +8653,8 @@ What kind of recruits do you want?", "dplmc_constable_recruit_select",
 (store_num_regular_prisoners,reg0, "p_main_party"), #does this skip over heroes?
 (store_sub, reg1, ":num_prisoners", reg0),
 ],
-"Of course, {s0}. There are {reg0} prisoners left{reg1? and {reg1} nobles incarcerated:}.", "dplmc_constable_garrison_prisoner_sell",
+"Of course, {s0}. There are {reg0} prisoners left and {reg1} nobles incarcerated.", "dplmc_constable_garrison_prisoner_sell",
 [(change_screen_trade_prisoners)]],
-
 [anyone|plyr,"dplmc_constable_garrison_prisoner_sell", [
 # (call_script, "script_dplmc_print_subordinate_says_sir_madame_to_s0"),
 (party_get_num_prisoners, ":num_prisoners", "p_main_party"),
@@ -36911,7 +36918,7 @@ I suppose there are plenty of bounty hunters around to get the job done . . .", 
     (str_store_item_name, s4, ":quest_target_item"),
     (str_store_troop_name, s1, ":quest_giver_troop"),
     #SB : recalculate new debt
-    (store_item_value,":qst_deliver_wine_debt",":quest_target_item"),
+    (store_item_value,":qst_deliver_wine_debt", ":quest_target_item"),
     (item_get_max_ammo, ":max_amount", ":quest_target_item"),
     (val_mul,":qst_deliver_wine_debt",":quest_target_amount"),
     (val_mul,":qst_deliver_wine_debt", 6),
@@ -37259,41 +37266,41 @@ I suppose there are plenty of bounty hunters around to get the job done . . .", 
    "Let me think about it again.", "ransom_broker_pretalk",[]],
   ##diplomacy end+
 
-  # [anyone|plyr,"ransom_broker_talk", [], "Tell me about what you do again.", "ransom_broker_intro_2",[]],
+  [anyone|plyr,"ransom_broker_talk", [], "Tell me about what you do again.", "ransom_broker_intro_2",[]],
 
-  # #SB : exchange prisoner
-  # [anyone|plyr,"ransom_broker_talk",[
-  # #pre-fetch quest lord
-  # (try_begin),
-    # (check_quest_active, "qst_rescue_prisoner"),
-    # (neg|check_quest_succeeded, "qst_rescue_prisoner"),
-    # (quest_get_slot, "$lord_selected", "qst_rescue_prisoner", slot_quest_target_troop),
-  # (else_try),
-    # (assign, "$lord_selected", -1),
-  # (try_end),
-  # (party_get_num_prisoner_stacks, ":end", "$current_town"),
-  # (try_for_range, ":i_stack", 0, ":end"),
-    # (party_prisoner_stack_get_troop_id, ":stack_troop", "$current_town", ":i_stack"),
-    # (troop_is_hero, ":stack_troop"),
-    # (troop_slot_eq, ":stack_troop", slot_troop_occupation, slto_kingdom_hero),
-    # (store_faction_of_troop, ":troop_faction", ":stack_troop"),
-    # (try_begin), #allow quest troop to always be ransomed regardless of weird relations
-      # (eq, ":stack_troop", "$lord_selected"),
-      # (assign, ":troop_faction", "$players_kingdom"),
-    # (try_end),
-    # (store_relation, ":kingdom_relation", "$players_kingdom", ":troop_faction"),
-    # #found a candidate
-    # (call_script, "script_troop_get_player_relation", ":stack_troop"),
-    # (assign, ":relation", reg0),
-    # (this_or_next|ge, ":relation", 0), #inter-personal relation
-    # (eq, "$players_kingdom", ":troop_faction"), #always enabled
-    # (ge, ":kingdom_relation", 0), #at peace
-    # (assign, ":end", -1),
-  # (try_end),
-  # (eq, ":end", -1),
-  # ], "I wish to ransom one of the nobles in the local dungeons.", "ransom_kingdom_hero",[
-    # (party_get_num_prisoner_stacks, "$temp", "$current_town"), #store stack size
-  # ]],
+  #SB : exchange prisoner
+  [anyone|plyr,"ransom_broker_talk",[
+  #pre-fetch quest lord
+  (try_begin),
+    (check_quest_active, "qst_rescue_prisoner"),
+    (neg|check_quest_succeeded, "qst_rescue_prisoner"),
+    (quest_get_slot, "$lord_selected", "qst_rescue_prisoner", slot_quest_target_troop),
+  (else_try),
+    (assign, "$lord_selected", -1),
+  (try_end),
+  (party_get_num_prisoner_stacks, ":end", "$current_town"),
+  (try_for_range, ":i_stack", 0, ":end"),
+    (party_prisoner_stack_get_troop_id, ":stack_troop", "$current_town", ":i_stack"),
+    (troop_is_hero, ":stack_troop"),
+    (troop_slot_eq, ":stack_troop", slot_troop_occupation, slto_kingdom_hero),
+    (store_faction_of_troop, ":troop_faction", ":stack_troop"),
+    (try_begin), #allow quest troop to always be ransomed regardless of weird relations
+      (eq, ":stack_troop", "$lord_selected"),
+      (assign, ":troop_faction", "$players_kingdom"),
+    (try_end),
+    (store_relation, ":kingdom_relation", "$players_kingdom", ":troop_faction"),
+    #found a candidate
+    (call_script, "script_troop_get_player_relation", ":stack_troop"),
+    (assign, ":relation", reg0),
+    (this_or_next|ge, ":relation", 0), #inter-personal relation
+    (eq, "$players_kingdom", ":troop_faction"), #always enabled
+    (ge, ":kingdom_relation", 0), #at peace
+    (assign, ":end", -1),
+  (try_end),
+  (eq, ":end", -1),
+  ], "I wish to ransom one of the nobles in the local dungeons.", "ransom_kingdom_hero",[
+    (party_get_num_prisoner_stacks, "$temp", "$current_town"), #store stack size
+  ]],
   #TODO also facilitate qst_capture_enemy_hero
   #SB : ransom lord (only active for quests)
   [anyone|plyr,"ransom_broker_talk",[
@@ -41152,27 +41159,28 @@ I suppose there are plenty of bounty hunters around to get the job done . . .", 
   (quest_get_slot, ":quest_target_item", "qst_deliver_wine", slot_quest_target_item),
   (this_or_next|eq, ":quest_target_item", "itm_wine"),
   (this_or_next|eq, ":quest_target_item", "itm_ale"),
-  (is_between, ":quest_target_item", food_begin, food_end),
+  (is_between, ":quest_target_item", food_begin, food_end)
   ],
    "I have a cargo of {s6} that needs to be delivered to the tavern in {s4}.\
- If you can take {reg5} units of {s6} to {s4} in 7 days before any goes bad, you may earn {reg8} denars.\
+ If you can take {reg6} units of {s6} to {s4} in 7 days before any goes bad, you may earn {reg8} denars.\
  What do you say?", "merchant_quest_brief_deliver_wine",
-   [(quest_get_slot, reg5, "qst_deliver_wine", slot_quest_target_amount),
+   [
+    (quest_get_slot, reg5, "qst_deliver_wine", slot_quest_target_amount),
     (quest_get_slot, reg8, "qst_deliver_wine", slot_quest_gold_reward),
     (quest_get_slot, ":quest_target_item", "qst_deliver_wine", slot_quest_target_item),
     (quest_get_slot, ":quest_target_center", "qst_deliver_wine", slot_quest_target_center),
+    (item_get_max_ammo, ":max_amount", ":quest_target_item"),
+    (store_div, reg6, reg5, ":max_amount"),
     (str_store_troop_name, s9, "$g_talk_troop"),
     (str_store_party_name_link, s3, "$g_encountered_party"),
     (str_store_party_name_link, s4, ":quest_target_center"),
     (str_store_item_name, s6, ":quest_target_item"),
     (setup_quest_text,"qst_deliver_wine"),
     #SB : temp item count
-    (item_get_max_ammo, ":max_amount", ":quest_target_item"),
     (store_div, "$temp", reg5, ":max_amount"),
-    (str_store_string, s2, "@{s9} of {s3} asked you to deliver {reg5} units of {s6} to the tavern in {s4} in 7 days."),
+    (str_store_string, s2, "@{s9} of {s3} asked you to deliver {reg5} / {reg6} units of {s6} to the tavern in {s4} in 7 days."),
     #s2 should not be changed until the decision is made
    ]],
-
   [anyone,"merchant_quest_brief", [(eq,"$random_merchant_quest_no","qst_deliver_wine")],
    "I have a shipment of {s6} that needs to be delivered to the goods merchant in {s4}.\
  If you can take {reg5} units of {s6} to {s4} in 7 days, you may earn {reg8} denars.\
@@ -43055,7 +43063,190 @@ I suppose there are plenty of bounty hunters around to get the job done . . .", 
 #  [anyone|plyr,"arena_master_talk", [], "About the arena fights...", "arena_master_melee",[]],
   [anyone|plyr,"arena_master_talk", [], "About the melee fights...", "arena_master_melee_pretalk",[]],
   [anyone|plyr,"arena_master_talk", [(eq, "$arena_tournaments_asked", 0)], "Will there be a tournament in nearby towns soon?", "arena_master_ask_tournaments",[(assign, "$arena_tournaments_asked", 1)]],
+    # LAZERAS MODIFIED  {spar troops}
+    [anyone | plyr, "arena_master_talk", [(party_get_num_companions, ":troops", "p_main_party"), (gt, ":troops", 1)],
+     "I would like to spar with some of my men.", "arena_master_spar_teams", []],  # Jinnai
+    # LAZERAS MODIFIED  {spar troops}
   [anyone|plyr,"arena_master_talk", [], "I need to leave now. Good bye.", "close_window",[]],
+#LAZERAS MODIFIED  {spar troops}
+## Arena sparring begin - Jinnai
+  [anyone,"arena_master_spar_teams", [], "Certainly. The arena is currently available. Of course, you will have to supply your own gear, which means there will be no team uniforms.  But that aside, how many teams would you like?",
+     "arena_master_spar_teams_choose",[(try_for_range,":slot",1,33),(troop_set_slot, "trp_temp_array_a", ":slot", -1),(try_end),(troop_set_slot, "trp_temp_array_a", 1, "trp_player"),(assign,"$temp",1)]],
+  [anyone|plyr,"arena_master_spar_teams_choose", [], "Two.", "arena_master_spar_team_one",[(assign, "$g_tournament_next_num_teams", 2),]],
+  [anyone|plyr,"arena_master_spar_teams_choose", [(party_get_num_companions,":troops","p_main_party"),(gt,":troops",2)], "Three.", "arena_master_spar_team_one",[(assign, "$g_tournament_next_num_teams", 3),]],
+  [anyone|plyr,"arena_master_spar_teams_choose", [(party_get_num_companions,":troops","p_main_party"),(gt,":troops",3)], "Four.", "arena_master_spar_team_one",[(assign, "$g_tournament_next_num_teams", 4),]],
+  [anyone|plyr,"arena_master_spar_teams_choose", [], "Never mind. I've changed my mind.", "arena_master_pre_talk",[]],
+  [anyone,"arena_master_spar_team_one", [(eq,"$temp",8)], "Team One is full. Team Two is next.", "arena_master_spar_team_two",[(assign,"$temp",0)]],
+  [anyone,"arena_master_spar_team_one", [(assign,reg0,"$temp"),(store_sub,reg1,reg0,1)], "There {reg1?are:is} currently {reg0} {reg1?troops:troop} on Team One.  Which troop would you like to add?", "arena_master_spar_team_one_choose",[]],
+  [anyone|plyr|repeat_for_troops, "arena_master_spar_team_one_choose",
+   [
+     (store_repeat_object, ":troop"),
+     (party_get_num_companion_stacks,":num_stacks","p_main_party"),
+     (assign,":include",0),
+     (try_for_range,":stack",0,":num_stacks"),
+       (eq,":include",0),
+       (party_stack_get_troop_id,":troop_id","p_main_party",":stack"),
+       (ge,":troop_id",0),
+       (eq,":troop_id",":troop"),
+       (assign,":num_in",0),
+       (try_for_range,":counting",1,33),
+         (troop_get_slot,":already_in","trp_temp_array_a",":counting"),
+         (eq,":already_in",":troop"),
+         (val_add,":num_in",1),
+       (try_end),
+       (party_stack_get_size,":available","p_main_party",":stack"),
+       (gt,":available",":num_in"),
+       (assign,":include",1),
+     (try_end),
+     (eq,":include",1),
+     (store_sub,reg0,":available",":num_in"),
+     (str_store_troop_name,s11,":troop"),
+     ],
+   "{s11}. ({reg0} left.)", "arena_master_spar_team_one_add",
+   [
+     (store_repeat_object, "$temp_2"),
+     (val_add,"$temp",1),
+     (store_add,":offset","$temp",0),
+     (troop_set_slot, "trp_temp_array_a", ":offset", "$temp_2"),
+     (str_store_troop_name,s11,"$temp_2")
+     ]],
+  [anyone,"arena_master_spar_team_one_add", [], "{s11} has been added to Team One.", "arena_master_spar_team_one",[]],
+  [anyone|plyr,"arena_master_spar_team_one_choose", [], "I am finished with Team One.  Let's move on to Team Two.", "arena_master_spar_team_two",[(assign,"$temp",0)]],
+  [anyone|plyr,"arena_master_spar_team_one_choose", [], "Never mind. I'm calling the whole thing off.", "arena_master_pre_talk",[]],
+  [anyone,"arena_master_spar_team_two", [(gt,"$g_tournament_next_num_teams",2),(eq,"$temp",8)], "Team Two is full. Team Three is next.", "arena_master_spar_team_three",[(assign,"$temp",0)]],
+  [anyone,"arena_master_spar_team_two", [(eq,"$g_tournament_next_num_teams",2),(eq,"$temp",8)], "Team Two is full. Let the match begin!", "arena_master_spar_start_it_up",[]],
+  [anyone,"arena_master_spar_team_two", [(assign,reg0,"$temp"),(store_sub,reg1,reg0,1)], "There {reg1?are:is} currently {reg0} {reg1?troops:troop} on Team Two.  Which troop would you like to add?", "arena_master_spar_team_two_choose",[]],
+  [anyone|plyr|repeat_for_troops, "arena_master_spar_team_two_choose",
+   [
+     (store_repeat_object, ":troop"),
+     (party_get_num_companion_stacks,":num_stacks","p_main_party"),
+     (assign,":include",0),
+     (try_for_range,":stack",0,":num_stacks"),
+       (eq,":include",0),
+       (party_stack_get_troop_id,":troop_id","p_main_party",":stack"),
+       (ge,":troop_id",0),
+       (eq,":troop_id",":troop"),
+       (assign,":num_in",0),
+       (try_for_range,":counting",1,33),
+         (troop_get_slot,":already_in","trp_temp_array_a",":counting"),
+         (eq,":already_in",":troop"),
+         (val_add,":num_in",1),
+       (try_end),
+       (party_stack_get_size,":available","p_main_party",":stack"),
+       (gt,":available",":num_in"),
+       (assign,":include",1),
+     (try_end),
+     (eq,":include",1),
+     (store_sub,reg0,":available",":num_in"),
+     (str_store_troop_name,s11,":troop"),
+     ],
+   "{s11}. ({reg0} left.)", "arena_master_spar_team_two_add",
+   [
+     (store_repeat_object, "$temp_2"),
+     (val_add,"$temp",1),
+     (store_add,":offset","$temp",8),
+     (troop_set_slot, "trp_temp_array_a", ":offset", "$temp_2"),
+     (str_store_troop_name,s11,"$temp_2")
+     ]],
+  [anyone,"arena_master_spar_team_two_add", [], "{s11} has been added to Team Two.", "arena_master_spar_team_two",[]],
+  [anyone|plyr,"arena_master_spar_team_two_choose", [(gt,"$g_tournament_next_num_teams",2)], "I am finished with Team Two.  Let's move on to Team Three.", "arena_master_spar_team_three",[(assign,"$temp",0)]],
+  [anyone|plyr,"arena_master_spar_team_two_choose", [(eq,"$g_tournament_next_num_teams",2)], "I am finished with Team Two.  Let's begin the match.", "arena_master_spar_start_it_up",[]],
+  [anyone|plyr,"arena_master_spar_team_two_choose", [], "Never mind. I'm calling the whole thing off.", "arena_master_pre_talk",[]],
+  [anyone,"arena_master_spar_team_three", [(gt,"$g_tournament_next_num_teams",3),(eq,"$temp",8)], "Team Three is full. Team Four is next.", "arena_master_spar_team_four",[(assign,"$temp",0)]],
+  [anyone,"arena_master_spar_team_three", [(eq,"$g_tournament_next_num_teams",3),(eq,"$temp",8)], "Team Three is full. Let the match begin!", "arena_master_spar_start_it_up",[]],
+  [anyone,"arena_master_spar_team_three", [(assign,reg0,"$temp"),(store_sub,reg1,reg0,1)], "There {reg1?are:is} currently {reg0} {reg1?troops:troop} on Team Three.  Which troop would you like to add?", "arena_master_spar_team_three_choose",[]],
+  [anyone|plyr|repeat_for_troops, "arena_master_spar_team_three_choose",
+   [
+     (store_repeat_object, ":troop"),
+     (party_get_num_companion_stacks,":num_stacks","p_main_party"),
+     (assign,":include",0),
+     (try_for_range,":stack",0,":num_stacks"),
+       (eq,":include",0),
+       (party_stack_get_troop_id,":troop_id","p_main_party",":stack"),
+       (ge,":troop_id",0),
+       (eq,":troop_id",":troop"),
+       (assign,":num_in",0),
+       (try_for_range,":counting",1,33),
+         (troop_get_slot,":already_in","trp_temp_array_a",":counting"),
+         (eq,":already_in",":troop"),
+         (val_add,":num_in",1),
+       (try_end),
+       (party_stack_get_size,":available","p_main_party",":stack"),
+       (gt,":available",":num_in"),
+       (assign,":include",1),
+     (try_end),
+     (eq,":include",1),
+     (store_sub,reg0,":available",":num_in"),
+     (str_store_troop_name,s11,":troop"),
+     ],
+   "{s11}. ({reg0} left.)", "arena_master_spar_team_three_add",
+   [
+     (store_repeat_object, "$temp_2"),
+     (val_add,"$temp",1),
+     (store_add,":offset","$temp",16),
+     (troop_set_slot, "trp_temp_array_a", ":offset", "$temp_2"),
+     (str_store_troop_name,s11,"$temp_2")
+     ]],
+  [anyone,"arena_master_spar_team_three_add", [], "{s11} has been added to Team Three.", "arena_master_spar_team_three",[]],
+  [anyone|plyr,"arena_master_spar_team_three_choose", [(gt,"$g_tournament_next_num_teams",3)], "I am finished with Team Three.  Let's move on to Team Four.", "arena_master_spar_team_four",[(assign,"$temp",0)]],
+  [anyone|plyr,"arena_master_spar_team_three_choose", [(eq,"$g_tournament_next_num_teams",3)], "I am finished with Team Three.  Let's begin the match.", "arena_master_spar_start_it_up",[]],
+  [anyone|plyr,"arena_master_spar_team_three_choose", [], "Never mind. I'm calling the whole thing off.", "arena_master_pre_talk",[]],
+  [anyone,"arena_master_spar_team_four", [(eq,"$temp",8)], "Team Four is full. Let the match begin!", "arena_master_spar_start_it_up",[]],
+  [anyone,"arena_master_spar_team_four", [(assign,reg0,"$temp"),(store_sub,reg1,reg0,1)], "There {reg1?are:is} currently {reg0} {reg1?troops:troop} on Team Four.  Which troop would you like to add?", "arena_master_spar_team_four_choose",[]],
+  [anyone|plyr|repeat_for_troops, "arena_master_spar_team_four_choose",
+   [
+     (store_repeat_object, ":troop"),
+     (party_get_num_companion_stacks,":num_stacks","p_main_party"),
+     (assign,":include",0),
+     (try_for_range,":stack",0,":num_stacks"),
+       (eq,":include",0),
+       (party_stack_get_troop_id,":troop_id","p_main_party",":stack"),
+       (ge,":troop_id",0),
+       (eq,":troop_id",":troop"),
+       (assign,":num_in",0),
+       (try_for_range,":counting",1,33),
+         (troop_get_slot,":already_in","trp_temp_array_a",":counting"),
+         (eq,":already_in",":troop"),
+         (val_add,":num_in",1),
+       (try_end),
+       (party_stack_get_size,":available","p_main_party",":stack"),
+       (gt,":available",":num_in"),
+       (assign,":include",1),
+     (try_end),
+     (eq,":include",1),
+     (store_sub,reg0,":available",":num_in"),
+     (str_store_troop_name,s11,":troop"),
+     ],
+   "{s11}. ({reg0} left.)", "arena_master_spar_team_four_add",
+   [
+     (store_repeat_object, "$temp_2"),
+     (val_add,"$temp",1),
+     (store_add,":offset","$temp",24),
+     (troop_set_slot, "trp_temp_array_a", ":offset", "$temp_2"),
+     (str_store_troop_name,s11,"$temp_2")
+     ]],
+  [anyone,"arena_master_spar_team_four_add", [], "{s11} has been added to Team Four.", "arena_master_spar_team_four",[]],
+  [anyone|plyr,"arena_master_spar_team_four_choose", [], "I am finished with Team Four.  Let's begin the match.", "arena_master_spar_start_it_up",[]],
+  [anyone|plyr,"arena_master_spar_team_four_choose", [], "Never mind. I'm calling the whole thing off.", "arena_master_pre_talk",[]],
+
+  [anyone,"arena_master_spar_start_it_up", [], "Here you go then. Good luck.", "close_window",
+   [
+     (party_get_slot, ":arena_scene", "$current_town", slot_town_arena),
+     (modify_visitors_at_site, ":arena_scene"),
+     (reset_visitors),
+     (try_for_range,":num",1,33),
+       (troop_get_slot,":troop","trp_temp_array_a",":num"),
+       (ge,":troop",0),
+       (store_sub,":offset",":num",1), #Oops, easier to add this than go back and fix all the other instances
+       (set_visitor, ":offset", ":troop"),
+     (try_end),
+     (set_jump_mission, "mt_arena_spar_fight"),
+     (jump_to_scene, ":arena_scene"),
+     (change_screen_mission),
+     ]],
+## Arena sparring end
+#LAZERAS MODIFIED  {spar troops}
+
 
   [anyone,"arena_master_ask_tournaments", [], "{reg2?There won't be any tournaments any time soon.:{reg1?Tournaments are:A tournament is} going to be held at {s15}.}", "arena_master_talk",
    [

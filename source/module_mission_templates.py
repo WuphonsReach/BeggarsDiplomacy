@@ -48,6 +48,129 @@ af_castle_lord = af_override_horse | af_override_weapons| af_require_civilian
 
 ##diplomacy begin
 
+bodyguard_trigger_a = (
+    ti_after_mission_start, 0, ti_once, [(neq, "$g_mt_mode", tcm_disguised)],
+    # condition for not sneaking in; to exclude prison-breaks, etc change to (eq, "$g_mt_mode", tcm_default")
+    [
+        # Get number of bodyguards
+
+        (store_skill_level, ":leadership", skl_leadership, "trp_player"),
+        (troop_get_slot, ":renown", "trp_player", slot_troop_renown),
+        (val_div, ":leadership", 3),
+        (val_div, ":renown", 400),
+        (store_add, ":max_guards", ":renown", ":leadership"),
+        (val_min, ":max_guards", 4),
+
+        (ge, ":max_guards", 1),
+
+        # Get player info
+        (get_player_agent_no, ":player"),
+        (agent_get_team, ":playerteam", ":player"),
+        (agent_get_horse, ":use_horse", ":player"),  # If the player spawns with a horse, the bodyguard will too.
+
+        # Prepare Scene/Mission Template
+        (assign, ":entry_point", 0),
+        (assign, ":mission_tpl", 0),
+        (try_begin),
+        (party_slot_eq, "$current_town", slot_party_type, spt_village),
+        (assign, ":entry_point", 11),  # Village Elder's Entry
+        (assign, ":mission_tpl", "mt_village_center"),
+        (else_try),
+        (this_or_next | eq, "$talk_context", tc_prison_break),
+        (this_or_next | eq, "$talk_context", tc_escape),
+        (eq, "$talk_context", tc_town_talk),
+        (assign, ":entry_point", 24),  # Prison Guard's Entry
+        (try_begin),
+        (party_slot_eq, "$current_town", slot_party_type, spt_castle),
+        (assign, ":mission_tpl", "mt_castle_visit"),
+        (else_try),
+        (assign, ":mission_tpl", "mt_town_center"),
+        (try_end),
+        (else_try),
+        (eq, "$talk_context", tc_tavern_talk),
+        (assign, ":entry_point", 17),  # First NPC Tavern Entry
+        (try_end),
+        (try_begin),
+        (neq, "$talk_context", tc_tavern_talk),
+        (gt, ":use_horse", 0),
+        (mission_tpl_entry_set_override_flags, ":mission_tpl", ":entry_point", 0),
+        (try_end),
+        (store_current_scene, ":cur_scene"),
+        (modify_visitors_at_site, ":cur_scene"),
+
+        # Find and Spawn Bodyguards
+        (assign, ":bodyguard_count", 0),
+        (party_get_num_companion_stacks, ":num_of_stacks", "p_main_party"),
+        (try_for_range, ":i", 0, ":num_of_stacks"),
+        (party_stack_get_troop_id, ":troop_id", "p_main_party", ":i"),
+        (neq, ":troop_id", "trp_player"),
+        (troop_is_hero, ":troop_id"),
+        (neg | troop_is_wounded, ":troop_id"),
+        (val_add, ":bodyguard_count", 1),
+
+        (try_begin),  # For prison-breaks
+        (this_or_next | eq, "$talk_context", tc_escape),
+        (eq, "$talk_context", tc_prison_break),
+        (troop_set_slot, ":troop_id", slot_troop_will_join_prison_break, 1),
+        (try_end),
+
+        (add_visitors_to_current_scene, ":entry_point", ":troop_id", 1),
+
+        (eq, ":bodyguard_count", ":max_guards"),
+        (assign, ":num_of_stacks", 0),  # Break Loop
+        (try_end),  # Stack Loop
+        (gt, ":bodyguard_count", 0),  # If bodyguards spawned...
+        (set_show_messages, 0),
+        (team_give_order, ":playerteam", 8, mordr_follow),  # Division 8 to avoid potential conflicts
+        (set_show_messages, 1),
+    ])
+
+bodyguard_trigger_b = (
+    ti_on_agent_spawn, 0, 0, [],
+    [
+
+        (store_trigger_param_1, ":agent"),
+        (agent_get_troop_id, ":troop", ":agent"),
+        (neq, ":troop", "trp_player"),
+        (troop_is_hero, ":troop"),
+        (main_party_has_troop, ":troop"),
+
+        (get_player_agent_no, ":player"),
+        (agent_get_team, ":playerteam", ":player"),
+        (agent_get_position, pos1, ":player"),
+
+        (agent_set_team, ":agent", ":playerteam"),
+        (agent_set_division, ":agent", 8),
+        (agent_add_relation_with_agent, ":agent", ":player", 1),
+        (agent_set_is_alarmed, ":agent", 1),
+        (store_random_in_range, ":shift", 1, 3),
+        (val_mul, ":shift", 100),
+        (position_move_y, pos1, ":shift"),
+        (store_random_in_range, ":shift", 1, 3),
+        (store_random_in_range, ":shift_2", 0, 2),
+        (val_mul, ":shift_2", -1),
+        (try_begin),
+        (neq, ":shift_2", 0),
+        (val_mul, ":shift", ":shift_2"),
+        (try_end),
+        (position_move_x, pos1, ":shift"),
+        (agent_set_position, ":agent", pos1),
+    ])
+
+bodyguard_trigger_c = (
+    ti_on_agent_killed_or_wounded, 0, 0, [],
+    [
+
+        (store_trigger_param_1, ":dead_agent"),
+
+        (agent_get_troop_id, ":troop", ":dead_agent"),
+        (neq, ":troop", "trp_player"),
+        (troop_is_hero, ":troop"),
+        (main_party_has_troop, ":troop"),
+        (party_wound_members, "p_main_party", ":troop", 1),
+    ])
+
+
 unarmed_agent_damage = (
   ti_on_agent_hit, 0, 0,
   [
@@ -110,7 +233,7 @@ dplmc_random_mixed_gender = (ti_on_agent_spawn, 0, 0, [
   (agent_is_human, ":agent_no"),
   (agent_get_troop_id, ":troop_no", ":agent_no"),
   (neg|troop_is_hero, ":troop_no"),
-  (is_between, ":troop_no", soldiers_begin, "trp_follower_woman", "trp_caravan_master"), #skip refugee line, town walkers
+  (neg|is_between, ":troop_no", "trp_follower_woman", "trp_caravan_master"), #always female
   #SB : check non-native troop genders
 
   #get individual faction chances
@@ -749,6 +872,26 @@ dplmc_battle_mode_triggers = [
     dplmc_death_camera,
   ]
 ##diplomacy end
+
+
+call_horse_trigger_1 = (0, 0, 3, [(key_clicked, key_m)], [
+      (get_player_agent_no,":agent"),
+      (agent_get_horse,":horse",":agent"),
+      (neg|gt,":horse",0),
+      (troop_get_slot,":horse",":agent",slot_troop_horse),
+      (agent_play_sound,":agent","snd_horse_snort"),
+      (display_message,"@You whistle for your horse."),
+      (gt,":horse",0),
+      (agent_is_alive,":horse"),
+      (agent_get_position, pos1, ":agent"),
+      (agent_set_scripted_destination, ":horse", pos1, 0),
+    ])
+
+call_horse_trigger_2 = (0.2, 0, ti_once, [], [
+      (get_player_agent_no,":agent"),
+      (agent_get_horse,":horse",":agent"),
+      (troop_set_slot,":agent",slot_troop_horse,":horse"),
+    ])
 
 multiplayer_server_check_belfry_movement = (
   0, 0, 0, [],
@@ -1513,6 +1656,72 @@ common_siege_init = (
     (call_script, "script_init_death_cam"), #SB : initialize this here
     ])
 
+
+#Taunting system
+common_taunting_system = (
+  0, 0, 180, [(key_clicked, key_o),],
+  [
+       (get_player_agent_no, ":cool_man"),
+       (agent_get_troop_id, ":cool_trp", ":cool_man"),
+       (store_skill_level, ":i_skl_level", "skl_ironflesh", ":cool_trp"),
+       (agent_get_position, pos1, ":cool_man"),
+        (assign, ":t_value", 100),
+         (try_begin),
+          (eq, ":i_skl_level", 1),
+          (assign, ":t_value", 150),
+           (else_try),
+          (eq, ":i_skl_level", 2),
+          (assign, ":t_value", 200),
+           (else_try),
+          (eq, ":i_skl_level", 3),
+          (assign, ":t_value", 250),
+           (else_try),
+          (eq, ":i_skl_level", 4),
+          (assign, ":t_value", 300),
+           (else_try),
+          (eq, ":i_skl_level", 5),
+          (assign, ":t_value", 350),
+           (else_try),
+          (eq, ":i_skl_level", 6),
+          (assign, ":t_value", 400),
+           (else_try),
+          (eq, ":i_skl_level", 7),
+          (assign, ":t_value", 450),
+           (else_try),
+          (eq, ":i_skl_level", 8),
+          (assign, ":t_value", 500),
+           (else_try),
+          (eq, ":i_skl_level", 9),
+          (assign, ":t_value", 550),
+           (else_try),
+          (eq, ":i_skl_level", 10),
+          (assign, ":t_value", 600),
+         (try_end),
+        #(val_add, ":t_value", 3000), #DEBUG
+        (assign, reg0, ":t_value"),
+        (try_for_agents, ":taunted"),
+         (agent_get_position, pos2, ":taunted"),
+         (get_distance_between_positions, ":t_distance", pos1, pos2),
+         (le,":t_distance", ":t_value"),
+         (agent_is_alive, ":taunted"),
+         (neg|agent_is_ally, ":taunted"),
+          (agent_force_rethink, ":taunted"),
+          (agent_clear_relations_with_agents, ":taunted"),
+          (agent_set_is_alarmed, ":taunted", 0),
+          (agent_set_look_target_agent, ":taunted", ":cool_man"),
+         (try_begin),
+           (agent_is_alive, ":cool_man"),
+           (agent_add_relation_with_agent, ":taunted", ":cool_man", -1),
+           (agent_set_is_alarmed, ":taunted", 1),
+           (agent_set_scripted_destination, ":taunted", pos1),
+        (try_end),
+      (try_end),
+      #(agent_get_number_of_enemies_following, ":t_taunted", ":cool_man"),
+      #(assign, reg1, ":t_taunted"),
+      (display_message, "@ Taunt launched. {reg0} is the taunt range."),
+      (play_sound, "snd_cow_moo")
+])
+
 common_music_situation_update = (
   30, 0, 0, [],
   [
@@ -1913,59 +2122,59 @@ tournament_triggers = [
     # (store_trigger_param_1, ":agent_no"),
     # ]),
 #even though $disable_npc_complaints should really only apply for companions
- (ti_on_agent_killed_or_wounded, 0, 0, [
-        # (ge, "$g_dplmc_ai_changes", DPLMC_AI_CHANGES_LOW),
-      (eq, "$g_mt_mode", abm_tournament),
-      (eq, "$disable_npc_complaints", 0),
-    ],
-    [
-      (store_trigger_param_1, ":dead_agent_no"),
-      (store_trigger_param_2, ":killer_agent_no"),
-
-      # (get_player_agent_no, ":player_agent"),
-      # (eq, ":killer_agent_no", ":player_agent"),
-      (agent_get_troop_id, ":killer_troop", ":killer_agent_no"),
-      (troop_is_hero, ":killer_troop"),
-
-      (agent_is_human, ":dead_agent_no"),
-      (agent_get_troop_id, ":wounded_troop", ":dead_agent_no"),
-      (troop_is_hero, ":wounded_troop"),
-      (is_between, ":wounded_troop", heroes_begin, heroes_end), #exclude common tournament fighters (and the player from being a sore loser)
-      (try_begin), #calculate relation loss
-        (troop_get_slot, ":lrep", ":wounded_troop", slot_lord_reputation_type),
-        (this_or_next|eq, ":lrep", lrep_quarrelsome),
-        (troop_slot_eq, ":killer_troop", slot_lord_reputation_type, lrep_quarrelsome),
-        (assign, ":relation_loss", -2),
-      (else_try),
-        (neq, ":lrep", lrep_martial), #martial lords don't mind losing fights
-        (neq, ":lrep", lrep_goodnatured), #goodnature ones don't care
-        (neq, ":lrep", lrep_none), #don't reduce king/pretender relations
-        (this_or_next|eq, ":lrep", lrep_roguish), #only the "bad" companion lrep
-        (neg|is_between, ":wounded_troop", companions_begin, companions_end),
-        (assign, ":relation_loss", -1),
-      (else_try),
-        (assign, ":relation_loss", 0),
-      (try_end),
-      
-      # (agent_get_position, pos1, ":killer_agent_no"),
-      # (agent_get_position, pos2, ":dead_agent_no"),
-      # (get_distance_between_positions, ":dist", pos1, pos2),
-      # (lt, ":dist", 200),
-      # (try_begin), #backstabbed
-        # (position_is_behind_position, pos1, pos2),
-        # (call_script, "script_troop_change_relation_with_troop", "$g_player_troop", ":wounded_troop", -1),
-        # # (eq, "$g_player_troop", "trp_player"),
-        # # (call_script, "script_change_player_honor", -1),
-      # (try_end),
-      (try_begin), #friendly fire, it happens
-        (eq, ":killer_troop", "trp_player"),
-        (agent_is_ally, ":dead_agent_no"),
-        (call_script, "script_change_player_relation_with_troop", ":wounded_troop", -3),
-      (else_try),
-        (call_script, "script_troop_change_relation_with_troop", ":killer_troop", ":wounded_troop", ":relation_loss"),
-      (try_end),
-      (call_script, "script_change_troop_renown", ":killer_troop", 1), #Static amount
-    ]),
+ # (ti_on_agent_killed_or_wounded, 0, 0, [
+ #        # (ge, "$g_dplmc_ai_changes", DPLMC_AI_CHANGES_LOW),
+ #      (eq, "$g_mt_mode", abm_tournament),
+ #      (eq, "$disable_npc_complaints", 0),
+ #    ],
+ #    [
+ #      (store_trigger_param_1, ":dead_agent_no"),
+ #      (store_trigger_param_2, ":killer_agent_no"),
+ #
+ #      # (get_player_agent_no, ":player_agent"),
+ #      # (eq, ":killer_agent_no", ":player_agent"),
+ #      (agent_get_troop_id, ":killer_troop", ":killer_agent_no"),
+ #      (troop_is_hero, ":killer_troop"),
+ #
+ #      (agent_is_human, ":dead_agent_no"),
+ #      (agent_get_troop_id, ":wounded_troop", ":dead_agent_no"),
+ #      (troop_is_hero, ":wounded_troop"),
+ #      (is_between, ":wounded_troop", heroes_begin, heroes_end), #exclude common tournament fighters (and the player from being a sore loser)
+ #      (try_begin), #calculate relation loss
+ #        (troop_get_slot, ":lrep", ":wounded_troop", slot_lord_reputation_type),
+ #        (this_or_next|eq, ":lrep", lrep_quarrelsome),
+ #        (troop_slot_eq, ":killer_troop", slot_lord_reputation_type, lrep_quarrelsome),
+ #        (assign, ":relation_loss", -2),
+ #      (else_try),
+ #        (neq, ":lrep", lrep_martial), #martial lords don't mind losing fights
+ #        (neq, ":lrep", lrep_goodnatured), #goodnature ones don't care
+ #        (neq, ":lrep", lrep_none), #don't reduce king/pretender relations
+ #        (this_or_next|eq, ":lrep", lrep_roguish), #only the "bad" companion lrep
+ #        (neg|is_between, ":wounded_troop", companions_begin, companions_end),
+ #        (assign, ":relation_loss", -1),
+ #      (else_try),
+ #        (assign, ":relation_loss", 0),
+ #      (try_end),
+ #
+ #      # (agent_get_position, pos1, ":killer_agent_no"),
+ #      # (agent_get_position, pos2, ":dead_agent_no"),
+ #      # (get_distance_between_positions, ":dist", pos1, pos2),
+ #      # (lt, ":dist", 200),
+ #      # (try_begin), #backstabbed
+ #        # (position_is_behind_position, pos1, pos2),
+ #        # (call_script, "script_troop_change_relation_with_troop", "$g_player_troop", ":wounded_troop", -1),
+ #        # # (eq, "$g_player_troop", "trp_player"),
+ #        # # (call_script, "script_change_player_honor", -1),
+ #      # (try_end),
+ #      (try_begin), #friendly fire, it happens
+ #        (eq, ":killer_troop", "trp_player"),
+ #        (agent_is_ally, ":dead_agent_no"),
+ #        (call_script, "script_change_player_relation_with_troop", ":wounded_troop", -3),
+ #      (else_try),
+ #        (call_script, "script_troop_change_relation_with_troop", ":killer_troop", ":wounded_troop", ":relation_loss"),
+ #      (try_end),
+ #      (call_script, "script_change_troop_renown", ":killer_troop", 1), #Static amount
+ #    ]),
 
   (0, 0, ti_once, [(eq, "$g_mt_mode", abm_tournament),],
    [
@@ -2175,9 +2384,10 @@ mission_templates = [
      (30,mtef_visitor_source,af_override_horse,0,1,[]),
      (31,mtef_visitor_source,af_override_horse,0,1,[]),
      ],
-     [
+    [
       (1, 0, ti_once, [],
       [
+
         (store_current_scene, ":cur_scene"),
         (scene_set_slot, ":cur_scene", slot_scene_visited, 1),
         (try_begin),
@@ -2193,10 +2403,11 @@ mission_templates = [
 
       (ti_before_mission_start, 0, 0, [],
       [
+
         (call_script, "script_change_banners_and_chest"),
         (call_script, "script_initialize_tavern_variables"),
       ]),
-      
+
       #SB : minstrels equip instruments
       (ti_on_agent_spawn, 0, 0,
         [
@@ -2471,6 +2682,7 @@ mission_templates = [
 
         (call_script, "script_neutral_behavior_in_fight"),
       ]),
+        bodyguard_trigger_a, bodyguard_trigger_b, bodyguard_trigger_c
     ],
   ),
 
@@ -2541,6 +2753,8 @@ mission_templates = [
     [
       (ti_on_agent_spawn, 0, 0, [],
       [
+
+
         (store_trigger_param_1, ":agent_no"),
         
         (try_begin),
@@ -2783,6 +2997,7 @@ mission_templates = [
        (troop_set_slot, ":dead_agent_troop_no", slot_troop_mission_participation, mp_prison_break_caught),
      (try_end),
    ]),
+        bodyguard_trigger_a, bodyguard_trigger_b, bodyguard_trigger_c
   ]),
 
   (
@@ -2914,7 +3129,8 @@ mission_templates = [
       (call_script, "script_change_player_relation_with_center", "$current_town", -1),
     (try_end),
    ]),
-    ],
+        bodyguard_trigger_a, bodyguard_trigger_b, bodyguard_trigger_c
+    ] ,
   ),
 
   (
@@ -2986,7 +3202,8 @@ mission_templates = [
          (try_end),
          (finish_mission),
          ]),
-      ],
+        bodyguard_trigger_a, bodyguard_trigger_b, bodyguard_trigger_c
+      ] ,
     ),
 
 
@@ -3025,8 +3242,10 @@ mission_templates = [
            (assign, "$g_train_peasants_against_bandits_training_succeeded", 1),
          (try_end),
          (finish_mission),
-         ]),
-      ],
+         ]
+       ),
+        bodyguard_trigger_a, bodyguard_trigger_b, bodyguard_trigger_c
+      ]
     ),
 
   (
@@ -3247,7 +3466,8 @@ mission_templates = [
         (clear_omitted_keys),
         # (omit_key_once, key_f), #probably prevents accidental chest opens
       ]),
-    ],
+        bodyguard_trigger_a, bodyguard_trigger_b, bodyguard_trigger_c
+    ]
   ),
 
 
@@ -3452,7 +3672,8 @@ mission_templates = [
          (assign, "$g_latest_order_3", 1),
          (assign, "$g_latest_order_4", 1),
          ]),
-
+        call_horse_trigger_1,
+        call_horse_trigger_2,
 
       (0, 0, ti_once, [], [(assign,"$g_battle_won",0),
                            (assign,"$defender_reinforcement_stage",0),
@@ -3464,10 +3685,16 @@ mission_templates = [
                            (call_script, "script_init_death_cam"),
                            # (assign, "$g_dplmc_charge_when_dead", 0),
                            ##diplomacy end
+                           ## HOLD COMMAND begin
+                            (get_player_agent_no, ":player_agent"),
+                            (agent_get_team, ":player_team", ":player_agent"),
+                            (team_give_order, ":player_team", grc_everyone, mordr_hold)
+                            ## HOLD COMMAND end
                            ]),
 
       common_music_situation_update,
       common_battle_check_friendly_kills,
+      common_taunting_system,
 
       (1, 0, 5, [
 
@@ -3519,6 +3746,9 @@ mission_templates = [
 
       common_battle_check_victory_condition,
       common_battle_victory_display,
+      call_horse_trigger_1,
+      call_horse_trigger_2,
+      common_taunting_system,
 
       (1, 4,
       ##diplomacy begin
@@ -3620,12 +3850,20 @@ mission_templates = [
                            #SB : deathcam
                            (call_script, "script_init_death_cam"),
                            (call_script, "script_combat_music_set_situation_with_culture"),
+                           ## HOLD COMMAND begin
+                           (get_player_agent_no, ":player_agent"),
+                           (agent_get_team, ":player_team", ":player_agent"),
+                           (team_give_order, ":player_team", grc_everyone, mordr_hold)
+                           ## HOLD COMMAND end
                            ]),
 
       common_music_situation_update,
       common_battle_check_friendly_kills,
       common_battle_check_victory_condition,
       common_battle_victory_display,
+      call_horse_trigger_1,
+      call_horse_trigger_2,
+      common_taunting_system,
 
       (1, 4,
       ##diplomacy begin
@@ -3692,8 +3930,13 @@ mission_templates = [
                            (call_script, "script_combat_music_set_situation_with_culture"),
                            ]),
 
+
+
       common_music_situation_update,
       common_battle_check_friendly_kills,
+      common_taunting_system,
+      call_horse_trigger_1,
+      call_horse_trigger_2,
 
       (1, 0, 5, [(lt,"$defender_reinforcement_stage",2),
                  (store_mission_timer_a,":mission_time"),
@@ -3791,7 +4034,7 @@ mission_templates = [
 
       common_battle_inventory,
       common_battle_order_panel,
-      common_battle_order_panel_tick,
+      common_battle_order_panel_tick
 
 ##      #AI Tiggers
 ##      (0, 0, ti_once, [
@@ -4017,6 +4260,7 @@ mission_templates = [
       common_battle_check_friendly_kills,
       common_battle_check_victory_condition,
       common_battle_victory_display,
+        common_taunting_system,
 
       (1, 4,
       ##diplomacy begin
@@ -4098,6 +4342,7 @@ mission_templates = [
       common_battle_check_friendly_kills,
       common_battle_check_victory_condition,
       common_battle_victory_display,
+        common_taunting_system,
 
       (1, 4,
       ##diplomacy begin
@@ -4201,6 +4446,7 @@ mission_templates = [
 
       common_music_situation_update,
       common_battle_check_friendly_kills,
+        common_taunting_system,
 
       (1, 60, ti_once, [(store_mission_timer_a, reg(1)),
                         (ge, reg(1), 10),
@@ -4330,6 +4576,7 @@ mission_templates = [
       common_siege_move_belfry,
       common_siege_rotate_belfry,
       common_siege_assign_men_to_belfry,
+        common_taunting_system,
     ]
     ##diplomacy begin
     + dplmc_battle_mode_triggers,
@@ -4376,6 +4623,7 @@ mission_templates = [
       common_battle_order_panel,
       common_battle_order_panel_tick,
       common_inventory_not_available,
+        common_taunting_system,
 
       (ti_on_agent_killed_or_wounded, 0, 0, [],
        [
@@ -4657,7 +4905,7 @@ mission_templates = [
         (jump_to_menu, "mnu_sneak_into_town_caught_ran_away"),
         (mission_enable_talk),
         (finish_mission, 0),
-      ]),
+      ]),  bodyguard_trigger_a, bodyguard_trigger_b, bodyguard_trigger_c,
     ],
   ),
 
@@ -4796,13 +5044,14 @@ mission_templates = [
          (reset_visitors),
          (set_jump_entry, 5),
          (jump_to_scene, ":scene"),
-         
-         (store_troop_health, ":hp", "$g_player_troop", 0),
-         (troop_get_slot, ":diff", "$g_talk_troop", slot_troop_trainer_training_difficulty),
-         (store_sub, ":diff", 9, ":diff"),
-         (val_mul, ":hp", ":diff"),
-         (val_div, ":hp", 10),
-         (troop_set_health, "$g_player_troop", ":hp", 0),
+
+         # DA: Champion quest does not affect health
+         # (store_troop_health, ":hp", "$g_player_troop", 0),
+         # (troop_get_slot, ":diff", "$g_talk_troop", slot_troop_trainer_training_difficulty),
+         # (store_sub, ":diff", 9, ":diff"),
+         # (val_mul, ":hp", ":diff"),
+         # (val_div, ":hp", 10),
+         # (troop_set_health, "$g_player_troop", ":hp", 0),
          ]),
       (1, 3, ti_once,
        [
@@ -4818,7 +5067,7 @@ mission_templates = [
          (get_player_agent_no, ":agent"),
          # (store_agent_hit_points, ":hp", ":agent", 0),
          # (troop_set_health, "$g_player_troop", ":hp", 0),
-         (call_script, "script_agent_apply_training_health", ":agent"),
+         # (call_script, "script_agent_apply_training_health", ":agent"),
          
          (mission_enable_talk),
          (start_mission_conversation, "$g_talk_troop"),
@@ -4889,38 +5138,40 @@ mission_templates = [
         ]),
         
         #SB : wound troops and heroes
-      (ti_on_agent_killed_or_wounded, 0, 0, [
-        (eq, "$g_mt_mode", ctm_melee),
-        ],
-       [
-       (store_trigger_param_1, ":agent_no"),
-       (store_trigger_param_2, ":killer"),
-       (agent_get_troop_id, ":troop_no", ":agent_no"),
-       #yes, there's a chance that the highest skill troop is the one getting injured, but w/e
-       (party_get_skill_level, ":first_aid", "p_main_party", "skl_first_aid"),
-       (val_mul, ":first_aid", 5), #as per skill description
-       (val_add, ":first_aid", 100),
-       (try_begin),
-         (troop_is_hero, ":troop_no"),
-         (store_troop_health, ":health", ":troop_no", 1), #this is already deducted
-         (val_mul, ":health", ":first_aid"),
-         (val_div, ":health", 100),
-         (troop_set_health, ":troop_no", ":health", 1),
-       (else_try), #regular troops
-         # (val_add, ":first_aid", 100),
-         (store_random_in_range, ":random_no", 0, ":first_aid"),
-         (lt, ":random_no", 25),
-         (party_wound_members, "p_main_party", ":troop_no", 1),
-       (try_end),
-       
-       (try_begin),
-         (get_player_agent_no, ":player_agent"),
-         (store_trigger_param_2, ":killer"),
-         (eq, ":player_agent", ":killer"),
-         (call_script, "script_agents_cheer_during_training"),
-       (try_end),
-      
-       ]),
+        #DA : commented out, as this is gameplay changing and does not add to the experience. Maybe later on add as an option
+        # (ti_on_agent_killed_or_wounded, 0, 0, [
+        #   (eq, "$g_mt_mode", ctm_melee),
+        #   ],
+        #  [
+        #  (store_trigger_param_1, ":agent_no"),
+        #  (store_trigger_param_2, ":killer"),
+        #  (agent_get_troop_id, ":troop_no", ":agent_no"),
+        #  #yes, there's a chance that the highest skill troop is the one getting injured, but w/e
+        #  (party_get_skill_level, ":first_aid", "p_main_party", "skl_first_aid"),
+        #  (val_mul, ":first_aid", 5), #as per skill description
+        #  (val_add, ":first_aid", 100),
+        #  (try_begin),
+        #    (troop_is_hero, ":troop_no"),
+        #    (store_troop_health, ":health", ":troop_no", 1), #this is already deducted
+        #    (val_mul, ":health", ":first_aid"),
+        #    (val_div, ":health", 100),
+        #    (troop_set_health, ":troop_no", ":health", 1),
+        #  (else_try), #regular troops
+        #    # (val_add, ":first_aid", 100),
+        #    (store_random_in_range, ":random_no", 0, ":first_aid"),
+        #    (lt, ":random_no", 25),
+        #    (party_wound_members, "p_main_party", ":troop_no", 1),
+        #  (try_end),
+        #
+        #  (try_begin),
+        #    (get_player_agent_no, ":player_agent"),
+        #    (store_trigger_param_2, ":killer"),
+        #    (eq, ":player_agent", ":killer"),
+        #    (call_script, "script_agents_cheer_during_training"),
+        #  (try_end),
+        #
+        #  ]),
+
       (ti_before_mission_start, 0, 0, [],
        [
          (assign, "$g_last_destroyed_gourds", 0),
@@ -4934,7 +5185,7 @@ mission_templates = [
          (eq,":answer",0),
          (assign, "$g_training_ground_training_success_ratio", 0),
          
-         (call_script, "script_troop_set_training_health_from_agent"), #SB : store health
+         #(call_script, "script_troop_set_training_health_from_agent"), #SB : store health
          (jump_to_menu, "mnu_training_ground_training_result"),
          (finish_mission),
          ]),
@@ -5118,6 +5369,128 @@ mission_templates = [
     ],
   ),
 
+  #LAZERAS MODIFIED  {spar troops}
+## Created a new template for sparring, just for simplicity - Jinnai
+  ("arena_spar_fight",mtf_arena_fight,-1,
+    "You enter a sparring match in the arena.",
+    [
+      (0,mtef_visitor_source|mtef_team_0,0,aif_start_alarmed,1,[]),
+      (1,mtef_visitor_source|mtef_team_0,0,aif_start_alarmed,1,[]),
+      (2,mtef_visitor_source|mtef_team_0,0,aif_start_alarmed,1,[]),
+      (3,mtef_visitor_source|mtef_team_0,0,aif_start_alarmed,1,[]),
+      (4,mtef_visitor_source|mtef_team_0,0,aif_start_alarmed,1,[]),
+      (5,mtef_visitor_source|mtef_team_0,0,aif_start_alarmed,1,[]),
+      (6,mtef_visitor_source|mtef_team_0,0,aif_start_alarmed,1,[]),
+      (7,mtef_visitor_source|mtef_team_0,0,aif_start_alarmed,1,[]),
+
+      (8,mtef_visitor_source|mtef_team_1,0,aif_start_alarmed,1,[]),
+      (9,mtef_visitor_source|mtef_team_1,0,aif_start_alarmed,1,[]),
+      (10,mtef_visitor_source|mtef_team_1,0,aif_start_alarmed,1,[]),
+      (11,mtef_visitor_source|mtef_team_1,0,aif_start_alarmed,1,[]),
+      (12,mtef_visitor_source|mtef_team_1,0,aif_start_alarmed,1,[]),
+      (13,mtef_visitor_source|mtef_team_1,0,aif_start_alarmed,1,[]),
+      (14,mtef_visitor_source|mtef_team_1,0,aif_start_alarmed,1,[]),
+      (15,mtef_visitor_source|mtef_team_1,0,aif_start_alarmed,1,[]),
+
+      (16,mtef_visitor_source|mtef_team_2,0,aif_start_alarmed,1,[]),
+      (17,mtef_visitor_source|mtef_team_2,0,aif_start_alarmed,1,[]),
+      (18,mtef_visitor_source|mtef_team_2,0,aif_start_alarmed,1,[]),
+      (19,mtef_visitor_source|mtef_team_2,0,aif_start_alarmed,1,[]),
+      (20,mtef_visitor_source|mtef_team_2,0,aif_start_alarmed,1,[]),
+      (21,mtef_visitor_source|mtef_team_2,0,aif_start_alarmed,1,[]),
+      (22,mtef_visitor_source|mtef_team_2,0,aif_start_alarmed,1,[]),
+      (23,mtef_visitor_source|mtef_team_2,0,aif_start_alarmed,1,[]),
+
+      (24,mtef_visitor_source|mtef_team_3,0,aif_start_alarmed,1,[]),
+      (25,mtef_visitor_source|mtef_team_3,0,aif_start_alarmed,1,[]),
+      (26,mtef_visitor_source|mtef_team_3,0,aif_start_alarmed,1,[]),
+      (27,mtef_visitor_source|mtef_team_3,0,aif_start_alarmed,1,[]),
+      (28,mtef_visitor_source|mtef_team_3,0,aif_start_alarmed,1,[]),
+      (29,mtef_visitor_source|mtef_team_3,0,aif_start_alarmed,1,[]),
+      (30,mtef_visitor_source|mtef_team_3,0,aif_start_alarmed,1,[]),
+      (31,mtef_visitor_source|mtef_team_3,0,aif_start_alarmed,1,[]),
+
+      (50, mtef_scene_source,af_override_horse|af_override_weapons|af_override_head,0,1,[]),
+      (52, mtef_scene_source,af_override_horse,0,1,[]),
+      (53, mtef_scene_source,af_override_horse,0,1,[]),
+      (54, mtef_scene_source,af_override_horse,0,1,[]),
+      (55, mtef_scene_source,af_override_horse,0,1,[]),
+    ],
+    [
+    (ti_before_mission_start, 0, 0, [], [(call_script, "script_change_banners_and_chest")]),
+    (ti_inventory_key_pressed, 0, 0, [(display_message,"str_cant_use_inventory_arena")], []),
+    (ti_tab_pressed, 0, 0, [],
+      [(question_box,"@End the sparring match?")]),
+    (ti_question_answered, 0, 0, [],
+      [(store_trigger_param_1,":answer"),
+       (eq,":answer",0),
+       (assign, "$g_mt_mode", abm_visit),
+       (set_jump_mission, "mt_arena_melee_fight"),
+       (party_get_slot, ":arena_scene", "$current_town", slot_town_arena),
+       (modify_visitors_at_site, ":arena_scene"),
+       (reset_visitors),
+       (set_visitor, 35, "trp_veteran_fighter"),
+       (set_visitor, 36, "trp_regular_fighter"),
+       (set_jump_entry, 50),
+       (jump_to_scene, ":arena_scene"),
+      ]),
+
+    (0, 0, ti_once, [],
+      [(play_sound, "snd_arena_ambiance", sf_looping),
+     (call_script, "script_music_set_situation_with_culture", mtf_sit_arena),
+      ]),
+
+    (0.1, 0, 0, [],
+      [
+        (try_for_agents,":agent"),
+          (agent_is_alive,":agent"),
+          (agent_is_human,":agent"),
+          (agent_get_position,pos1,":agent"),
+          (position_set_z_to_ground_level, pos1),
+          (agent_get_horse,":horse",":agent"),
+          (try_begin),
+            (gt,":horse",0),
+            (position_move_z,pos1,300),
+          (else_try),
+            (position_move_z,pos1,225),
+          (try_end),
+          (agent_get_team, ":team", ":agent"),
+          (try_begin),
+            (eq,":team",0),
+            (particle_system_burst,"psys_team_0",pos1,30),
+          (else_try),
+            (eq,":team",1),
+            (particle_system_burst,"psys_team_1",pos1,30),
+          (else_try),
+            (eq,":team",2),
+            (particle_system_burst,"psys_team_2",pos1,30),
+          (else_try),
+            (eq,":team",3),
+            (particle_system_burst,"psys_team_3",pos1,30),
+          (try_end),
+        (try_end),
+      ]),
+
+    (1, 4, ti_once, [(num_active_teams_le, 1)],
+      [
+       (try_begin),
+         (neg|main_hero_fallen),
+         (call_script, "script_play_victorious_sound"),
+       (try_end),
+       (assign, "$g_mt_mode", abm_visit),
+       (set_jump_mission, "mt_arena_melee_fight"),
+       (party_get_slot, ":arena_scene", "$current_town", slot_town_arena),
+       (modify_visitors_at_site, ":arena_scene"),
+       (reset_visitors),
+       (set_visitor, 35, "trp_veteran_fighter"),
+       (set_visitor, 36, "trp_regular_fighter"),
+       (set_jump_entry, 50),
+       (jump_to_scene, ":arena_scene"),
+      ]),
+    ],
+  ),
+#LAZERAS MODIFIED  {spar troops}
+  
   (
     "sneak_caught_fight",mtf_battle_mode,-1,
     "You must fight your way out!",

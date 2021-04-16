@@ -1283,7 +1283,8 @@ g_latest_character_relation_entry
 g_jrider_last_checked_indicator
 g_autoloot
 g_next_pay_time
-g_emissarry_selected
+g_dplmc_player_disguise
+g_ccoop_currently_dropping_item
 g_cam_tilt_left
 g_cam_tilt_right
 g_camera_adjust_sub
@@ -1307,13 +1308,6 @@ g_camera_rot_down
 deathcam_total_rotx
 dmod_current_agent
 g_player_agent
-g_dplmc_cam_default
-g_player_team
-caravan_escorted_party_id
-g_last_rest_center:total_cost
-g_dplmc_player_disguise
-background_answer
-g_ccoop_currently_dropping_item
 g_multiplayer_ccoop_difficulty
 g_mp_coop_king_waves
 g_multiplayer_ccoop_game_started
@@ -1335,7 +1329,10 @@ g_ccoop_king_troop
 g_multiplayer_ccoop_next_wave_start_time
 g_multiplayer_ccoop_move_prison_cart
 g_prison_cart_point
+g_dplmc_cam_default
 g_multiplayer_is_game_type_captain
+g_multiplayer_ccoop_difficulty_string_i
+g_player_team
 g_prison_cart_previous_point
 g_presentation_obj_admin_panel_43
 g_presentation_obj_item_select_17
@@ -1360,6 +1357,5 @@ g_coop_assign_drop_companion_2
 g_presentation_obj_coop_assign_drop_companion_2
 g_presentation_obj_coop_assign_drop_noone
 g_multiplayer_respawn_wave_hint_overlay
-g_multiplayer_ccoop_difficulty_string_i
 g_multiplayer_ccoop_victory_overlay
 g_multiplayer_ccoop_victory_subtitle_overlay

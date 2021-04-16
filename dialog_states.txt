@@ -97,6 +97,8 @@ ramun_troops
 manhunter_talk_b
 manhunter_talk_b1
 manhunter_talk_b2
+manhunter_talk_b3
+manhunter_talk_b4
 looters_1
 looters_2
 village_farmer_talk
@@ -142,7 +144,6 @@ companion_quitting
 member_separate_yes
 member_question
 member_question_2
-member_delegate_quest
 member_morale
 member_background_recap
 member_kingsupport_1
@@ -159,6 +160,7 @@ member_kingsupport_4
 member_intelgathering_3
 member_intelgathering_4
 member_intelgathering_rescue
+member_delegate_quest
 member_delegate_quest_list
 redo_member_quest
 member_delegate_quest_details
@@ -1673,6 +1675,21 @@ arena_master_pre_talk
 arena_master_fight_result
 arena_master_talk
 arena_master_ask_tournaments
+arena_master_spar_teams
+arena_master_spar_teams_choose
+arena_master_spar_team_one
+arena_master_spar_team_two
+arena_master_spar_team_one_choose
+arena_master_spar_team_one_add
+arena_master_spar_team_three
+arena_master_spar_start_it_up
+arena_master_spar_team_two_choose
+arena_master_spar_team_two_add
+arena_master_spar_team_four
+arena_master_spar_team_three_choose
+arena_master_spar_team_three_add
+arena_master_spar_team_four_choose
+arena_master_spar_team_four_add
 arena_master_melee_weapon_select
 arena_player_melee_weapon_select
 arena_melee_weapon_select_end
