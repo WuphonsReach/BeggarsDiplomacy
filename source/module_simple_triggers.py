@@ -6089,6 +6089,7 @@ simple_triggers = [
           (gt, ":target_party", 0),
           (store_distance_to_party_from_party, ":distance_to_target", ":party_no", ":target_party"),
           (le, ":distance_to_target", 5),
+
           (try_begin), #SB : drop off prisoners
             (le, ":distance_to_target", 3),
             (is_between, ":target_party", walled_centers_begin, walled_centers_end),

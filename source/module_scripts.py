@@ -26910,6 +26910,7 @@ scripts = [
   ## Upgrade equipment (by quality) and hire mercenaries (if Martial personality)
   ("troop_does_business_in_center",
   [
+
     (store_script_param, ":troop_no", 1),
     (store_script_param, ":center_no", 2),
 	##diplomacy start+
@@ -27225,28 +27226,54 @@ scripts = [
         (try_end),
       (try_end),
       ##upgrade end
-      #re-classify lords here - assume ranged weapon equipped -> archer, horse -> cav otherwise go back to inf
-      (try_begin), #if it's one of the 3 origial classes, since companions-as-lord can have custom grouping we want to keep
+
+
+    (try_end),
+    #re-classify lords here - assume ranged weapon equipped -> archer, horse -> cav otherwise go back to inf
+    (try_begin), #if it's one of the 3 origial classes, since companions-as-lord can have custom grouping we want to keep
+        (str_store_troop_name_link, s1, ":troop_no"),
+        (str_store_party_name_link, s2, ":center_no"),
+        (assign, reg2, ":troop_wealth"),
         (troop_get_class, ":class_no", ":troop_no"),
-        # (is_between, ":class_no", grc_infantry, grc_heroes),
-        (eq, ":class_no", grc_infantry), #default grouping
+        (assign, reg3, ":class_no"),
+
+
+
         (try_begin),
-          (troop_get_inventory_slot, ":item_id", ":troop_no", ek_horse),
-          (gt, ":item_id", -1),
-          (troop_set_class, ":troop_no", grc_cavalry),
+            (eq, "$g_group_for_lords", 0), #default grouping
+            (this_or_next|eq, ":class_no", grc_infantry), #DA - change class_no if infantry or a custom group
+            (gt, ":class_no", grc_cavalry),
+            (try_begin),
+              (troop_get_inventory_slot, ":item_id", ":troop_no", ek_horse),
+              (gt, ":item_id", -1),
+              (troop_set_class, ":troop_no", grc_cavalry),
+            (else_try),
+              (assign, ":slot_end", ek_head),
+              (try_for_range, ":slot_no", ek_item_0, ":slot_end"),
+                (troop_get_inventory_slot, ":item_id", ":troop_no", ":slot_no"),
+                (gt, ":item_id", -1),
+                (item_get_type, ":itp", ":item_id"),
+                (this_or_next|is_between, ":itp", itp_type_bow, itp_type_goods),
+                (is_between, ":itp", itp_type_pistol, itp_type_bullets),
+                (troop_set_class, ":troop_no", grc_archers),
+                (assign, ":slot_end", -1),
+              (try_end),
+            (try_end),
         (else_try),
-          (assign, ":slot_end", ek_head),
-          (try_for_range, ":slot_no", ek_item_0, ":slot_end"),
-            (troop_get_inventory_slot, ":item_id", ":troop_no", ":slot_no"),
-            (gt, ":item_id", -1),
-            (item_get_type, ":itp", ":item_id"),
-            (this_or_next|is_between, ":itp", itp_type_bow, itp_type_goods),
-            (is_between, ":itp", itp_type_pistol, itp_type_bullets),
-            (troop_set_class, ":troop_no", grc_archers),
-            (assign, ":slot_end", -1),
-          (try_end),
+            # DA allow to set lords in a custom group
+            (gt, "$g_group_for_lords", 0),
+            (assign, ":lord_group", "$g_group_for_lords"),
+            (val_sub, ":lord_group", 1),
+            (assign, reg0, ":lord_group"),
+            (str_store_troop_name_link, s1, ":troop_no"),
+            (troop_set_class, ":troop_no", ":lord_group"),
+            # DA
         (try_end),
-      (try_end),
+        (eq, "$cheat_mode", 2),
+        (troop_get_class, ":class_no", ":troop_no"),
+        (assign, reg0, ":class_no"),
+        (str_store_troop_name_link, s1, ":troop_no"),
+        (display_message, "@Assigned class {reg0} to {s1}"),
     (try_end),
 
     # SB : set wealth after tax and consumption
@@ -38805,7 +38832,6 @@ scripts = [
         (call_script, "script_update_faction_notes", ":faction_no"),
       (try_end),
     ]),
-
 
   # script_whos_in_the_hall
   # Who's in the hall? +Dj_FRedy

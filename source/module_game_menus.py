@@ -11772,6 +11772,8 @@ TOTAL:  {reg5}"),
           (eq,":castle_garrison_size",0),
           (assign,"$castle_undefended",1),
         (try_end),
+
+
         (call_script, "script_set_town_picture"),
 
 #		(str_clear, s5), #alert player that there are new rumors
@@ -20164,6 +20166,30 @@ goods, and books will never be sold. ^^You can change some settings here freely.
 			"You used a saved game from another mod: g_dplmc_lord_recycling = {reg0} (click to reset)",
        [
            (assign, "$g_dplmc_lord_recycling", 0),
+           (jump_to_menu, "mnu_dplmc_preferences"),
+        ]),
+
+      #DA toggle hold ground entering battle
+
+	  ("dplmc_toggle_holdground_entering_battle_a",[
+		(eq, "$g_dplmc_holdground_entering_battle", DPLMC_HOLDGROUND_ENTERING_BATTLE_DISABLE),
+		],"Enable hold ground entering battle (currently disabled)",
+       [
+           (assign, "$g_dplmc_lord_recycling", DPLMC_HOLDGROUND_ENTERING_BATTLE_ENABLE),
+        ]),
+	  ("dplmc_toggle_holdground_entering_battle_b",[
+		(eq, "$g_dplmc_holdground_entering_battle", DPLMC_HOLDGROUND_ENTERING_BATTLE_ENABLE),
+		],"Disable hold ground entering battle (currently enabled)",
+       [
+	 	   (assign, "$g_dplmc_holdground_entering_battle", DPLMC_HOLDGROUND_ENTERING_BATTLE_DISABLE),
+        ]),
+      ("dplmc_toggle_holdground_entering_battle_reset",
+		[(neq, "$g_dplmc_holdground_entering_battle", DPLMC_HOLDGROUND_ENTERING_BATTLE_ENABLE),
+ 		 (neq, "$g_dplmc_holdground_entering_battle", DPLMC_HOLDGROUND_ENTERING_BATTLE_DISABLE),
+		 (assign, reg0, "$g_dplmc_holdground_entering_battle"),],
+			"You used a saved game from another mod: g_dplmc_holdground_entering_battle = {reg0} (click to reset)",
+       [
+           (assign, "$g_dplmc_holdground_entering_battle", 0),
            (jump_to_menu, "mnu_dplmc_preferences"),
         ]),
 	#toggle AI changes

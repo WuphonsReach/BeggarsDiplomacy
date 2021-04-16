@@ -48,6 +48,7 @@ af_castle_lord = af_override_horse | af_override_weapons| af_require_civilian
 
 ##diplomacy begin
 
+
 bodyguard_trigger_a = (
     ti_after_mission_start, 0, ti_once, [(neq, "$g_mt_mode", tcm_disguised)],
     # condition for not sneaking in; to exclude prison-breaks, etc change to (eq, "$g_mt_mode", tcm_default")
@@ -1494,6 +1495,13 @@ multiplayer_battle_window_opened = (
     (start_presentation, "prsnt_multiplayer_team_score_display"),
     ])
 
+
+
+common_hold_ground_in_battle = (0, 0, ti_once, [(ge, "$g_dplmc_holdground_entering_battle", 1)], [
+    (get_player_agent_no, ":player_agent"),
+    (agent_get_team, ":player_team", ":player_agent"),
+    (team_give_order, ":player_team", grc_everyone, mordr_hold)
+ ])
 
 common_battle_mission_start = (
   ti_before_mission_start, 0, 0, [],
@@ -3685,13 +3693,8 @@ mission_templates = [
                            (call_script, "script_init_death_cam"),
                            # (assign, "$g_dplmc_charge_when_dead", 0),
                            ##diplomacy end
-                           ## HOLD COMMAND begin
-                            (get_player_agent_no, ":player_agent"),
-                            (agent_get_team, ":player_team", ":player_agent"),
-                            (team_give_order, ":player_team", grc_everyone, mordr_hold)
-                            ## HOLD COMMAND end
                            ]),
-
+      common_hold_ground_in_battle,
       common_music_situation_update,
       common_battle_check_friendly_kills,
       common_taunting_system,
@@ -3809,6 +3812,7 @@ mission_templates = [
 
       common_battle_order_panel,
       common_battle_order_panel_tick,
+      (0, 0, ti_once, [(ge,"$g_show_minimap", 1)], [(start_presentation, "prsnt_combat_ui")]),
 
     ]
     ##diplomacy begin
@@ -3849,12 +3853,7 @@ mission_templates = [
                            (try_end),
                            #SB : deathcam
                            (call_script, "script_init_death_cam"),
-                           (call_script, "script_combat_music_set_situation_with_culture"),
-                           ## HOLD COMMAND begin
-                           (get_player_agent_no, ":player_agent"),
-                           (agent_get_team, ":player_team", ":player_agent"),
-                           (team_give_order, ":player_team", grc_everyone, mordr_hold)
-                           ## HOLD COMMAND end
+                           (call_script, "script_combat_music_set_situation_with_culture")
                            ]),
 
       common_music_situation_update,
@@ -3864,6 +3863,7 @@ mission_templates = [
       call_horse_trigger_1,
       call_horse_trigger_2,
       common_taunting_system,
+      common_hold_ground_in_battle,
 
       (1, 4,
       ##diplomacy begin
@@ -3891,6 +3891,7 @@ mission_templates = [
       common_battle_inventory,
       common_battle_order_panel,
       common_battle_order_panel_tick,
+      (0, 0, ti_once, [(ge,"$g_show_minimap", 1)], [(start_presentation, "prsnt_combat_ui")]),
 
     ]
     ##diplomacy begin
@@ -4031,10 +4032,11 @@ mission_templates = [
       # (call_script, "script_change_player_relation_with_center", "$current_town", -1),
     (try_end),
     ]),
-
+      common_hold_ground_in_battle,
       common_battle_inventory,
       common_battle_order_panel,
-      common_battle_order_panel_tick
+      common_battle_order_panel_tick,
+      (0, 0, ti_once, [(ge,"$g_show_minimap", 1)], [(start_presentation, "prsnt_combat_ui")]),
 
 ##      #AI Tiggers
 ##      (0, 0, ti_once, [
@@ -4285,6 +4287,7 @@ mission_templates = [
 
       common_battle_order_panel,
       common_battle_order_panel_tick,
+      (0, 0, ti_once, [(ge,"$g_show_minimap", 1)], [(start_presentation, "prsnt_combat_ui")]),
       common_battle_inventory,
     ]
     ##diplomacy begin
@@ -4370,6 +4373,7 @@ mission_templates = [
 
       common_battle_order_panel,
       common_battle_order_panel_tick,
+      (0, 0, ti_once, [(ge,"$g_show_minimap", 1)], [(start_presentation, "prsnt_combat_ui")]),
       common_battle_inventory,
     ]
     ##diplomacy begin
@@ -4490,6 +4494,7 @@ mission_templates = [
 
       common_battle_order_panel,
       common_battle_order_panel_tick,
+      (0, 0, ti_once, [(ge,"$g_show_minimap", 1)], [(start_presentation, "prsnt_combat_ui")]),
       common_battle_inventory,
     ]
     ##diplomacy begin
@@ -4577,6 +4582,7 @@ mission_templates = [
       common_siege_rotate_belfry,
       common_siege_assign_men_to_belfry,
         common_taunting_system,
+      (0, 0, ti_once, [(ge,"$g_show_minimap", 1)], [(start_presentation, "prsnt_combat_ui")]),
     ]
     ##diplomacy begin
     + dplmc_battle_mode_triggers,
@@ -4624,6 +4630,7 @@ mission_templates = [
       common_battle_order_panel_tick,
       common_inventory_not_available,
         common_taunting_system,
+      (0, 0, ti_once, [(ge,"$g_show_minimap", 1)], [(start_presentation, "prsnt_combat_ui")]),
 
       (ti_on_agent_killed_or_wounded, 0, 0, [],
        [
@@ -5171,7 +5178,6 @@ mission_templates = [
         #  (try_end),
         #
         #  ]),
-
       (ti_before_mission_start, 0, 0, [],
        [
          (assign, "$g_last_destroyed_gourds", 0),
@@ -5305,7 +5311,7 @@ mission_templates = [
            (val_div, "$g_training_ground_training_success_ratio", "$g_training_ground_training_num_enemies"),
          (try_end),
          #SB : calculate hero wounded status
-         (call_script, "script_troop_set_training_health_from_agent"),
+         #(call_script, "script_troop_set_training_health_from_agent"),
          (jump_to_menu, "mnu_training_ground_training_result"),
          (finish_mission),
          ]),
@@ -9506,6 +9512,7 @@ mission_templates = [
       custom_battle_check_victory_condition,
       common_battle_victory_display,
       custom_battle_check_defeat_condition,
+      (0, 0, ti_once, [(ge,"$g_show_minimap", 1)], [(start_presentation, "prsnt_combat_ui")]),
 	##diplomacy begin
 	] + dplmc_battle_mode_triggers,
 	##diplomacy end
@@ -16926,6 +16933,7 @@ mission_templates = [
 
        common_battle_order_panel,
        common_battle_order_panel_tick,
+      (0, 0, ti_once, [(ge,"$g_show_minimap", 1)], [(start_presentation, "prsnt_combat_ui")]),
 
        (1, 4, ti_once,
        [
