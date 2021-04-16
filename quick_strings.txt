@@ -1,4 +1,4 @@
-1520
+1534
 qstr_Breaking_camp... Breaking_camp...
 qstr_{!}{s3}_commander_of {!}{s3}_commander_of_party_#{reg4}_which_is_not_his_troop_leaded_party_{reg5}
 qstr_{!}_Commanded_party_ {!}_Commanded_party_#{reg4}_is_{s3},_troop_leaded_party_#{reg5}_is_{s65}
@@ -1519,3 +1519,17 @@ qstr_Morale_for_{s9}_troop Morale_for_{s9}_troops:_{reg6}.{reg7}
 qstr_{playername}_^^I_alw {playername},_^^I_always_knew_you_were_a_bad_egg,_since_the_day_you_have_pledged_allegiance_to_my_clan._^Did_you_really_think_you_could_set_my_family_against_me?_You've_dropped_your_mask,_you_snake!_You_are_an_infliction,_and_I_will_not_bear_it_anymore._^Hereby,_I_disown_and_ban_you_from_my_house._I_have_urged_my_family_to_fight_you,_and_I_will_warn_all_Calradian_lords_of_your_infamy._^Tremble_with_fear,_for_now_you_have_a_deadly_enemy!_^^{s9}.
 qstr_{playername}^^_I_ve_ {playername},^^_I've_received_a_letter_from_{s9},_telling_me_about_your_disgraceful_jiggery-pokery._In_the_present_circumstances,_{s9}_could_not_provide_evidence._But_unlike_you,_{reg1?she:he}_is_a_distinguished_member_of_my_family;_and_in_all_these_years,_I've_never_had_any_reason_to_distrust_{reg1?her:him}._I_therefore_take_{reg1?her:his}_charges_for_granted._^Hopefully,_you_failed_to_break-up_my_family_unit._Hereby_I_reject_your_pledge_:_you_are_no_longer_related_to_my_house._Each_member_shall_retaliate_against_you_in_all_conscience..._^I_would_be_ashamed_to_confess_how_you_maliciously_deceived_me,_so_I_will_not_challenge_you,_so_as_to_not_be_held_accountable_for_your_death_by_my_{s11}._However_I've_no_need_to_tell_{reg0?her:him}_about_every_rat_I_crush_in_the_wilderness,_and_someday_I_may_find_you_there_!_^^{s10}
 qstr_{!}{s0}^^_DEBUG:_Internal {!}{s0}^^_DEBUG:_Internal_update_code_for_current_saved_game_is_{reg0}.^Update_code_for_the_current_release_is_170301.
+qstr_We_ve_barely_gotten_ We've_barely_gotten_to_know_one_another_and_now_you're_sending_me_away!
+qstr_I_am_certainly_not_y I_am_certainly_not_your_errant_{reg65?girl:boy}...
+qstr_How_do_I_know_there_ How_do_I_know_there_will_still_be_a_place_for_me_when_I_return_from_this_journey?
+qstr_I_believe_I_would_be I_believe_I_would_be_of_more_use_by_staying_with_the_other_soldiers.
+qstr_things things
+qstr_You_have_assigned_th You_have_assigned_this_task_to_{s1}
+qstr_yet_to_be_determined yet_to_be_determined
+qstr_{!}DEBUG____Total_prod {!}DEBUG_--_Total_production_for_{s4}:_{reg3}:_+{reg4}_-_{reg5}
+qstr_{!}Debug___{s5}_vill {!}Debug_-_{s5}_villagers_attacked
+qstr_Since_we_are_close_t Since_we_are_close_to_{reg11?{reg10}_training_centers:a_training_center},_you_can_talk_to_the_trainers_to_get_a_bigger_batch_trained.
+qstr_Sorry_currently_I_ca Sorry,_currently_I_can't_provide_any_information_about_the_realm's_mood,_our_spies_haven't_reported_back_yet.
+qstr_Sorry_currently_I_can Sorry,_currently_I_can't_provide_any_information_about_the_realm's_mood,_since_our_spies_haven't_reported_back_yet.
+qstr_{s6}__{s50}_ {s6}_({s50})
+qstr_no_outstanding_amoun no_outstanding_amount

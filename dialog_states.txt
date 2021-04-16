@@ -142,6 +142,7 @@ companion_quitting
 member_separate_yes
 member_question
 member_question_2
+member_delegate_quest
 member_morale
 member_background_recap
 member_kingsupport_1
@@ -158,6 +159,18 @@ member_kingsupport_4
 member_intelgathering_3
 member_intelgathering_4
 member_intelgathering_rescue
+member_delegate_quest_list
+redo_member_quest
+member_delegate_quest_details
+member_delegate_quest_select
+member_delegate_quest_destination
+member_delegate_quest_inventory
+member_delegate_quest_ask_for_items
+member_delegate_quest_soldiers
+member_delegate_quest_assess_for_items
+member_delegate_quest_confirm
+member_delegate_quest_ask_for_troops
+do_member_quest
 merchant_quest_4_start
 relative_saved_1a
 bandit_leader_1a
@@ -1520,6 +1533,7 @@ mayor_internal_politics_2
 mayor_internal_politics_3
 mayor_internal_politics_4
 mayor_internal_politics_5
+mayor_politics_policy
 merchant_quest_about_job_2
 merchant_quest_what_if_fail
 merchant_quest_about_job_working

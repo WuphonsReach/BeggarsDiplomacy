@@ -4695,25 +4695,25 @@ mission_templates = [
       ],
       [
         (store_trigger_param_1,":agent_no"),
-        #get wpt
-        (store_proficiency_level, ":onehands", "$g_player_troop", wpt_one_handed_weapon),
-        (store_proficiency_level, ":twohands", "$g_player_troop", wpt_two_handed_weapon),
-        (store_proficiency_level, ":polearms", "$g_player_troop", wpt_polearm),
+        # #get wpt
+        # (store_proficiency_level, ":onehands", "$g_player_troop", wpt_one_handed_weapon),
+        # (store_proficiency_level, ":twohands", "$g_player_troop", wpt_two_handed_weapon),
+        # (store_proficiency_level, ":polearms", "$g_player_troop", wpt_polearm),
 
-        (try_begin),
-          (ge, ":onehands", ":twohands"),
-          (ge, ":onehands", ":polearms"),
-          # (agent_equip_item, ":agent_no", "itm_practice_shield"),
-          (assign, ":weapon", "itm_practice_sword"),
-        (else_try),
-          (ge, ":twohands", ":onehands"),
-          (ge, ":twohands", ":polearms"),
-          (assign, ":weapon", "itm_heavy_practice_sword"),
-        (else_try),
-          (ge, ":polearms", ":onehands"),
-          (ge, ":polearms", ":twohands"),
-          (assign, ":weapon", "itm_practice_staff"),
-        (try_end),
+        # (try_begin),
+          # (ge, ":onehands", ":twohands"),
+          # (ge, ":onehands", ":polearms"),
+          # # (agent_equip_item, ":agent_no", "itm_practice_shield"),
+          # (assign, ":weapon", "itm_practice_sword"),
+        # (else_try),
+          # (ge, ":twohands", ":onehands"),
+          # (ge, ":twohands", ":polearms"),
+          # (assign, ":weapon", "itm_heavy_practice_sword"),
+        # (else_try),
+          # (ge, ":polearms", ":onehands"),
+          # (ge, ":polearms", ":twohands"),
+          # (assign, ":weapon", "itm_practice_staff"),
+        # (try_end),
         (call_script, "script_get_proficient_melee_training_weapon", "$g_player_troop"),
         (assign, ":weapon", reg0),
         
@@ -4865,15 +4865,16 @@ mission_templates = [
        (agent_get_troop_id, ":troop_no", ":agent_no"),
        #yes, there's a chance that the highest skill troop is the one getting injured, but w/e
        (party_get_skill_level, ":first_aid", "p_main_party", "skl_first_aid"),
+       (val_mul, ":first_aid", 5), #as per skill description
+       (val_add, ":first_aid", 100),
        (try_begin),
          (troop_is_hero, ":troop_no"),
-         (store_troop_health, ":health", ":troop_no", 1), #this is not yet deducted
-         (val_mul, ":first_aid", 5), #as per skill description
+         (store_troop_health, ":health", ":troop_no", 1), #this is already deducted
          (val_mul, ":health", ":first_aid"),
          (val_div, ":health", 100),
          (troop_set_health, ":troop_no", ":health", 1),
        (else_try), #regular troops
-         (val_add, ":first_aid", 100),
+         # (val_add, ":first_aid", 100),
          (store_random_in_range, ":random_no", 0, ":first_aid"),
          (lt, ":random_no", 25),
          (party_wound_members, "p_main_party", ":troop_no", 1),

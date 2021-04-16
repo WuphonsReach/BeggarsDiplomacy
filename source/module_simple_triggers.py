@@ -2129,9 +2129,9 @@ simple_triggers = [
             (str_store_party_name, s6, ":center_no"),
 
             (party_get_slot, ":tax_rate", ":center_no", dplmc_slot_center_taxation),
-            (neq, ":tax_rate", 0),
-            (store_div, ":rent_change", ":accumulated_rents", 100),
-            (val_mul, ":rent_change", ":tax_rate"),
+            (neq, ":tax_rate", 0), #SB : swap order of operations for precision
+            (store_mul, ":rent_change", ":accumulated_rents", ":tax_rate"),
+            (val_div, ":rent_change", 100),
 
             (try_begin), #debug
               (eq, "$cheat_mode", 1),
@@ -2452,6 +2452,7 @@ simple_triggers = [
   (0.1,
    [
        (try_for_range, ":troop_no", heroes_begin, heroes_end),
+         (this_or_next|troop_slot_eq, ":troop_no", slot_troop_occupation, slto_inactive), #SB : fix stuck defector bug
          (troop_slot_eq, ":troop_no", slot_troop_occupation, slto_kingdom_hero),
          (troop_get_slot, ":troop_party_no", ":troop_no", slot_troop_leaded_party),
          (ge, ":troop_party_no", 1),
@@ -5805,28 +5806,41 @@ simple_triggers = [
     (eq, "$g_player_constable", "trp_dplmc_constable"),
     (is_between, "$g_constable_training_center", walled_centers_begin, walled_centers_end),
     (party_slot_eq, "$g_constable_training_center", slot_town_lord, "trp_player"),
-
     (store_skill_level, ":trainer_level", skl_trainer, "trp_player"),
     (val_add, ":trainer_level", 4),
+    (faction_get_slot, ":quality", "$players_kingdom", dplmc_slot_faction_quality),
+    (try_begin), #quantity policy
+      (is_between, ":quality", -4, 0),
+      (val_mul, ":quality", -2), #-6 to -2
+      (val_add, ":trainer_level", ":quality"),
+    (try_end),
     (store_div, ":xp_gain", ":trainer_level", 2),
-    #could factor in quantity policy (not quality) here for xp_gain
+    
     (try_begin),
-      (ge, "$novice_training_difficulty", 1),
+      # (ge, "$novice_training_difficulty", 1),
       (assign, ":max_distance", 50),
-      (game_get_reduce_campaign_ai, ":cur_number"), #0, 1, 2
-      (val_add, ":cur_number", "$novice_training_difficulty"), #1 to 6
-      (val_div, ":cur_number", 2),
-      (val_max, ":cur_number", 1),
-      
+      (game_get_reduce_campaign_ai, ":base_number"), #0, 1, 2
+      # (val_add, ":cur_number", "$novice_training_difficulty"), #1 to 6
+      # (val_div, ":cur_number", 2),
+      # (val_max, ":cur_number", 1),
+      (assign, ":num_trainers", "$g_constable_training_improved"),
       (try_for_range, ":grounds", training_grounds_begin, training_grounds_end),
         (store_distance_to_party_from_party, ":distance", ":grounds", "$g_constable_training_center"),
         (lt, ":distance", ":max_distance"),
+        # (assign, ":max_distance", ":distance"),
+        (party_get_slot, ":trainer", slot_grounds_trainer, ":grounds"),
+        (troop_get_slot, ":difficulty", ":trainer", slot_troop_trainer_training_difficulty),
+        # (gt, ":difficulty", 0), #1-6
+        (store_add, ":cur_number", ":base_number", ":difficulty"),
+        (val_div, ":cur_number", 2),
+        (val_max, ":cur_number", 1),
         (val_add, ":xp_gain", ":cur_number"),
+        (val_add, ":num_trainers", 1),
       (try_end),
     (try_end),
    
    #SB : move calculations up
-   (store_mul, ":troop_limit", "$g_constable_training_improved", 2), #from 0 to 4
+   (store_mul, ":troop_limit", ":num_trainers", 2), #from 0 to 4, +1 for each nearby ground
    (val_add, ":troop_limit", 7), #base recruit level in Natives + 1, values now can be 7/9/11/13/15
 
    (store_troop_gold, ":gold", "trp_household_possessions"), #player treasury
@@ -5862,23 +5876,23 @@ simple_triggers = [
         (call_script, "script_cf_troop_is_class", "$g_constable_training_type", ":upgrade_troop_2"),
         (assign, ":upgrade_troop", ":upgrade_troop_2"),
       (else_try), #do a look-ahead
-        (assign, ":upgrade_troop", ":upgrade_troop_2"),
+        (assign, ":upgrade_troop", ":upgrade_troop_1"), #fixed
         (try_begin),
-          (troop_get_upgrade_troop, ":upgrade_troop_3", ":upgrade_troop" , 0),
+          (troop_get_upgrade_troop, ":upgrade_troop_3", ":upgrade_troop_1" , 0),
           (call_script, "script_cf_troop_is_class", "$g_constable_training_type", ":upgrade_troop_3"),
           (assign, ":upgrade_troop", ":upgrade_troop_3"),
         (else_try),
-          (troop_get_upgrade_troop, ":upgrade_troop_4", ":upgrade_troop" , 1),
+          (troop_get_upgrade_troop, ":upgrade_troop_4", ":upgrade_troop_1" , 1),
           (call_script, "script_cf_troop_is_class", "$g_constable_training_type", ":upgrade_troop_4"),
           (assign, ":upgrade_troop", ":upgrade_troop_4"),
         (try_end),
-        (eq, ":upgrade_troop", ":upgrade_troop_2"), #unchanged, check upgrade_troop_2
+        (eq, ":upgrade_troop", ":upgrade_troop_1"), #unchanged, check upgrade_troop_2
         (try_begin),
-          (troop_get_upgrade_troop, ":upgrade_troop_3", ":upgrade_troop" , 0),
+          (troop_get_upgrade_troop, ":upgrade_troop_3", ":upgrade_troop_2" , 0),
           (call_script, "script_cf_troop_is_class", "$g_constable_training_type", ":upgrade_troop_3"),
           (assign, ":upgrade_troop", ":upgrade_troop_3"),
         (else_try),
-          (troop_get_upgrade_troop, ":upgrade_troop_4", ":upgrade_troop" , 1),
+          (troop_get_upgrade_troop, ":upgrade_troop_4", ":upgrade_troop_2" , 1),
           (call_script, "script_cf_troop_is_class", "$g_constable_training_type", ":upgrade_troop_4"),
           (assign, ":upgrade_troop", ":upgrade_troop_4"),
         (try_end),
@@ -5925,9 +5939,7 @@ simple_triggers = [
         (display_message, "@Not enough money in treasury to upgrade {s6}."),
       (try_end),
 
-
       # (val_add, ":total_cost", ":upgrade_cost"),
-
       # (call_script, "script_dplmc_withdraw_from_treasury", ":upgrade_cost"),
       (party_remove_members,":party_no",":troop_id",":cur_number"),
       (party_add_members, ":party_no", ":upgrade_troop", ":cur_number"),
@@ -5937,7 +5949,6 @@ simple_triggers = [
       (str_store_troop_name_by_count, s7, ":upgrade_troop", ":cur_number"),
       (str_store_party_name_link, s8, ":party_no"),
       (display_log_message, "@Your constable upgraded {reg5} {s6} to {s7} in {s8}"),
-      
     (try_end),
     
     #finalize costs
@@ -6106,7 +6117,7 @@ simple_triggers = [
     ]),
 
   # Scout ai
-   (0.2,
+   (1.5, #SB : moved to 1.5 hr
    [
 
     (try_for_parties, ":party_no"),

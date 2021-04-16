@@ -2983,7 +2983,14 @@ game_menus = [
          (jump_to_menu, "mnu_faction_orders"),
         ]
        ),
-
+       ("action_change_policies",
+        [
+        ],
+        "{!}Change kingdom policies",
+        [
+        (assign, "$g_faction_selected", "$g_cheat_selected_faction"),
+        (start_presentation, "prsnt_dplmc_policy_management"),]
+       ),
 
 
       ("go_back_dot",[],"{!}Go back.",
@@ -4156,7 +4163,9 @@ TOTAL:  {reg5}"),
           (faction_slot_eq, "$players_kingdom", slot_faction_leader, "trp_player"),
         ],
         "{!}Cheat: Change kingdom policies",
-        [(start_presentation, "prsnt_dplmc_policy_management"),]
+        [
+        (assign, "$g_faction_selected", "$players_kingdom"),
+        (start_presentation, "prsnt_dplmc_policy_management"),]
        ),
       ##Custom player kingdom vassal titles, credit Caba'drin end
       ##diplomacy end+
@@ -4187,6 +4196,7 @@ TOTAL:  {reg5}"),
    "You offer your prisoners freedom if they agree to join you as soldiers. {s18}",
    "none",
    [(assign, ":num_regular_prisoner_slots", 0),
+    (str_store_string, s18, "@No one accepts the offer."), # SB : store this back top
     (party_get_num_prisoner_stacks, ":num_stacks", "p_main_party"),
     (try_for_range, ":cur_stack", 0, ":num_stacks"),
       (party_prisoner_stack_get_troop_id, ":cur_troop_id", "p_main_party", ":cur_stack"),
@@ -13192,8 +13202,8 @@ TOTAL:  {reg5}"),
         (call_script, "script_change_player_relation_with_center", "$current_town", 1),
         (try_begin), #SB : slight scaling reward
           (ge, "$g_dplmc_gold_changes", DPLMC_GOLD_CHANGES_MEDIUM),
-          (store_faction_of_party, ":center_faction", ":center_no"),
-          (call_script, "script_dplmc_get_troop_standing_in_faction", ":winner_troop", ":center_faction"),
+          # (store_faction_of_party, ":center_faction", "$current_town"),
+          (call_script, "script_dplmc_get_troop_standing_in_faction", "trp_player", "$g_encountered_party_faction"),
           (store_mul, ":reward", reg0, 20), #1200 for leader, 600 for lord etc
           (val_add, ":reward", 150),
           (try_begin), #this is halved if it's the player's own center to prevent quest abuse?
@@ -13271,7 +13281,6 @@ TOTAL:  {reg5}"),
             (troop_slot_eq, ":winner_troop", slot_troop_occupation, slto_kingdom_hero),
             (ge, "$g_dplmc_gold_changes", DPLMC_GOLD_CHANGES_MEDIUM),
             # (call_script, "script_dplmc_distribute_gold_to_lord_and_holdings", 200, ":troop_no"),
-            (store_faction_of_party, ":center_faction", ":center_no"),
             (call_script, "script_dplmc_get_troop_standing_in_faction", ":winner_troop", "$g_encountered_party_faction"),
             (store_mul, ":reward", reg0, 20), #1200 for leader, 600 for lord etc
             (val_add, ":reward", 150),
@@ -15278,7 +15287,7 @@ goods, and books will never be sold. ^^You can change some settings here freely.
 
 
   (
-    "training_ground",0,
+    "training_ground",mnf_enable_hot_keys, #SB : enable hotkeys to check party
     "You approach a training field where you can practice your martial skills. What kind of training do you want to do?",
     "none",
     [
@@ -19865,7 +19874,8 @@ goods, and books will never be sold. ^^You can change some settings here freely.
     [
       ("dplmc_yes",[],"Yes, I want to change the domestic policy.",
        [
-         (start_presentation, "prsnt_dplmc_policy_management"),
+         (assign, "$g_faction_selected", "fac_player_supporters_faction"),
+         (start_presentation, "prsnt_dplmc_policy_management"), #SB : reassign global
         ]),
       ("dplmc_no",[],"No, I don't want to change the domestic policy.",
        [
@@ -20971,7 +20981,7 @@ goods, and books will never be sold. ^^You can change some settings here freely.
     (set_background_mesh, "mesh_pic_messenger"),
     (str_store_party_name, s1, "$g_encountered_party"),
     (assign, reg1, "$g_encountered_party"),
-    (assign, "$pout_party", 0),
+    (assign, "$pout_party", -1),
     (try_for_parties, ":party_no"),
       # (assign, "$pout_party", ":party_no"),
       (party_is_active, ":party_no"),
@@ -21229,10 +21239,17 @@ goods, and books will never be sold. ^^You can change some settings here freely.
     
       ("talk",
       [],
-      "Encounter the party.",
+      "Encounter the party (Shift to goto).",
       [
-        (call_script, "script_game_event_party_encounter", "$g_encountered_party", -1),
-        # (change_screen_map),
+        (try_begin),
+          (this_or_next|key_is_down, key_left_shift),
+          (key_is_down, key_right_shift),
+          (party_get_position, pos1, "$g_encountered_party"),
+          (party_set_position, "p_main_party", pos1),
+          (change_screen_map),
+        (else_try),
+          (call_script, "script_game_event_party_encounter", "$g_encountered_party", -1),
+        (try_end),
       ]),
       
       ("slots",
@@ -21544,6 +21561,18 @@ goods, and books will never be sold. ^^You can change some settings here freely.
         (assign, "$g_presentation_state", 0), #start off at first slot
         (assign, "$g_presentation_input", rename_companion),
         (start_presentation, "prsnt_modify_slots"),
+      ]),
+      
+      ("encounter",
+      [
+        (troop_is_hero, "$g_talk_troop"),
+        (party_get_slot, ":party", "$g_talk_troop", slot_troop_leaded_party),
+        (party_is_active, ":party"),
+      ],
+      "Find leaded party.",
+      [
+        (party_get_slot, "$g_encountered_party", "$g_talk_troop", slot_troop_leaded_party),
+        (jump_to_menu, "mnu_party_cheat"),
       ]),
       
       ("inventory",

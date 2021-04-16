@@ -1298,7 +1298,7 @@ triggers = [
             (try_end),
             (try_begin), #SB : actually give out base gold and some renown
               (ge, "$g_dplmc_ai_changes", DPLMC_AI_CHANGES_MEDIUM),
-              (call_script, "script_dplmc_distribute_gold_to_lord_and_holdings", 100, ":troop_no"),
+              (call_script, "script_dplmc_distribute_gold_to_lord_and_holdings", 100, ":pretender"),
               # do host relations
               (assign, ":renown", 5),
               (try_begin),

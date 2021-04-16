@@ -3321,6 +3321,12 @@ scripts = [
          (else_try),
            (party_slot_eq, "$g_encountered_party", slot_party_type, spt_cattle_herd),
            (jump_to_menu, "mnu_cattle_herd"),
+         # (else_try), #TODO SB : dplmc messenger ack
+           # (party_slot_eq, "$g_encountered_party", slot_party_type, spt_messenger),
+           # (jump_to_menu, "mnu_dplmc_messenger"),
+         # (else_try), #SB : dplmc messenger 
+           # (party_slot_eq, "$g_encountered_party", slot_party_type, spt_scout),
+           # (jump_to_menu, "mnu_dplmc_scout"),
          (else_try),
            (is_between, "$g_encountered_party", training_grounds_begin, training_grounds_end),
            (jump_to_menu, "mnu_training_ground"),
@@ -5928,7 +5934,6 @@ scripts = [
           (assign, ":bound_center", reg0),#Save reg0 to avoid having it randomly change
           (try_begin),
              (eq, "$g_player_court", ":center_no"),
-
              (store_and, reg1, "$players_kingdom_name_set", rename_center), #SB : specify capitals
              (str_store_string, s2, "@{s51} belongs to {s1} of {s2}, and is {reg1?your capital:where you make your court}.^"),
           (else_try),
@@ -6142,15 +6147,15 @@ scripts = [
         #       (try_end),
 
 
-        ##SB : add domestic policy as overview
-        (str_clear, s21),
-        (str_clear, s20),
-        (try_begin),
+          ##SB : add domestic policy as overview
+          (str_clear, s21),
+          (str_clear, s20),
+          (try_begin),
             (eq, ":faction_no", "$players_kingdom"),
             (str_store_string, s20, "@Domestic policy: ^^"),
             (call_script, "script_display_policy_string_to_reg", ":faction_no", 0, 1),
-        (try_end),
-        (str_store_string, s21, "str_foreign_relations__"),
+          (try_end),
+          (str_store_string, s21, "str_foreign_relations__"),
 
               #other foreign relations
           (try_for_range, ":cur_faction", kingdoms_begin, kingdoms_end),
@@ -18649,7 +18654,6 @@ scripts = [
      (val_add, ":count", 1),
      (party_set_slot, "$g_encountered_party", slot_grounds_count, ":count"),
 
-
      (assign, ":training_default_weapon_1", -1),
      (assign, ":training_default_weapon_2", -1),
      (assign, ":training_default_weapon_3", -1),
@@ -18727,6 +18731,12 @@ scripts = [
        (troop_get_inventory_slot, ":cur_item", "trp_player", ":cur_slot"),
        (ge, ":cur_item", 0),
        (item_get_type, ":item_type", ":cur_item"),
+       (try_begin), #horseback validation
+         (eq, "$g_mt_mode", ctm_mounted),
+         (this_or_next|item_has_property, ":cur_item", itp_cant_reload_on_horseback),
+         (item_has_property, ":cur_item", itp_cant_use_on_horseback),
+         (assign, ":item_type", -999),
+       (try_end),
        (try_begin),
          (eq, ":item_type", ":mission_weapon_type"),
          (eq, ":selected_weapon", -1),
@@ -18772,7 +18782,12 @@ scripts = [
          (set_visitor, ":cur_entry_point", ":cur_troop"),
          (mission_tpl_entry_clear_override_items, "mt_training_ground_training", ":cur_entry_point"),
          (mission_tpl_entry_add_override_item, "mt_training_ground_training", ":cur_entry_point", "itm_practice_boots"),
-         (call_script, "script_get_random_melee_training_weapon"),
+         (try_begin), #npc companions
+           (troop_is_hero, ":cur_troop"),
+           (call_script, "script_get_proficient_melee_training_weapon", ":cur_troop"),
+         (else_try),
+           (call_script, "script_get_random_melee_training_weapon"),
+         (try_end),
          (mission_tpl_entry_add_override_item, "mt_training_ground_training", ":cur_entry_point", reg0),
          (try_begin),
            (ge, reg1, 0),
@@ -20339,7 +20354,7 @@ scripts = [
 	              (troop_get_slot, ":cur_target_troop", ":giver_troop", slot_troop_spouse),
 	            (try_end),
 	            #(troop_slot_eq, ":cur_target_troop", slot_troop_is_prisoner, 1),#Skip if the lady's father/husband is not in prison
-				(gt, ":cur_target_troop", -1),
+	            (gt, ":cur_target_troop", -1),
 	            (troop_slot_ge, ":cur_target_troop", slot_troop_prisoner_of_party, 0),
 	            (call_script, "script_search_troop_prisoner_of_party", ":cur_target_troop"),
 	            (assign, ":cur_target_center", reg0),
@@ -23418,8 +23433,8 @@ scripts = [
 	  (try_end),
 	  ##diplomacy end+
 
-      #Give new title
-      (call_script, "script_troop_set_title_according_to_faction", ":troop_no", ":faction_no"),
+      # #Give new title #SB : moved this down
+      # (call_script, "script_troop_set_title_according_to_faction", ":troop_no", ":faction_no"),
 
       (try_begin),
         (this_or_next|eq, ":faction_no", "$players_kingdom"),
@@ -23620,7 +23635,11 @@ scripts = [
 	  (try_end),
 
       (call_script, "script_update_all_notes"),
-
+      #SB : moved down here
+      (try_begin),
+        (neg|troop_slot_eq, ":troop_no", slot_troop_occupation, slto_inactive), #awaiting confirmation
+        (call_script, "script_troop_set_title_according_to_faction", ":troop_no", ":faction_no"),
+      (try_end),
       (call_script, "script_update_village_market_towns"),
       (assign, "$g_recalculate_ais", 1),
       ]),
@@ -55324,15 +55343,10 @@ scripts = [
     [
       (try_for_range, ":item_no", all_items_begin, all_items_end),
         (item_get_slot,  ":num_positions", ":item_no", slot_item_num_positions),
-
         (try_for_range, ":cur_position", 0, ":num_positions"),
           (store_add, ":cur_slot", slot_item_positions_begin, ":cur_position"),
           (item_get_slot, ":pos_no", ":item_no", ":cur_slot"),
           (set_spawn_position, ":pos_no"),
-
-
-
-
           (spawn_item, ":item_no", 0),
         (try_end),
       (try_end),
@@ -60357,11 +60371,20 @@ scripts = [
           (try_end),
       #xxx TODO: Make a full implementation of the above that takes into account the time of the last spy report.
       (try_begin),
-		(eq, ":details_available", 0),
-		(troop_get_slot, reg11, ":troop_no", slot_lord_reputation_type),
+        (eq, ":details_available", 0),
+        (troop_get_slot, reg11, ":troop_no", slot_lord_reputation_type),
         (str_store_string, s46, "str_dplmc_reputation_unknown"),
-	  (else_try),
-	  ##nested diplomacy end+
+      (else_try), #SB : promoted companion rep
+        (troop_slot_eq, ":troop_no", slot_lord_reputation_type, lrep_roguish),
+        (str_store_string, s46, "str_dplmc_reputation_roguish"),
+      (else_try),
+        (troop_slot_eq, ":troop_no", slot_lord_reputation_type, lrep_benefactor),
+        (str_store_string, s46, "str_dplmc_reputation_benefactor"),
+      (else_try),
+        (troop_slot_eq, ":troop_no", slot_lord_reputation_type, lrep_custodian),
+        (str_store_string, s46, "str_dplmc_reputation_custodian"),
+      (else_try),
+      ##nested diplomacy end+
         (troop_slot_eq, ":troop_no", slot_lord_reputation_type, lrep_martial),
         (str_store_string, s46, "str_dplmc_reputation_martial"),
       (else_try),
@@ -68042,6 +68065,11 @@ Born at {s43}^Contact in {s44} of the {s45}.^\
       ),
     #iterates through list of obtainable soldiers (and check if the player has reclassified them to a custom class > grc_cavalry)
     #instead of going through all troops globally, we check the selected center's garrison's upgraded troops
+        # (try_for_range, ":troop_no", soldiers_begin, soldiers_end),
+          # (neg|troop_is_hero, ":troop_no"),
+          # (troop_get_class, ":class", ":troop_no"),
+          # ...
+        # (try_end),
     ("cf_troop_class_activated",
     [
         (store_script_param, ":grc", 1),
@@ -68058,36 +68086,27 @@ Born at {s43}^Contact in {s44} of the {s45}.^\
             (neg|troop_is_hero, ":troop_no"),
             (try_begin),
               (troop_get_upgrade_troop, ":upgrade_troop", ":troop_no", 0),
-              (gt, ":upgrade_troop", 0),
-              (troop_get_class, ":class_no", ":upgrade_troop"),
-              (eq, ":class_no", ":grc"),
+              (call_script, "script_cf_troop_is_class", ":grc", ":upgrade_troop"),
               (assign, ":end", -1),
             (try_end),
             (try_begin), #not found, check other upgrade
               (neq, ":end", -1),
               (troop_get_upgrade_troop, ":upgrade_troop", ":troop_no", 1),
-              (gt, ":upgrade_troop", 0),
-              (troop_get_class, ":class_no", ":upgrade_troop"),
-              (eq, ":class_no", ":grc"),
+              (call_script, "script_cf_troop_is_class", ":grc", ":upgrade_troop"),
               (assign, ":end", -1),
             (try_end),
           (try_end),
-        # (try_for_range, ":troop_no", soldiers_begin, soldiers_end),
-          # (neg|troop_is_hero, ":troop_no"),
-          # (troop_get_class, ":class", ":troop_no"),
-        # (try_end),
         (try_end),
         (eq, ":end", -1),
-
     ]),
 
     ("cf_troop_is_class",
     [
         (store_script_param, ":grc", 1),
         (store_script_param, ":troop_no", 2),
-        (is_between, ":grc", grc_infantry, grc_everyone), #usually $g_constable_training_type
+        # (is_between, ":grc", grc_infantry, grc_everyone), #usually $g_constable_training_type
         (gt, ":troop_no", 0), #this is usually obtained through troop_get_upgrade_troop, sanitize it here
-
+        #can do some tf_guarantee flag as well but usually game engine parse is fine
         (troop_get_class, ":class_no", ":troop_no"),
         (eq, ":grc", ":class_no"),
     ]),
@@ -68821,11 +68840,13 @@ Born at {s43}^Contact in {s44} of the {s45}.^\
         (store_proficiency_level, ":polearms", ":troop_no", wpt_polearm),
 
         (assign, ":item_no", -1),
+        (assign, ":item_shield", -1),
         (try_begin), #practice shield will be added automatically
           (ge, ":onehands", ":twohands"),
           (ge, ":onehands", ":polearms"),
           # (agent_equip_item, ":agent_no", "itm_practice_shield"),
           (assign, ":item_no", "itm_practice_sword"),
+          (assign, ":item_shield", "itm_practice_shield"),
         (else_try),
           (ge, ":twohands", ":onehands"),
           (ge, ":twohands", ":polearms"),
@@ -68836,6 +68857,7 @@ Born at {s43}^Contact in {s44} of the {s45}.^\
           (assign, ":item_no", "itm_practice_staff"),
         (try_end),
         (assign, reg0, ":item_no"),
+        (assign, reg1, ":item_shield"),
     ]),
 
   # script_spawn_looters
@@ -68923,7 +68945,6 @@ Born at {s43}^Contact in {s44} of the {s45}.^\
         (call_script, "script_troop_transfer_gold", ":source", ":destination", ":move_gold"),
       (try_end),
     ]),
-
    #script_get_disguise_string
    #calculate the string offset by iteratively dividing by 2
    ("get_disguise_string", [
@@ -68944,11 +68965,14 @@ Born at {s43}^Contact in {s44} of the {s45}.^\
    ("acquire_disguise", [
       (store_script_param, ":disguise", 1),
       (troop_get_slot, ":cur_disguise", "trp_player", slot_troop_player_disguise_sets),
+      (store_and, ":has_disguise", ":cur_disguise", ":disguise"),
       (val_or, ":cur_disguise", ":disguise"),
       (troop_set_slot, "trp_player", slot_troop_player_disguise_sets, ":cur_disguise"),
-      (call_script, "script_get_disguise_string", ":disguise", 0),
-      # (str_store_string, s0, reg0),
-      (display_message, "@Acquired {s0}'s clothing", message_alert),
+      (try_begin), #suppress
+        (eq, ":has_disguise", 0),
+        (call_script, "script_get_disguise_string", ":disguise", 0),
+        (display_message, "@Acquired {s0}'s clothing", message_alert),
+      (try_end),
       ]),
    #script_set_disguise_overide_items
    #see also start of module_mission_templates for static list of items
@@ -69005,7 +69029,7 @@ Born at {s43}^Contact in {s44} of the {s45}.^\
         (eq, "$sneaked_into_town", disguise_guard),
         (mission_tpl_entry_add_override_item, ":mission_template", ":entry_no", "itm_footman_helmet"),
         (mission_tpl_entry_add_override_item, ":mission_template", ":entry_no", "itm_mail_mittens"),
-        (mission_tpl_entry_add_override_item, ":mission_template", ":entry_no", "itm_maiL_shirt"),
+        (mission_tpl_entry_add_override_item, ":mission_template", ":entry_no", "itm_mail_shirt"),
         (mission_tpl_entry_add_override_item, ":mission_template", ":entry_no", "itm_leather_jerkin"), #dckplmc
         (mission_tpl_entry_add_override_item, ":mission_template", ":entry_no", "itm_mail_chausses"),
         (try_begin),
@@ -73038,59 +73062,79 @@ Born at {s43}^Contact in {s44} of the {s45}.^\
         (party_add_members, ":party_no_to_collect_heroes", ":pretender", 1),
      (try_end),
      (party_get_num_companion_stacks, reg0, ":party_no_to_collect_heroes"),
-
   ]),
-    ("enter_court_female", [
+  ("enter_court_staff", [
       (store_script_param_1, ":center_no"),
       (store_script_param_2, ":party_no_to_collect_heroes"),
-      (store_faction_of_party, ":center_faction", ":center_no"),
       (party_clear, ":party_no_to_collect_heroes"),
-      (try_for_range, ":cur_troop", kingdom_ladies_begin, kingdom_ladies_end),
-        (neq, ":cur_troop", "trp_knight_1_1_wife"), #The one who should not appear in game
-        #(troop_slot_eq, ":cur_troop", slot_troop_occupation, slto_kingdom_lady),
-        (troop_slot_eq, ":cur_troop", slot_troop_cur_center, ":center_no"),
+      (try_begin),
+        (gt, "$g_player_minister", 0),
+        (party_add_members, ":party_no_to_collect_heroes", "$g_player_minister", 1),
+      (try_end),
+      (try_begin),
+        (gt, "$g_player_chancellor", 0),
+        (party_add_members, ":party_no_to_collect_heroes", "$g_player_chancellor", 1),
+      (try_end),
+      (try_begin),
+        (gt, "$g_player_constable", 0),
+        (party_add_members, ":party_no_to_collect_heroes", "$g_player_constable", 1),
+      (try_end),
+      (try_begin),
+        (gt, "$g_player_chamberlain", 0),
+        (party_add_members, ":party_no_to_collect_heroes", "$g_player_chamberlain", 1),
+      (try_end),
+  ]),
+("enter_court_female", [
+  (store_script_param_1, ":center_no"),
+  (store_script_param_2, ":party_no_to_collect_heroes"),
+  (store_faction_of_party, ":center_faction", ":center_no"),
+  (party_clear, ":party_no_to_collect_heroes"),
+  (try_for_range, ":cur_troop", kingdom_ladies_begin, kingdom_ladies_end),
+    (neq, ":cur_troop", "trp_knight_1_1_wife"), #The one who should not appear in game
+    #(troop_slot_eq, ":cur_troop", slot_troop_occupation, slto_kingdom_lady),
+    (troop_slot_eq, ":cur_troop", slot_troop_cur_center, ":center_no"),
 
-        (assign, ":lady_meets_visitors", 0),
+    (assign, ":lady_meets_visitors", 0),
+    (try_begin),
+        (this_or_next|troop_slot_eq, "trp_player", slot_troop_spouse, ":cur_troop"),
+        (troop_slot_eq, "trp_player", slot_troop_betrothed, ":cur_troop"),
+        (assign, ":lady_meets_visitors", 1),
+    (else_try),
+        (this_or_next|troop_slot_eq, ":cur_troop", slot_troop_spouse, "trp_player"),
+        (troop_slot_eq, ":cur_troop", slot_troop_betrothed, "trp_player"),
+        (assign, ":lady_meets_visitors", 1),
+    (else_try), #lady is troop
+        (store_faction_of_troop, ":lady_faction", ":cur_troop"),
+        (neq, ":lady_faction", ":center_faction"),
+        (assign, ":lady_meets_visitors", 1),
+    (else_try),
+        (troop_slot_ge, ":cur_troop", slot_troop_spouse, 1),
         (try_begin),
-            (this_or_next|troop_slot_eq, "trp_player", slot_troop_spouse, ":cur_troop"),
-            (troop_slot_eq, "trp_player", slot_troop_betrothed, ":cur_troop"),
-            (assign, ":lady_meets_visitors", 1),
-        (else_try),
-            (this_or_next|troop_slot_eq, ":cur_troop", slot_troop_spouse, "trp_player"),
-            (troop_slot_eq, ":cur_troop", slot_troop_betrothed, "trp_player"),
-            (assign, ":lady_meets_visitors", 1),
-        (else_try), #lady is troop
-            (store_faction_of_troop, ":lady_faction", ":cur_troop"),
-            (neq, ":lady_faction", ":center_faction"),
-            (assign, ":lady_meets_visitors", 1),
-        (else_try),
-            (troop_slot_ge, ":cur_troop", slot_troop_spouse, 1),
-            (try_begin),
-                (faction_slot_eq, ":center_faction", slot_faction_ai_state, sfai_feast),
-                (faction_slot_eq, ":center_faction", slot_faction_ai_object, ":center_no"),
-                (assign, ":lady_meets_visitors", 0),
-            (else_try),
-                (assign, ":lady_meets_visitors", 1),
-            (try_end),
-        (else_try), #feast is in progress
             (faction_slot_eq, ":center_faction", slot_faction_ai_state, sfai_feast),
             (faction_slot_eq, ":center_faction", slot_faction_ai_object, ":center_no"),
-            (assign, ":lady_meets_visitors", 1),
-        (else_try), #already met - awaits in private
-            (troop_slot_ge, ":cur_troop", slot_troop_met, 2),
             (assign, ":lady_meets_visitors", 0),
         (else_try),
-            (call_script, "script_get_kingdom_lady_social_determinants", ":cur_troop"),
-            (call_script, "script_npc_decision_checklist_male_guardian_assess_suitor", reg0, "trp_player"),
-            (gt, reg0, 0),
             (assign, ":lady_meets_visitors", 1),
         (try_end),
+    (else_try), #feast is in progress
+        (faction_slot_eq, ":center_faction", slot_faction_ai_state, sfai_feast),
+        (faction_slot_eq, ":center_faction", slot_faction_ai_object, ":center_no"),
+        (assign, ":lady_meets_visitors", 1),
+    (else_try), #already met - awaits in private
+        (troop_slot_ge, ":cur_troop", slot_troop_met, 2),
+        (assign, ":lady_meets_visitors", 0),
+    (else_try),
+        (call_script, "script_get_kingdom_lady_social_determinants", ":cur_troop"),
+        (call_script, "script_npc_decision_checklist_male_guardian_assess_suitor", reg0, "trp_player"),
+        (gt, reg0, 0),
+        (assign, ":lady_meets_visitors", 1),
+    (try_end),
 
-        (eq, ":lady_meets_visitors", 1),
-        (party_add_members, ":party_no_to_collect_heroes", ":cur_troop", 1),
-      (try_end),
-      (party_get_num_companion_stacks, reg0, ":party_no_to_collect_heroes"),
-    ]),
+    (eq, ":lady_meets_visitors", 1),
+    (party_add_members, ":party_no_to_collect_heroes", ":cur_troop", 1),
+  (try_end),
+  (party_get_num_companion_stacks, reg0, ":party_no_to_collect_heroes"),
+]),
     
     #input : party_no (of the recruiter), 
     #        amount to be updated (-1 for cancel, 0 for update)
@@ -73269,6 +73313,114 @@ Born at {s43}^Contact in {s44} of the {s45}.^\
       (quest_set_slot, "qst_destroy_bandit_lair", slot_quest_delegate_level, 20),
       (quest_set_slot, "qst_troublesome_bandits", slot_quest_delegate_level, 20),
       (quest_set_slot, "qst_train_peasants_against_bandits", slot_quest_delegate_level, 20),
+    ]),
+    
+    #calculate based on # centers & game difficulty & faction sliders
+    # reports {reg0} (denars lost), {reg1} (% lost, not marginal tax ineff)
+    ("cf_dplmc_calculate_tax_inefficiency", [
+      (store_script_param, ":num_owned", 1),
+      (store_script_param, ":tax_total", 2),
+      (store_script_param, ":alt_rule_faction", 3),
+      (game_get_reduce_campaign_ai, ":reduce_campaign_ai"),
+      (try_begin),
+        (eq, ":reduce_campaign_ai", 0), #hard
+        (assign, ":needed", 2),
+        (assign, ":ratio", 5),
+      (else_try),
+        (eq, ":reduce_campaign_ai", 1), #medium
+        (assign, ":needed", 4),
+        (assign, ":ratio", 4),
+      (else_try),
+        (eq, ":reduce_campaign_ai", 2), #easy
+        (assign, ":needed", 6),
+        (assign, ":ratio", 3),
+      (try_end),
+      (try_begin),
+        (gt, "$g_dplmc_gold_changes", DPLMC_GOLD_CHANGES_LOW),
+        (try_begin), #SB : small boost for capital
+          (is_between, "$g_player_court", walled_centers_begin, walled_centers_end),
+          (store_and, ":has_capital", "$players_kingdom_name_set", rename_center), #check if it's "court" or "capital"
+          (val_add, ":needed", ":has_capital"),
+        (try_end),
+        (try_begin),
+          (troop_get_slot, ":spouse", "trp_player", slot_troop_spouse),
+          (is_between, ":spouse", heroes_begin, heroes_end),
+          (troop_slot_eq, ":spouse", slot_troop_spouse, "trp_player"),
+          (val_add, ":needed", 1),
+        (try_end),
+      (try_end),
+      #original condition here
+      (gt, ":num_owned", ":needed"),
+      (gt, ":tax_total", 0),
+      
+      (store_sub, ":ratio_lost", ":num_owned", ":needed"),
+      (val_mul, ":ratio_lost", ":ratio"),
+      (val_min, ":ratio_lost", 65),
+      (try_begin),
+        (gt, "$g_player_chamberlain", 0),
+        (assign, ":percent", 10),
+      (else_try),
+        (assign, ":percent", 0),
+      (try_end),
+
+      (try_begin),
+        ##diplomacy start+ Handle player is co-ruler of NPC kingdom
+        (gt, "$g_dplmc_gold_changes", DPLMC_GOLD_CHANGES_DISABLE),
+        (try_begin),
+          #Copy slot values
+          (is_between, ":alt_rule_faction", npc_kingdoms_begin, npc_kingdoms_end),
+          (neg|faction_slot_eq, "fac_player_supporters_faction", slot_faction_state, sfs_active),
+
+          (faction_get_slot, reg0, ":alt_rule_faction", dplmc_slot_faction_serfdom),
+          (faction_set_slot, "fac_player_supporters_faction", dplmc_slot_faction_serfdom,  reg0),
+          (faction_get_slot, reg0, ":alt_rule_faction", dplmc_slot_faction_centralization),
+          (faction_set_slot, "fac_player_supporters_faction", dplmc_slot_faction_centralization,  reg0),
+          (faction_get_slot, reg0, ":alt_rule_faction", dplmc_slot_faction_quality),
+          (faction_set_slot, "fac_player_supporters_faction", dplmc_slot_faction_quality,  reg0),
+          (faction_get_slot, reg0, ":alt_rule_faction", dplmc_slot_faction_aristocracy),
+          (faction_set_slot, "fac_player_supporters_faction", dplmc_slot_faction_aristocracy,  reg0),
+          (faction_get_slot, reg0, ":alt_rule_faction", dplmc_slot_faction_mercantilism),
+          (faction_set_slot, "fac_player_supporters_faction", dplmc_slot_faction_mercantilism,  reg0),
+        (try_end),
+
+        (this_or_next|is_between, ":alt_rule_faction", npc_kingdoms_begin, npc_kingdoms_end),
+        ##diplomacy end+
+        (faction_slot_eq, "fac_player_supporters_faction", slot_faction_state, sfs_active),
+        (try_begin),
+          (faction_get_slot, ":centralization", "fac_player_supporters_faction", dplmc_slot_faction_centralization),
+          (neq, ":centralization", 0),
+          (val_mul, ":centralization", 5),
+          (val_add, ":percent", ":centralization"),
+        (try_end),
+        (try_begin),
+          (faction_get_slot, ":serfdom", "fac_player_supporters_faction", dplmc_slot_faction_serfdom),
+          (neq, ":serfdom", 0),
+          (val_mul, ":serfdom", 3),
+          (val_add, ":percent", ":serfdom"),
+        (try_end),
+      (else_try),
+        (gt, "$players_kingdom", 0),
+        (gt, "$g_dplmc_gold_changes", DPLMC_GOLD_CHANGES_DISABLE),
+        (faction_get_slot, ":centralization", "$players_kingdom", dplmc_slot_faction_centralization),
+        (neq, ":centralization", 0),
+        (val_mul, ":centralization", -5),
+        (val_add, ":percent", ":centralization"),
+      (try_end),
+      
+      (try_begin),
+        (gt, ":ratio_lost", 0),
+        (store_mul, ":tax_lost", ":tax_total", ":ratio_lost"),
+        (store_mul, ":save", ":tax_lost", ":percent"),
+        (val_div, ":save", 100),
+        (val_sub, ":tax_lost", ":save"), #SB : get total not marginal savling
+        (store_div, ":percent", ":tax_lost", ":tax_total"), #already x100 from above
+        (val_div, ":tax_lost", 100), #do this last
+      (else_try),
+        (assign, ":tax_lost", 0),
+        (assign, ":percent", 0),
+      (try_end),
+      (assign, reg0, ":tax_lost"),
+      (assign, reg1, ":percent"),
     ]),
     # #script_cf_dplmc_disguise_evaluate_contraband
     # #input : party_no, troop_no

@@ -4876,8 +4876,8 @@ Only you know exactly what caused you to give up your old life and become an adv
   ("pilgrim_disguise", "pilgrim"),
   ("farmer_disguise", "farmer"),
   ("hunter_disguise", "hunter"),
-  ("merchant_disguise", "merchant"),
   ("guard_disguise", "guard"),
+  ("merchant_disguise", "merchant"),
   ("bard_disguise", "bard"),
   
   #recolor presentation strings
@@ -5101,7 +5101,6 @@ Only you know exactly what caused you to give up your old life and become an adv
   ("mayor_wealth_comparison_4", "In terms of trade, {s2} have received the most visits from caravans over the past few months. {s1}"),
   ("mayor_wealth_comparison_5", "In terms of attacks on travellers, {s2} be the most dangerous. {s1}"),
   
-  
   ("npc_mission_delegate_quest", "Questing on your behalf"), #generic description "on an errand"
   #these are 3rd-person descriptions of objectives {x} for {y} since string registers are not always known
   ("dplmc_npc_qst_deliver_message", "Deliver a peaceful message"),
@@ -5145,6 +5144,10 @@ Only you know exactly what caused you to give up your old life and become an adv
   ("dplmc_npc_qst_deliver_cattle", "Deliver cattle"),
   ("dplmc_npc_qst_train_peasants_against_bandits", "Train peasants"),
   #TODO add bonus description for various starting background
+  #some strings for companion personality
+  ("dplmc_reputation_roguish", "It is whispered that {s46} lives life to the full."),
+  ("dplmc_reputation_benefactor", "It is widely known that {s46} is a friend of the commoners."),
+  ("dplmc_reputation_custodian", "It is believed that {s46} is a wise investor."),
 #utility for skill names
 ]+[
 ("skl_"+skills[x][0], skills[x][1]) for x in range(0, len(skills))]

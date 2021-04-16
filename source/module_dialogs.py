@@ -2526,6 +2526,13 @@ Still I am sorry that I'll leave you soon. You must promise me, you'll come visi
     ##diplomacy end+
 ], "Do you have any connections that we could use to our advantage?", "member_intelgathering_1",[]],
 
+# #TODO: steal some disguises from companions 
+# [anyone|plyr,"member_question_2", [
+    # (is_between, "$g_talk_troop", companions_begin, companions_end),
+    # (call_script, "script_dplmc_store_troop_is_female_reg", "$g_talk_troop", 4),
+    # (eq, reg4, "$character_gender"),
+# ], "Do you have any old aclothing I could borrow?", "close_window",[]],
+
 [anyone|plyr,"member_question_2", [
     ##diplomacy start+ Prevent this from appearing for already-enfeoffed troops
     (call_script, "script_get_number_of_hero_centers", "$g_talk_troop"),
@@ -3080,7 +3087,10 @@ Still I am sorry that I'll leave you soon. You must promise me, you'll come visi
   (val_max, reg10, 2), #base time to "complete"
   # (assign, reg11, ":distance"), #base time to "complete"
 ], 
-"Very well. I will set forth for {s10}. I should be back in approximately {reg10} days but may need a few extra days to complete the mission satisfactorily.", "member_delegate_quest_inventory", []],
+"Very well. I will set forth for {s10}. I should be back in approximately {reg10} days but may need a few extra days to complete the mission satisfactorily.", "member_delegate_quest_inventory", [
+  (troop_clear_inventory, "trp_temp_troop"),
+  (party_clear, "p_temp_party"),
+]],
 #fallback
 [anyone, "member_delegate_quest_destination", [], 
 "I am actually lost on where I need to go for this. Do you happen to have a map of the area per chance?", "redo_member_quest", []],
@@ -3110,7 +3120,17 @@ Still I am sorry that I'll leave you soon. You must promise me, you'll come visi
     #calculate how much player has in inventory
     (item_get_max_ammo, ":stack_size", "$diplomacy_var"),
     (val_mul, ":stack_size", "$diplomacy_var2"),
-    
+    (troop_get_inventory_capacity, ":inv_cap", "trp_player"),
+    (assign, ":total_units", 0),
+    (try_for_range, ":i_slot", 10, ":inv_cap"),
+      (troop_get_inventory_slot, ":item_no", "trp_player", ":i_slot"),
+      (eq, ":item_no", "$diplomacy_var"),
+      (troop_get_inventory_slot_modifier, ":imod", "trp_player", ":i_slot"),
+      (neq, ":imod", imod_rotten),
+      (troop_inventory_slot_get_item_amount, ":cur_amount", "trp_player", ":i_slot"),
+      (val_add, ":total_units", ":cur_amount"),
+    (try_end),
+    (quest_set_slot, "$random_merchant_quest_no", slot_quest_temp_slot, ":total_units"),
   ]
 ],
 [anyone|auto_proceed, "member_delegate_quest_inventory", [], "{!}.", "member_delegate_quest_soldiers", []],
@@ -3118,8 +3138,9 @@ Still I am sorry that I'll leave you soon. You must promise me, you'll come visi
 [anyone|plyr, "member_delegate_quest_ask_for_items", [ 
   (gt, "$diplomacy_var", 0),
   (store_item_kind_count, ":item_count", "$diplomacy_var"),
+  (item_get_max_ammo, ":item_size", "$diplomacy_var"),
   ],
-"Of course, take care with these.", "member_delegate_quest_confirm", [
+"Of course, take care with these.", "member_delegate_quest_assess_for_items", [
   
 ]],
 [anyone|plyr, "member_delegate_quest_ask_for_items", [ (gt, "$diplomacy_var", 0),],
@@ -3134,14 +3155,9 @@ Still I am sorry that I'll leave you soon. You must promise me, you'll come visi
   (eq, "$random_merchant_quest_no", "qst_raise_troops"),
   (assign, ":quest_object", -1),
   (try_begin),
-    (quest_get_slot, ":item_no", "$random_merchant_quest_no", slot_quest_target_item),
-    (try_begin), #if not set, fallback to grain
-      (lt, ":item_no", 0),
-      (eq, "$random_merchant_quest_no", "qst_deliver_grain"),
-      (assign, ":item_no", "itm_grain"),
-    (try_end),
-    (str_store_item_name, s11, ":item_no"),
-    (assign, ":quest_object", ":item_no"),
+    (quest_get_slot, ":troop_no", "$random_merchant_quest_no", slot_quest_object_troop),
+    (str_store_troop_name, s11, ":troop_no"),
+    (assign, ":quest_object", ":troop_no"),
     (assign, "$diplomacy_var", ":quest_object"),
     (quest_get_slot, "$diplomacy_var2", "$random_merchant_quest_no", slot_quest_target_amount),
   (try_end),
@@ -3151,6 +3167,7 @@ Still I am sorry that I'll leave you soon. You must promise me, you'll come visi
   "Alright, let me gather the soldiers and I'll be on my way. I believe we need {reg10} {s10} for the quota.", "member_delegate_quest_ask_for_troops",
   [
     
+
   ]
 ],
 [anyone|auto_proceed, "member_delegate_quest_soldiers", [], "{!}.", "member_delegate_quest_confirm", []],
@@ -5099,6 +5116,7 @@ Still I am sorry that I'll leave you soon. You must promise me, you'll come visi
 ##diplomacy end+
 # Recruiter kit end
 
+
 ##SB : Messenger changed to template, store actual mission
 [pt_messenger_party|party_tpl, "start", [], "Greetings. Sorry but I don't have time to talk now. I am delivering a very important message to {s6}.", "dplmc_messenger_talk", [
   (party_get_slot, ":party_no", "$g_encountered_party", slot_party_ai_object),
@@ -5441,7 +5459,7 @@ Still I am sorry that I'll leave you soon. You must promise me, you'll come visi
 ##diplomacy end+
 
 [anyone|plyr,"dplmc_chancellor_domestic_policy_options",[
-(faction_slot_eq, "fac_player_supporters_faction", slot_faction_state, sfs_active),
+# (faction_slot_eq, "fac_player_supporters_faction", slot_faction_state, sfs_active),
 ],
 "Please give me information about the domestic policy of a kingdom.", "dplmc_chancellor_domestic_policy_info_ask",
 []],
@@ -5452,9 +5470,10 @@ Still I am sorry that I'll leave you soon. You must promise me, you'll come visi
 ]],
 
 [anyone|plyr|repeat_for_factions,"dplmc_chancellor_domestic_policy_info_select",[
-(store_repeat_object, ":faction"),
-(is_between, ":faction", npc_kingdoms_begin, npc_kingdoms_end),
-(str_store_faction_name, s10, ":faction"),
+  (store_repeat_object, ":faction"), #SB : show active kingdoms
+  (is_between, ":faction", npc_kingdoms_begin, npc_kingdoms_end),
+  (faction_slot_eq, ":faction", slot_faction_state, sfs_active),
+  (str_store_faction_name, s10, ":faction"),
 ],
 "{s10}.", "dplmc_chancellor_domestic_policy_info",
 [(store_repeat_object, "$diplomacy_var"),]],
@@ -5468,9 +5487,15 @@ Still I am sorry that I'll leave you soon. You must promise me, you'll come visi
 ##SB : move building policy strings to display_policy_string_to_reg
 (str_store_faction_name_link, s5, "$diplomacy_var"),
 (str_clear, s20),
-(call_script, "script_display_policy_string_to_reg", "$diplomacy_var", 0, 0),
+(try_begin),
+  (eq, "$diplomacy_var", "$players_kingdom"),
+  (assign, ":our_kingdom", 1),
+(else_try),
+  (assign, ":our_kingdom", 0),
+(try_end),
+(call_script, "script_display_policy_string_to_reg", "$diplomacy_var", ":our_kingdom", 0),
 ],
-"{s20}", "dplmc_chancellor_domestic_policy_info_ask",[#<- dplmc+ added {s20}
+"{s20}", "dplmc_chancellor_domestic_policy_info_select",[#<- dplmc+ added {s20}
 ]],##nested diplomacy end+
 
 [anyone|plyr,"dplmc_chancellor_domestic_policy_options",[
@@ -5498,6 +5523,7 @@ Still I am sorry that I'll leave you soon. You must promise me, you'll come visi
 (ge, ":current_hours", ":policy_time"),
 
 # SB : unify domestic policy descriptions, first person, space breaks
+(str_clear, s20),
 (call_script, "script_display_policy_string_to_reg", "fac_player_supporters_faction", 1, 0),
 ],
 "{s20} What do you want to change?", "dplmc_chancellor_domestic_policy",#<- dplmc+ added {s0}
@@ -5523,6 +5549,7 @@ Still I am sorry that I'll leave you soon. You must promise me, you'll come visi
 (try_end),
 (assign, reg0, ":wait_days"),
 # SB : unify domestic policy descriptions, first person, space breaks
+(str_clear, s20),
 (call_script, "script_display_policy_string_to_reg", "fac_player_supporters_faction", 1, 0),
 ],
 ##nested diplomacy start+
@@ -5812,8 +5839,8 @@ Still I am sorry that I'll leave you soon. You must promise me, you'll come visi
 (try_end),
 
 (try_begin),
-(eq, ":report",0),
-(str_store_string, s10, "@Sorry, currently I can't provide any information about the lords mood, our spies haven't reported back yet."),
+  (eq, ":report",0), #SB : lords -> realm's; (since) our
+  (str_store_string, s10, "@Sorry, currently I can't provide any information about the realm's mood, since our spies haven't reported back yet."),
 (try_end),
 ],
 "{s10}", "dplmc_chancellor_pretalk",[
@@ -5833,23 +5860,24 @@ Still I am sorry that I'll leave you soon. You must promise me, you'll come visi
 "To whom would you like to send the message?", "dplmc_chancellor_message_lord_select",[
 ]],
 
-
 ##select the lord who shall receive the message to hand over
 [anyone|plyr|repeat_for_troops, "dplmc_chancellor_message_lord_select",
 [
 (store_repeat_object, ":troop_no"),
-(neq, "$g_talk_troop", ":troop_no"),
-(is_between, ":troop_no", active_npcs_begin, kingdom_ladies_end),
+(is_between, ":troop_no", heroes_begin, heroes_end),
+(neq, ":troop_no", "$g_talk_troop"),
 (neq, ":troop_no", "trp_player"),
+#SB : awaiting pledge
+(this_or_next|troop_slot_eq, ":troop_no", slot_troop_occupation, slto_inactive),
 (troop_slot_eq, ":troop_no", slot_troop_occupation, slto_kingdom_hero),
 (store_troop_faction, ":faction_no", ":troop_no"),
 (eq, "$players_kingdom", ":faction_no"),
-
+# (troop_slot_eq, ":troop_no", slot_troop_met, 1),
 #SB: stipulate it must have a party or valid home as target
 (neg|troop_slot_ge, ":troop_no", slot_troop_prisoner_of_party, 0),
-         (neg|troop_slot_ge, ":troop_no", slot_troop_leaded_party, 1),
 (str_store_troop_name, s1, ":troop_no"),
 (troop_get_slot, ":leaded_party", ":troop_no", slot_troop_leaded_party),
+
 (try_begin),
   (ge, ":leaded_party", 1),
   (party_is_active, ":leaded_party"),
@@ -5861,10 +5889,14 @@ Still I am sorry that I'll leave you soon. You must promise me, you'll come visi
   (str_store_party_name, s2, ":leaded_party"),
   (str_store_string, s1, "@{s1} at {s2}"), #str_s8_in_s12
 (try_end),
+
 (gt, ":leaded_party", 0),
+(party_is_active, ":leaded_party"),
+(assign, "$pout_party", ":leaded_party"), #cache for later
 ],"{s1}.", "dplmc_chancellor_message_ask",
 [
-(store_repeat_object, "$lord_selected"),
+  (store_repeat_object, "$lord_selected"),
+  (str_store_troop_name, s6, "$lord_selected"),
 ]],
 
 [anyone|plyr, "dplmc_chancellor_message_lord_select",
@@ -5877,23 +5909,50 @@ Still I am sorry that I'll leave you soon. You must promise me, you'll come visi
 "I can't think of anyone.", "dplmc_chancellor_pretalk",[
 ]],
 
+#SB : redirect conversation
+[anyone, "dplmc_chancellor_message_ask",
+[
+  (party_is_active, "$pout_party"),
+  (this_or_next|eq, "$pout_party", "$current_town"),
+  (party_is_in_town, "$pout_party", "$current_town"),
+],
+"Ahem, {s6} is right here, perhaps you should do the honors if it's not too awkward?", "close_window",[
+  (assign, "$pout_party", -1),
+  # (call_script, "script_change_player_relation_with_troop", "$lord_selected", -1),
+]],
+
+# #SB : not-found precondition
+# [anyone, "dplmc_chancellor_message_ask",
+# [
+# # (str_store_troop_name, s6, "$lord_selected"),
+# (call_script, "script_get_information_about_troops_position", "$lord_selected", 0),
+# (eq, reg0, 0),
+# ],
+# "We won't be able track down {s2}, unfortunately.", "dplmc_chancellor_pretalk",[
+  # (assign, "$lord_selected", -1),
+  # (assign, "$pout_party", -1),
+# ]],
 [anyone, "dplmc_chancellor_message_ask",
 [
 (str_store_troop_name, s6, "$lord_selected"),
-##diplomacy start+ Save gender to reg4
-(assign, reg4, 0),
-(try_begin),
-(call_script, "script_cf_dplmc_troop_is_female", "$lord_selected"),
-(assign, reg4, 1),
-(try_end),
-##diplomacy end+
+(call_script, "script_get_information_about_troops_position", "$lord_selected", 0),
+# ##diplomacy start+ Save gender to reg4
+# (assign, reg4, 0),
+# (try_begin),
+  # (call_script, "script_cf_dplmc_troop_is_female", "$lord_selected"),
+  # (assign, reg4, 1),
+# (try_end),
+# ##diplomacy end+
 ],
-"What do you want to tell {s6}?", "dplmc_chancellor_message_select",[
+"What do you want to tell {s6}? {s1}", "dplmc_chancellor_message_select",[
 ]],
 
+#SB : todo check existing messengers
 ##ask to accompany to another lord
 [anyone|plyr, "dplmc_chancellor_message_select",
 [
+  (gt, "$pout_party", centers_end),
+  # (neg|troop_slot_eq, "$lord_selected", slot_troop_occupation, slto_inactive), #SB : army condition
 ],
 ##diplomacy start+ make gender correct using reg4 (set above)
 "Ask {reg4?her:him} if {reg4?she:he} is willing to accompany me in the field.", "dplmc_chancellor_message_lord_ask",
@@ -5917,6 +5976,7 @@ Still I am sorry that I'll leave you soon. You must promise me, you'll come visi
 ##ask to patrol a center
 [anyone|plyr, "dplmc_chancellor_message_select",
 [
+  (gt, "$pout_party", centers_end),
 ],
 ##diplomacy start+ make gender correct using reg4 (set above)
 "Ask {reg4?her:him} if {reg4?she:he} is willing to patrol a location.", "dplmc_chancellor_message_goto_lord_ask",
@@ -5939,6 +5999,8 @@ Still I am sorry that I'll leave you soon. You must promise me, you'll come visi
 ##ask to besiege a center
 [anyone|plyr, "dplmc_chancellor_message_select",
 [
+  (gt, "$pout_party", centers_end),
+  (neg|troop_slot_eq, "$lord_selected", slot_troop_occupation, slto_inactive), #SB : army condition
 ],
 ##diplomacy start+ make gender correct using reg4 (set above)
 "Ask {reg4?her:him} if {reg4?she:he} is willing to besiege a location.", "dplmc_chancellor_message_goto_lord_ask",
@@ -5950,6 +6012,8 @@ Still I am sorry that I'll leave you soon. You must promise me, you'll come visi
 ##ask to besiege a center
 [anyone|plyr, "dplmc_chancellor_message_select",
 [
+  (gt, "$pout_party", centers_end),
+  (neg|troop_slot_eq, "$lord_selected", slot_troop_occupation, slto_inactive), #SB : army condition
 ],
 ##diplomacy start+ make gender correct using reg4 (set above)
 "Ask {reg4?her:him} if {reg4?she:he} is willing to raid around a location.", "dplmc_chancellor_message_goto_lord_ask",
@@ -5966,9 +6030,19 @@ Still I am sorry that I'll leave you soon. You must promise me, you'll come visi
 
 [anyone,"dplmc_chancellor_message_goto_lord_ask", [],
 ##diplomacy start+ make gender correct using reg4 (set above)
-"Where do you order {reg4?her:him}?", "dplmc_chancellor_message_order_details",[]],
+"Where shall you order {reg4?her:him}?", "dplmc_chancellor_message_order_details",[]], #SB : do -> shall
 ##diplomacy end+
 
+#SB : include here as an option
+[anyone|plyr, "dplmc_chancellor_message_order_details",
+[
+  (is_between, "$current_town", walled_centers_begin, walled_centers_end),
+  (neq, "$temp", spai_raiding_around_center), #not hostile action
+  (neq, "$temp", spai_besieging_center),
+],
+"Here", "dplmc_chancellor_message_lord_ask",[
+  (assign, "$temp_2", "$current_town"),
+]],
 [anyone|plyr|repeat_for_parties, "dplmc_chancellor_message_order_details",
 [
 (store_repeat_object, ":party_no"),
@@ -6000,22 +6074,18 @@ Still I am sorry that I'll leave you soon. You must promise me, you'll come visi
    (lt, ":relation", 0),
    (assign, ":continue", 1),
  (try_end),
-
-
 (else_try),
- (eq, "$temp", spai_patrolling_around_center),
- (try_begin),
-   (eq, ":party_faction", "$players_kingdom"),
-   (is_between, ":party_no", centers_begin, centers_end),
-   (assign, ":continue", 1),
-(else_try),
-   (is_between, ":party_no", centers_begin, centers_end),
-
- (store_distance_to_party_from_party, ":distance", ":party_no", "p_main_party"),
- (le, ":distance", 25),
-   (assign, ":continue", 1),
-
- (try_end),
+  (eq, "$temp", spai_patrolling_around_center),
+  (try_begin),
+    (eq, ":party_faction", "$players_kingdom"),
+    (is_between, ":party_no", centers_begin, centers_end),
+    (assign, ":continue", 1),
+  (else_try),
+    (is_between, ":party_no", centers_begin, centers_end),
+    (store_distance_to_party_from_party, ":distance", ":party_no", "p_main_party"),
+    (le, ":distance", 25),
+    (assign, ":continue", 1),
+  (try_end),
 (try_end),
 (eq, ":continue", 1),
 (neq, ":party_no", "$g_encountered_party"),
@@ -7502,8 +7572,20 @@ Still I am sorry that I'll leave you soon. You must promise me, you'll come visi
 [anyone, "dplmc_constable_train_type_ask",
 [
 (str_store_party_name, s11, "$diplomacy_var"),
+(assign, ":count", 0),
+(try_for_range, ":grounds", training_grounds_begin, training_grounds_end),
+  (store_distance_to_party_from_party, ":distance", ":grounds", "$diplomacy_var"),
+  (lt, ":distance", 50),
+  (val_add, ":count", 1),
+(try_end),
+(try_begin),
+  (gt, ":count", 0),
+  (assign, reg10, ":count"),
+  (store_sub, reg11, reg10, 1),
+  (str_store_string, s10, "@Since we are close to {reg11?{reg10} training centers:a training center}, you can talk to the trainers to get a bigger batch trained."),
+(try_end),
 ],
-"What type of units would you prefer me to train up in {s11}?", "dplmc_constable_train_type",
+"What type of units would you prefer me to train up in {s11}{s10}", "dplmc_constable_train_type",
 []
 ],
 
@@ -8656,7 +8738,7 @@ What kind of recruits do you want?", "dplmc_constable_recruit_select",
 
       (val_add, ":num_owned_center_values_for_tax_efficiency", 1),
       (party_get_slot, ":accumulated_tariffs", ":selected_party", slot_center_accumulated_tariffs),
-      (assign, reg0, ":accumulated_tariffs"),
+      # (assign, reg0, ":accumulated_tariffs"),
       (val_add, ":income", ":accumulated_tariffs"),
     (try_end),
   (try_end),
@@ -8667,23 +8749,11 @@ What kind of recruits do you want?", "dplmc_constable_recruit_select",
 #SB : garrion -> garrisons
 (str_store_string, s6, "@We currently have an income of {reg0} denars and costs of {reg1} denars from our fiefs and garrisons."),
 
-(assign, ":tax_lost", 0),
 (try_begin),
-(gt, ":num_owned_center_values_for_tax_efficiency", 3),
-(store_sub, ":ratio_lost", ":num_owned_center_values_for_tax_efficiency", 3),
-(val_mul, ":ratio_lost", 9),
-(val_min, ":ratio_lost", 140),
-(store_mul, ":tax_lost", ":income", ":ratio_lost"),
-(val_div, ":tax_lost", 200),
-(try_end),
-
-(try_begin),
-(gt, ":tax_lost", 0),
-(store_mul, ":tax_lost_percent", ":tax_lost", 100),
-(val_div, ":tax_lost_percent", ":income"),
-(assign, reg0, ":tax_lost"),
-(assign, reg1, ":tax_lost_percent"),
-(str_store_string, s6, "@{s6} We are losing {reg0} denars due to tax inefficiency. That means {reg1} percent."),
+  (call_script, "script_cf_dplmc_calculate_tax_inefficiency", ":num_owned_center_values_for_tax_efficiency", ":income", -1),
+  (gt, reg0, 0),
+  (assign, ":tax_lost", reg0),
+  (str_store_string, s6, "@{s6} We are losing {reg0} denars due to tax inefficiency. That means {reg1} percent."),
 (try_end),
 
 (assign, ":overall", ":income"),
@@ -8704,18 +8774,39 @@ What kind of recruits do you want?", "dplmc_constable_recruit_select",
 [anyone, "dplmc_chamberlain_treasury",
 [
 (store_troop_gold, ":treasury", "trp_household_possessions"),
-(assign, reg0, ":treasury"),
-(str_store_string, s4, "@{!}{reg0}"),
-(try_begin),
-(gt, "$g_player_debt_to_party_members", 0),
-(assign, reg0, "$g_player_debt_to_party_members"),
-(str_store_string, s6, "@{reg0} denars"),
+(call_script, "script_game_get_money_text", ":treasury"),
+(str_store_string, s4, s1),
+(try_begin), #SB : add up more debt globals
+  (store_add, ":debt", "$g_player_debt_to_party_members", "$debt_to_merchants_guild"),
+  (assign, ":lord_debt", 0),
+  (try_for_range, ":troop_no", heroes_begin, heroes_end),
+    (this_or_next|is_between, ":troop_no", active_npcs_begin, active_npcs_end),
+    (troop_slot_eq, ":troop_no", slot_troop_occupation, slto_kingdom_hero),
+    (troop_get_slot, ":cur_debt", ":troop_no", slot_troop_player_debt),#Increasing debt
+    (lt, ":cur_debt", dplmc_ransom_debt_mask), #qst_rescue_prisoner does not accumulate
+    (val_add, ":lord_debt", ":cur_debt"),
+  (try_end),
+  (troop_set_slot, "trp_kingdom_heroes_including_player_begin", slot_troop_player_debt, ":lord_debt"),
+  (val_add, ":debt", ":lord_debt"),
+  (gt, ":debt", 0),
+  (call_script, "script_game_get_money_text", ":debt"),
+  (str_store_string, s6, s1),
 (else_try),
-(str_store_string, s6, "@no"),
+  
+  (str_store_string, s6, "@no outstanding amount"),
 (try_end),
-],
-"There are currently {s4} denars in the treasury and we have {s6} debts. What do you want to do?", "dplmc_chamberlain_treasury_action",
+], #SB : use money string
+"There are currently {s4} in the treasury and we have {s6} of debt. What do you want to do?", "dplmc_chamberlain_treasury_action",
 []],
+
+# [anyone|plyr, "dplmc_chamberlain_treasury_action",
+# [
+  # (this_or_next|gt, "$g_player_debt_to_party_members", 0),
+  # (this_or_next|gt, "$debt_to_merchants_guild", 0),
+  # (troop_slot_ge, "trp_kingdom_heroes_including_player_begin", slot_troop_player_debt, 1),
+# ],
+# "I would like to pay my debts.", "dplmc_chamberlain_treasury_action_pay_debt",
+# []], #TODO add branches for these
 
 [anyone|plyr, "dplmc_chamberlain_treasury_action",
 [
@@ -8726,10 +8817,9 @@ What kind of recruits do you want?", "dplmc_constable_recruit_select",
 [anyone, "dplmc_chamberlain_treasury_action_pay",
 [
 (store_troop_gold, ":treasury", "trp_household_possessions"),
-(assign, reg0, ":treasury"),
-(str_store_string, s4, "@{!}{reg0}"),
+(call_script, "script_game_get_money_text", ":treasury"), #SB : script call
 ],
-"We currently have {s4} denars in the treasury. How much money do you like to pay into the treasury, Sire?", "dplmc_chamberlain_treasury_action_pay_select",
+"We currently have {s1} in the treasury. How much money do you like to pay into the treasury, Sire?", "dplmc_chamberlain_treasury_action_pay_select",
 []],
 
 [anyone|plyr, "dplmc_chamberlain_treasury_action_pay_select",
@@ -9041,6 +9131,12 @@ What kind of recruits do you want?", "dplmc_constable_recruit_select",
 (this_or_next|eq, ":center_faction", "fac_player_supporters_faction"),
 (eq, ":center_faction", "$players_kingdom"),
 (str_store_party_name, s6, ":center_no"),
+(try_begin), #SB : preview tax rate
+  (party_get_slot, ":tax_rate", ":center_no", dplmc_slot_center_taxation),
+  (neq, ":tax_rate", 0),
+  (call_script, "script_dplmc_describe_tax_rate_to_s50", ":tax_rate"),
+  (str_store_string, s6, "@{s6} ({s50})"),
+(try_end),
 ],
 "{!}{s6}", "dplmc_chamberlain_tax_ask_rate",
 [
@@ -9057,7 +9153,8 @@ What kind of recruits do you want?", "dplmc_constable_recruit_select",
 [
 (str_store_party_name, s6, "$diplomacy_var"),
 ],
-"How high do you want to set the tax rate for {s6}?", "dplmc_chamberlain_tax_select_rate",
+#SB : add small blurb
+"How high do you want to set the tax rate for {s6}? The people are likely to grumble while they toil under a high tax regime, while they might become more accepting towards us or even prosper under a more forgiving hand.", "dplmc_chamberlain_tax_select_rate",
 [
 ]],
 
@@ -16850,10 +16947,12 @@ Here, take this purse of {reg3} denars, as I promised. I hope we can travel toge
 ##diplomacy start+ write political events to log
 (str_store_troop_name, s1, "$g_talk_troop"),
 (str_store_faction_name, s2, "$g_talk_troop_faction"),
-#SB : colors
+#SB : colors, deferred title
 (troop_get_slot, ":old_faction", "$g_talk_troop", slot_troop_original_faction),
 (faction_get_color, ":color", ":old_faction"),
 (display_log_message, "@{s1} has been accepted as a vassal of {s2}.", ":color"),
+(call_script, "script_troop_set_title_according_to_faction", "$g_talk_troop", "$g_talk_troop_faction"),
+(assign, "$g_leave_encounter", 1),
 ##diplomacy end+
 #This should be enough, scriptwise, but if there is a string somewhere to confirm the pledge, I should link
 ]],
@@ -24982,6 +25081,7 @@ I will use this to make amends to those you have wronged, and I will let it be k
   # (neg|check_quest_failed, "qst_capture_prisoners"),
   # (neg|check_quest_succeeded, "qst_capture_prisoners"),
   (quest_get_slot, ":prisoner", "qst_capture_prisoners", slot_quest_target_troop),
+  (is_between, ":prisoner", regular_troops_begin, regular_troops_end),
   (store_troop_count_prisoners, ":cur_count", ":prisoner", "p_main_party"),
   (val_add, ":cur_count", 1), #off by one for ge
   (quest_slot_ge, "qst_capture_prisoners", slot_quest_target_amount, ":cur_count"),
@@ -25006,7 +25106,7 @@ I will use this to make amends to those you have wronged, and I will let it be k
     (eq, "$g_prisoner_recruit_size", 1),
     (assign, "$diplomacy_var", 0),
     (call_script, "script_dplmc_store_troop_is_female_reg", ":prisoner", 4),
-    (assign, reg10, 0),
+    (assign, reg10, 1),
   (else_try),
     (assign, reg10, 0),
     (assign, "$g_talk_troop", ransom_brokers_begin),
@@ -25028,8 +25128,8 @@ I will use this to make amends to those you have wronged, and I will let it be k
  
 [anyone|plyr, "lord_talk_ask_about_capture_prisoners_count", [], "Never mind.", "lord_talk_ask_something_again", [
   #clear globals
-  (assign, "$g_prisoner_recruit_troop_id", -1),
-  (assign, "$g_prisoner_recruit_size", -1),
+  (assign, "$g_prisoner_recruit_troop_id", 0),
+  (assign, "$g_prisoner_recruit_size", 0),
 ]],
 [anyone|plyr, "lord_talk_ask_about_capture_prisoners_count", [
   (quest_get_slot, ":amount", "qst_capture_prisoners", slot_quest_target_amount),
@@ -25075,8 +25175,9 @@ I will use this to make amends to those you have wronged, and I will let it be k
     (troop_remove_gold, "trp_player", "$diplomacy_var"),
     (call_script, "script_dplmc_distribute_gold_to_lord_and_holdings", "$diplomacy_var", "$g_talk_troop"),
   (try_end),
-  (assign, "$g_prisoner_recruit_troop_id", -1),
-  (assign, "$g_prisoner_recruit_size", -1),
+  (assign, "$g_prisoner_recruit_troop_id", 0),
+  (assign, "$g_prisoner_recruit_size", 0),
+  (store_current_hours, "$g_prisoner_recruit_last_time"),
   ],
  ],
 #SB : qst_rescue_prisoner ransom proposal
@@ -25460,7 +25561,7 @@ I will use this to make amends to those you have wronged, and I will let it be k
 
  #To avoid exploitative use of this, the lords take their garrisons and prisoners with them
  (party_clear, "p_temp_party"),#contains lord's old center's garrison and prisoners
-(party_clear, "p_temp_party_2"),#contains player's old center's garrison and prisoners
+ (party_clear, "p_temp_party_2"),#contains player's old center's garrison and prisoners
 
 (try_begin),
    (eq, ":from_lord_fief_walled", 1),
@@ -37995,10 +38096,15 @@ I suppose there are plenty of bounty hunters around to get the job done . . .", 
    #SB : disguise_bard
   [anyone, "minstrel_courtship_poem", [
   (eq, "$g_dplmc_player_disguise", 1), #enabled
-  (neg|troop_slot_ge, "trp_player", slot_troop_player_disguise_sets, disguise_bard),],
+  (troop_get_slot, ":has_disguise", "trp_player", slot_troop_player_disguise_sets),
+  (val_and, ":has_disguise", disguise_bard),
+  (eq, ":has_disguise", 0),
+  ],
    "I believe you already know the poems I am best equipped to teach. However, I believe that you are eager to learn more -- I can also teach you some courtly fashion and the use of the lyre.\
  All yours for the small token price of 1000 denars, as I am hesitant to sell off this antique lyre...",
-   "minstrel_disguise_teach", []],
+   "minstrel_disguise_teach", [
+    #TODO check if they're using lyre or lute
+   ]],
 
   [anyone|plyr, "minstrel_disguise_teach", [
     (store_troop_gold, ":gold", "trp_player"),
@@ -39681,9 +39787,11 @@ I suppose there are plenty of bounty hunters around to get the job done . . .", 
   ]],
 
   #SB : disguise_merchant
-
   [anyone|plyr,"master_craftsman_talk", [
     (eq, "$g_dplmc_player_disguise", 1), #enabled
+    (troop_get_slot, ":has_disguise", "trp_player", slot_troop_player_disguise_sets),
+    (val_and, ":has_disguise", disguise_merchant),
+    (eq, ":has_disguise", 0),
   ], "I will be requiring a set of merchant's clothing so as to conduct business.", "master_craftsman_disguise_asked",[]],
 
   [anyone,"master_craftsman_disguise_asked", [
@@ -40589,7 +40697,7 @@ I suppose there are plenty of bounty hunters around to get the job done . . .", 
       (assign, reg10, 0),
     (try_end),
 
-  ], "What realms? {reg10?Your Majesty:Our liege} has conquered them all!", "mayor_pretalk",[]],
+  ], "What realms? {reg10?Your Majesty:Our liege} has conquered them all!", "mayor_friendly_pretalk",[]],
 
   [anyone,"mayor_politics_assess",[], "Which realm did you have in mind?", "mayor_politics_assess_realm",[
   ]],
@@ -40601,11 +40709,11 @@ I suppose there are plenty of bounty hunters around to get the job done . . .", 
   (neq, ":faction", "$g_encountered_party_faction"),
   (str_store_faction_name, s11, ":faction"),
   ], "{s11}", "mayor_politics_give_realm_assessment",[
-  (store_repeat_object, "$faction_selected"),
+  (store_repeat_object, "$g_faction_selected"),
   ]],
 
   [anyone,"mayor_politics_give_realm_assessment",[], "{s14}", "mayor_prepolitics",[
-  (call_script, "script_npc_decision_checklist_peace_or_war", "$g_encountered_party_faction", "$faction_selected", -1),
+  (call_script, "script_npc_decision_checklist_peace_or_war", "$g_encountered_party_faction", "$g_faction_selected", -1),
   ]],
 
    [anyone|plyr,"mayor_political_questions",[], "What can you say about the internal politics of the realms?", "mayor_internal_politics",[
@@ -40638,6 +40746,13 @@ I suppose there are plenty of bounty hunters around to get the job done . . .", 
     "Now, men do not trust a vassal who turns coat easily. But I'm sure your grace know the heart and mind of the realm, keeping better council than myself.", "mayor_prepolitics", []],
   [anyone,"mayor_internal_politics_5",[], "Now, men do not trust a vassal who turns coat easily, nor do they trust a king who lightly throws around charges of treason. Those two factors can keep a realm together. But if relations between a vassal and a liege deteriorate far enough, things can become very tense indeed... In other lands, of course. These things could never happen here in the {s4}.", "mayor_prepolitics", []],
 
+  #SB : add faction policy strings if no access to chancellor
+  [anyone|plyr, "mayor_political_questions", [], "Do you have any insight into the realm's domestic policies?", "mayor_politics_policy", []],
+  [anyone,"mayor_politics_policy", [], "Well, let's see.. {s20}", "mayor_political_questions",[
+    (str_clear, s20),
+    (call_script, "script_display_policy_string_to_reg", "$g_encountered_party_faction", 1, 1),
+  ]],
+  
   [anyone|plyr, "mayor_political_questions", [], "That is all. Thank you.", "mayor_pretalk", []],
 
 
@@ -41801,18 +41916,27 @@ I suppose there are plenty of bounty hunters around to get the job done . . .", 
    "I want to buy some cattle.", "village_elder_buy_cattle",[]],
    
   #SB : disguise_farmer
-  [anyone|plyr,"village_elder_trade_talk", [(party_slot_ge, "$current_town", slot_center_player_relation, 20),
+  [anyone|plyr,"village_elder_trade_talk", [
+  (this_or_next|party_slot_eq, "$current_town", slot_town_lord, "trp_player"),
+  (party_slot_ge, "$current_town", slot_center_player_relation, 25),
+  (party_slot_ge, "$current_town", slot_center_player_relation, 10),
   (eq, "$g_dplmc_player_disguise", 1), #enabled
+  (troop_get_slot, ":has_disguise", "trp_player", slot_troop_player_disguise_sets),
+  (val_and, ":has_disguise", disguise_farmer),
+  (eq, ":has_disguise", 0),
   ],
    "Actually, I need a set of whatever it is your peasants are wearing.", "village_elder_buy_clothing",[]],
    
   [anyone ,"village_elder_buy_clothing", [(party_slot_eq, "$current_town", slot_town_lord, "trp_player"),
-    (call_script, "script_dplmc_print_commoner_at_arg1_says_sir_madame_to_s0", "$current_town"),],
+    (call_script, "script_dplmc_print_commoner_at_arg1_says_sir_madame_to_s0", "$current_town"),
+    (call_script, "script_dplmc_store_troop_is_female_reg", "$g_talk_troop", 4),
+    (eq, reg4, "$character_gender"),
+    ],
    "Of course, {s0}. You may do as you see fit with these clothes off my own back.", "village_elder_pretalk",[
      (call_script, "script_acquire_disguise", disguise_farmer),
    ]],
   [anyone ,"village_elder_buy_clothing", [],
-   "That won't be a problem, I can arrange for some freshly laundered tunics to be delivered. I won't ask what purpose you'll use them for.", "village_elder_pretalk",[
+   "That won't be a problem, I can arrange for some freshly laundered tunics to be delivered.", "village_elder_pretalk",[
    (call_script, "script_acquire_disguise", disguise_farmer),
    ]],
 
@@ -44118,6 +44242,15 @@ I suppose there are plenty of bounty hunters around to get the job done . . .", 
      (party_set_slot, "$current_town", slot_party_temp_slot_1, "p_temp_party"), #1st mode
    ]],
 
+  [anyone|plyr,"hall_guard_talk", [
+    (party_slot_eq, "$current_town", slot_town_lord, "trp_player"),
+    (neg|party_slot_eq, "$current_town", slot_party_temp_slot_1, "p_temp_party_2"),
+  ],
+   "Clear the halls, I need a private audience with my ministers.", "dplmc_guard_talk_enter_court",[
+   (party_clear, "p_temp_party_2"),
+   (call_script, "script_enter_court_staff", "$current_town", "p_temp_party_2"),
+   (party_set_slot, "$current_town", slot_party_temp_slot_1, "p_temp_party_2"), #2nd mode
+   ]],
    
   [anyone,"dplmc_guard_talk_enter_court", [
     (eq, "$temp", 0), #none in stack

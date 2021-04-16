@@ -12988,20 +12988,6 @@ presentations = [
       (overlay_set_area_size, "$g_presentation_obj_bugdet_report_container", pos1),
       (set_container_overlay, "$g_presentation_obj_bugdet_report_container"),
 
-      (game_get_reduce_campaign_ai, ":reduce_campaign_ai"),
-      (try_begin),
-        (eq, ":reduce_campaign_ai", 0), #hard
-        (assign, ":num_centers_needed_for_efficiency_loss", 2),
-        (assign, ":tax_efficiency_loss_ratio_per_center", 5),
-      (else_try),
-        (eq, ":reduce_campaign_ai", 1), #medium
-        (assign, ":num_centers_needed_for_efficiency_loss", 4),
-        (assign, ":tax_efficiency_loss_ratio_per_center", 4),
-      (else_try),
-        (eq, ":reduce_campaign_ai", 2), #easy
-        (assign, ":num_centers_needed_for_efficiency_loss", 6),
-        (assign, ":tax_efficiency_loss_ratio_per_center", 3),
-      (try_end),
 	  ##diplomacy start+ Handle player is co-ruler of NPC kingdom
 	  (assign, ":alt_rule_faction", "fac_player_supporters_faction"),
 	  (try_begin),
@@ -13039,7 +13025,7 @@ presentations = [
         (val_add, ":num_lines", 1),
       (try_end),
       (try_begin),
-        (gt, ":num_owned_center_values_for_tax_efficiency", ":num_centers_needed_for_efficiency_loss"),
+        (gt, ":num_owned_center_values_for_tax_efficiency", 2),
       #gt accumulated total is ignored
         (val_add, ":num_lines", 1),
       (try_end),
@@ -13396,83 +13382,19 @@ presentations = [
         (val_sub, ":cur_y", 27),
       (try_end),
 
-      (try_begin),
-        (gt, ":num_owned_center_values_for_tax_efficiency", ":num_centers_needed_for_efficiency_loss"),
+      (try_begin), #SB : moved to script
+        # (gt, ":num_owned_center_values_for_tax_efficiency", ":num_centers_needed_for_efficiency_loss"),
         (gt, ":all_centers_accumulated_total", 0),
-        (store_sub, ":ratio_lost", ":num_owned_center_values_for_tax_efficiency", ":num_centers_needed_for_efficiency_loss"),
-        (val_mul, ":ratio_lost", ":tax_efficiency_loss_ratio_per_center"),
-        (val_min, ":ratio_lost", 65),
-
-        #(store_mul, ":tax_lost", ":all_centers_accumulated_total", ":ratio_lost"),
-        (store_mul, ":tax_lost", ":all_centers_accumulated_taxes_and_rents", ":ratio_lost"),
-        (val_div, ":tax_lost", 100),
         ##diplomacy begin
-        (assign, ":percent", 0),
-        (try_begin),
-          (gt, "$g_player_chamberlain", 0),
-          (val_add, ":percent", 10),
-        (try_end),
-        (try_begin),
-		  ##diplomacy start+ Handle player is co-ruler of NPC kingdom
-		  (try_begin),
-			#Copy slot values
-		    (is_between, ":alt_rule_faction", npc_kingdoms_begin, npc_kingdoms_end),
-			(neg|faction_slot_eq, "fac_player_supporters_faction", slot_faction_state, sfs_active),
-
-			(faction_get_slot, reg0, ":alt_rule_faction", dplmc_slot_faction_serfdom),
-			(faction_set_slot, "fac_player_supporters_faction", dplmc_slot_faction_serfdom,  reg0),
-
-			(faction_get_slot, reg0, ":alt_rule_faction", dplmc_slot_faction_centralization),
-			(faction_set_slot, "fac_player_supporters_faction", dplmc_slot_faction_centralization,  reg0),
-
-			(faction_get_slot, reg0, ":alt_rule_faction", dplmc_slot_faction_quality),
-			(faction_set_slot, "fac_player_supporters_faction", dplmc_slot_faction_quality,  reg0),
-
-			(faction_get_slot, reg0, ":alt_rule_faction", dplmc_slot_faction_aristocracy),
-			(faction_set_slot, "fac_player_supporters_faction", dplmc_slot_faction_aristocracy,  reg0),
-
-			(faction_get_slot, reg0, ":alt_rule_faction", dplmc_slot_faction_mercantilism),
-			(faction_set_slot, "fac_player_supporters_faction", dplmc_slot_faction_mercantilism,  reg0),
-		  (try_end),
-
-		  (this_or_next|is_between, ":alt_rule_faction", npc_kingdoms_begin, npc_kingdoms_end),
-		  ##diplomacy end+
-          (faction_slot_eq, "fac_player_supporters_faction", slot_faction_state, sfs_active),
-          (try_begin),
-            (faction_get_slot, ":centralization", "fac_player_supporters_faction", dplmc_slot_faction_centralization),
-            (neq, ":centralization", 0),
-            (val_mul, ":centralization", 5),
-            (val_add, ":percent", ":centralization"),
-          (try_end),
-          (try_begin),
-            (faction_get_slot, ":serfdom", "fac_player_supporters_faction", dplmc_slot_faction_serfdom),
-            (neq, ":serfdom", 0),
-            (val_mul, ":serfdom", 3),
-            (val_add, ":percent", ":serfdom"),
-          (try_end),
-        (else_try),
-          (gt, "$players_kingdom", 0),
-          (faction_get_slot, ":centralization", "$players_kingdom", dplmc_slot_faction_centralization),
-          (neq, ":centralization", 0),
-          (val_mul, ":centralization", -5),
-          (val_add, ":percent", ":centralization"),
-        (try_end),
-        (try_begin),
-          (gt, ":tax_lost", 0),
-          (store_mul, ":save", ":tax_lost", ":percent"),
-          (val_div, ":save", 100),
-          (store_mul, ":percent", ":save", 100),
-          (val_div, ":percent", ":tax_lost"),
-          (val_sub, ":tax_lost", ":save"),
-        (try_end),
-         ##diplomacy end
+        (call_script, "script_cf_dplmc_calculate_tax_inefficiency", ":num_owned_center_values_for_tax_efficiency", ":all_centers_accumulated_taxes_and_rents", ":alt_rule_faction"),
+        (assign, ":tax_lost", reg0),
+        (assign, ":percent", reg1),
+        (gt, ":tax_lost", 0),
         (val_sub, ":net_change", ":tax_lost"),
-        ##diplomacy begin
         (try_begin),
           (gt, "$g_player_chamberlain", 0),
           (str_store_string, s55, "str_loss_due_to_tax_inefficiency"),
-          (assign, reg0, ":percent"),
-          (val_mul, reg0, -1),
+          (store_mul, reg0, ":percent", -1),
           (str_store_string, s55, "@{s55} ({reg0}%)"),
           (create_text_overlay, reg1, "@{s55}", 0),
         (else_try),
@@ -14465,6 +14387,7 @@ presentations = [
   ]),
 
 
+    #SB : move fixed faction to global, TODO: add read-only state by ending on change
     ("dplmc_policy_management",0,mesh_load_window,[
       (ti_on_presentation_load,
         [
@@ -14473,11 +14396,11 @@ presentations = [
         ##nested diplomacy start+ insert g_presentation_obj_5, g_presentation_obj_6 and increment others
 
         ##Moved up here from below
-        (faction_get_slot, ":centralization", "fac_player_supporters_faction", dplmc_slot_faction_centralization),
-        (faction_get_slot, ":aristocracy", "fac_player_supporters_faction", dplmc_slot_faction_aristocracy),
-        (faction_get_slot, ":serfdom", "fac_player_supporters_faction", dplmc_slot_faction_serfdom),
-        (faction_get_slot, ":quality", "fac_player_supporters_faction", dplmc_slot_faction_quality),
-        (faction_get_slot, ":mercantilism", "fac_player_supporters_faction", dplmc_slot_faction_quality),#<- dplmc+ added
+        (faction_get_slot, ":centralization", "$g_faction_selected", dplmc_slot_faction_centralization),
+        (faction_get_slot, ":aristocracy", "$g_faction_selected", dplmc_slot_faction_aristocracy),
+        (faction_get_slot, ":serfdom", "$g_faction_selected", dplmc_slot_faction_serfdom),
+        (faction_get_slot, ":quality", "$g_faction_selected", dplmc_slot_faction_quality),
+        (faction_get_slot, ":mercantilism", "$g_faction_selected", dplmc_slot_faction_quality),#<- dplmc+ added
 
         # done
         (create_game_button_overlay, "$g_presentation_obj_12", "str_done"),#<- dplmc+ changed obj_10 to obj_12
@@ -14530,11 +14453,11 @@ presentations = [
         (create_text_overlay, "$g_presentation_obj_10", "@High mercantilistic policies maximize exports while minimizing imports, and increase government regulation of industry."),#<-dplmc+ added
 
         ##Moved earlier
-        #(faction_get_slot, ":centralization", "fac_player_supporters_faction", dplmc_slot_faction_centralization),
-        #(faction_get_slot, ":aristocracy", "fac_player_supporters_faction", dplmc_slot_faction_aristocracy),
-        #(faction_get_slot, ":serfdom", "fac_player_supporters_faction", dplmc_slot_faction_serfdom),
-        #(faction_get_slot, ":quality", "fac_player_supporters_faction", dplmc_slot_faction_quality),
-        #(faction_get_slot, ":mercantilism", "fac_player_supporters_faction", dplmc_slot_faction_quality),#<- dplmc+ added
+        #(faction_get_slot, ":centralization", "$g_faction_selected", dplmc_slot_faction_centralization),
+        #(faction_get_slot, ":aristocracy", "$g_faction_selected", dplmc_slot_faction_aristocracy),
+        #(faction_get_slot, ":serfdom", "$g_faction_selected", dplmc_slot_faction_serfdom),
+        #(faction_get_slot, ":quality", "$g_faction_selected", dplmc_slot_faction_quality),
+        #(faction_get_slot, ":mercantilism", "$g_faction_selected", dplmc_slot_faction_quality),#<- dplmc+ added
 
         (overlay_set_val, "$g_presentation_obj_sliders_1", ":centralization"),
         (overlay_set_val, "$g_presentation_obj_sliders_2", ":aristocracy"),
@@ -14633,29 +14556,29 @@ presentations = [
         #Added new option, so had to increment some sliders
         (try_begin),
           (eq, ":object", "$g_presentation_obj_sliders_1"),
-          (faction_set_slot,  "fac_player_supporters_faction", dplmc_slot_faction_centralization, ":value"),
+          (faction_set_slot,  "$g_faction_selected", dplmc_slot_faction_centralization, ":value"),
           (val_add, ":value", "str_dplmc_neither_centralize_nor_decentralized"),
           (overlay_set_text, "$g_presentation_obj_sliders_6", ":value"),#dplmc+ incremented "sliders"
         (else_try),
           (eq, ":object", "$g_presentation_obj_sliders_2"),
-          (faction_set_slot,  "fac_player_supporters_faction", dplmc_slot_faction_aristocracy, ":value"),
+          (faction_set_slot,  "$g_faction_selected", dplmc_slot_faction_aristocracy, ":value"),
           (val_add, ":value", "str_dplmc_neither_aristocratic_nor_plutocratic"),
           (overlay_set_text, "$g_presentation_obj_sliders_7", ":value"),#dplmc+ incremented "sliders"
         (else_try),
           (eq, ":object", "$g_presentation_obj_sliders_3"),
-          (faction_set_slot,  "fac_player_supporters_faction", dplmc_slot_faction_serfdom, ":value"),
+          (faction_set_slot,  "$g_faction_selected", dplmc_slot_faction_serfdom, ":value"),
           (val_add, ":value", "str_dplmc_mixture_serfs"),
           (overlay_set_text, "$g_presentation_obj_sliders_8", ":value"),#dplmc+ incremented "sliders"
         (else_try),
           (eq, ":object", "$g_presentation_obj_sliders_4"),
-          (faction_set_slot,  "fac_player_supporters_faction", dplmc_slot_faction_quality, ":value"),
+          (faction_set_slot,  "$g_faction_selected", dplmc_slot_faction_quality, ":value"),
           (val_add, ":value", "str_dplmc_mediocre_quality"),
           (overlay_set_text, "$g_presentation_obj_sliders_9", ":value"),#dplmc+ incremented "sliders"
         #Finished incremented sliders.
         (else_try),
           #dplmc+ new option: mercantilism
           (eq, ":object", "$g_presentation_obj_sliders_5"),
-          (faction_set_slot,  "fac_player_supporters_faction", dplmc_slot_faction_mercantilism, ":value"),
+          (faction_set_slot,  "$g_faction_selected", dplmc_slot_faction_mercantilism, ":value"),
           (val_add, ":value", "str_dplmc_neither_mercantilist_nor_laissez_faire"),
           (overlay_set_text, "$g_presentation_obj_sliders_10", ":value"),
         #Change variable associated with "Done" button.
@@ -14665,7 +14588,7 @@ presentations = [
           (presentation_set_duration, 0),
         (else_try), #SB : randomize and restart presentation
           (eq, ":object", "$g_presentation_obj_11"),#dplmc+ changed 10 to 12
-          (call_script, "script_dplmc_randomize_faction_domestic_policy", "fac_player_supporters_faction"),
+          (call_script, "script_dplmc_randomize_faction_domestic_policy", "$g_faction_selected"),
           (start_presentation, "prsnt_dplmc_policy_management"),
         (try_end),
         ##nested diplomacy end+

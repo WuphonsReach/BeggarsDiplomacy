@@ -2195,7 +2195,12 @@ dplmc_slot_faction_attitude_begin             = 160
 ##diplomacy end
 ##diplomacy start+ add faction slots for additional policies
 dplmc_slot_faction_mercantilism               = 206 # + mercantilism / - free trade
-
+# Merchantilism
+# - Your caravans generate more revenue for your towns, but your benefit
+#   from the caravans of other kingdoms is diminished.
+# - Trade within the kingdom is made more efficient, while imports are
+#   discouraged.
+#
 dplmc_slot_faction_policies_begin = dplmc_slot_faction_centralization #Define these for convenient iteration.  Requires them to be continuous.
 dplmc_slot_faction_policies_end   = dplmc_slot_faction_mercantilism + 1
 
@@ -2248,14 +2253,9 @@ DPLMC_GOLD_CHANGES_DISABLE = -1
 DPLMC_GOLD_CHANGES_LOW     =  0
 DPLMC_GOLD_CHANGES_MEDIUM  =  1
 DPLMC_GOLD_CHANGES_HIGH    =  2
-#
-#Mercantilism
-# - Your caravans generate more revenue for your towns, but your benefit
-#   from the caravans of other kingdoms is diminished.
-# - Trade within the kingdom is made more efficient, while imports are
-#   discouraged.
-#
 #Low:
+# - Faction policy affects budget report (yours as ruler & centralization as vassal)
+#   TODO: actually distribute vassal taxes to liege (whether player/npc)
 # - Caravan trade benefits both the source and the destination
 # - When the player surrenders, there is a chance his personal equipment
 #   will not be looted, based on who accepted the surrender and the difficulty
@@ -2315,7 +2315,7 @@ DPLMC_GOLD_CHANGES_HIGH    =  2
 # - Raiding change: village gold lost is removed from uncollected taxes before
 #   the balance (if any) is removed from the lord.
 # - Trading parties will drop off prisoners at walled centers.
-# - Cash for prisoners
+# - Cash for prisoners slowly sold off in town garrison
 # - allows cancelling improvements (cash goes back to local economy)
 
 #For relatives: a standard way of generating IDs for "relatives" that are not

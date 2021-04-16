@@ -68,6 +68,7 @@ info_pages = [
 ^- When villages are looted any volunteers that were in the village will be killed for both player and NPC."),
 
 ("dplmc_gold_changes", "Option: Economic AI", "Low:^\
+^- Faction policy sliders affect tax inefficiency as either liege or vassal (centralization).\
 ^- Caravan trade benefits both the source and the destination.\
 ^- When the player surrenders, there is a chance his personal equipment will not be looted, based on who accepted the surrender and the difficulty setting.  (This is meant to address a gameplay issue. In the first 700 days or so, there is no possible benefit to surrendering rather than fighting to the last man.)  Also, a bug that made it possible for books etc. to be looted was corrected.\
 ^- AI caravans take into consideration distance when choosing their next destination and will be slightly more like to visit their own faction. This strategy is mixed with the Native one, so the trade pattern will differ but not wildly.\
@@ -78,6 +79,7 @@ info_pages = [
 ^- Villages being raided now delays construction projects.\
 ^- Trading parties will drop off prisoners at walled centers.\
 ^^Medium:^\
+^- Your spouse and having a capital effectively lets you hold an extra center by offsetting the tax inefficiency limit by one.\
 ^- Food consumption increases in towns as prosperity increases. Consumption also increases with garrison sizes.\
 ^- Lords' looting skill affects how much gold they take from the player when they defeat him.\
 ^- Lords' leadership skill modifies their troop wage costs the same way it does for the player.\
@@ -94,7 +96,7 @@ info_pages = [
 ^- If any lords run a personal gold surplus after party wages, the extra is divided among the lord and his garrisons budgets (each castle and town has its own pool of funds to pay for soldiers) on the basis of whether the lord is low on gold or any of his fortresses are. (If none are low on gold, the lord takes everything, like before).\
 ^- The honor loss from an offense depends in part on the player's honor at the time. The purer the reputation, the greater the effect of a single disagrace.\
 ^- Raiding change: village gold lost is removed from uncollected taxes before the balance (if any) is removed from the lord.\
-^- Cash for prisoners.\
+^- Prisoners pruned off from centers weekly are actually ransomed off at a 1:10 ratio to increase local wealth.\
 ^- Allows cancelling improvements (cash goes back to local economy, but relations suffer)."),
 ##diplomacy end+
  ("morale", "Morale", "Morale represents the ability and willingness of the troops in a party to summon up the endurance, quality, and discipline they need to face the stresses of battle and the march. It is not the same thing as the troops' happiness. Elite troops may grumble and whine about the hardships of campaigning -- but then stand together as one when the arrows start to fly. On the other hand, a commander who gives his men everything they want may find that they grow soft, and waiver before the enemy's charge.^^ Morale's greatest impact is on a party's behavior in battle, determining how aggressively troops engage the enemy, and how likely they are to break and run if they perceive the tide of battle turning against them. Morale also affects a party's march speed, as a less motivated party will move more slowly, as the men are not pushing themselves to their physical limit, and pause more frequently, as it waits for stragglers to catch up. Finally, a party with very low morale will start to suffer desertions.^^ Some factors that affect morale are intuitive. For example, a charismatic commander with a reputation for winning battles can infuse his or her men with a sense of confidence. Leaders who give their men well ample and varied supplies of food, and pay them on time, demonstrate that they care about their troops' welfare, and are less likely to lead them into disaster.^^ Other factors are less intuitive -- particularly those related to a party's sense of group cohesion. In a small tight-knit party, for example, men will often fight hard against daunting odds to avoid showing cowardice before their comrades-in-arms. A large party on the other hand may see its cohesion strained, as the commander has less time to supervise the men, listen to their grievances, and resolve their disputes. Frequent battles will strengthen the bonds between men, while long periods without combat will see the troops become bored and quarrelsome.^^ The morale report, accessibly by hitting the 'reports' button will give the player a sense of the factors affecting his or her men's morale."),
