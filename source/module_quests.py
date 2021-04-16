@@ -1,5 +1,6 @@
 from header_quests import *
 
+from compiler import *
 ####################################################################################################################
 #  Each quest record contains the following fields:
 #  1) Quest id: used for referencing quests in other files. The prefix qst_ is automatically added before each quest-id.
@@ -395,8 +396,9 @@ quests = [
   "{!}placeholder"
   ),
 
+  #SB : clarified quest description of player + 5 more men
  ("collect_men", "Collect Five Men", 0,
-  "{!}{s9} asked you to collect at least 5 men before you move against the bandits threatening the townsmen. You can recruit soldiers from villages as well as town taverns. You can find {s9} at the tavern in {s4} when you have think you have enough men."
+  "{!}{s9} asked you to collect at least 5 more men before you move against the bandits threatening the townsmen. You can recruit soldiers from villages as well as town taverns. You can find {s9} at the tavern in {s4} when you have think you have enough men."
   ), 
   
   ("learn_where_merchant_brother_is", "Learn Where the Hostages are Held.", 0,

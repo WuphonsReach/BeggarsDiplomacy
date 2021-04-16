@@ -1,5 +1,6 @@
 from header_meshes import *
 
+from compiler import *
 ####################################################################################################################
 #  Each mesh record contains the following fields:
 #  1) Mesh id: used for referencing meshes in other files. The prefix mesh_ is automatically added before each mesh id.
@@ -18,7 +19,7 @@ from header_meshes import *
 
 meshes = [
   ("pic_bandits", 0, "pic_bandits", 0, 0, 0, 0, 0, 0, 1, 1, 1),
-  ("pic_mb_warrior_1", 0, "pic_mb_warrior_1", 0, 0, 0, 0, 0, 0, 1, 1, 1),
+  ("pic_mb_warrior_1", 0, "ini_pic_mb_warrior_1", 0, 0, 0, 0, 0, 0, 0.6, 1, 0.8), #SB : make this suitable for background_mesh
   ("pic_messenger", 0, "pic_messenger", 0, 0, 0, 0, 0, 0, 1, 1, 1),
   ("pic_prisoner_man", 0, "pic_prisoner_man", 0, 0, 0, 0, 0, 0, 1, 1, 1),
   ("pic_prisoner_fem", 0, "pic_prisoner_fem", 0, 0, 0, 0, 0, 0, 1, 1, 1),
@@ -67,7 +68,7 @@ meshes = [
   ("pic_vaegir", 0, "pic_vaegir", 0, 0, 0, 0, 0, 0, 1, 1, 1),
   ("pic_villageriot", 0, "pic_villageriot", 0, 0, 0, 0, 0, 0, 1, 1, 1),
   ("pic_sarranid_encounter", 0, "pic_sarranid_encounter", 0, 0, 0, 0, 0, 0, 1, 1, 1),
-  
+
   ("mp_score_a", 0, "mp_score_a", 0, 0, 0, 0, 0, 0, 1, 1, 1),
   ("mp_score_b", 0, "mp_score_b", 0, 0, 0, 0, 0, 0, 1, 1, 1),
   ("portrait_blend_out", 0, "portrait_blend_out", 0, 0, 0, 0, 0, 0, 1, 1, 1),
@@ -281,7 +282,7 @@ meshes = [
   ("banner_b16", 0, "banner_b16", 0, 0, 0, -90, 0, 0, 1, 1, 1),
   ("banner_b17", 0, "banner_b17", 0, 0, 0, -90, 0, 0, 1, 1, 1),
   ("banner_b18", 0, "banner_b18", 0, 0, 0, -90, 0, 0, 1, 1, 1),
-  ("banner_b19", 0, "banner_b19", 0, 0, 0, -90, 0, 0, 1, 1, 1),
+  ("banner_b19", 0, "banner_b19", 0, 0, 0, -90, 0, 0, 1, 1, 1), #SB : duplicate banner with e07
   ("banner_b20", 0, "banner_b20", 0, 0, 0, -90, 0, 0, 1, 1, 1),
   ("banner_b21", 0, "banner_b21", 0, 0, 0, -90, 0, 0, 1, 1, 1),
   ("banner_c01", 0, "banner_c01", 0, 0, 0, -90, 0, 0, 1, 1, 1),
@@ -479,7 +480,7 @@ meshes = [
   ("arms_e04", 0, "banner_e04", 0, 0, 0, -90, 0, 0, 1, 1, 1),
   ("arms_e05", 0, "banner_e05", 0, 0, 0, -90, 0, 0, 1, 1, 1),
   ("arms_e06", 0, "banner_e06", 0, 0, 0, -90, 0, 0, 1, 1, 1),
-  ("arms_e07", 0, "banner_e07", 0, 0, 0, -90, 0, 0, 1, 1, 1),
+  ("arms_e07", 0, "banner_e07", 0, 0, 0, -90, 0, 0, 1, 1, 1),  #SB : duplicate banner with b19
   ("arms_e08", 0, "banner_e08", 0, 0, 0, -90, 0, 0, 1, 1, 1),
   ("arms_e09", 0, "banner_e09", 0, 0, 0, -90, 0, 0, 1, 1, 1),
   ("arms_e10", 0, "banner_e10", 0, 0, 0, -90, 0, 0, 1, 1, 1),
@@ -526,13 +527,13 @@ meshes = [
   ("arms_g08", 0, "banner_f08", 0, 0, 0, -90, 0, 0, 1, 1, 1),
   ("arms_g09", 0, "banner_f09", 0, 0, 0, -90, 0, 0, 1, 1, 1),
   ("arms_g10", 0, "banner_f10", 0, 0, 0, -90, 0, 0, 1, 1, 1),
-  
+
   ("arms_kingdom_a", 0, "banner_kingdom_a", 0, 0, 0, -90, 0, 0, 1, 1, 1),
   ("arms_kingdom_b", 0, "banner_kingdom_b", 0, 0, 0, -90, 0, 0, 1, 1, 1),
   ("arms_kingdom_c", 0, "banner_kingdom_c", 0, 0, 0, -90, 0, 0, 1, 1, 1),
   ("arms_kingdom_d", 0, "banner_kingdom_d", 0, 0, 0, -90, 0, 0, 1, 1, 1),
-  ("arms_kingdom_e", 0, "banner_kingdom_e", 0, 0, 0, -90, 0, 0, 1, 1, 1),  
-  ("arms_kingdom_f", 0, "banner_kingdom_f", 0, 0, 0, -90, 0, 0, 1, 1, 1),  
+  ("arms_kingdom_e", 0, "banner_kingdom_e", 0, 0, 0, -90, 0, 0, 1, 1, 1),
+  ("arms_kingdom_f", 0, "banner_kingdom_f", 0, 0, 0, -90, 0, 0, 1, 1, 1),
   ("arms_f21", 0, "banner_a15", 0, 0, 0, -90, 0, 0, 1, 1, 1),
 
   ("banners_default_a", 0, "banners_default_a", 0, 0, 0, -90, 0, 0, 1, 1, 1),
@@ -540,7 +541,7 @@ meshes = [
   ("banners_default_c", 0, "banners_default_c", 0, 0, 0, -90, 0, 0, 1, 1, 1),
   ("banners_default_d", 0, "banners_default_d", 0, 0, 0, -90, 0, 0, 1, 1, 1),
   ("banners_default_e", 0, "banners_default_e", 0, 0, 0, -90, 0, 0, 1, 1, 1),
-  
+
   ("troop_label_banner",  0, "troop_label_banner", 0, 0, 0, 0, 0, 0, 10, 10, 10),
 
   ("ui_kingdom_shield_1", 0, "ui_kingdom_shield_1", 0, 0, 0, 0, 0, 0, 1, 1, 1),
@@ -554,7 +555,7 @@ meshes = [
   #("flag_vaegir", 0, "banner_a02", 0, 0, 0, 0, 0, 0, 1, 1, 1),
   #("flag_khergit", 0, "banner_d01", 0, 0, 0, 0, 0, 0, 1, 1, 1),
   #("flag_nord", 0, "banner_a03", 0, 0, 0, 0, 0, 0, 1, 1, 1),
-  #("flag_rhodok", 0, "banner_a04", 0, 0, 0, 0, 0, 0, 1, 1, 1),  
+  #("flag_rhodok", 0, "banner_a04", 0, 0, 0, 0, 0, 0, 1, 1, 1),
 
   ("mouse_arrow_down", 0, "mouse_arrow_down", 0, 0, 0, 0, 0, 0, 1, 1, 1),
   ("mouse_arrow_right", 0, "mouse_arrow_right", 0, 0, 0, 0, 0, 0, 1, 1, 1),
@@ -589,7 +590,7 @@ meshes = [
   ("quit_adv", 0, "quit_adv", 0, 0, 0, 0, 0, 0, 1, 1, 1),
   ("quit_adv_b", 0, "quit_adv_b", 0, 0, 0, 0, 0, 0, 1, 1, 1),
 
-  ("ui_kingdom_shield_7", 0, "ui_kingdom_shield_7", 0, 0, 0, 0, 0, 0, 1, 1, 1),  
+  ("ui_kingdom_shield_7", 0, "ui_kingdom_shield_7", 0, 0, 0, 0, 0, 0, 1, 1, 1),
   ("flag_project_rb", 0, "flag_project_rb", 0, 0, 0, 0, 0, 0, 1, 1, 1),
   ("flag_project_rb_miss", 0, "flag_project_rb_miss", 0, 0, 0, 0, 0, 0, 1, 1, 1),
   ("mp_ui_host_maps_16", 0, "mp_ui_host_maps_d1", 0, 0, 0, 0, 0, 0, 1, 1, 1),
@@ -597,7 +598,40 @@ meshes = [
   ("mp_ui_host_maps_18", 0, "mp_ui_host_maps_d3", 0, 0, 0, 0, 0, 0, 1, 1, 1),
   ("mp_ui_host_maps_19", 0, "mp_ui_host_maps_e2", 0, 0, 0, 0, 0, 0, 1, 1, 1),
   ("mp_ui_host_maps_20", 0, "mp_ui_host_maps_e1", 0, 0, 0, 0, 0, 0, 1, 1, 1),
-  ("mp_ui_host_maps_21", 0, "mp_ui_host_maps_cold_cost", 0, 0, 0, 0, 0, 0, 1, 1, 1),
+  ("mp_ui_host_maps_21", 0, "mp_ui_host_maps_c4", 0, 0, 0, 0, 0, 0, 1, 1, 1), #SB : replace this with battle on ice mesh
+##diplomacy begin
+  ("longer_button", 0, "longer_button", 0, 0, 0, 0, 0, 0, 0.4, 0.5, 0.5),
+  ("longer_button_down", 0, "longer_button_down", 0, 0, 0, 0, 0, 0, 0.4, 0.5, 0.5),
+
+  # Jrider + REPORTS PRESENTATIONS 1.0
+  ("message_window", 0, "message_window", 0, 0, 0, 0, 0, 0, 0.8, 0.5, 0.5), # in core_ui_meshes.brf, same one as in 1st presentation
+  ("face_gen_window", 0, "face_gen_window", 0, 0, 0, 0, 0, 0, 1, 1, 1), # in user_interface_b.brf, automatically loaded
+  # Jrider -
+
+##diplomacy end
+##diplomacy start+
+##Additional meshes, used by components ported from rubik's Custom Commander
+  ("options_window", 0, "options_window", 0, 0, 0, 0, 0, 0, 1, 1, 1),
+  ("note_window", 0, "note_window", 0, 0, 0, 0, 0, 0, 1, 1, 1),
+
+  ("drop_button", 0, "button_drop", 0, 0, 0, 0, 0, 0, 1, 0.5, 0.5),
+  ("drop_button_down", 0, "button_drop_clicked", 0, 0, 0, 0, 0, 0, 1, 0.5, 0.5),
+  ("drop_button_hl", 0, "button_drop_hl", 0, 0, 0, 0, 0, 0, 1, 0.5, 0.5),
+  ("drop_button_child", 0, "button_drop_child", 0, 0, 0, 0, 0, 0, 1.0, 0.5, 0.5),
+  ("drop_button_child_down", 0, "button_drop_child_clicked", 0, 0, 0, 0, 0, 0, 1.0, 0.5, 0.5),
+  ("drop_button_child_hl", 0, "button_drop_child_hl", 0, 0, 0, 0, 0, 0, 1.0, 0.5, 0.5),
+  
+  ("inventory_equipment_panel", 0, "inventory_equipment_panel", 0, 0, 0, 0, 0, 0, 1, 1, 1),
+##diplomacy start+
+    #old pictures
+  ("pic_mb_warrior_2", 0, "ini_pic_mb_warrior_2", 0, 0, 0, 0, 0, 0, 0.8, 1, 1),
+  ("pic_mb_warrior_3", 0, "ini_pic_mb_warrior_3", 0, 0, 0, 0, 0, 0, 0.4, 1, 0.5),
+  ("pic_mb_warrior_4", 0, "ini_pic_mb_warrior_4", 0, 0, 0, 0, 0, 0, 0.8, 1, 1),
+##SB : icons to represent item type meta-upgrades
+  ("icon_morningstar", 0, "ico_morningstar", 0, 0, 0, 0, 0, 0, 0.3, 0.3, 0.3),
+  ("icon_lance", 0, "ico_couchedlance", 0, 0, 0, 0, 0, 0, 0.3, 0.3, 0.3),
+  ("icon_spear", 0, "ico_spear", 0, 0, 0, 0, 0, 0, 0.3, 0.3, 0.3),
+  ("icon_bardiche", 0, "ico_axetwo", 0, 0, 0, 0, 0, 0, 0.3, 0.3, 0.3),
 
 #INVASION MODE START  
   ("incoming_enemy", 0, "cb_ui_icon_infantry", 0, 0, 0, 0, 0, 0, 2, 2, 2),

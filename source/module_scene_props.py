@@ -7,6 +7,7 @@ from header_sounds import *
 from module_constants import *
 import string
 
+from compiler import *
 ####################################################################################################################
 #  Each scene prop record contains the following fields:
 #  1) Scene prop id: used for referencing scene props in other files. The prefix spr_ is automatically added before each scene prop id.
@@ -355,6 +356,7 @@ scene_props = [
   ("destroy_bridge_a",0,"destroy_bridge_a","bo_destroy_bridge_a", []),  
   ("destroy_bridge_b",0,"destroy_bridge_b","bo_destroy_bridge_b", []),  
 
+
   ("catapult",0,"Catapult","bo_Catapult", []),
   
   ("catapult_destructible",sokf_moveable|sokf_show_hit_point_bar|sokf_destructible,"Catapult","bo_Catapult", [
@@ -631,7 +633,7 @@ scene_props = [
   ("dungeon_cell_c",0,"dungeon_cell_c","bo_dungeon_cell_c", []),
   ("dungeon_corridor_a",0,"dungeon_corridor_a","bo_dungeon_corridor_a", []),
   ("dungeon_corridor_b",0,"dungeon_corridor_b","bo_dungeon_corridor_b", []),
-  ("dungeon_corridor_c",0,"dungeon_corridor_c","bo_dungeon_corridor_b", []),
+  ("dungeon_corridor_c",0,"dungeon_corridor_c","bo_dungeon_corridor_a", []), #SB : collision fix
   ("dungeon_corridor_d",0,"dungeon_corridor_d","bo_dungeon_corridor_b", []),
   ("dungeon_direction_a",0,"dungeon_direction_a","bo_dungeon_direction_a", []),
   ("dungeon_direction_b",0,"dungeon_direction_b","bo_dungeon_direction_a", []),
@@ -659,7 +661,7 @@ scene_props = [
       
       (try_begin),
         (this_or_next|multiplayer_is_server),
-		(neg|game_in_multiplayer_mode),
+        (neg|game_in_multiplayer_mode),
 
         (store_trigger_param_1, ":instance_no"),      
         (store_trigger_param_2, ":attacker_agent_no"),
@@ -2995,7 +2997,6 @@ scene_props = [
  ("rock_bridge_a",0,"rock_bridge_a","bo_rock_bridge_a", []),
  ("suspension_bridge_a",0,"suspension_bridge_a","bo_suspension_bridge_a", []),
  ("mine_a",0,"mine_a","bo_mine_a", []),
- 
  ("snowy_destroy_house_a",0,"snowy_destroy_house_a","bo_snowy_destroy_house_a", []),
   ("snowy_destroy_house_b",0,"snowy_destroy_house_b","bo_snowy_destroy_house_b", []),
   ("snowy_destroy_house_c",0,"snowy_destroy_house_c","bo_snowy_destroy_house_c", []),
@@ -3179,6 +3180,5 @@ scene_props = [
     ]),
   ]),
 #INVASION MODE END
-
 
 ]

@@ -9,6 +9,7 @@ from header_particle_systems import *
 #psf_randomize_size      = 0x0000002000
 #psf_2d_turbulance       = 0x0000010000
 
+from compiler import *
 ####################################################################################################################
 #   Each particle system contains the following fields:
 #  

@@ -8,6 +8,7 @@ from header_troops import *
 
 from module_constants import *
 
+from compiler import *
 ####################################################################################################################
 #  Each trigger contains the following fields:
 # 1) Check interval: How frequently this trigger will be checked
@@ -19,7 +20,7 @@ from module_constants import *
 #    Every time the trigger is checked, the conditions block will be executed.
 #    If the conditions block returns true, the consequences block will be executed.
 #    If the conditions block is empty, it is assumed that it always evaluates to true.
-# 5) Consequences block (list). This must be a valid operation block. See header_operations.py for reference. 
+# 5) Consequences block (list). This must be a valid operation block. See header_operations.py for reference.
 ####################################################################################################################
 
 # Some constants for use below
@@ -34,28 +35,28 @@ triggers = [
 
 # Refresh Merchants
   (0.0, 0, 168.0, [],
-  [    
+  [
     (call_script, "script_refresh_center_inventories"),
-  ]),
+                     ]),
 
 # Refresh Armor sellers
   (0.0, 0, 168.0, [],
-  [    
+  [
     (call_script, "script_refresh_center_armories"),
-  ]),
+                     ]),
 
 # Refresh Weapon sellers
   (0.0, 0, 168.0, [],
   [
     (call_script, "script_refresh_center_weaponsmiths"),
-  ]),
+                     ]),
 
 # Refresh Horse sellers
   (0.0, 0, 168.0, [],
   [
     (call_script, "script_refresh_center_stables"),
-  ]),
-  
+                     ]),
+
 
 #############
 
@@ -72,15 +73,15 @@ triggers = [
 #    ]),
 
 
-  (5.7, 0, 0.0, 
+  (5.7, 0, 0.0,
   [
-    (store_num_parties_of_template, reg2, "pt_manhunters"),    
+    (store_num_parties_of_template, reg2, "pt_manhunters"),
     (lt, reg2, 4)
   ],
   [
     (set_spawn_radius, 1),
-    (store_add, ":p_town_22_plus_one", "p_town_22", 1),
-    (store_random_in_range, ":selected_town", "p_town_1", ":p_town_22_plus_one"),
+    # (store_add, ":p_town_22_plus_one", "p_town_22", 1), #SB : obvious random range
+    (store_random_in_range, ":selected_town", towns_begin, towns_end),
     (spawn_around_party, ":selected_town", "pt_manhunters"),
   ]),
 
@@ -90,7 +91,7 @@ triggers = [
   (check_quest_active, "qst_track_down_bandits"),
   (neg|check_quest_failed, "qst_track_down_bandits"),
   (neg|check_quest_succeeded, "qst_track_down_bandits"),
-  
+
   ],
    [
     (quest_get_slot, ":bandit_party", "qst_track_down_bandits", slot_quest_target_party),
@@ -98,21 +99,21 @@ triggers = [
 		(party_is_active, ":bandit_party"),
 		(store_faction_of_party, ":bandit_party_faction", ":bandit_party"),
 		(neg|is_between, ":bandit_party_faction", kingdoms_begin, kingdoms_end), #ie, the party has not respawned as a non-bandit
-		
-		
+
+
 		(assign, ":spot_range", 8),
 		(try_begin),
 			(is_currently_night),
 			(assign, ":spot_range", 5),
 		(try_end),
-		
+
 		(try_for_parties, ":party"),
 			(gt, ":party", "p_spawn_points_end"),
-			
+
 			(store_faction_of_party, ":faction", ":party"),
 			(is_between, ":faction", kingdoms_begin, kingdoms_end),
-			
-			
+
+
 			(store_distance_to_party_from_party, ":distance", ":party", ":bandit_party"),
 			(lt, ":distance", ":spot_range"),
 			(try_begin),
@@ -120,7 +121,7 @@ triggers = [
 				(str_store_party_name, s4, ":party"),
 				(display_message, "@{!}DEBUG -- Wanted bandits spotted by {s4}"),
 			(try_end),
-			
+
 			(call_script, "script_get_closest_center", ":bandit_party"),
 			(assign, ":nearest_center", reg0),
 #			(try_begin),
@@ -203,7 +204,7 @@ triggers = [
 ##               (party_set_ai_object,reg(2),reg0),
 ##               (party_set_flags, reg(2), pf_default_behavior, 0),
 ##            ]),
-  
+
   (4.0, 0, 0.0,
    [
      (eq, "$caravan_escort_state", 1), #cancel caravan_escort_state if caravan leaves the destination
@@ -241,17 +242,22 @@ triggers = [
 #    (party_set_ai_object,"$pout_party","$pout_town"),
 #    ]),
 
-  (1.5, 0, 0, [(store_random_party_of_template, reg(2), "pt_messenger_party"),
-               (party_is_in_any_town,reg(2)),
+#SB : messengers are deleted upon reaching destination, this should never apply
+  (1.5, 0, 0, [
+  # (store_random_party_of_template, reg(2), "pt_messenger_party"),
+               # (party_is_in_any_town,reg(2)),
                ],
-   [(store_faction_of_party, ":faction_no", reg(2)),
-    (call_script,"script_cf_select_random_walled_center_with_faction", ":faction_no", -1),
-    (party_set_ai_behavior,reg(2),ai_bhvr_travel_to_party),
-    (party_set_ai_object,reg(2),reg0),
-    (party_set_flags, reg(2), pf_default_behavior, 0),
+   [
+   
+    # (store_faction_of_party, ":faction_no", reg(2)),
+    # (call_script,"script_cf_select_random_walled_center_with_faction", ":faction_no", -1),
+    # (party_set_ai_behavior,reg(2),ai_bhvr_travel_to_party),
+    # (party_set_ai_object,reg(2),reg0),
+    # (party_set_flags, reg(2), pf_default_behavior, 0),
+    
     ]),
-  
-  
+
+
 
 #Deserters
 
@@ -262,7 +268,7 @@ triggers = [
 #                         (assign, "$pin_limit", 4),
 #                         (call_script,"script_cf_spawn_party_at_faction_town_if_below_limit"),
 #                    ]),
-  
+
 #  (10.2, 0, 0.0, [],
 #                     [
 #                         (assign, "$pin_faction", "fac_vaegirs"),
@@ -353,7 +359,7 @@ triggers = [
 #  (0.0, 0.0, ti_once, [], [(assign,"$peak_vaegir_scouts",4)]),
 #  (0.0, 0.0, ti_once, [], [(assign,"$peak_vaegir_harassers",3)]),
 #  (0.0, 0.0, ti_once, [], [(assign,"$peak_vaegir_war_parties",2)]),
-  
+
 
 #  (10.2, 0, 0.0, [],
 #                     [
@@ -413,7 +419,7 @@ triggers = [
 ##                    ]),
 
 #  [1.0, 96.0, ti_once, [], [[assign,"$peak_dark_hunters",3]]],
-  
+
 ##  (10.1, 0, 0.0, [],
 ##                     [
 ##                         (assign, "$pin_party_template", "pt_dark_hunters"),
@@ -429,7 +435,7 @@ triggers = [
 ##       (main_party_has_troop,"trp_borcha"),
 ##       (eq,"$borcha_freed",0)
 ##    ],
-##   
+##
 ##   [
 ##       (assign,"$borcha_arrive_sargoth_as_prisoner", 1),
 ##       (start_map_conversation, "trp_borcha", -1)
@@ -446,7 +452,7 @@ triggers = [
 ##       (start_map_conversation, "trp_borcha", -1)
 ##    ]
 ##   ),
-##  
+##
 ##  (2, 0, ti_once,
 ##   [
 ##      (map_free, 0),
@@ -1078,9 +1084,9 @@ triggers = [
        (try_begin),
          (eq, ":abort_meeting", 1),
          (party_set_ai_object, "$qst_follow_spy_spy_party", ":quest_giver_center"),
-         
+
          (party_set_ai_object, "$qst_follow_spy_spy_partners_party", ":quest_object_center"),
-         
+
          (party_set_ai_behavior, "$qst_follow_spy_spy_party", ai_bhvr_travel_to_party),
          (party_set_ai_behavior, "$qst_follow_spy_spy_partners_party", ai_bhvr_travel_to_party),
          (party_set_flags, "$qst_follow_spy_spy_party", pf_default_behavior, 0),
@@ -1146,7 +1152,7 @@ triggers = [
 ##       (party_set_flags, ":quest_target_party", pf_default_behavior, 0),
 ##    ]
 ##   ),
-##  
+##
 ##  (0.1, 0.0, 0.0,
 ##   [
 ##       (check_quest_active, "qst_hunt_down_raiders"),
@@ -1159,7 +1165,7 @@ triggers = [
 ##       (call_script, "script_succeed_quest", "qst_hunt_down_raiders"),
 ##    ]
 ##   ),
-##  
+##
 ##  (1.3, 0, 0.0,
 ##   [
 ##       (check_quest_active, "qst_hunt_down_raiders"),
@@ -1181,7 +1187,7 @@ triggers = [
 
 #########################################################################
 # Random MERCHANT quest triggers
-####################################  
+####################################
  # Apply interest to merchants guild debt  1% per week
   (24.0 * 7, 0.0, 0.0,
    [],
@@ -1190,35 +1196,42 @@ triggers = [
        (val_div,"$debt_to_merchants_guild",100)
     ]
    ),
+   #SB : deprecate these triggers, set party order directly
 # Escort merchant caravan:
-  (0.1, 0.0, 0.1, [(check_quest_active, "qst_escort_merchant_caravan"),
-                   (eq, "$escort_merchant_caravan_mode", 1)
+  (1, 0.0, ti_once, [
+                   # (check_quest_active, "qst_escort_merchant_caravan"),
+                   # (eq, "$escort_merchant_caravan_mode", 1)
                    ],
-                  [(quest_get_slot, ":quest_target_party", "qst_escort_merchant_caravan", slot_quest_target_party),
-                   (try_begin),
-                     (party_is_active, ":quest_target_party"),
-                     (party_set_ai_behavior, ":quest_target_party", ai_bhvr_hold),
-                     (party_set_flags, ":quest_target_party", pf_default_behavior, 0),
-                   (try_end),
+                  [
+                   # (quest_get_slot, ":quest_target_party", "qst_escort_merchant_caravan", slot_quest_target_party),
+                   # (try_begin),
+                     # (party_is_active, ":quest_target_party"),
+                     # (party_set_ai_behavior, ":quest_target_party", ai_bhvr_hold),
+                     # (party_set_flags, ":quest_target_party", pf_default_behavior, 0),
+                   # (try_end),
                    ]),
-  (0.1, 0.0, 0.1, [(check_quest_active, "qst_escort_merchant_caravan"),
-                    (eq, "$escort_merchant_caravan_mode", 0),
+  (1, 0.0, ti_once, [
+                    # (check_quest_active, "qst_escort_merchant_caravan"),
+                    # (eq, "$escort_merchant_caravan_mode", 0),
                     ],
-                   [(quest_get_slot, ":quest_target_party", "qst_escort_merchant_caravan", slot_quest_target_party),
-                    (try_begin),
-                      (party_is_active, ":quest_target_party"),
-                      (party_set_ai_behavior, ":quest_target_party", ai_bhvr_escort_party),
-                      (party_set_flags, ":quest_target_party", pf_default_behavior, 0),
-                      (party_set_ai_object, ":quest_target_party", "p_main_party"),
-                    (try_end),
+                   [
+                    # (quest_get_slot, ":quest_target_party", "qst_escort_merchant_caravan", slot_quest_target_party),
+                    # (try_begin),
+                      # (party_is_active, ":quest_target_party"),
+                      # (party_set_ai_behavior, ":quest_target_party", ai_bhvr_escort_party),
+                      # (party_set_flags, ":quest_target_party", pf_default_behavior, 0),
+                      # (party_set_ai_object, ":quest_target_party", "p_main_party"),
+                    # (try_end),
                     ]),
 
-  (0.1, 0, 0.0, [(check_quest_active, "qst_escort_merchant_caravan"),
+  (0.3, 0, 1.1, [
+                 (check_quest_active, "qst_escort_merchant_caravan"),
                  (quest_get_slot, ":quest_target_party", "qst_escort_merchant_caravan", slot_quest_target_party),
                  (neg|party_is_active,":quest_target_party"),
-                 ],
-                [(call_script, "script_abort_quest", "qst_escort_merchant_caravan", 2),
-                 ]),
+                ],
+                [
+                 (call_script, "script_abort_quest", "qst_escort_merchant_caravan", 2),
+                ]),
 
 # Troublesome bandits
   (0.3, 0.0, 1.1, [(check_quest_active, "qst_troublesome_bandits"),
@@ -1240,7 +1253,7 @@ triggers = [
                    (neq, ":cur_eliminated_by_player", "$qst_troublesome_bandits_eliminated_by_player"),
                    ],
                   [(call_script, "script_succeed_quest", "qst_troublesome_bandits"),]),
-				  
+
 # Kidnapped girl:
    (1, 0, 0,
    [(check_quest_active, "qst_kidnapped_girl"),
@@ -1254,7 +1267,7 @@ triggers = [
 
 
 #Rebellion changes begin
-#move 
+#move
 
   (0, 0, 24 * 14,
    [
@@ -1266,20 +1279,52 @@ triggers = [
           (faction_slot_eq, ":target_faction", slot_faction_has_rebellion_chance, 1),
           (neg|troop_slot_eq, ":pretender", slot_troop_occupation, slto_kingdom_hero),
 
-          (try_for_range, ":unused", 0, 30),
+          (assign, ":break", 30),
+          (try_for_range, ":unused", 0, ":break"),
             (troop_slot_eq, ":pretender", slot_troop_cur_center, 0),
             (store_random_in_range, ":town", towns_begin, towns_end),
+            (party_get_slot, ":town_lord", ":town", slot_town_lord),
+            (ge, ":town_lord", "trp_player"), #not unassigned
             (store_faction_of_party, ":town_faction", ":town"),
             (store_relation, ":relation", ":town_faction", ":target_faction"),
             (le, ":relation", 0), #fail if nothing qualifies
-           
+
             (troop_set_slot, ":pretender", slot_troop_cur_center, ":town"),
-            (try_begin),
+            (try_begin), #SB : cheat mode
               (eq, "$cheat_mode", 1),
-              (str_store_troop_name, 4, ":pretender"),
-              (str_store_party_name, 5, ":town"),
+              (str_store_troop_name_link, 4, ":pretender"),
+              (str_store_party_name_link, 5, ":town"),
               (display_message, "@{!}{s4} is in {s5}"),
             (try_end),
+            (try_begin), #SB : actually give out base gold and some renown
+              (ge, "$g_dplmc_ai_changes", DPLMC_AI_CHANGES_MEDIUM),
+              (call_script, "script_dplmc_distribute_gold_to_lord_and_holdings", 100, ":troop_no"),
+              # do host relations
+              (assign, ":renown", 5),
+              (try_begin),
+                (neq, ":town_lord", "trp_player"),
+                (store_random_in_range, ":relation", -3, 4),
+                (call_script, "script_troop_change_relation_with_troop", ":pretender", ":town_lord", ":relation"),
+              (try_end),
+              #do other relations
+              (call_script, "script_get_heroes_attached_to_center", ":town", "p_temp_party"),
+              (party_get_num_companion_stacks, ":num_stacks", "p_temp_party"),
+              (try_for_range, ":stack_no", 0, ":num_stacks"),
+                (party_stack_get_troop_id, ":troop_no", "p_temp_party", ":stack_no"),
+                (neq, ":troop_no", ":pretender"),
+                (neq, ":troop_no", ":town_lord"), #double effect if actually at home?
+                (store_random_in_range, ":relation", -2, 3),
+                (call_script, "script_troop_change_relation_with_troop", ":pretender", ":troop_no", ":relation"),
+                (try_begin), #a bit of variation
+                  (ge, ":relation", 0),
+                  (val_add, ":renown", 1),
+                (else_try),
+                  (val_sub, ":renown", 1),
+                (try_end),
+              (try_end),
+              (call_script, "script_change_troop_renown", ":troop_no", ":renown"),
+            (try_end),
+            (assign, ":break", 0),
           (try_end),
 
 #        (try_for_range, ":rebel_faction", rebel_factions_begin, rebel_factions_end),
@@ -1294,7 +1339,7 @@ triggers = [
 #            (le, ":relation", 0), #fail if nothing qualifies
 
  #           (faction_set_slot, ":rebel_faction", slot_faction_inactive_leader_location, ":town"),
-        (try_end), 
+        (try_end),
        ],
 []
 ),
@@ -1302,7 +1347,7 @@ triggers = [
 
 #NPC system changes begin
 #Move unemployed NPCs around taverns
-   (24 * 15 , 0, 0, 
+   (24 * 15 , 0, 0,
    [
     (call_script, "script_update_companion_candidates_in_taverns"),
     ],
@@ -1345,7 +1390,7 @@ triggers = [
         (try_end),
 #
 
-         
+
         (try_for_range, ":npc", companions_begin, companions_end),
 ###Reset meeting variables
             (troop_set_slot, ":npc", slot_troop_turned_down_twice, 0),
@@ -1380,9 +1425,9 @@ triggers = [
 
 				(troop_get_slot, ":other_npc", ":npc", slot_troop_kingsupport_opponent),
 				(troop_slot_eq, ":other_npc", slot_troop_kingsupport_objection_state, 0),
-				
+
 				(troop_set_slot, ":other_npc", slot_troop_kingsupport_objection_state, 1),
-				
+
 				(str_store_troop_name, s3, ":npc"),
 				(str_store_troop_name, s4, ":other_npc"),
 
@@ -1395,8 +1440,8 @@ triggers = [
 			#Check for quitting
             (try_begin),
                 (main_party_has_troop, ":npc"),
-				
-                (call_script, "script_npc_morale", ":npc"),
+
+                (call_script, "script_dplmc_npc_morale", ":npc", 0), #SB : just the number
                 (assign, ":npc_morale", reg0),
 
                 (try_begin),
@@ -1446,7 +1491,7 @@ triggers = [
                 (try_end),
 
 
-				
+
 #Check for new personality clashes
 
 				#Active personality clash 1 if at least 24 hours have passed
@@ -1464,29 +1509,55 @@ triggers = [
 				#Personality clash 2 and personality match is triggered by battles
 				(try_begin),
 					(eq, "$npc_with_political_grievance", 0),
-				
+
 					(troop_slot_eq, ":npc", slot_troop_kingsupport_objection_state, 1),
 					(assign, "$npc_with_political_grievance", ":npc"),
 				(try_end),
 
 			#main party does not have troop, and the troop is a companion
-			(else_try), 
+			(else_try),
 				(neg|main_party_has_troop, ":npc"),
 				(eq, ":occupation", slto_player_companion),
 
-				
-				(troop_get_slot, ":days_on_mission", ":npc", slot_troop_days_on_mission),
-				(try_begin),
-					(gt, ":days_on_mission", 0),
-					(val_sub, ":days_on_mission", 1),
-					(troop_set_slot, ":npc", slot_troop_days_on_mission, ":days_on_mission"),
-				(else_try), 
+                (troop_get_slot, ":days_on_mission", ":npc", slot_troop_days_on_mission),
+
+                (try_begin), #debug
+                    (eq, "$cheat_mode", 1),
+                    (str_store_troop_name, s10, ":npc"),
+                    (assign, reg0, ":days_on_mission"),
+                    (display_message, "@Checking rejoin of {s10} days on mission: {reg0}"),
+                (try_end),
+
+                (try_begin),
+                    (gt, ":days_on_mission", 0),
+                    (val_sub, ":days_on_mission", 1),
+                    (troop_set_slot, ":npc", slot_troop_days_on_mission, ":days_on_mission"),
+                ##diplomacy begin
+                (else_try),
+                  (this_or_next|troop_slot_eq, ":npc", slot_troop_current_mission, dplmc_npc_mission_spy_request), #spy mission
+                  (troop_slot_eq, ":npc", slot_troop_current_mission, dplmc_npc_mission_rescue_prisoner), #SB : rescue mission
+                  (troop_slot_ge, ":npc", dplmc_slot_troop_mission_diplomacy, 1), #caught
+
+                  (try_begin), #use hired blade for spy
+                    (troop_slot_eq, ":npc", slot_troop_current_mission, dplmc_npc_mission_spy_request),
+                    (troop_set_slot, "trp_hired_blade", slot_troop_mission_object, ":npc"),
+                    (assign, "$npc_to_rejoin_party", "trp_hired_blade"),
+                  (else_try), #use town walker
+                    (troop_slot_eq, ":npc", slot_troop_current_mission, dplmc_npc_mission_rescue_prisoner),
+                    (troop_get_slot, ":town_no", ":npc", slot_troop_town_with_contacts),
+                    (store_random_in_range, ":slot_no", slot_center_walker_0_troop, slot_center_walker_0_troop + num_town_walkers),
+                    (party_get_slot, ":walker_no", ":town_no", ":slot_no"),
+                    (troop_set_slot, ":walker_no", slot_troop_mission_object, ":npc"),
+                    (assign, "$npc_to_rejoin_party", ":walker_no"),
+                  (try_end),
+                ##diplomacy end
+				(else_try),
 					(troop_slot_ge, ":npc", slot_troop_current_mission, 1),
-					
+
 					#If the hero can join
 					(this_or_next|neg|troop_slot_eq, ":npc", slot_troop_current_mission, npc_mission_rejoin_when_possible),
-						(hero_can_join, ":npc"),
-						
+					(hero_can_join, "p_main_party"), #SB : fix this stupid bug
+
 					(assign, "$npc_to_rejoin_party", ":npc"),
 				(try_end),
             (try_end),
@@ -1495,17 +1566,21 @@ triggers = [
 
 
 #NPC system changes end
-
+#SB : change interval
 # Lady of the lake achievement
-   (1, 0, 0,
+   (12, 0, 0,
    [
-     (troop_get_type, ":is_female", "trp_player"),
-     (eq, ":is_female", 1),       
-     (try_for_range, ":companion", companions_begin, companions_end),
+     # (troop_get_type, ":is_female", "trp_player"),
+     (eq, "$character_gender", tf_female),
+
+    ],
+   [
+     (assign, ":inv_cap", companions_end),
+     (try_for_range, ":companion", companions_begin, ":inv_cap"),
        (troop_slot_eq, ":companion", slot_troop_occupation, slto_player_companion),
 
-       (troop_get_inventory_capacity, ":inv_cap", ":companion"),
-       (try_for_range, ":i_slot", 0, ":inv_cap"),
+       # (troop_get_inventory_capacity, ":inv_cap", ":companion"),
+       (try_for_range, ":i_slot", 0, ek_head),
          (troop_get_inventory_slot, ":item_id", ":companion", ":i_slot"),
 
 		 (ge, ":item_id", 0),
@@ -1513,18 +1588,144 @@ triggers = [
 	 	 (this_or_next|eq, ":item_id", "itm_great_sword"),
 	 	 (this_or_next|eq, ":item_id", "itm_sword_two_handed_a"),
 		 (eq, ":item_id", "itm_strange_great_sword"),
-		 		 
+
 		 (unlock_achievement, ACHIEVEMENT_LADY_OF_THE_LAKE),
 		 (assign, ":inv_cap", 0),
 	   (try_end),
 	 (try_end),
-    ],
-   []
+   ]
    ),
 
 
+##diplomacy begin
+  # Appoint chamberlain
+   (24 , 0, 24 * 12,
+   [],
+   [
+    (assign, ":has_fief", 0),
+    (try_for_range, ":center_no", centers_begin, centers_end),
+      (party_get_slot,  ":lord_troop_id", ":center_no", slot_town_lord),
+      (eq, ":lord_troop_id", "trp_player"),
+      (assign, ":has_fief", 1),
+    (try_end),
+    (eq, ":has_fief", 1),
+
+    (try_begin), #debug
+      (eq, "$cheat_mode", 1),
+      (assign, reg0, "$g_player_chamberlain"),
+      (display_message, "@{!}DEBUG : chamberlain: {reg0}"),
+    (try_end),
+
+    (assign, ":notification", 0),
+    (try_begin),
+      (eq, "$g_player_chamberlain", 0),
+      (assign, ":notification", 1),
+    (else_try),
+      (neq, "$g_player_chamberlain", -1),
+      (neq, "$g_player_chamberlain", "trp_dplmc_chamberlain"),
+      (assign, ":notification", 1),
+    (try_end),
+
+    (try_begin),
+      (eq, ":notification", 1),
+      (call_script, "script_add_notification_menu", "mnu_dplmc_notification_appoint_chamberlain", 0, 0),
+    (try_end),]
+   ),
+
+  # Appoint constable
+   (24 , 0, 24 * 13,
+   [],
+   [
+    (assign, ":has_fief", 0),
+    (try_for_range, ":center_no", walled_centers_begin, walled_centers_end),
+      (party_get_slot,  ":lord_troop_id", ":center_no", slot_town_lord),
+      (eq, ":lord_troop_id", "trp_player"),
+      (assign, ":has_fief", 1),
+    (try_end),
+    (eq, ":has_fief", 1),
+
+    (try_begin), #debug
+      (eq, "$cheat_mode", 1),
+      (assign, reg0, "$g_player_constable"),
+      (display_message, "@{!}DEBUG : constable: {reg0}"),
+    (try_end),
+
+    (assign, ":notification", 0),
+    (try_begin),
+      (eq, "$g_player_constable", 0),
+      (assign, ":notification", 1),
+    (else_try),
+      (neq, "$g_player_constable", -1),
+      (neq, "$g_player_constable", "trp_dplmc_constable"),
+      (assign, ":notification", 1),
+    (try_end),
+
+    (try_begin),
+      (eq, ":notification", 1),
+      (call_script, "script_add_notification_menu", "mnu_dplmc_notification_appoint_constable", 0, 0),
+    (try_end),
+    ]
+   ),
+
+  # Appoint chancellor
+   (24 , 0, 24 * 14,
+   [],
+   [
+   (assign, ":has_fief", 0),
+    (try_for_range, ":center_no", towns_begin, towns_end),
+      (party_get_slot,  ":lord_troop_id", ":center_no", slot_town_lord),
+      (eq, ":lord_troop_id", "trp_player"),
+      (assign, ":has_fief", 1),
+    (try_end),
+    (eq, ":has_fief", 1),
+
+    (try_begin), #debug
+      (eq, "$cheat_mode", 1),
+      (assign, reg0, "$g_player_chancellor"),
+      (display_message, "@{!}DEBUG : chancellor: {reg0}"),
+    (try_end),
+
+    (assign, ":notification", 0),
+    (try_begin),
+      (eq, "$g_player_chancellor", 0),
+      (assign, ":notification", 1),
+    (else_try),
+      (neq, "$g_player_chancellor", -1),
+      (neq, "$g_player_chancellor", "trp_dplmc_chancellor"),
+      (assign, ":notification", 1),
+    (try_end),
+
+    (try_begin),
+      (eq, ":notification", 1),
+      (call_script, "script_add_notification_menu", "mnu_dplmc_notification_appoint_chancellor", 0, 0),
+    (try_end),
+    ]),
+
+  #initialize autoloot feature if you have a chamberlain
+  ##diplomacy start+
+  #Disable this: autoloot gets initialized elsewhere.
+  (24, 0, ti_once,
+  [
+	  ##NEW:
+	  (eq, 0, 1),
+	  ##OLD:
+      #(store_skill_level, ":inv_skill", "skl_inventory_management", "trp_player"),
+      #(gt, "$g_player_chamberlain", 0),
+      #(ge, ":inv_skill", 3),
+  ],
+  [
+	##NEW:
+	#This doesn't ever get called, but if it did here's what should happen"
+	(call_script, "script_dplmc_initialize_autoloot", 1),#argument "1" forces this to make changes
+	##OLD:
+    #(call_script, "script_dplmc_init_item_difficulties"),
+    #(call_script, "script_dplmc_init_item_base_score"),
+    #(assign, "$g_autoloot", 1),
+  ]),
+
+  (0.1, 0.5, 0, [(map_free,0),(eq,"$g_move_fast", 1)], [(assign,"$g_move_fast", 0)]),
+
+##diplomacy end
 
 
-
- 
 ]

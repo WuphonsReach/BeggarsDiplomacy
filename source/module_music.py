@@ -1,4 +1,6 @@
 from header_music import *
+
+from compiler import *
 ####################################################################################################################
 #  Each track record contains the following fields:
 #  1) Track id: used for referencing tracks.

@@ -27,8 +27,10 @@ tf_guarantee_gloves           = 0x00800000
 tf_guarantee_horse            = 0x01000000
 tf_guarantee_shield           = 0x02000000
 tf_guarantee_ranged           = 0x04000000
-tf_guarantee_polearm          = 0x08000000
 tf_unmoveable_in_party_window = 0x10000000
+
+tf_disable_sounds             = 0x00010000 #disable agent related sounds, but not voices. useful for animals
+tf_guarantee_polearm          = 0x08000000
 
 # Character attributes...
 ca_strength     = 0

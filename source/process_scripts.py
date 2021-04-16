@@ -1,4 +1,4 @@
-import string
+import string, sys
 
 from module_info import *
 from module_scripts import *
@@ -16,10 +16,22 @@ def save_scripts(variable_list,variable_uses,scripts,tag_uses,quick_strings):
     func = scripts[i_script]
     if (type(func[1]) == list_type):
       file.write("%s -1\n"%(convert_to_identifier(func[0])))
-      save_statement_block(file,convert_to_identifier(func[0]), 0,func[1], variable_list,variable_uses,tag_uses,quick_strings)
+      try:
+        save_statement_block(file,convert_to_identifier(func[0]), 0,func[1], variable_list,variable_uses,tag_uses,quick_strings)
+      except Exception, err:
+        sys.stderr.flush()
+        sys.stdout.flush()
+        print "Error in script_%s:" % (convert_to_identifier(func[0])), err
+        raise
     else:
       file.write("%s %f\n"%(convert_to_identifier(func[0]), func[1]))
-      save_statement_block(file,convert_to_identifier(func[0]), 0,func[2], variable_list,variable_uses,tag_uses,quick_strings)
+      try:
+        save_statement_block(file,convert_to_identifier(func[0]), 0,func[2], variable_list,variable_uses,tag_uses,quick_strings)
+      except Exception, err:
+        sys.stderr.flush()
+        sys.stdout.flush()
+        print "Error in script_%s:" % (convert_to_identifier(func[0])), err
+        raise
     file.write("\n")
   file.close()
 

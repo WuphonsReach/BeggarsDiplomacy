@@ -4,6 +4,7 @@ from header_operations import *
 from header_triggers import *
 from ID_sounds import *
 
+from compiler import *
 ####################################################################################################################
 #  Each map icon record contains the following fields:
 #  1) Map icon id: used for referencing map icons in other files.

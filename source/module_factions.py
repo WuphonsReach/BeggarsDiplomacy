@@ -1,5 +1,6 @@
 from header_factions import *
 
+from compiler import *
 ####################################################################################################################
 #  Each faction record contains the following fields:
 #  1) Faction id: used for referencing factions in other files.
@@ -72,7 +73,11 @@ factions = [
   ("slavers","{!}Slavers", 0, 0.1, [], []),
   ("peasant_rebels","{!}Peasant Rebels", 0, 1.0,[("noble_refugees",-1.0),("player_faction",-0.4)], []),
   ("noble_refugees","{!}Noble Refugees", 0, 0.5,[], []),
-#INVASION MODE START
-  ("ccoop_all_stars","All Stars", 0, 0.5,[], []),
-#INVASION MODE END
+  ("ccoop_all_stars","All Stars", 0, 0.5,[], []), #INVASION MODE (because renaming an existing one is so hard)
 ]
+
+##diplomacy start+ Define these for convenience
+dplmc_factions_begin = 1 #As mentioned in the notes above, this is hardcoded and shouldn't be altered.  Deliberately excludes "no faction".
+dplmc_non_generic_factions_begin = [x[0] for x in enumerate(factions) if x[1][0] == "merchants"][0] + 1
+dplmc_factions_end   = len(factions)
+##diplomacy end+

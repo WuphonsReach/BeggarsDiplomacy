@@ -4,6 +4,7 @@ from header_triggers import *
 from header_scenes import *
 from module_constants import *
 
+from compiler import *
 ####################################################################################################################
 #  Each scene record contains the following fields:
 #  1) Scene id {string}: used for referencing scenes in other files. The prefix scn_ is automatically added before each scene-id.
@@ -837,60 +838,60 @@ scenes = [
   ("castle_40_prison",sf_indoors,"interior_prison_n", "bo_interior_prison_n", (-100,-100),(100,100),-100,"0",
     [],[]),
 
-
+#SB : fix seneschal references
   ("castle_41_exterior",sf_generate,"none", "none", (0,0),(100,100),-100,"0x000000005a0932320004cd3000004e7d00007d6e00006c58",
     [],[],"outer_terrain_desert"),
   ("castle_41_interior",sf_indoors, "interior_castle_y", "bo_interior_castle_y", (-100,-100),(100,100),-100,"0",
-    ["exit"],["castle_31_seneschal"]),
+    ["exit"],["castle_41_seneschal"]),
   ("castle_41_prison",sf_indoors,"interior_prison_i", "bo_interior_prison_i", (-100,-100),(100,100),-100,"0",
     [],[]),
 
   ("castle_42_exterior",sf_generate,"none", "none", (0,0),(100,100),-100,"0x000000005a039fb20005114400004f690000467a00004400",
     [],[],"outer_terrain_desert"),
   ("castle_42_interior",sf_indoors, "arabian_interior_keep_b", "bo_arabian_interior_keep_b", (-100,-100),(100,100),-100,"0",
-    ["exit"],["castle_32_seneschal"]),
+    ["exit"],["castle_42_seneschal"]),
   ("castle_42_prison",sf_indoors,"interior_prison_o", "bo_interior_prison_o", (-100,-100),(100,100),-100,"0",
     [],[]),
 
   ("castle_43_exterior",sf_generate,"none", "none", (0,0),(100,100),-100,"0x000000005a0ae6480004952400003e1800005d9f00002c7e",
     [],[],"outer_terrain_desert"),
   ("castle_43_interior",sf_indoors, "arabian_interior_keep_b", "bo_arabian_interior_keep_b", (-100,-100),(100,100),-100,"0",
-    ["exit"],["castle_33_seneschal"]),
+    ["exit"],["castle_43_seneschal"]),
   ("castle_43_prison",sf_indoors,"interior_prison_o", "bo_interior_prison_o", (-100,-100),(100,100),-100,"0",
     [],[]),
 
   ("castle_44_exterior",sf_generate,"none", "none", (0,0),(100,100),-100,"0x0000000053e3b2320004ed3800001eb400006277000068ea",
     [],[],"outer_terrain_desert"),
   ("castle_44_interior",sf_indoors, "arabian_interior_keep_b", "bo_arabian_interior_keep_b", (-100,-100),(100,100),-100,"0",
-    ["exit"],["castle_34_seneschal"]),
+    ["exit"],["castle_44_seneschal"]),
   ("castle_44_prison",sf_indoors,"interior_prison_o", "bo_interior_prison_o", (-100,-100),(100,100),-100,"0",
     [],[]),
 
   ("castle_45_exterior",sf_generate,"none", "none", (0,0),(100,100),-100,"0x0000000254c2ec0000042509000016da0000017200000ed3",
     [],[],"outer_terrain_desert"),
   ("castle_45_interior",sf_indoors, "arabian_interior_keep_b", "bo_arabian_interior_keep_b", (-100,-100),(100,100),-100,"0",
-    ["exit"],["castle_35_seneschal"]),
+    ["exit"],["castle_45_seneschal"]),
   ("castle_45_prison",sf_indoors,"interior_prison_n", "bo_interior_prison_n", (-100,-100),(100,100),-100,"0",
     [],[]),
 
   ("castle_46_exterior",sf_generate,"none", "none", (0,0),(100,100),-100,"0x0000000254c2ec0000042509000016da0000017200000ed3",
     [],[],"outer_terrain_desert"),
   ("castle_46_interior",sf_indoors, "arabian_interior_keep_b", "bo_arabian_interior_keep_b", (-100,-100),(100,100),-100,"0",
-    ["exit"],["castle_36_seneschal"]),
+    ["exit"],["castle_46_seneschal"]),
   ("castle_46_prison",sf_indoors,"interior_prison_o", "bo_interior_prison_o", (-100,-100),(100,100),-100,"0",
     [],[]),
 
   ("castle_47_exterior",sf_generate,"none", "none", (0,0),(100,100),-100,"0x000000005a07b2320002b8ad000036c80000409d00001987",
     [],[],"outer_terrain_desert"),
   ("castle_47_interior",sf_indoors, "arabian_interior_keep_b", "bo_arabian_interior_keep_b", (-100,-100),(100,100),-100,"0",
-    ["exit"],["castle_37_seneschal"]),
+    ["exit"],["castle_47_seneschal"]),
   ("castle_47_prison",sf_indoors,"interior_prison_n", "bo_interior_prison_n", (-100,-100),(100,100),-100,"0",
     [],[]),
 
   ("castle_48_exterior",sf_generate,"none", "none", (0,0),(100,100),-100,"0x0000000056c3da200003a0e6000002a900002d7a0000409e",
     [],[],"outer_terrain_desert"),
   ("castle_48_interior",sf_indoors, "arabian_interior_keep_b", "bo_arabian_interior_keep_b", (-100,-100),(100,100),-100,"0",
-    ["exit"],["castle_37_seneschal"]),
+    ["exit"],["castle_48_seneschal"]),
   ("castle_48_prison",sf_indoors,"interior_prison_o", "bo_interior_prison_o", (-100,-100),(100,100),-100,"0",
     [],[]),
 	

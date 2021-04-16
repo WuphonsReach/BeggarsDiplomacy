@@ -23,11 +23,18 @@ ti_escape_pressed        = -23.0 #can only be used in module_mission_templates t
 ti_battle_window_opened  = -24.0 #can only be used in module_mission_templates triggers
 ti_on_agent_spawn        = -25.0 #can only be used in module_mission_templates triggers
 ti_on_agent_killed_or_wounded = -26.0 #can only be used in module_mission_templates triggers
+# Trigger Param 1: dead agent_id
+# Trigger Param 2: damage dealer agent_id
+# Trigger Param 3: is wounded
+# Trigger result: 0 = do not alter the result, 1 = force kill, 2 = force wound
+
 ti_on_agent_knocked_down = -27.0 #can only be used in module_mission_templates triggers
 ti_on_agent_hit          = -28.0 #can only be used in module_mission_templates triggers
 # Trigger Param 1: damage inflicted agent_id
 # Trigger Param 2: damage dealer agent_id
 # Trigger Param 3: inflicted damage
+# Trigger Param 4: hit bone
+# Trigger Param 5: missile item kind no
 # Register 0: damage dealer item_id
 # Position Register 0: position of the blow
 #                      rotation gives the direction of the blow
@@ -44,8 +51,14 @@ ti_on_init_scene_prop    = ti_on_scene_prop_init
 ti_on_scene_prop_hit     = -42.0 #can only be used in module_scene_props triggers
 # Trigger Param 1: prop instance number
 # Trigger Param 2: hit damage
+# Trigger Param 3: dealer agent no (server only)
+# Trigger Param 4: item kind no (server only)
+# Trigger Param 5: item modifier (server only)
+# Trigger Param 6: missile item kind no (server only)
+# Trigger Param 7: missile item modifier (server only)
 # Position Register 1: Hit Position
 # Position Register 2: x holds attacker agent id
+# Trigger Result: if set, damage dealt to prop
 
 ti_on_scene_prop_destroy = -43.0 #can only be used in module_scene_props triggers
 # Trigger Param 1: prop instance number
@@ -70,6 +83,9 @@ ti_on_scene_prop_cancel_use = -48.0 #can only be used in module_scene_props trig
 # Trigger Param 2: prop instance number
 
 ti_on_init_item          = -50.0 #can only be used in module_items triggers
+# Trigger Param 1: agent id
+# Trigger Param 2: troop id
+
 ti_on_weapon_attack      = -51.0 #can only be used in module_items triggers
 # Trigger Param 1: attacker agent id
 # Position Register 1: Weapon Item Position
@@ -110,7 +126,7 @@ ti_on_presentation_mouse_press        = -64.0 #can only be used in module_presen
 # Trigger Param 2: 0: left mouse button, 1 right mouse button, 2 middle mouse button
 ti_on_init_map_icon                   = -70.0 #can only be used in module_map_icons triggers
 # Trigger Param 1: id of the owner party
-ti_on_order_issued					  = -71.0 #can only be used in module_mission_templates triggers
+ti_on_order_issued                    = -71.0 #can only be used in module_mission_templates triggers
 # Trigger Param 1: order no
 # Trigger Param 2: agent id
 ti_on_switch_to_map                   = -75.0
@@ -247,8 +263,8 @@ key_xbox_dpad_right     = 0xf6
 key_xbox_dpad_left      = 0xf7
 key_xbox_start          = 0xf8
 key_xbox_back           = 0xf9
-key_xbox_rbumper        = 0xfa
-key_xbox_lbumper        = 0xfb
+key_xbox_rbumber        = 0xfa
+key_xbox_lbumber        = 0xfb
 key_xbox_ltrigger       = 0xfc
 key_xbox_rtrigger       = 0xfd
 key_xbox_rstick         = 0xfe      
@@ -324,6 +340,7 @@ gk_crouch = 49
 gk_order_7 = 50
 gk_order_8 = 51
 
+keys = [key_0, key_1, key_2, key_3, key_4, key_5, key_6, key_7, key_8, key_9, key_a, key_b, key_c, key_d, key_e, key_f, key_g, key_h, key_i, key_j, key_k, key_l, key_m, key_n, key_o, key_p, key_q, key_r, key_s, key_t, key_u, key_v, key_w, key_x, key_y, key_z, key_numpad_0, key_numpad_1, key_numpad_2, key_numpad_3, key_numpad_4, key_numpad_5, key_numpad_6, key_numpad_7, key_numpad_8, key_numpad_9, key_num_lock, key_numpad_slash, key_numpad_multiply, key_numpad_minus, key_numpad_plus, key_numpad_enter, key_numpad_period, key_insert, key_delete, key_home, key_end, key_page_up, key_page_down, key_up, key_down, key_left, key_right, key_f1, key_f2, key_f3, key_f4, key_f5, key_f6, key_f7, key_f8, key_f9, key_f10, key_f11, key_f12, key_space, key_escape, key_enter, key_tab, key_back_space, key_open_braces, key_close_braces, key_comma, key_period, key_slash, key_back_slash, key_equals, key_minus, key_semicolon, key_apostrophe, key_tilde, key_caps_lock, key_left_shift, key_right_shift, key_left_control, key_right_control, key_left_alt, key_right_alt]
 #trigger positions
 #------------------------------------------------------
 trigger_check_pos = 0 
