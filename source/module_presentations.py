@@ -3,6 +3,7 @@ from header_common import *
 from header_presentations import *
 from header_mission_templates import *
 from ID_meshes import *
+from ID_factions import *
 from header_operations import *
 from header_triggers import *
 #SB: import skills from ID_skills import *
@@ -8743,7 +8744,6 @@ presentations = [
         ## name and color
         (try_begin),
           (eq, "$g_presentation_state", recolor_kingdom),
-
           # faction list
           (assign, ":slot_no", 0),
           (try_for_range, ":faction", "fac_commoners", "fac_innocents"),
@@ -8774,6 +8774,7 @@ presentations = [
           (troop_set_slot, "trp_temp_array_b", 7, factions[fac_kingdom_2][6]),
           (troop_set_slot, "trp_temp_array_b", 8, factions[fac_kingdom_1][6]),
           (troop_set_slot, "trp_temp_array_b", 9, factions[fac_player_supporters_faction][6]),
+          #SB : replace these slots in the correct order if you're adding new factions
           # (troop_set_slot, "trp_temp_array_b", 3, 0xCCCC66),
           # (troop_set_slot, "trp_temp_array_b", 4, 0x669999),
           # (troop_set_slot, "trp_temp_array_b", 5, 0x0066FF),
@@ -16058,7 +16059,7 @@ presentations = [
           (position_set_y, pos1, ":text_y"),
           (overlay_set_position, reg1, pos1),
           # number_box
-          (create_number_box_overlay, reg1, 0, 5),
+          (create_number_box_overlay, reg1, 0, 9),
           (store_add, ":number_box_x", ":pos_x", 115),
           (store_add, ":number_box_y", ":pos_y", 30),
           (position_set_x, pos1, ":number_box_x"),
@@ -18454,12 +18455,12 @@ presentations = [
 					(create_text_overlay, reg0, "@Prejudice Level:", tf_vertical_align_center),
 					(position_set_y, pos1, ":texts_y"),
 					(overlay_set_position, reg0, pos1),
-                    (troop_set_slot, "trp_temp_array_a", ":num_options", reg0),
+					(troop_set_slot, "trp_temp_array_a", ":num_options", reg0),
 					(val_sub, ":texts_y", ":y_increment"),
 					# (assign, "$adv_diplomacy_texts_prejudice_level", reg0),
 
 					(create_combo_button_overlay, reg0),
-                    (troop_set_slot, "trp_temp_array_b", ":num_options", reg0),
+					(troop_set_slot, "trp_temp_array_b", ":num_options", reg0),
 					(position_set_x, pos2, 485),
 					(val_sub, ":inputs_y", 8),
 					(position_set_y, pos2, ":inputs_y"),
@@ -18468,6 +18469,7 @@ presentations = [
 					# (overlay_add_item, reg0, "@{!} High "),
 					# (overlay_add_item, reg0, "@{!} Off "),
 					# (overlay_add_item, reg0, "@{!} Default "),
+                    (overlay_add_item, reg0, "str_randomize"),
                     (overlay_add_item, reg0, "str_dplmc_setting_2"),
                     (overlay_add_item, reg0, "str_dplmc_setting_off"),
                     (overlay_add_item, reg0, "str_default"),
@@ -18477,31 +18479,20 @@ presentations = [
 					# (assign, "$g_presentation_obj_admin_panel_7", reg0),
 
                     (store_div, ":actual_input_value", "$g_disable_condescending_comments", 2),
-                    (try_begin), #off (disabled)
-                      (eq, ":actual_input_value", 0),
-                      (overlay_set_val, reg0, 2),
+                    (try_begin), #both gender in battles
+                      (eq, ":actual_input_value", 2),
+                      (overlay_set_val, reg0, 0),
                     (else_try), #high
                       (lt, ":actual_input_value", 0),
-                      (overlay_set_val, reg0, 0),
-                    (else_try), #default
                       (overlay_set_val, reg0, 1),
+                    (else_try), #disabled
+                      (eq, ":actual_input_value", 1),
+                      (overlay_set_val, reg0, 2),
+                    (else_try), #default
+                      (overlay_set_val, reg0, 3),
                     (try_end),
-					# (try_begin),
-						# (this_or_next|eq, "$g_disable_condescending_comments", 0),
-						# (eq, "$g_disable_condescending_comments", 1),
-						# (assign, ":actual_input_value", 2),
-					# (try_end),
-					# (try_begin),
-						# (this_or_next|eq, "$g_disable_condescending_comments", 2),
-						# (eq, "$g_disable_condescending_comments", 3),
-						# (assign, ":actual_input_value", 1),
-					# (try_end),
-					# (try_begin),
-						# (this_or_next|eq, "$g_disable_condescending_comments", -1),
-						# (eq, "$g_disable_condescending_comments", -2),
-						# (assign, ":actual_input_value", 0),
-					# (try_end),
-
+                    
+                    (assign, reg1, "$g_disable_condescending_comments"),
                     (set_container_overlay, -1),
                     (create_mesh_overlay, reg0, "mesh_pic_siege_sighted_fem"),
                     (set_container_overlay, ":container"),
@@ -18512,17 +18503,17 @@ presentations = [
                     (val_add, ":num_options", 1),
                     
                     ## NPC Complaints
-					(create_text_overlay, reg0, "@Companion Complaints:", tf_vertical_align_center),
+					(create_text_overlay, reg0, "@Disable Companions Complaints:", tf_vertical_align_center),
 					(position_set_y, pos1, ":texts_y"),
 					(overlay_set_position, reg0, pos1),
-                    (troop_set_slot, "trp_temp_array_a", ":num_options", reg0),
+					(troop_set_slot, "trp_temp_array_a", ":num_options", reg0),
 					(val_sub, ":texts_y", ":y_increment"),
 
 					(create_check_box_overlay, reg0, "mesh_checkbox_off", "mesh_checkbox_on"),
 					(position_set_y, pos2, ":inputs_y"),
 					(overlay_set_position, reg0, pos2),
 					(val_sub, ":inputs_y", ":y_increment"),
-                    (troop_set_slot, "trp_temp_array_b", ":num_options", reg0),
+					(troop_set_slot, "trp_temp_array_b", ":num_options", reg0),
 					(overlay_set_val, reg0, "$disable_npc_complaints"),
                     (set_container_overlay, -1),
                     (create_mesh_overlay, reg0, "mesh_pic_recruits"),
@@ -18778,16 +18769,20 @@ presentations = [
                         (store_sub, "$g_dplmc_gold_changes", DPLMC_GOLD_CHANGES_HIGH, ":value"),
                     (else_try), #Prejudice
                         (troop_slot_eq, "trp_temp_array_b", 8, ":object"),
-                        (try_begin),
-                          (eq, ":value", 2),
+                        (try_begin), #default
+                          (eq, ":value", 3),
                           (assign, "$g_disable_condescending_comments", 0),
-                        (else_try),
-                          (eq, ":value", 1),
+                        (else_try), #off
+                          (eq, ":value", 2),
                           (assign, "$g_disable_condescending_comments", 2),
-                        (else_try),
-                          (eq, ":value", 0),
+                        (else_try), #high
+                          (eq, ":value", 1),
                           (assign, "$g_disable_condescending_comments", -2),
+                        (else_try), #randomize
+                          (eq, ":value", 0),
+                          (assign, "$g_disable_condescending_comments", 4),
                         (try_end),
+                        (call_script, "script_dplmc_init_faction_gender_ratio", 1),
                     (else_try), ## Complaints
                         (troop_slot_eq, "trp_temp_array_b", 9, ":object"),
                         (assign, "$disable_npc_complaints", ":value"),

@@ -1,4 +1,4 @@
-1534
+1560
 qstr_Breaking_camp... Breaking_camp...
 qstr_{!}{s3}_commander_of {!}{s3}_commander_of_party_#{reg4}_which_is_not_his_troop_leaded_party_{reg5}
 qstr_{!}_Commanded_party_ {!}_Commanded_party_#{reg4}_is_{s3},_troop_leaded_party_#{reg5}_is_{s65}
@@ -1533,3 +1533,29 @@ qstr_Sorry_currently_I_ca Sorry,_currently_I_can't_provide_any_information_about
 qstr_Sorry_currently_I_can Sorry,_currently_I_can't_provide_any_information_about_the_realm's_mood,_since_our_spies_haven't_reported_back_yet.
 qstr_{s6}__{s50}_ {s6}_({s50})
 qstr_no_outstanding_amoun no_outstanding_amount
+qstr_Performing_2019_upda Performing_2019_updates,_thank_you_for_your_patience!
+qstr_{!}DEBUG:_Internal_upd {!}DEBUG:_Internal_update_code_for_current_saved_game_is_{reg0}._Update_code_for_the_current_release_is_190101.
+qstr_{!}{s0}^^_DEBUG:_Internal_ {!}{s0}^^_DEBUG:_Internal_update_code_for_current_saved_game_is_{reg0}.^Update_code_for_the_current_release_is_190101.
+qstr_{reg0}_was_{reg1} {reg0}_was_{reg1}
+qstr_prejudice_is_{reg1} prejudice_is_{reg1}
+qstr_option_{reg0}:_was_{ option_{reg0}:_was_{reg1}
+qstr_Bye_horses Bye_horses
+qstr_Ouch Ouch
+qstr_{s12} {s12}
+qstr_{s13} {s13}
+qstr_I_see._Perhaps_circu I_see._Perhaps_circumstances_will_change_a_few_days_from_now,_but_until_then_I_appreciate_your_generous_hospitality.
+qstr_Disable_Companions_C Disable_Companions_Complaints:
+qstr_{s1}_price_:_{reg2}_i {s1}_price_:_{reg2}_in_slot_{reg4},_probability:_{reg3};{reg1}_total_p{reg13}_c_{reg14}
+qstr_{s1}_price_:_{reg2}_o {s1}_price_:_{reg2}_or_{reg5}_in_slot_{reg4},_probability:_{reg3};{reg1}_total_p{reg14}_c_{reg15}
+qstr_{s1}_price_:_{reg2}_or {s1}_price_:_{reg2}_or_{reg5}_in_slot_{reg4},_probability:_{reg3};{reg1}_total_p{reg13}/{reg14}c{reg15}/{reg16}
+qstr_{s1}_price_:_{reg2}_or_ {s1}_price_:_{reg2}_or_{reg5}_in_slot_{reg4},_probability:_{reg3};{reg1}_total
+qstr_{s1}_{reg1} {s1}_{reg1}
+qstr_{s1}_price_:_{reg2}_or_{ {s1}_price_:_{reg2}_or_{reg5}_in_slot_{reg4},_probability:_{reg3};{reg1}_total_p:{reg13},{reg14}_c:_{reg15}{reg16}
+qstr_{s1}_{reg1}_{reg2} {s1}_{reg1},_{reg2}
+qstr_{reg2} {reg2}
+qstr_{s1}_price_:_{reg2}_or_{r {s1}_price_:_{reg2}_or_{reg5}_in_slot_{reg4},_probability:_{reg3};{reg1}_total_p:{reg13},{reg14}_c:_{reg15},{reg16}
+qstr_{s1}_{reg0} {s1}_{reg0}
+qstr_{reg3}_state {reg3}_state
+qstr_{s1}_price_:_{reg2}_or_{re {s1}_price_:_{reg2}_or_{reg4}_at_probability:_{reg3};{reg1}
+qstr_{s1}_{reg1}/{reg3}_ {s1}_{reg1}/{reg3},_{reg2}_raw
+qstr_realm realm

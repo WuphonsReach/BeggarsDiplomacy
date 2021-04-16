@@ -775,3 +775,4 @@ script_dplmc_set_recruiter_extra_text = 773
 script_dplmc_mayor_wealth_comparison = 774
 script_dplmc_init_quest_delegate_states = 775
 script_cf_dplmc_calculate_tax_inefficiency = 776
+script_dplmc_init_faction_gender_ratio = 777

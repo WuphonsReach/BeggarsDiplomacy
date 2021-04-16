@@ -1201,7 +1201,7 @@ store_num_free_prisoner_stacks  = 2155 # (store_num_free_prisoner_stacks,<destin
 store_party_size                = 2156	# (store_party_size,<destination>,[party_id]),
 store_party_size_wo_prisoners   = 2157	# (store_party_size_wo_prisoners,<destination>,[party_id]),
 store_troop_kind_count          = 2158 # deprecated, use party_count_members_of_type instead
-store_num_regular_prisoners     = 2159	# (store_mum_regular_prisoners,<destination>,<party_id>),
+store_num_regular_prisoners     = 2159	# (store_num_regular_prisoners,<destination>,<party_id>),
 
 store_troop_count_companions    = 2160	# (store_troop_count_companions,<destination>,<troop_id>,[party_id]),
 store_troop_count_prisoners     = 2161	# (store_troop_count_prisoners,<destination>,<troop_id>,[party_id]),

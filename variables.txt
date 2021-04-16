@@ -1363,5 +1363,3 @@ g_multiplayer_respawn_wave_hint_overlay
 g_multiplayer_ccoop_difficulty_string_i
 g_multiplayer_ccoop_victory_overlay
 g_multiplayer_ccoop_victory_subtitle_overlay
-right_to_rule
-a

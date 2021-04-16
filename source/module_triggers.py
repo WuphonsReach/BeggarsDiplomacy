@@ -1449,6 +1449,7 @@ triggers = [
                     (store_random_in_range, ":random", 0, 100),
                     (val_add, ":npc_morale", ":random"),
                     (lt, ":npc_morale", 20),
+                    (neq, "$disable_npc_complaints", 1), #SB : disable
                     (assign, "$npc_is_quitting", ":npc"),
                 (try_end),
 

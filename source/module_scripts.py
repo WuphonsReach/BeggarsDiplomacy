@@ -278,9 +278,10 @@ scripts = [
       (try_end),
       (faction_set_slot, "fac_player_supporters_faction", slot_faction_marshall, "trp_player"),
       (call_script, "script_initialize_faction_troop_types"),
-      ##diplomacy begin
+      ##diplomacy begin #SB : new scripts
       (call_script, "script_dplmc_init_domestic_policy"),
       (call_script, "script_dplmc_init_quest_delegate_states"),
+      (call_script, "script_dplmc_init_faction_gender_ratio", 0),
       ##diplomacy end
 
 
@@ -3681,7 +3682,6 @@ scripts = [
               #SB : colorize
               (faction_get_color, ":color", ":defeated_troop_faction"),
               (try_begin),
-                (ge, ":rand", hero_escape_after_defeat_chance),
                 (party_stack_get_troop_id, ":leader_troop_id", ":nonempty_winner_party", 0),
                 ##diplomacy start+ kingdom ladies might lead kingdom parties
                 (this_or_next|is_between,":leader_troop_id", kingdom_ladies_begin, kingdom_ladies_end),
@@ -3690,6 +3690,10 @@ scripts = [
                 (this_or_next|troop_slot_eq, ":leader_troop_id", slot_troop_occupation, slto_kingdom_hero),
                 ##diplomacy end+
                 (is_between, ":leader_troop_id", active_npcs_begin, active_npcs_end), #disable non-kingdom parties capturing enemy lords
+                (store_skill_level, ":lvl", ":leader_troop_id"),
+                (val_sub, ":rand", ":lvl"), #SB : small bonus chance for capture
+                (ge, ":rand", hero_escape_after_defeat_chance),
+                
                 (party_add_prisoners, ":nonempty_winner_party", ":cur_troop_id", 1),
                 (gt, reg0, 0),
                 #(troop_set_slot, ":cur_troop_id", slot_troop_is_prisoner, 1),
@@ -3698,7 +3702,7 @@ scripts = [
                 (display_log_message, "str_hero_taken_prisoner", ":color"),
 
                 (try_begin),
-                  (call_script, "script_cf_prisoner_offered_parole", ":cur_troop_id"),
+                  (call_script, "script_cf_prisoner_offered_parole", ":cur_troop_id", ":leader_troop_id"),
 
                   (try_begin),
                     (eq, "$cheat_mode", 1),
@@ -3706,18 +3710,18 @@ scripts = [
                   (try_end),
 
                   (call_script, "script_troop_change_relation_with_troop", ":leader_troop_id", ":cur_troop_id", 3),
-				  (val_add, "$total_battle_enemy_changes", 3),
+                  (val_add, "$total_battle_enemy_changes", 3),
                 (else_try),
                   (try_begin),
                     (eq, "$cheat_mode", 1),
                     (display_message, "@{!}DEBUG : Prisoner not offered parole"),
-		          (try_end),
+                  (try_end),
+                  (call_script, "script_troop_change_relation_with_troop", ":leader_troop_id", ":cur_troop_id", -5),
+                  (val_add, "$total_battle_enemy_changes", -5),
+                  (call_script, "script_change_troop_renown", ":cur_troop_id", dplmc_taken_prisoner_renown),
+                (try_end),
 
-		          (call_script, "script_troop_change_relation_with_troop", ":leader_troop_id", ":cur_troop_id", -5),
-				  (val_add, "$total_battle_enemy_changes", -5),
-		        (try_end),
-
-				(store_faction_of_party, ":capturer_faction", ":nonempty_winner_party"),
+                (store_faction_of_party, ":capturer_faction", ":nonempty_winner_party"),
                 (call_script, "script_update_troop_location_notes_prisoned", ":cur_troop_id", ":capturer_faction"),
               (else_try),
                 (display_message,"@{s1} of {s3} was defeated in battle but managed to escape.", ":color"),
@@ -3738,7 +3742,7 @@ scripts = [
                 (call_script, "script_dplmc_is_affiliated_family_member", ":cur_troop_id"),
                 (eq, reg0, 1),
                 ##diplomacy start+ skip relationship decay for defeat when the player himself is imprisoned or wounded
-					 (eq, "$g_player_is_captive", 0),
+                (eq, "$g_player_is_captive", 0),
                 (neg|troop_slot_ge, "trp_player", slot_troop_prisoner_of_party, 1),
                 (neg|troop_is_wounded, "trp_player"),
                 ##diplomacy end+
@@ -5232,7 +5236,7 @@ scripts = [
 			(is_between,"$g_player_culture", npc_kingdoms_begin, npc_kingdoms_end),
 			(eq, "$g_player_culture", ":faction_no"),
 			#SB TODO: pick a number less arbitrarily
-			(store_add, reg0, 100, "$right_to_rule"),
+			(store_add, reg0, 100, "$player_right_to_rule"),
 		(try_end),
       ##diplomacy end+
       (val_div, reg0, 100),
@@ -16429,16 +16433,25 @@ scripts = [
 			(val_div, ":modified_production", 125),
 		(try_end),
 
-		(try_begin),
-		    (this_or_next|party_slot_eq, ":center_no", slot_village_state, svs_being_raided),
-		    (this_or_next|party_slot_eq, ":center_no", slot_village_state, svs_deserted), #SB : deserted village
-		        (party_slot_eq, ":center_no", slot_village_state, svs_looted),
-		    (assign, ":modified_production", 0),
+		(try_begin), #SB : TODO scale down instead of set to 0
+			# (store_script_param, ":ignore_state", 3),
+			(party_get_slot, ":svs", ":center_no", slot_village_state),
+			(try_begin), #SB : fix butter bug
+				(eq, ":center_no", "$g_player_raiding_village"),
+				(eq, "$g_player_raid_complete", 1),
+				(assign, ":svs", -1),
+			(try_end),
+			(this_or_next|eq, ":svs", svs_being_raided),
+			(this_or_next|eq, ":svs", svs_deserted),
+			(eq, ":svs", svs_looted),
+		    # (this_or_next|party_slot_ge, ":center_no", slot_center_has_bandits, 0),
+		    # (this_or_next|party_slot_ge, ":center_no", slot_center_is_besieged_by, 0),
+			# (assign, ":modified_production", 0),
 		(try_end),
 
-	    (assign, reg0, ":modified_production"), #modded by prosperity
-	    (assign, reg1, ":base_production_modded_by_raw_materials"),
-	    (assign, reg2, ":base_production"),
+		(assign, reg0, ":modified_production"), #modded by prosperity
+		(assign, reg1, ":base_production_modded_by_raw_materials"),
+		(assign, reg2, ":base_production"),
 
 	]),
 
@@ -16463,8 +16476,8 @@ scripts = [
 			(lt, "$g_dplmc_gold_changes", DPLMC_GOLD_CHANGES_LOW),
 #If economic changes are disabled, use the Native desert-check logic.
 ##diplomacy end+
-			(this_or_next|is_between, ":center_no", "p_town_19", "p_castle_1"),
-				(ge, ":center_no", "p_village_91"),
+			(this_or_next|is_between, ":center_no", "p_town_19", towns_end),
+				(is_between, ":center_no", "p_village_91", villages_end), #SB : limit range
 			(item_slot_ge, ":cur_good", slot_item_desert_demand, 0), #Otherwise use rural or urban
 			(item_get_slot, ":consumer_consumption", ":cur_good", slot_item_desert_demand),
 		(else_try),
@@ -17353,6 +17366,7 @@ scripts = [
     [
       (store_script_param_1, ":party"), #Source Party_id
       (party_get_num_companion_stacks, ":num_companion_stacks",":party"),
+      (options_get_campaign_ai, ":difficulty"), #SB : store difficulty for escape bonus
       (try_for_range_backwards, ":stack_no", 0, ":num_companion_stacks"),
         (party_stack_get_troop_id, ":stack_troop",":party",":stack_no"),
 
@@ -17388,8 +17402,16 @@ scripts = [
           (neq, ":stack_troop", "trp_player"),
           (eq, "$g_prison_heroes", 1),
           (eq, ":party", "p_main_party"),
-          (store_random_in_range, ":succeed_escaping", 0, 2),
-          (neq, ":succeed_escaping", 0), #50% chance companion stays with us.
+          (store_random_in_range, ":succeed_escaping", 0, 100),
+          (try_begin), #SB : add small chance based on level
+            (store_troop_health, ":bonus", ":stack_troop"), #usually 15/100
+            (store_character_level, ":lvl", ":stack_troop"), #1 to 30
+            (val_mul, ":bonus", ":difficulty"), #0 to 2
+            (val_mul, ":bonus", ":lvl"),
+            (val_div, ":bonus", 100),
+            (val_sub, ":succeed_escaping", ":bonus"),
+          (try_end),
+          (gt, ":succeed_escaping", companion_escape_after_defeat_chance), #50% chance companion stays with us.
           (troop_set_health, ":stack_troop", 100), #heal before leaving
           (store_faction_of_party, ":enemy_faction", "$g_enemy_party"),
           (assign, ":minimum_distance", 99999),
@@ -17406,8 +17428,10 @@ scripts = [
           #(display_message, "@{!}DEBUG : prison center is {reg1}"),
           (try_begin),
             (ge, ":prison_center", 0),
-            (store_random_in_range, ":succeed_escaping", 0, 4),
-            (neq, ":succeed_escaping", 0), #25% chance companion escapes to a tavern.
+            (store_random_in_range, ":succeed_escaping", 0, 100),
+            (val_sub, ":succeed_escaping", ":bonus"),
+            (gt, ":succeed_escaping", companion_escape_after_defeat_chance / 2), #25% chance companion escapes to a tavern.
+            (call_script, "script_change_troop_renown", ":stack_troop", dplmc_taken_prisoner_renown), #SB : lose some renown
             (party_add_prisoners, ":prison_center", ":stack_troop", ":stack_size"),
             (troop_set_slot, ":stack_troop", slot_troop_prisoner_of_party, ":prison_center"),
             (troop_set_slot, ":stack_troop", slot_troop_playerparty_history, pp_history_scattered),
@@ -17446,6 +17470,7 @@ scripts = [
             (troop_set_slot, ":stack_troop", slot_troop_turned_down_twice, 0),
             (troop_set_slot, ":stack_troop", slot_troop_occupation, 0),
             (party_remove_members, ":party", ":stack_troop", ":stack_size"),
+            (call_script, "script_change_troop_renown", ":stack_troop", dplmc_taken_prisoner_renown + dplmc_escape_prisoner_renown), #SB : lose renown
             (try_begin),
               (eq, "$cheat_mode", 1),
               (str_store_troop_name, 4, ":stack_troop"),
@@ -18018,6 +18043,7 @@ scripts = [
     (try_begin), #here we give positive morale to our troops of owner of rescued village's faction after saving village from bandits by x3 bonus.
       (neg|party_is_active, "$g_enemy_party"),
       (ge, "$current_town", 0),
+      (neq, "$g_village_raid_evil", 1), #SB : not raiding
 
       (store_mul, ":ally_faction_morale_change", ":faction_morale_change", 2), #2x bonus (more than normal)
       (store_faction_of_party, ":ally_faction", "$current_town"),
@@ -25598,14 +25624,14 @@ scripts = [
 
         (party_set_slot, ":village_no", slot_village_raided_by, -1),
         (call_script, "script_change_center_prosperity", ":village_no", -20),
-		(val_add, "$newglob_total_prosperity_from_villageloot", -20),
+        (val_add, "$newglob_total_prosperity_from_villageloot", -20),
       (else_try),
         (eq, ":new_state", svs_looted),
         (party_set_extra_text, ":village_no", "@(Looted)"),
 
         (party_set_slot, ":village_no", slot_village_raided_by, -1),
         (call_script, "script_change_center_prosperity", ":village_no", -60),
-		(val_add, "$newglob_total_prosperity_from_villageloot", -60),
+        (val_add, "$newglob_total_prosperity_from_villageloot", -60),
 
 		# (try_begin), #optional - lowers the relationship between a lord and his liege if his fief is looted
 			# (eq, 5, 0),
@@ -25619,28 +25645,27 @@ scripts = [
       (else_try),
         (eq, ":new_state", svs_under_siege),
         (party_set_extra_text, ":village_no", "@(Under Siege)"),
-
 		#Divert all caravans heading to the center
 		#Note that occasionally, no alternative center will be found. In that case, the caravan will try to run the blockade
-		(try_for_parties, ":party_no"),
-			(gt, ":party_no", "p_spawn_points_end"),
-			(party_slot_eq, ":party_no", slot_party_type, spt_kingdom_caravan),
-            (party_slot_eq, ":party_no", slot_party_ai_object, ":village_no"),
+        (try_for_parties, ":party_no"),
+          (gt, ":party_no", "p_spawn_points_end"),
+          (party_slot_eq, ":party_no", slot_party_type, spt_kingdom_caravan),
+          (party_slot_eq, ":party_no", slot_party_ai_object, ":village_no"),
 
-			(party_get_slot, ":origin", ":party_no", slot_party_last_traded_center),
-			(store_faction_of_party, ":merchant_faction", ":party_no"),
-            ##diplomacy start+ added new third parameter, the caravan party itself
-            (call_script, "script_cf_select_most_profitable_town_at_peace_with_faction_in_trade_route", ":origin", ":merchant_faction",":party_no"),
-			##diplomacy end+
-            (assign, ":target_center", reg0),
-			(is_between, ":target_center", centers_begin, centers_end),
+          (party_get_slot, ":origin", ":party_no", slot_party_last_traded_center),
+          (store_faction_of_party, ":merchant_faction", ":party_no"),
+          ##diplomacy start+ added new third parameter, the caravan party itself
+          (call_script, "script_cf_select_most_profitable_town_at_peace_with_faction_in_trade_route", ":origin", ":merchant_faction",":party_no"),
+          ##diplomacy end+
+          (assign, ":target_center", reg0),
+          (is_between, ":target_center", centers_begin, centers_end),
 
-            (party_set_ai_behavior, ":party_no", ai_bhvr_travel_to_party),
-            (party_set_ai_object, ":party_no", ":target_center"),
-            (party_set_flags, ":party_no", pf_default_behavior, 0),
-            (party_set_slot, ":party_no", slot_party_ai_state, spai_trading_with_town),
-            (party_set_slot, ":party_no", slot_party_ai_object, ":target_center"),
-		(try_end),
+          (party_set_ai_behavior, ":party_no", ai_bhvr_travel_to_party),
+          (party_set_ai_object, ":party_no", ":target_center"),
+          (party_set_flags, ":party_no", pf_default_behavior, 0),
+          (party_set_slot, ":party_no", slot_party_ai_state, spai_trading_with_town),
+          (party_set_slot, ":party_no", slot_party_ai_object, ":target_center"),
+        (try_end),
       (try_end),
       (party_set_slot, ":village_no", slot_village_state, ":new_state"),
   ]),
@@ -35373,7 +35398,7 @@ scripts = [
           (agent_get_class, ":agent_class", ":cur_agent"),
           (this_or_next|eq, ":agent_class", grc_infantry),
           (eq, ":agent_class", grc_cavalry),
-          (agent_get_slot, ":x_pos", ":cur_agent", 1),
+          (agent_get_slot, ":x_pos", ":cur_agent", slot_agent_target_x_pos),
           (eq, ":x_pos", 0),
           (assign, ":y_pos", 0),
           (try_begin),
@@ -35408,8 +35433,8 @@ scripts = [
             (val_add, ":slot_6_positioned", 1),
           (try_end),
           (val_add, "$belfry_num_slots_positioned", 1),
-          (agent_set_slot, ":cur_agent", 1, ":x_pos"),
-          (agent_set_slot, ":cur_agent", 2, ":y_pos"),
+          (agent_set_slot, ":cur_agent", slot_agent_target_x_pos, ":x_pos"),
+          (agent_set_slot, ":cur_agent", slot_agent_target_y_pos, ":y_pos"),
         (try_end),
       (try_end),
       (try_begin),
@@ -35422,7 +35447,7 @@ scripts = [
           (this_or_next|eq, "$attacker_team", ":cur_agent_team"),
           (             eq, "$attacker_team_2", ":cur_agent_team"),
           (neq, ":player_agent", ":cur_agent"),
-          (agent_get_slot, ":x_pos", ":cur_agent", 1),
+          (agent_get_slot, ":x_pos", ":cur_agent", slot_agent_target_x_pos),
           (eq, ":x_pos", 0),
           (assign, ":y_pos", 0),
           (try_begin),
@@ -35457,8 +35482,8 @@ scripts = [
             (val_add, ":slot_6_positioned", 1),
           (try_end),
           (val_add, "$belfry_num_slots_positioned", 1),
-          (agent_set_slot, ":cur_agent", 1, ":x_pos"),
-          (agent_set_slot, ":cur_agent", 2, ":y_pos"),
+          (agent_set_slot, ":cur_agent", slot_agent_target_x_pos, ":x_pos"),
+          (agent_set_slot, ":cur_agent", slot_agent_target_y_pos, ":y_pos"),
         (try_end),
       (try_end),
     (else_try),
@@ -37613,6 +37638,7 @@ scripts = [
           (troop_slot_ge, ":troop_no", slot_troop_player_debt, dplmc_ransom_debt_mask),
           (troop_set_slot, ":troop_no", slot_troop_player_debt, 0),
         (try_end),
+        (quest_set_slot, "qst_rescue_prisoner", slot_quest_target_state, 0),
       # (else_try), #SB : clean up fugitive troop
         # (eq, ":quest_no", "qst_hunt_down_fugitive"),
         # (try_for_parties, ":party_no"),
@@ -37954,11 +37980,13 @@ scripts = [
           (party_get_num_prisoners, ":prisoner_count", ":town_no"),
           (gt, ":prisoner_count", 0),
           (party_set_slot, ":town_no", slot_center_ransom_broker, ":troop_no"),
+          (troop_set_slot, ":troop_no", slot_troop_cur_center, ":town_no"), #DA 3.10.2019: necessary for travellers to know about him
           (assign, ":limit", 0), #loop breaker
        (try_end),
        (eq, ":limit", 20), #none found
        (store_random_in_range, ":town_no", towns_begin, towns_end),
        (party_set_slot, ":town_no", slot_center_ransom_broker, ":troop_no"),
+       (troop_set_slot, ":troop_no", slot_troop_cur_center, ":town_no"), #DA: necessary for travellers to know about it
      (try_end),
 
      (party_set_slot,"p_town_2",slot_center_ransom_broker,"trp_ramun_the_slave_trader"),
@@ -39160,7 +39188,17 @@ scripts = [
        (cur_tableau_clear_override_items),
        #SB : override appearance while disguised and buying stuff
        (try_begin),
+         (eq, "$sneaked_into_town", 999),
+         # (try_begin),
+           # (eq, ":troop_no", "trp_temp_array_b"),
+           # (assign, ":troop_no", "$g_talk_troop"),
+         # (else_try),
+         (eq, ":troop_no", "trp_temp_array_c"),
+         (assign, ":troop_no", "trp_player"),
+         # (try_end),
+       (else_try),
          (gt, "$sneaked_into_town", disguise_none),
+         (eq, ":troop_no", "trp_player"),
          (cur_tableau_set_override_flags, af_override_everything),
          (try_begin),
            (eq, "$sneaked_into_town", disguise_pilgrim),
@@ -41143,8 +41181,7 @@ scripts = [
         (quest_slot_eq, "qst_persuade_lords_to_make_peace", slot_quest_object_troop, ":troop_no"),
         (assign, ":quest_target", 1),
       (else_try),
-        (ge, ":troop_no", "trp_sea_raider_leader"),
-        (lt, ":troop_no", "trp_bandit_leaders_end"),
+        (is_between, ":troop_no", "trp_sea_raider_leader", "trp_bandit_leaders_end"),
         (try_begin),
           (check_quest_active, "qst_learn_where_merchant_brother_is"),
           (assign, ":quest_target", 1), #always catched
@@ -41337,6 +41374,7 @@ scripts = [
        (faction_get_color, ":color", ":troop_faction"),
        #SB : factionalize color, set to log
        (display_log_message, "@{reg0?One of your prisoners, :}{s1} of {s3} has escaped from captivity!", ":color"),
+       (call_script, "script_change_troop_renown", ":stack_troop", dplmc_escape_prisoner_renown),
      (try_end),
      ]),
 
@@ -54130,13 +54168,13 @@ scripts = [
 	   (assign, ":terrain_type", rt_desert),
 	(try_end),
 	(try_begin),
-	   (lt, "$g_dplmc_gold_changes", DPLMC_GOLD_CHANGES_LOW),
-	   #To be consistent with script_center_get_consumption and script_initialize_economic_information
-	   #use the Native desert-determination scheme when economic changes are disabled.
-	   (assign, ":terrain_type", rt_plain),
-  	   (this_or_next|is_between, ":center_no", "p_town_19", "p_castle_1"),
-	   (ge, ":center_no", "p_village_91"),
-	   (assign, ":terrain_type", rt_desert),
+     (lt, "$g_dplmc_gold_changes", DPLMC_GOLD_CHANGES_LOW),
+     #To be consistent with script_center_get_consumption and script_initialize_economic_information
+     #use the Native desert-determination scheme when economic changes are disabled.
+    (assign, ":terrain_type", rt_plain), #SB : use
+    (this_or_next|is_between, ":center_no", "p_town_19", towns_end),
+    (is_between, ":center_no", "p_village_91", villages_end),
+    (assign, ":terrain_type", rt_desert),
 	(try_end),
 	##diplomacy end+
 
@@ -54195,16 +54233,16 @@ scripts = [
 	  ##diplomacy start+
 	  (troop_get_slot, ":true_original_faction", ":troop_no", slot_troop_original_faction),#not necessarily ":orig_faction"
 	  (try_begin),
-	     (neg|is_between, ":true_original_faction", kingdoms_begin, kingdoms_end),
-	     (troop_get_slot, reg0, ":troop_no", slot_troop_home),
-	     (is_between, reg0, centers_begin, centers_end),
-	     (party_get_slot, reg0, reg0, slot_center_original_faction),
-	     (gt, reg0, 0),
-	     (assign, ":true_original_faction", reg0),
+		  (neg|is_between, ":true_original_faction", kingdoms_begin, kingdoms_end),
+		  (troop_get_slot, reg0, ":troop_no", slot_troop_home),
+		  (is_between, reg0, centers_begin, centers_end),
+		  (party_get_slot, reg0, reg0, slot_center_original_faction),
+		  (gt, reg0, 0),
+		  (assign, ":true_original_faction", reg0),
 	  (try_end),
 	  (assign, ":original_culture", -2),
 	  (try_begin),
-	     (gt, ":true_original_faction", 0),
+		 (gt, ":true_original_faction", 0),
 		 (faction_get_slot, ":original_culture", ":true_original_faction", slot_faction_culture),
 		 (lt, ":original_culture", 1),
 		 (assign, ":original_culture", ":true_original_faction"),
@@ -54213,20 +54251,20 @@ scripts = [
 
 	  #Factions with an available center
 	  (try_for_range, ":center_no", centers_begin, centers_end),
-	    (this_or_next|party_slot_eq, ":center_no", slot_town_lord, stl_unassigned),
-	    (party_slot_eq, ":center_no", slot_town_lord, stl_rejected_by_player),
-	    (store_faction_of_party, ":center_faction", ":center_no"),
-	    ##diplomacy start+ In Warband 1.142 / 1.143, this variable was added.
-	    #To make certain kinds of mistakes or saved-game issues less likely,
-	    #instead of checking for value 1 I'll check if the value matches the troop.
-	    (this_or_next|eq, "$g_give_advantage_to_original_faction", ":troop_no"),
-	    ##diplomacy end+
-	    (neq, ":center_faction", ":orig_faction"),
-	    (faction_get_slot, ":liege", ":center_faction", slot_faction_leader),
-	    (this_or_next|neq, ":liege", "trp_player"),
-	    (ge, "$player_right_to_rule", 25),
-	    (call_script, "script_troop_get_relation_with_troop", ":troop_no", ":liege"),
-	    (assign, ":liege_relation", reg0),
+		(this_or_next|party_slot_eq, ":center_no", slot_town_lord, stl_unassigned),
+		(party_slot_eq, ":center_no", slot_town_lord, stl_rejected_by_player),
+		(store_faction_of_party, ":center_faction", ":center_no"),
+		##diplomacy start+ In Warband 1.142 / 1.143, this variable was added.
+		#To make certain kinds of mistakes or saved-game issues less likely,
+		#instead of checking for value 1 I'll check if the value matches the troop.
+		(this_or_next|eq, "$g_give_advantage_to_original_faction", ":troop_no"),
+		##diplomacy end+
+		(neq, ":center_faction", ":orig_faction"),
+		(faction_get_slot, ":liege", ":center_faction", slot_faction_leader),
+		(this_or_next|neq, ":liege", "trp_player"),
+		(ge, "$player_right_to_rule", 25),
+		(call_script, "script_troop_get_relation_with_troop", ":troop_no", ":liege"),
+		(assign, ":liege_relation", reg0),
 
 		##diplomacy start+
 		(try_begin),
@@ -54252,29 +54290,29 @@ scripts = [
 		(try_end),
 		##diplomacy end+
 
-	    (gt, ":liege_relation", ":score_to_beat"),
-	    (assign, ":new_faction", ":center_faction"),
-	    (assign, ":score_to_beat", ":liege_relation"),
+		(gt, ":liege_relation", ":score_to_beat"),
+		(assign, ":new_faction", ":center_faction"),
+		(assign, ":score_to_beat", ":liege_relation"),
 	  (try_end),
 
 	  #Factions without an available center
 	  (try_begin),
-	    (eq, ":new_faction", -1),
-	    (assign, ":score_to_beat", 0),
-	     #diplomacy start+
-	     #If AI changes are explicitly enabled, slightly ease the requirements for entry.
-	     (try_begin),
-		    (ge, "$g_dplmc_ai_changes", DPLMC_AI_CHANGES_MEDIUM),
-	        (assign, ":score_to_beat", -5),
-	     (try_end),
-		 (store_add, ":min_acceptable_score", ":score_to_beat", 1),#used below
-	     ##diplomacy end+
+		(eq, ":new_faction", -1),
+		(assign, ":score_to_beat", 0),
+		  #diplomacy start+
+		  #If AI changes are explicitly enabled, slightly ease the requirements for entry.
+		(try_begin),
+			(ge, "$g_dplmc_ai_changes", DPLMC_AI_CHANGES_MEDIUM),
+			(assign, ":score_to_beat", -5),
+		(try_end),
+		(store_add, ":min_acceptable_score", ":score_to_beat", 1),#used below
+		##diplomacy end+
 
-	    (try_for_range, ":kingdom", kingdoms_begin, kingdoms_end),
-	      (faction_slot_eq, ":kingdom", slot_faction_state, sfs_active),
-	      (faction_get_slot, ":liege", ":kingdom", slot_faction_leader),
-	      (call_script, "script_troop_get_relation_with_troop", ":troop_no", ":liege"),
-	      (assign, ":liege_relation", reg0),
+		(try_for_range, ":kingdom", kingdoms_begin, kingdoms_end),
+		  (faction_slot_eq, ":kingdom", slot_faction_state, sfs_active),
+		  (faction_get_slot, ":liege", ":kingdom", slot_faction_leader),
+		  (call_script, "script_troop_get_relation_with_troop", ":troop_no", ":liege"),
+		  (assign, ":liege_relation", reg0),
 
 		  ##diplomacy start+
 		  (try_begin),
@@ -57845,6 +57883,7 @@ scripts = [
         # (item_get_slot, ":shield_armor", ":item", dplmc_slot_item_shield_armor),
 
         ## SB : factor in speed and height
+        (set_fixed_point_multiplier, 100), #item_get_shield_height needs this
         (item_get_shield_height, ":shield_height", ":item"),
         (item_get_weapon_length, ":shield_width", ":item"),
         (item_get_body_armor, ":shield_armor", ":item"),
@@ -57854,7 +57893,6 @@ scripts = [
         (try_begin),
           (gt, ":shield_height", 0),
           (val_mul, ":shield_width",  ":shield_height"),
-          (set_fixed_point_multiplier, 100),
           (store_mul, ":i_score", ":shield_width", 100),
           (store_sqrt, ":i_score", ":i_score"),
           (val_div, ":i_score", 100),
@@ -61400,7 +61438,7 @@ scripts = [
 			(try_begin), #new-begin
 				(neq, ":faction_no", "fac_player_supporters_faction"),
 				(this_or_next|troop_slot_eq, ":troop_no", slot_troop_occupation, slto_inactive),
-					(troop_slot_eq, ":troop_no", slot_troop_occupation, slto_retirement),
+					(this_or_next|troop_slot_eq, ":troop_no", slot_troop_occupation, slto_retirement),
 					(troop_slot_eq, ":troop_no", slot_troop_occupation, dplmc_slto_exile), #SB : revoke exile
 				(troop_set_slot, ":troop_no", slot_troop_occupation, slto_kingdom_hero),
 		    (try_end), #new-end
@@ -61412,8 +61450,8 @@ scripts = [
 			(faction_get_color, ":color", ":faction_no"), #SB : store colour for logs
 			(display_log_message, "@{s4} has been granted a pardon by {s6} of {s5} and has returned from exile.", ":color"),
 
-            #SB : spawn full army
-            (troop_set_slot, ":troop_no", slot_troop_spawned_before, 0),
+			#SB : spawn full army
+			(troop_set_slot, ":troop_no", slot_troop_spawned_before, 0),
 			(troop_get_slot, ":led_party", ":troop_no", slot_troop_leaded_party),
 			(try_begin),
 				(party_is_active, ":led_party"),
@@ -68212,8 +68250,13 @@ Born at {s43}^Contact in {s44} of the {s45}.^\
       # (store_script_param_2, "$current_town"),
 
       (party_get_skill_level, ":first_aid", "p_main_party", "skl_first_aid"),
-      (party_get_slot, ":relation", "$current_town", slot_center_player_relation), #range from -100 to 100
-      (store_sub, ":relation", 200, ":relation"), #300 to 100
+      (try_begin),
+        (is_between, "$current_town", centers_begin, centers_end),
+        (party_get_slot, ":relation", "$current_town", slot_center_player_relation), #range from -100 to 100
+        (store_sub, ":relation", 200, ":relation"), #300 to 100
+      (else_try),
+        (assign, ":relation", 0),
+      (try_end),
 
       (store_troop_health, ":health", "trp_player", 0), #this is not yet deducted
       (store_agent_hit_points, ":hp", ":agent_no", 0),
@@ -71769,47 +71812,17 @@ Born at {s43}^Contact in {s44} of the {s45}.^\
       (ge, ":cur_item", 0),
       (cur_tableau_add_override_item, ":cur_item"),
     (try_end),
-
-
-
-
-
-
-
-
-
     (try_begin),
       (player_get_gender , ":is_female", ":my_player_no"),
       (eq, ":is_female", 1),
       (val_add, ":canvas_no", 1),
     (try_end),
-
     #(assign, reg0, ":canvas_no"),
     #(display_message, "@canvas no: {reg0}"),
-
     (str_store_player_face_keys, s0, ":my_player_no"),
     (troop_set_face_keys, ":canvas_no", s0),
-
     (store_mod, ":animation", ":my_agent_no", 4),
-
     (val_add, ":animation", "anim_pose_1"),
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     (set_fixed_point_multiplier, 100),
     (cur_tableau_set_camera_parameters, 1, 6, 6, 10, 10000),
     (assign, ":cam_height", 145),
@@ -71828,15 +71841,6 @@ Born at {s43}^Contact in {s44} of the {s45}.^\
     (position_rotate_x, pos5, ":camera_pitch"),
     (position_move_z, pos5, ":camera_distance", 0),
     (position_move_y, pos5, 60, 0),
-
-
-
-
-
-
-
-
-
     (init_position, pos2),
     (cur_tableau_add_troop, ":canvas_no", pos2, ":animation", 0),
     (cur_tableau_set_camera_position, pos5),
@@ -72790,6 +72794,12 @@ Born at {s43}^Contact in {s44} of the {s45}.^\
         (try_end),
       (try_end),
     (try_end),
+    
+    (try_begin),
+      (is_between, ":diplomacy_version_code", 170301, 190101),
+      (display_log_message, "@Performing 2019 updates, thank you for your patience!", message_positive),
+      (call_script, "script_dplmc_init_faction_gender_ratio", 0),
+    (try_end),
     #Ensure $character_gender is set correctly
     (try_begin),
       (call_script, "script_cf_dplmc_troop_is_female", "trp_player"),
@@ -73422,6 +73432,32 @@ Born at {s43}^Contact in {s44} of the {s45}.^\
       (assign, reg0, ":tax_lost"),
       (assign, reg1, ":percent"),
     ]),
+    
+  ("dplmc_init_faction_gender_ratio", [
+    (store_script_param, ":reset_troops", 1),
+    (try_begin), #SB : reset this for non-native
+      (eq, ":reset_troops", 1),
+      (try_for_range, ":troop_no", regular_troops_begin, regular_troops_end),
+        (is_between, ":troop_no", "trp_follower_woman", "trp_caravan_master"), #always female
+        (troop_set_type, ":troop_no", tf_female),
+      (else_try),
+        (troop_set_type, ":troop_no", tf_male),
+      (try_end),
+    (try_end),
+    (faction_set_slot, "fac_kingdom_1", slot_faction_gender_ratio, 20),
+    (faction_set_slot, "fac_kingdom_2", slot_faction_gender_ratio, 30),
+    (faction_set_slot, "fac_kingdom_3", slot_faction_gender_ratio, 50),
+    (faction_set_slot, "fac_kingdom_4", slot_faction_gender_ratio, 60),
+    (faction_set_slot, "fac_kingdom_5", slot_faction_gender_ratio, 40),
+    (faction_set_slot, "fac_kingdom_6", slot_faction_gender_ratio, 0),
+
+    (faction_set_slot, "fac_player_faction", slot_faction_gender_ratio, 50),
+    (faction_set_slot, "fac_player_supporters_faction", slot_faction_gender_ratio, 50),
+    (faction_set_slot, "fac_commoners", slot_faction_gender_ratio, 50),
+    (faction_set_slot, "fac_neutral", slot_faction_gender_ratio, 100),
+    (faction_set_slot, "fac_outlaws", slot_faction_gender_ratio, 10),
+    ]
+  ),
     # #script_cf_dplmc_disguise_evaluate_contraband
     # #input : party_no, troop_no
     # #output : reg0 (total risk), reg1 (number of contraband, marked by temp slot?)

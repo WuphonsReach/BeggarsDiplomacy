@@ -101,6 +101,40 @@ unarmed_agent_damage = (
     
   ],
 )
+
+dplmc_random_mixed_gender = (ti_on_agent_spawn, 0, 0, [
+  (ge, "$g_disable_condescending_comments", 4),
+],
+  [
+  (store_trigger_param_1, ":agent_no"),
+  (agent_is_human, ":agent_no"),
+  (agent_get_troop_id, ":troop_no", ":agent_no"),
+  (neg|troop_is_hero, ":troop_no"),
+  (is_between, ":troop_no", soldiers_begin, "trp_follower_woman", "trp_caravan_master"), #skip refugee line, town walkers
+  #SB : check non-native troop genders
+
+  #get individual faction chances
+  (store_faction_of_troop, ":faction_no", ":troop_no"),
+  (try_begin), #TODO: this affects the next agent to spawn as well if custom ratio skewed too high
+    (agent_get_party_id, ":party_no", ":agent_no"),
+    (party_is_active, ":party_no"),
+    (store_faction_of_party, ":party_faction", ":party_no"),
+    # (eq, ":party_faction", "$players_kingdom"),
+    (call_script, "script_dplmc_get_troop_standing_in_faction", "trp_player", ":party_faction"),
+    (ge, reg0, DPLMC_FACTION_STANDING_LEADER),
+    (assign, ":faction_no", "fac_player_supporters_faction"),
+  (try_end),
+  (faction_get_slot, ":ratio", ":faction_no", slot_faction_gender_ratio),
+  (store_random_in_range, ":gender", -100, ":ratio"),
+  (try_begin),
+    (le, ":gender", 0),
+    (troop_set_type, ":troop_no", tf_male),
+  (else_try),
+    (troop_set_type, ":troop_no", tf_female),
+  (try_end),
+  
+  ])
+
 dplmc_horse_cull = [
     #sets up the spawn timer
     (ti_on_agent_spawn, 0, 0, 
@@ -708,6 +742,7 @@ dplmc_death_camera = (
 
 ##SB : new camera triggers
 dplmc_battle_mode_triggers = [
+    dplmc_random_mixed_gender,
     dplmc_horse_speed,
     common_move_deathcam, common_rotate_deathcam,
     custom_commander_camera, deathcam_cycle_forwards, deathcam_cycle_backwards,
@@ -1516,10 +1551,7 @@ common_siege_ai_trigger_init_2 = (
           (item_get_type, ":itp", ":item_no"),
           (is_between, ":itp", itp_type_bow, itp_type_thrown),
           (assign, ":weapon_slot", 0),
-          (str_store_item_name, s2, ":item_no"),
         (try_end),
-        (str_store_agent_name, s1, ":agent_no"),
-        (display_message, "@{s1} wielding {s2}"),
         (try_begin),
           (eq, ":weapon_slot", 0),
           (agent_set_division, ":agent_no", grc_archers),
@@ -4784,8 +4816,9 @@ mission_templates = [
        [
        #instead of refreshing the scene we just talk on-sight
          (get_player_agent_no, ":agent"),
-         (store_agent_hit_points, ":hp", ":agent", 0),
-         (troop_set_health, "$g_player_troop", ":hp", 0),
+         # (store_agent_hit_points, ":hp", ":agent", 0),
+         # (troop_set_health, "$g_player_troop", ":hp", 0),
+         (call_script, "script_agent_apply_training_health", ":agent"),
          
          (mission_enable_talk),
          (start_mission_conversation, "$g_talk_troop"),
@@ -9093,16 +9126,15 @@ mission_templates = [
         [
           (assign, "$g_battle_result", 0),
           (call_script, "script_combat_music_set_situation_with_culture"),
-		  (call_script, "script_init_death_cam"), #SB : add camera
+          (call_script, "script_init_death_cam"), #SB : add camera
          ]),
 
       common_music_situation_update,
       custom_battle_check_victory_condition,
       common_battle_victory_display,
       custom_battle_check_defeat_condition,
-    ]
 	##diplomacy begin
-	+ dplmc_battle_mode_triggers,
+	] + dplmc_battle_mode_triggers,
 	##diplomacy end
   ),
 

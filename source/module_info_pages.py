@@ -81,6 +81,7 @@ info_pages = [
 ^^Medium:^\
 ^- Your spouse and having a capital effectively lets you hold an extra center by offsetting the tax inefficiency limit by one.\
 ^- Food consumption increases in towns as prosperity increases. Consumption also increases with garrison sizes.\
+^- Looting villages no longer yields exactly 30 items.\
 ^- Lords' looting skill affects how much gold they take from the player when they defeat him.\
 ^- Lords' leadership skill modifies their troop wage costs the same way it does for the player.\
 ^- The player can lose gold when his fiefs are looted, like lords.\

@@ -130,6 +130,7 @@ slot_faction_quick_battle_tier_2_archer        = 44
 slot_faction_quick_battle_tier_1_cavalry       = 45
 slot_faction_quick_battle_tier_2_cavalry       = 46
 
+slot_faction_gender_ratio = 40 #SB : gender ratio slot
 slot_faction_tier_1_troop         = 41
 slot_faction_tier_2_troop         = 42
 slot_faction_tier_3_troop         = 43
@@ -1467,7 +1468,12 @@ reinforcement_cost_hard = 300
 
 merchant_toll_duration        = 72 #Tolls are valid for 72 hours
 
+#SB : const some of these
+companion_escape_after_defeat_chance = 50
 hero_escape_after_defeat_chance = 70
+hero_escape_from_player_chance = 50
+hero_escape_from_center_chance = 30
+hero_escape_from_tower_chance = 5
 
 
 raid_distance = 4
@@ -2299,6 +2305,7 @@ DPLMC_GOLD_CHANGES_HIGH    =  2
 # - Village elder now receives the gold when you buy cattle
 # - Resting at neutral centers cost extra for wounded troops
 # - Tournament wins are modified and applied to NPC
+# - Amount of items looted from village is no longer always 30
 #
 #High:
 # - The total amount of weekly bonus gold awarded to kings in Calradia
@@ -2379,6 +2386,10 @@ dplmc_command_renown_limit = 300
 dplmc_ransom_commission = 500
 dplmc_ransom_debt_mask = 100000
 
+dplmc_tournament_renown = 20
+dplmc_taken_prisoner_renown = -5
+dplmc_escape_prisoner_renown = 3
+
 dplmc_companion_skill_renown = 3
 dplmc_companion_emissary_renown = 2
 dplmc_companion_battle_renown = 1
@@ -2442,7 +2453,7 @@ disguise_bard = 32
 #       fac_player_supporters_faction are exempt from this.
 #    Sets slot_troop_home for town merchants, elders, etc. and startup merchants
 
-DPLMC_CURRENT_VERSION_CODE = 170301
+DPLMC_CURRENT_VERSION_CODE = 190101
 DPLMC_VERSION_LOW_7_BITS = 68 #Number that comes after the rest of the version code
 
 DPLMC_DIPLOMACY_VERSION_STRING = "4.3+ for Steam"
