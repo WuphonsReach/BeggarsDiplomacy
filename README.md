@@ -1,8 +1,13 @@
 # BeggarsDiplomacy
 
-Mount &amp; Blade Warband: Diplomacy mod (Beggars fork of Diplado).  This works fine under the Linux version of Mount and Blade: Warband.
+Mount &amp; Blade Warband: Diplomacy mod (Beggars fork of Diplado).  This works fine under the Linux version of Mount and Blade: Warband.  It probably works fine under Windows, but I have not tested it there.
+
+The goal of BeggarsDiplomacy is to take the improvements from [Diplado develop](https://github.com/diegoami/Diplado/tree/develop) and go further.  Fixing any outstanding bugs and improving the game balance to be less grindy.  I have also attempt to add in comments in both the Python files and the commit history to help with future work, or explaining how a particular bug was fixed.
+
+## Contents
 
 - [BeggarsDiplomacy](#beggarsdiplomacy)
+  - [Contents](#contents)
   - [Installing](#installing)
     - [Download](#download)
     - [Installation](#installation)
@@ -10,8 +15,8 @@ Mount &amp; Blade Warband: Diplomacy mod (Beggars fork of Diplado).  This works 
   - [Changes](#changes)
     - [Diplado by diegoami](#diplado-by-diegoami)
     - [BeggarsDiplomacy](#beggarsdiplomacy-1)
-      - [Bug Fixes](#bug-fixes)
       - [Balance](#balance)
+      - [Bug Fixes](#bug-fixes)
   - [Making Changes](#making-changes)
   - [Parentage](#parentage)
   - [Credits](#credits)
@@ -46,9 +51,10 @@ Since this work is based on top of [DIPLADO](https://github.com/diegoami/Diplado
 
 Only changes made on top of [Diplado develop](https://github.com/diegoami/Diplado/tree/develop) are mentioned here.
 
-#### Bug Fixes
-
 #### Balance
+
+
+#### Bug Fixes
 
 ## Making Changes
 
