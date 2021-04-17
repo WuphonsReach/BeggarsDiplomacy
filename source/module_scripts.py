@@ -27316,7 +27316,7 @@ scripts = [
     (try_begin),
 		(party_get_slot, ":time_of_last_courtship", ":led_party", slot_party_leader_last_courted),
 		(store_sub, ":hours_since_last_courtship", ":current_time", ":time_of_last_courtship"),
-		(gt, ":hours_since_last_courtship", 72),
+		(gt, ":hours_since_last_courtship", 168),
 
 		(troop_slot_eq, ":troop_no", slot_troop_spouse, -1),
 		##diplomacy start+ Disable this for inappropriate types
