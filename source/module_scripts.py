@@ -34169,6 +34169,7 @@ scripts = [
       (convert_to_fixed_point, "$battle_renown_value"),
       (store_sqrt, "$battle_renown_value", "$battle_renown_value"),
       (convert_from_fixed_point, "$battle_renown_value"),
+      (val_max, "$battle_renown_value", 1),
       (assign, reg8, "$battle_renown_value"),
       (display_message, "@Renown value for this battle is {reg8}.",0xFFFFFFFF),
   ]),
