@@ -10469,7 +10469,7 @@ TOTAL:  {reg5}"),
        (quest_slot_eq, "qst_eliminate_bandits_infesting_village", slot_quest_target_center, "$g_encountered_party"),
        (call_script, "script_end_quest", "qst_eliminate_bandits_infesting_village"),
        #Add quest reward
-       (call_script, "script_change_player_relation_with_center", "$g_encountered_party", 5),
+       (call_script, "script_change_player_relation_with_center", "$g_encountered_party", 9),
        #SB : back up elder inventory
        (call_script, "script_dplmc_copy_inventory", ":merchant_troop", "trp_temp_troop"),
        (assign, "$g_train_peasants_against_bandits_training_succeeded", 1),
@@ -10478,7 +10478,7 @@ TOTAL:  {reg5}"),
        (check_quest_active, "qst_deal_with_bandits_at_lords_village"),
        (quest_slot_eq, "qst_deal_with_bandits_at_lords_village", slot_quest_target_center, "$g_encountered_party"),
        (call_script, "script_succeed_quest", "qst_deal_with_bandits_at_lords_village"),
-       (call_script, "script_change_player_relation_with_center", "$g_encountered_party", 3),
+       (call_script, "script_change_player_relation_with_center", "$g_encountered_party", 9),
      (else_try),
      #Add normal reward
        (call_script, "script_change_player_relation_with_center", "$g_encountered_party", 4),
@@ -10530,7 +10530,7 @@ TOTAL:  {reg5}"),
       #SB : string for other option
       ("village_bandits_defeated_cont",[],  "Refuse, stating that they need these {reg10?items:livestock} more than you do.",
       [ 
-        (call_script, "script_change_player_relation_with_center", "$g_encountered_party", 3),
+        (call_script, "script_change_player_relation_with_center", "$g_encountered_party", 4),
         (call_script, "script_change_player_honor", 1),
         (jump_to_menu, "mnu_village")]),
     ],
@@ -10961,9 +10961,9 @@ TOTAL:  {reg5}"),
            (party_slot_ge, "$current_town", slot_center_player_relation, -55),
            (try_begin),
              (party_slot_eq, "$current_town", slot_town_lord, "trp_player"),
-             (call_script, "script_change_player_relation_with_center", "$current_town", -1),
+             (call_script, "script_change_player_relation_with_center", "$current_town", -2),
            (else_try),
-             (call_script, "script_change_player_relation_with_center", "$current_town", -3),
+             (call_script, "script_change_player_relation_with_center", "$current_town", -4),
            (try_end),
          (try_end),
          (party_get_slot, ":village_lord", "$current_town", slot_town_lord),
@@ -14009,7 +14009,8 @@ TOTAL:  {reg5}"),
      (try_end),
      (store_sub, ":needed_hours", 20, ":max_skill"),
      (val_mul, ":needed_hours", 3),
-     (val_div, ":needed_hours", 5),
+     (val_div, ":needed_hours", 15),
+     (val_add, ":needed_hours", 1),
      (store_sub, reg4, ":needed_hours", "$qst_train_peasants_against_bandits_num_hours_trained"),
      ],
     [
@@ -14078,6 +14079,9 @@ TOTAL:  {reg5}"),
       (try_begin),
         (eq, "$g_train_peasants_against_bandits_training_succeeded", 0),
         (str_store_string, s0, "@You were beaten. The peasants are heartened by their success, but the lesson you wanted to teach them probably didn't get through..."),
+        (quest_get_slot, ":quest_current_state", "qst_train_peasants_against_bandits", slot_quest_current_state),
+        (val_add, ":quest_current_state", "$g_train_peasants_against_bandits_num_peasants"),
+        (quest_set_slot, "qst_train_peasants_against_bandits", slot_quest_current_state, ":quest_current_state"),
       (else_try),
         (str_store_string, s0, "@After beating your last opponent, you explain to the peasants how to better defend themselves against such an attack. Hopefully they'll take the experience on board and will be prepared next time."),
         (quest_get_slot, ":quest_current_state", "qst_train_peasants_against_bandits", slot_quest_current_state),
@@ -14219,7 +14223,7 @@ TOTAL:  {reg5}"),
                                                                          (change_screen_loot, ":merchant_troop"),
                                                                        ]),
       ("village_bandits_defeated_cont",[],  "Refuse, stating that they need these items more than you do.",[
-      (call_script, "script_change_player_relation_with_center", "$g_encountered_party", 3),
+      (call_script, "script_change_player_relation_with_center", "$g_encountered_party", 4),
       (call_script, "script_change_player_honor", 1),
       (change_screen_map)]),
     ],
@@ -16016,9 +16020,10 @@ goods, and books will never be sold. ^^You can change some settings here freely.
          #  (try_end),
          #(try_end),
 
+         (assign, "$g_mt_mode", tcm_default), # clear any disguses
          (set_camera_follow_party, "$capturer_party"),
          (assign, "$g_player_is_captive", 1),
-         (store_random_in_range, ":random_hours", 18, 30),
+         (store_random_in_range, ":random_hours", 18, 48),
          (call_script, "script_event_player_captured_as_prisoner"),
          (call_script, "script_stay_captive_for_hours", ":random_hours"),
          (assign,"$auto_menu","mnu_captivity_wilderness_check"),
@@ -16090,8 +16095,9 @@ goods, and books will never be sold. ^^You can change some settings here freely.
     [
       ("continue",[],"Continue...",
        [
+           (assign, "$g_mt_mode", tcm_default), # clear any disguses
            (assign, "$g_player_is_captive", 1),
-           (store_random_in_range, ":random_hours", 16, 22),
+           (store_random_in_range, ":random_hours", 16, 60),
            (call_script, "script_event_player_captured_as_prisoner"),
            (call_script, "script_stay_captive_for_hours", ":random_hours"),
            (assign,"$auto_menu", "mnu_captivity_castle_check"),
@@ -16119,8 +16125,9 @@ goods, and books will never be sold. ^^You can change some settings here freely.
     [
       ("continue",[],"Continue...",
        [
+           (assign, "$g_mt_mode", tcm_default), # clear any disguses
            (assign, "$g_player_is_captive", 1),
-           (store_random_in_range, ":random_hours", 16, 22),
+           (store_random_in_range, ":random_hours", 16, 72),
            (call_script, "script_event_player_captured_as_prisoner"),
            (call_script, "script_stay_captive_for_hours", ":random_hours"),
            (assign,"$auto_menu", "mnu_captivity_castle_check"),
@@ -16341,7 +16348,7 @@ goods, and books will never be sold. ^^You can change some settings here freely.
       ],"Refuse him, wait for something better.",
       [
         (assign, "$g_player_is_captive", 1),
-        (store_random_in_range, reg(8), 16, 22),
+        (store_random_in_range, reg(8), 16, 72),
         (call_script, "script_stay_captive_for_hours", reg8),
         (assign,"$auto_menu", "mnu_captivity_castle_check"),
         (change_screen_return),
@@ -16364,7 +16371,7 @@ goods, and books will never be sold. ^^You can change some settings here freely.
           (set_background_mesh, "mesh_pic_prisoner_man"),
         (try_end),
 		  ##diplomacy end+
-        (store_random_in_range, ":random_hours", 16, 22),
+        (store_random_in_range, ":random_hours", 16, 72),
         (call_script, "script_stay_captive_for_hours", ":random_hours"),
         (assign,"$auto_menu", "mnu_captivity_castle_check"),
 
@@ -18183,7 +18190,8 @@ goods, and books will never be sold. ^^You can change some settings here freely.
 
         (store_character_level, ":player_level", "trp_player"),
         (store_add, ":number_of_bandits_will_be_spawned_at_each_period", 5, ":player_level"),
-        (val_div, ":number_of_bandits_will_be_spawned_at_each_period", 3),
+        (store_random_in_range, ":random_to_spawn_in", 3, 5),
+        (val_div, ":number_of_bandits_will_be_spawned_at_each_period", ":random_to_spawn_in"),
 
         (try_for_range, ":unused", 0, ":number_of_bandits_will_be_spawned_at_each_period"),
           (store_random_in_range, ":random_entry_point", 2, 11),

@@ -238,19 +238,19 @@ slot_faction_sum_advice_about_factions_end			= 160
 #lengths without having to go through the entire mod.
 
 # Truces (as exist in Native)
-dplmc_treaty_truce_days_initial    = 20
+dplmc_treaty_truce_days_initial    = 60
 dplmc_treaty_truce_days_expire     =  0
 
 #Trade treaties convert to truces after 20 days.
-dplmc_treaty_trade_days_initial    = 40
+dplmc_treaty_trade_days_initial    = 120
 dplmc_treaty_trade_days_expire     = dplmc_treaty_truce_days_initial
 
 #Defensive alliances convert to trade treaties after 20 days.
-dplmc_treaty_defense_days_initial  = 60
+dplmc_treaty_defense_days_initial  = 180
 dplmc_treaty_defense_days_expire   = dplmc_treaty_trade_days_initial
 
 #Alliances convert to defensive alliances after 20 days.
-dplmc_treaty_alliance_days_initial = 80
+dplmc_treaty_alliance_days_initial = 240
 dplmc_treaty_alliance_days_expire  = dplmc_treaty_defense_days_initial
 
 #Define these by name to make them more clear in the source code.
@@ -1931,7 +1931,7 @@ cmenu_winbattle = 15
 
 # Town center modes - resets in game menus during the options
 tcm_default 		= 0
-tcm_disguised 		= 1
+tcm_disguised 		= 99
 tcm_prison_break 	= 2
 tcm_escape      	= 3
 

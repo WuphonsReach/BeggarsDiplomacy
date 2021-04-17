@@ -17095,6 +17095,8 @@ scripts = [
 
       (call_script, "script_calculate_main_party_shares"),
       (assign, ":num_player_party_shares", reg0),
+      (call_script, "script_get_max_skill_of_player_party", "skl_looting"),
+      (assign, ":player_party_loot_skill", reg0),
 
       (try_for_range, ":i_loot", 0, num_party_loot_slots),
         (store_add, ":cur_loot_slot", ":i_loot", slot_party_looted_item_1),
@@ -17117,23 +17119,33 @@ scripts = [
         (val_mul, ":plunder_amount", "$g_strength_contribution_of_player"),
         (val_div, ":plunder_amount", 100),
         (val_div, ":plunder_amount", ":num_player_party_shares"),
+        (val_clamp, ":plunder_amount", 0, 10),
+
+        # add random amount of plunder based on party type / stacks
+        # this is an easy way to give the player more money by party type (versus giving gold)
+        (assign, ":plunder_add_max", 1),
         (try_begin),
           (party_slot_eq, "$g_enemy_party", slot_party_type, spt_kingdom_caravan),
           (reset_item_probabilities, 100),
           (assign, ":range_min", trade_goods_begin),
           (assign, ":range_max", trade_goods_end),
+          (val_add, ":plunder_add_max", 9),
         (else_try),
           (party_slot_eq, "$g_enemy_party", slot_party_type, spt_bandit_lair),
           (val_div, ":plunder_amount", 2),
           (reset_item_probabilities, 1),
           (assign, ":range_min", food_begin),
           (assign, ":range_max", food_end),
+          (val_add, ":plunder_add_max", 9),
         (else_try),
           (val_div, ":plunder_amount", 5),
           (reset_item_probabilities, 1),
           (assign, ":range_min", food_begin),
           (assign, ":range_max", food_end),
+          (val_add, ":plunder_add_max", 2),
         (try_end),
+
+        # Calculate the goods price -> probabilities
         (store_sub, ":item_to_price_slot", slot_town_trade_good_prices_begin, trade_goods_begin),
         (try_for_range, ":cur_goods", ":range_min", ":range_max"),
           (try_begin),
@@ -17145,13 +17157,19 @@ scripts = [
             (val_add, ":cur_price", average_price_factor),
             (val_div, ":cur_price", 3),
           (try_end),
-
+          (val_max, ":cur_price", 1),
+          (store_sqrt, ":cur_price", ":cur_price"), # a 1:100 item now has a 1:10 chance, 1:10000 -> 1:100 chance
           (assign, ":cur_probability", 100),
           (val_mul, ":cur_probability", average_price_factor),
           (val_div, ":cur_probability", ":cur_price"),
-          (assign, reg0, ":cur_probability"),
+          (assign, reg0, ":cur_probability"), # chance (1 in X) that an item will show up in the loot
           (set_item_probability_in_merchandise, ":cur_goods", ":cur_probability"),
         (try_end),
+
+        # Randomize the plundered merchandise quantity, The upper end for store_random_in_range is exclusive
+        (store_random_in_range, ":plunder_amount_add", 0, ":plunder_add_max"),
+        (val_add, ":plunder_amount", ":plunder_amount_add"),
+        (val_clamp, ":plunder_amount", 0, ":player_party_loot_skill"), # never more than "loot skill"
         (troop_add_merchandise, "trp_temp_troop", itp_type_goods, ":plunder_amount"),
         (val_add, ":num_looted_items", ":plunder_amount"),
       (try_end),
@@ -19997,7 +20015,7 @@ scripts = [
 			(eq, ":result", "qst_track_down_bandits"),
 			(assign, ":quest_target_party", ":relevant_party"),
 			(assign ,":quest_expiration_days", 60),
-			(assign, ":quest_xp_reward", 1000),
+			(assign, ":quest_xp_reward", 2500),
 			(assign, ":quest_gold_reward", 1000),
 
 		(else_try),
@@ -20092,9 +20110,10 @@ scripts = [
 	            (neg|party_slot_ge, ":giver_center_no", slot_town_prosperity, 40),
 	            (assign, ":quest_target_center", ":giver_center_no"),
 	            (assign, ":quest_target_item", "itm_grain"), #SB : fix this or add various goods
-	            (store_random_in_range, ":quest_target_amount", 4, 8),
-	            (assign, ":quest_expiration_days", 30),
-	            (assign, ":quest_dont_give_again_period", 20),
+	            (store_random_in_range, ":quest_target_amount", 3, 9),
+	            (assign, ":quest_expiration_days", 15),
+              (store_random_in_range, ":random_period", 3, 15),
+	            (assign, ":quest_dont_give_again_period", ":random_period"),
 	            (assign, ":result", ":quest_no"),
 	          (try_end),
 	        (else_try),
@@ -20105,9 +20124,10 @@ scripts = [
 	            (party_get_slot, ":num_cattle", ":giver_center_no", slot_village_number_of_cattle),
 	            (lt, ":num_cattle", 50),
 	            (assign, ":quest_target_center", ":giver_center_no"),
-	            (store_random_in_range, ":quest_target_amount", 5, 10),
-	            (assign, ":quest_expiration_days", 30),
-	            (assign, ":quest_dont_give_again_period", 20),
+	            (store_random_in_range, ":quest_target_amount", 5, 11),
+	            (assign, ":quest_expiration_days", 20),
+              (store_random_in_range, ":random_period", 10, 30),
+	            (assign, ":quest_dont_give_again_period", ":random_period"),
 	            (assign, ":result", ":quest_no"),
 	          (try_end),
 	        (else_try),
@@ -20123,7 +20143,8 @@ scripts = [
                 (gt, ":num_villagers", ":quest_target_amount"), #+1 for village elder
 	            (assign, ":quest_target_center", ":giver_center_no"),
 	            (assign, ":quest_expiration_days", 20),
-	            (assign, ":quest_dont_give_again_period", 40),
+              (store_random_in_range, ":random_period", 30, 50),
+	            (assign, ":quest_dont_give_again_period", ":random_period"),
 	            (assign, ":result", ":quest_no"),
 	          (try_end),
 	        (else_try),
@@ -20132,10 +20153,12 @@ scripts = [
 	          (is_between, ":giver_center_no", centers_begin, centers_end),
 	          (store_random_party_in_range, ":quest_target_center", towns_begin, towns_end),
 	          (store_distance_to_party_from_party, ":dist", ":giver_center_no",":quest_target_center"),
+            (val_add, ":dist", 50),
 	          (assign, ":quest_gold_reward", ":dist"),
-	          (val_add, ":quest_gold_reward", 25),
-	          (val_mul, ":quest_gold_reward", 25),
+	          (val_add, ":quest_gold_reward", 35),
+	          (val_mul, ":quest_gold_reward", 30),
 	          (val_div, ":quest_gold_reward", 20),
+            (val_add, ":quest_gold_reward", 500),
 	          (store_random_in_range, ":quest_target_amount", 6, 12),
 	          # (assign, "$escort_merchant_caravan_mode", 0), #SB : useless global, use quest slots if necessary
 	          (assign, ":result", ":quest_no"),
@@ -20153,15 +20176,16 @@ scripts = [
               (try_end),
               (store_random_in_range, ":quest_target_amount", 6, 12),
               (store_distance_to_party_from_party, ":dist", ":giver_center_no",":quest_target_center"),
+              (val_add, ":dist", 50),
 
               #SB : also, instead of emptying target center of merchandise, pick one that's actually missing food
               (assign, ":quest_gold_reward", ":dist"),
-              (val_add, ":quest_gold_reward", 2),
               (assign, ":multiplier", 5),
               (val_add, ":multiplier", ":quest_target_amount"),
               (val_mul, ":quest_gold_reward", ":multiplier"),
               (val_div, ":quest_gold_reward", 100),
               (val_mul, ":quest_gold_reward", 10),
+              (val_add, ":quest_gold_reward", 300),
               (item_get_max_ammo, ":max_amount", ":quest_target_item"),
               (val_mul, ":quest_target_amount", ":max_amount"), #store actual quantity
               #SB : roll this into a quest slot or recalculate, wtf
@@ -20170,36 +20194,46 @@ scripts = [
               # (val_mul,"$qst_deliver_wine_debt", 6),
               # (val_div,"$qst_deliver_wine_debt", 5),
               (assign, ":quest_expiration_days", 7), #SB : probably calculate distance for possible spoilage?
-              (assign, ":quest_dont_give_again_period", 20),
+              (store_random_in_range, ":random_period", 10, 30),
+	            (assign, ":quest_dont_give_again_period", ":random_period"),
               (assign, ":result", ":quest_no"),
 	        (else_try),
 	          (eq, ":quest_no", "qst_troublesome_bandits"),
 	          (is_between, ":giver_center_no", centers_begin, centers_end),
 	          (store_character_level, ":quest_gold_reward", "trp_player"),
-	          (val_add, ":quest_gold_reward", 20),
+            (val_mul, ":quest_gold_reward", 5),
 	          (val_mul, ":quest_gold_reward", 35),
-	          (val_div, ":quest_gold_reward",100),
+	          (val_div, ":quest_gold_reward", 100),
 	          (val_mul, ":quest_gold_reward", 10),
+	          (val_add, ":quest_gold_reward", 200),
 	          (assign, ":quest_expiration_days", 30),
-	          (assign, ":quest_dont_give_again_period", 30),
+            (store_random_in_range, ":random_period", 20, 50),
+            (assign, ":quest_dont_give_again_period", ":random_period"),
 	          (assign, ":result", ":quest_no"),
 	        (else_try),
 	          (eq, ":quest_no", "qst_kidnapped_girl"),
+            # quest_target_amount is the bounty
+            # quest_gold_reward is the reward
 	          (is_between, ":giver_center_no", centers_begin, centers_end),
 	          (store_random_in_range, ":quest_target_center", villages_begin, villages_end),
 	          (store_character_level, ":quest_target_amount"),
-	          (val_add, ":quest_target_amount", 15),
+	          (val_div, ":quest_target_amount", 5),
+            (val_add, ":quest_target_amount", 1),
+            (val_mul, ":quest_target_amount", 100), # bonus on player level is: (level/5 * 50) or 100-1200 gold
 	          (store_distance_to_party_from_party, ":dist", ":giver_center_no", ":quest_target_center"),
-	          (val_add, ":dist", 15),
-	          (val_mul, ":dist", 2),
-	          (val_mul, ":quest_target_amount", ":dist"),
-	          (val_div, ":quest_target_amount",100),
-	          (val_mul, ":quest_target_amount",10),
+	          (val_add, ":dist", 100), # dist will end up in the [100 to 400] range
+	          (val_mul, ":dist", 4), # bonus on distance is: 400-1600 gold
+	          (val_add, ":quest_target_amount", ":dist"),
+            (val_add, ":quest_target_amount", 500), # add a flat 500 gold
+            (call_script, "script_round_value", ":quest_target_amount"),
+            (assign, ":quest_target_amount", reg0),
 	          (assign, ":quest_gold_reward", ":quest_target_amount"),
-	          (val_div, ":quest_gold_reward", 40),
-	          (val_mul, ":quest_gold_reward", 10),
-              (assign, ":quest_expiration_days", 15),
-	          (assign, ":quest_dont_give_again_period", 30),
+            (val_div, ":quest_gold_reward", 6),
+            (call_script, "script_round_value", ":quest_gold_reward"),
+            (assign, ":quest_gold_reward", reg0),
+            (assign, ":quest_expiration_days", 15),
+            (store_random_in_range, ":random_period", 20, 50),
+            (assign, ":quest_dont_give_again_period", ":random_period"),
 	          (assign, ":result", ":quest_no"),
 	        (else_try),
 	          (eq, ":quest_no", "qst_move_cattle_herd"),
@@ -20209,11 +20243,13 @@ scripts = [
 	          (assign, ":quest_target_center", reg0),
 	          (store_distance_to_party_from_party, ":dist",":giver_center_no",":quest_target_center"),
 	          (assign, ":quest_gold_reward", ":dist"),
-	          (val_add, ":quest_gold_reward", 25),
-	          (val_mul, ":quest_gold_reward", 50),
+            (val_add, ":dist", 150),
+	          (val_mul, ":quest_gold_reward", 100),
 	          (val_div, ":quest_gold_reward", 20),
+	          (val_add, ":quest_gold_reward", 400),
 	          (assign, ":quest_expiration_days", 30),
-	          (assign, ":quest_dont_give_again_period", 20),
+            (store_random_in_range, ":random_period", 10, 30),
+            (assign, ":quest_dont_give_again_period", ":random_period"),
 	          (assign, ":result", ":quest_no"),
 	        (else_try),
 	          (eq, ":quest_no", "qst_persuade_lords_to_make_peace"),
@@ -20265,11 +20301,16 @@ scripts = [
               (party_template_set_slot,"pt_looters",slot_party_template_num_killed,":num_looters_destroyed"),
               (quest_set_slot,":quest_no",slot_quest_current_state,0),
               (quest_set_slot,":quest_no",slot_quest_target_party_template,"pt_looters"),
-              (assign, ":quest_gold_reward", 500),
-              (assign, ":quest_xp_reward", 500),
+              (assign, ":quest_gold_reward", 800),
+              (assign, ":quest_xp_reward", 900),
               (assign, ":quest_expiration_days", 20),
-              (assign, ":quest_dont_give_again_period", 30),
-          ##diplomacy start+
+              (assign, ":quest_dont_give_again_period", 20),
+              (try_begin),
+                (this_or_next|troop_slot_ge, "trp_player", slot_troop_renown, 125),
+                (ge, ":player_level", 10),
+                (store_random_in_range, ":bother_with_less_trivia_period", 5, ":player_level"),
+                (val_add, ":quest_dont_give_again_period", ":bother_with_less_trivia_period"),
+              (try_end),
               (try_begin),
               #don't give full quest reward if outside the normal level range
                  (ge, ":player_level", 15),
@@ -20277,10 +20318,7 @@ scripts = [
                  (val_mul, ":quest_xp_award", -10),
                  (val_add, ":quest_xp_award", 500),
                  (val_max, ":quest_xp_award", 100),#XP drops by 10 per level over limit, until level 40
-                 #To avoid being pestered with trivia, increase :quest_dont_give_again_period with the player's level
-                 (store_add, ":quest_dont_give_again_period", ":player_level", 16),
               (try_end),
-              ##diplomacy end+
               (assign, ":result", ":quest_no"),
             (else_try),
               (eq, ":quest_no", "qst_deal_with_night_bandits"),
@@ -20293,13 +20331,12 @@ scripts = [
               (assign, ":quest_target_center", ":giver_center_no"),
               (assign, ":quest_expiration_days", 4),
               (assign, ":quest_dont_give_again_period", 15),
-              ##diplomacy start+
               (try_begin),
-               #To avoid being pestered with trivia, increase :quest_dont_give_again_period with the player's level
-                 (ge, ":player_level", 15),
-                 (store_add, ":quest_dont_give_again_period", ":player_level", 1),
+                (this_or_next|troop_slot_ge, "trp_player", slot_troop_renown, 125),
+                (ge, ":player_level", 10),
+                (store_random_in_range, ":bother_with_less_trivia_period", 5, ":player_level"),
+                (val_add, ":quest_dont_give_again_period", ":bother_with_less_trivia_period"),
               (try_end),
-              ##diplomacy end+
               (assign, ":result", ":quest_no"),
             (else_try),
               # Lady quests
@@ -20388,7 +20425,8 @@ scripts = [
 	            (assign, ":quest_target_center", ":cur_target_center"),
 	            (assign, ":quest_target_troop", ":cur_target_troop"),
 	            (assign, ":quest_expiration_days", 30),
-	            (assign, ":quest_dont_give_again_period", 30),
+              (store_random_in_range, ":random_period", 20, 40),
+	            (assign, ":quest_dont_give_again_period", ":random_period"),
 	            (assign, ":result", ":quest_no"),
 	          (try_end),
 	        (else_try),
@@ -20458,8 +20496,10 @@ scripts = [
                 (assign, ":quest_importance", 1),
                 #SB : this seems extremely low for cost of surgery, give at least 50 gold
                 (store_mul, ":quest_xp_reward", ":max_surgery_level", 10), #slightly better
+                (store_add, ":quest_xp_reward", 100),
                 (assign, ":quest_gold_reward", ":quest_xp_reward"),
-                (assign, ":quest_dont_give_again_period", 50),
+                (store_random_in_range, ":random_period", 30, 80),
+	              (assign, ":quest_dont_give_again_period", ":random_period"),
                 (assign, ":result", ":quest_no"),
               (try_end),
               # Lord Quests
@@ -20559,15 +20599,16 @@ scripts = [
 	            (assign, ":quest_target_troop", ":cur_target_troop"),
 	            (assign, ":quest_xp_reward", 30),
 	            (assign, ":quest_gold_reward", 40),
-	            (assign, ":quest_dont_give_again_period", 10),
-				##diplomacy start+
+
+              (store_random_in_range, ":random_period", 5, 15),
+	            (assign, ":quest_dont_give_again_period", ":random_period"),
+
 				(try_begin),
 					(this_or_next|troop_slot_ge, "trp_player", slot_troop_renown, 125),
-						(ge, ":player_level", 20),
-					(assign, ":quest_dont_give_again_period", ":player_level"),
-					(val_clamp, ":quest_dont_give_again_period", 10, 61),
+                (ge, ":player_level", 10),
+                (store_random_in_range, ":bother_with_less_trivia_period", 5, ":player_level"),
+                (val_add, ":quest_dont_give_again_period", ":bother_with_less_trivia_period"),
 				(try_end),
-				##diplomacy end+
 
 	            (assign, ":result", ":quest_no"),
 
@@ -20619,7 +20660,9 @@ scripts = [
 	            (assign, ":quest_object_troop", ":cur_object_troop"),
 	            (assign, ":quest_target_center", ":cur_target_center"),
 	            (assign, ":quest_expiration_days", 20),
-	            (assign, ":quest_dont_give_again_period", 30),
+
+              (store_random_in_range, ":random_period", 20, 40),
+	            (assign, ":quest_dont_give_again_period", ":random_period"),
 	            (assign, ":result", ":quest_no"),
 	          (try_end),
 ##        (else_try),
@@ -20743,35 +20786,38 @@ scripts = [
 ##            (assign, ":quest_gold_reward", 200),
 ##            (assign, ":result", ":quest_no"),
 ##          (try_end),
+
 	        (else_try),
 	          (eq, ":quest_no", "qst_deliver_message_to_enemy_lord"),
 	          (try_begin),
 	            (ge, "$g_talk_troop_faction_relation", 0),
-				##diplomacy start+
-				#remove upper level limit to increase play variety
-	            #(is_between, ":player_level", 5,25),
-				(ge, ":player_level", 5),
-				##diplomacy end+
-	            (call_script, "script_cf_get_random_lord_from_another_faction_in_a_center", ":giver_faction_no"),#Can fail
+      				(ge, ":player_level", 5),
+			        (call_script, "script_cf_get_random_lord_from_another_faction_in_a_center", ":giver_faction_no"),#Can fail
 	            (assign, ":cur_target_troop", reg0),
 	            (call_script, "script_get_troop_attached_party", ":cur_target_troop"),
 	            (assign, ":quest_target_center", reg0),#quest_target_center will definitely be a valid center
 	            (assign, ":quest_target_troop", ":cur_target_troop"),
 	            (assign, ":quest_importance", 1),
-	            (assign, ":quest_xp_reward", 200),
-				##diplomacy start+
-				#decrease XP reward as you exceed the maximum level
-				(try_begin),
-					(ge, ":player_level", 26),
-					(store_sub, ":quest_xp_reward", 25, ":player_level"),
-					(val_add, ":quest_xp_reward", 200),
-					(val_max, ":quest_xp_reward", 50),#minus 10 xp for every level above 25, to a minimum of 50 XP at level 40
-				(try_end),
-				##diplomacy end+
-	            (assign, ":quest_gold_reward", 0),
+	            (assign, ":quest_xp_reward", 400),
+			      	(try_begin),
+					      (ge, ":player_level", 26),
+					      (store_sub, ":quest_xp_reward", 25, ":player_level"),
+					      (val_add, ":quest_xp_reward", 200),
+					      (val_max, ":quest_xp_reward", 50),#minus 10 xp for every level above 25, to a minimum of 50 XP at level 40
+				      (try_end),
+				      (assign, ":quest_gold_reward", 0),
+              (store_random_in_range, ":random_period", 5, 15),
+	            (assign, ":quest_dont_give_again_period", ":random_period"),
+      				(try_begin),
+			      		(this_or_next|troop_slot_ge, "trp_player", slot_troop_renown, 125),
+                (ge, ":player_level", 10),
+                (store_random_in_range, ":bother_with_less_trivia_period", 5, ":player_level"),
+                (val_add, ":quest_dont_give_again_period", ":bother_with_less_trivia_period"),
+      				(try_end),
 	            (assign, ":result", ":quest_no"),
 	            (assign, ":quest_expiration_days", 40),
 	          (try_end),
+
 ##        (else_try),
 ##          (eq, ":quest_no", "qst_bring_prisoners_to_enemy"),
 ##          (try_begin),
@@ -20822,7 +20868,7 @@ scripts = [
                 (store_character_level, ":quest_gold_reward", "trp_player"),
                 (val_mul, ":quest_gold_reward", 20),
                 (val_add, ":quest_gold_reward", 300),
-                (assign, ":quest_xp_reward", 350),
+                (assign, ":quest_xp_reward", 600),
 	          (try_end),
 	        (else_try),
 	          (eq, ":quest_no", "qst_raise_troops"),
@@ -20901,10 +20947,11 @@ scripts = [
 	            (assign, ":quest_target_center", reg0),
 	            (assign, ":quest_importance", 1),
 	            (assign, ":quest_gold_reward", 0),
-	            (assign, ":quest_xp_reward", 100),
+	            (assign, ":quest_xp_reward", 400),
 	            (assign, ":result", ":quest_no"),
 	            (assign, ":quest_expiration_days", 50),
-	            (assign, ":quest_dont_give_again_period", 20),
+              (store_random_in_range, ":random_period", 10, 30),
+	            (assign, ":quest_dont_give_again_period", ":random_period"),
 	          (try_end),
 	        (else_try),
 	          (eq, ":quest_no", "qst_hunt_down_fugitive"),
@@ -20924,7 +20971,8 @@ scripts = [
 	            (store_random_in_range, ":quest_target_dna", 0, 1000000),
 	            (assign, ":result", ":quest_no"),
 	            (assign, ":quest_expiration_days", 30),
-	            (assign, ":quest_dont_give_again_period", 30),
+              (store_random_in_range, ":random_period", 20, 40),
+	            (assign, ":quest_dont_give_again_period", ":random_period"),
 	          (try_end),
 ##        (else_try),
 ##          (eq, ":quest_no", "qst_capture_messenger"),
@@ -20970,8 +21018,8 @@ scripts = [
 	            (gt, ":player_level", 5),
 	            (is_between, ":giver_center_no", towns_begin, towns_end),
 	            (assign, ":quest_importance", 1),
-	            (assign, ":quest_xp_reward", 300),
-	            (assign, ":quest_gold_reward", 1000),
+	            (assign, ":quest_xp_reward", 800),
+	            (assign, ":quest_gold_reward", 1500),
 	            (assign, ":result", ":quest_no"),
 	            (assign, ":quest_expiration_days", 10),
 	            (assign, ":quest_dont_give_again_period", 30),
@@ -21013,7 +21061,7 @@ scripts = [
 	            (assign, ":quest_object_center", ":cur_object_center"),
 	            (assign, ":quest_target_center", ":cur_target_center"),
 	            (assign, ":quest_importance", 1),
-	            (assign, ":quest_xp_reward", 200),
+	            (assign, ":quest_xp_reward", 800),
 	            (assign, ":quest_gold_reward", 150),
 	            (assign, ":result", ":quest_no"),
 	            (assign, ":quest_expiration_days", 30),
@@ -22770,10 +22818,10 @@ scripts = [
               (assign, ":join_distance", 3), #nigh/not bandit
             (try_end),
           (else_try),
-            (assign, ":join_distance", 3), #day/bandit
+            (assign, ":join_distance", 4), #day/bandit
             (try_begin),
               (is_currently_night),
-              (assign, ":join_distance", 2), #night/bandit
+              (assign, ":join_distance", 3), #night/bandit
             (try_end),
           (try_end),
         (else_try), #SB : new distance calculation, based on spotting
@@ -22789,12 +22837,12 @@ scripts = [
             (val_sub, ":join_distance", 1), #day/bandit, value of 3
             (val_sub, ":join_distance", ":join_sub"), #can reduce it down to 1 on easy mode
             (is_currently_night), #night/bandit
-            (val_add, ":join_distance", 1), #less sharp penalty, value of 2
+            (val_add, ":join_distance", 2), #less sharp penalty, value of 2
           (try_end),
           #booster to patrols etc. that makes up for new base of 4
           (try_begin),
             (eq, ":template_id", "pt_patrol_party"),
-            (val_add, ":join_distance", 1), #always true
+            (val_add, ":join_distance", 2), #always true
             (try_begin),
               (get_party_ai_object, ":obj", ":party_no"),#just in case
               (eq, ":behavior", ai_bhvr_escort_party),
@@ -22808,7 +22856,7 @@ scripts = [
             (this_or_next|eq, ":behavior", ai_bhvr_patrol_party),
             (this_or_next|eq, ":behavior", ai_bhvr_patrol_location),
             (eq, ":behavior", ai_bhvr_escort_party),
-            (val_add, ":join_distance", 1),
+            (val_add, ":join_distance", 2),
           (try_end),
         (try_end),
 
@@ -25177,7 +25225,7 @@ scripts = [
   # script_create_kingdom_party_if_below_limit
   # Input: arg1 = faction_no, arg2 = party_type (variables beginning with spt_)
   # Output: reg0 = party_no
-  ("create_kingdom_party_if_below_limit",
+  ("create_kingdom_party_if_below_limit", #NOTE: Only for kingdom caravans
     [
       (store_script_param_1, ":faction_no"),
       (store_script_param_2, ":party_type"),
@@ -25190,18 +25238,6 @@ scripts = [
       (faction_get_slot, ":num_towns", ":faction_no", slot_faction_num_towns),
 
       (try_begin),
-##        (eq, ":party_type", spt_forager),
-##        (assign, ":party_count_limit", 1),
-##      (else_try),
-##        (eq, ":party_type", spt_scout),
-##        (assign, ":party_count_limit", 1),
-##      (else_try),
-##        (eq, ":party_type", spt_patrol),
-##        (assign, ":party_count_limit", 1),
-##      (else_try),
-##        (eq, ":party_type", spt_messenger),
-##        (assign, ":party_count_limit", 1),
-##      (else_try),
         (eq, ":party_type", spt_kingdom_caravan),
         (try_begin),
           (eq, ":num_towns", 0),
@@ -25215,16 +25251,10 @@ scripts = [
         (else_try),
           (assign, ":party_count_limit", 5),
         (try_end),
-        ##diplomacy begin
-          #overwriting party count limit MAX(2 * X - 1, 0)
+
         (store_mul, ":party_count_limit", ":num_towns", 2),
         (val_sub, ":party_count_limit", 1),
         (val_max, ":party_count_limit", 0),
-        ##diplomacy end
-
-##      (else_try),
-##        (eq, ":party_type", spt_prisoner_train),
-##        (assign, ":party_count_limit", 1),
       (try_end),
 
       (assign, reg0, -1),
@@ -25238,7 +25268,7 @@ scripts = [
   # script_cf_create_kingdom_party
   # Input: arg1 = faction_no, arg2 = party_type (variables beginning with spt_)
   # Output: reg0 = party_no
-  ("cf_create_kingdom_party",
+  ("cf_create_kingdom_party", #NOTE: this currently only creates kingdom caravans
     [
       (store_script_param_1, ":faction_no"),
       (store_script_param_2, ":party_type"),
@@ -25246,86 +25276,107 @@ scripts = [
       (str_store_faction_name, s7, ":faction_no"),
       (assign, ":party_name_str", "str_no_string"),
 
-##      (faction_get_slot, ":reinforcements_a", ":faction_no", slot_faction_reinforcements_a),
+      (faction_get_slot, ":reinforcements_a", ":faction_no", slot_faction_reinforcements_a),
       (faction_get_slot, ":reinforcements_b", ":faction_no", slot_faction_reinforcements_b),
-##      (faction_get_slot, ":reinforcements_c", ":faction_no", slot_faction_reinforcements_c),
 
       (try_begin),
-##        (eq, ":party_type", spt_forager),
-##        (assign, ":party_template", "pt_forager_party"),
-#        (assign, ":party_name_str", "str_s7_foragers"),
-##      (else_try),
-##        (eq, ":party_type", spt_scout),
-##        (assign, ":party_template", "pt_scout_party"),
-#        (assign, ":party_name_str", "str_s7_scouts"),
-##      (else_try),
-##        (eq, ":party_type", spt_patrol),
-##        (assign, ":party_template", "pt_patrol_party"),
-#        (assign, ":party_name_str", "str_s7_patrol"),
-##      (else_try),
         (eq, ":party_type", spt_kingdom_caravan),
         (assign, ":party_template", "pt_kingdom_caravan_party"),
-#        (assign, ":party_name_str", "str_s7_caravan"),
-##      (else_try),
-##        (eq, ":party_type", spt_messenger),
-##        (assign, ":party_template", "pt_messenger_party"),
-#        (assign, ":party_name_str", "str_s7_messenger"),
-##      (else_try),
-##        (eq, ":party_type", spt_raider),
-##        (assign, ":party_template", "pt_raider_party"),
-##        (assign, ":party_name_str", "str_s7_raiders"),
-##      (else_try),
-##        (eq, ":party_type", spt_prisoner_train),
-##        (assign, ":party_template", "pt_prisoner_train_party"),
-#        (assign, ":party_name_str", "str_s7_prisoner_train"),
       (try_end),
 
       (assign, ":result", -1),
       (try_begin),
-        (try_begin),
           (eq, ":party_type", spt_kingdom_caravan),
           (call_script,"script_cf_select_random_town_with_faction", ":faction_no", -1),
           (set_spawn_radius, 0),
-        (else_try), #not used at the moment
-          (call_script,"script_cf_select_random_walled_center_with_faction", ":faction_no", -1),
-          (set_spawn_radius, 1),
-        (try_end),
+
         (assign, ":spawn_center", reg0),
         (is_between, ":spawn_center", centers_begin, centers_end),
         (spawn_around_party,":spawn_center",":party_template"),
         (assign, ":result", reg0),
         (party_set_faction, ":result", ":faction_no"),
-        (try_begin),
-          (eq, ":party_type", spt_kingdom_caravan),
+
           (party_set_slot, ":result", slot_party_home_center, ":spawn_center"),
           (party_set_slot, ":result", slot_party_last_traded_center, ":spawn_center"),
-		(try_end),
         (party_set_slot, ":result", slot_party_type, ":party_type"),
         (party_set_slot, ":result", slot_party_ai_state, spai_undefined),
+
         (try_begin),
           (neq, ":party_name_str", "str_no_string"),
           (party_set_name, ":result", ":party_name_str"),
         (try_end),
 
         (try_begin),
-##          (eq, ":party_type", spt_forager),
-##          (party_add_template, ":result", ":reinforcements_a"),
-##        (else_try),
-##          (eq, ":party_type", spt_scout),
-##          (party_add_template, ":result", ":reinforcements_c"),
-##        (else_try),
-##          (eq, ":party_type", spt_patrol),
-##          (party_add_template, ":result", ":reinforcements_a"),
-##          (party_add_template, ":result", ":reinforcements_b"),
-##        (else_try),
           (eq, ":party_type", spt_kingdom_caravan),
           (try_begin),
             (eq, ":faction_no", "fac_player_supporters_faction"),
             (party_get_slot, ":reinforcement_faction", ":spawn_center", slot_center_original_faction),
+            (faction_get_slot, ":reinforcements_a", ":reinforcement_faction", slot_faction_reinforcements_a),
             (faction_get_slot, ":reinforcements_b", ":reinforcement_faction", slot_faction_reinforcements_b),
           (try_end),
+          (store_character_level, ":player_level", "trp_player"),
+
+          #NOTE: The upper end for store_random_in_range is exclusive
+
+          # add more caravan_guards - starting at level 10
+          (store_div, ":reinforcement_cg_count", ":player_level", 5),
+          (val_sub, ":reinforcement_cg_count", 1),
+          (val_clamp, ":reinforcement_cg_count", 0, 3),
+          (val_add, ":reinforcement_cg_count", 1),
+          (store_random_in_range, ":reinforcement_count", 0, ":reinforcement_cg_count"),
+          (try_for_range, ":reinforce_party", 0, ":reinforcement_count"),
+            (party_add_template, ":result", "pt_caravan_guards"),
+          (try_end),
+          
+          # add caravan_civilians - starting at level 12
+          (store_div, ":reinforcement_civs_count", ":player_level", 6),
+          (val_sub, ":reinforcement_civs_count", 1),
+          (val_clamp, ":reinforcement_civs_count", 0, 3),
+          (val_add, ":reinforcement_civs_count", 1),
+          (store_random_in_range, ":reinforcement_count", 0, ":reinforcement_civs_count"),  
+          (try_for_range, ":reinforce_party", 0, ":reinforcement_count"),
+            (party_add_template, ":result", "pt_caravan_civilians"),
+          (try_end),
+
+          # add tier a troops - starting at level 8
+          (store_div, ":reinforcement_a_count", ":player_level", 8),
+          (val_clamp, ":reinforcement_a_count", 0, 3),
+          (val_add, ":reinforcement_a_count", 1),
+          (store_random_in_range, ":reinforcement_count", 0, ":reinforcement_a_count"),  
+          (try_for_range, ":reinforce_party", 0, ":reinforcement_count"),
+            (party_add_template, ":result", ":reinforcements_a"),
+          (try_end),
+          
+          # add tier 2 troops - starting at level 20
+          (store_div, ":reinforcement_b_count", ":player_level", 10),
+          (val_sub, ":reinforcement_b_count", 1),
+          (val_clamp, ":reinforcement_b_count", 0, 5),
+          (val_add, ":reinforcement_b_count", 1),
+          (store_random_in_range, ":reinforcement_count", 0, ":reinforcement_b_count"),  
+          (try_for_range, ":reinforce_party", 0, ":reinforcement_count"),
           (party_add_template, ":result", ":reinforcements_b"),
-          (party_add_template, ":result", ":reinforcements_b"),
+          (try_end),
+          
+          # add male_mercenaries - starting at level 12
+          (store_div, ":reinforcement_mm_count", ":player_level", 12),
+          # (val_sub, ":reinforcement_mm_count", 1),
+          (val_clamp, ":reinforcement_mm_count", 0, 2),
+          (val_add, ":reinforcement_mm_count", 1),
+          (store_random_in_range, ":reinforcement_count", 0, ":reinforcement_mm_count"),  
+          (try_for_range, ":reinforce_party", 0, ":reinforcement_count"),
+            (party_add_template, ":result", "pt_male_mercenaries"),
+          (try_end),
+          
+          # add female_mercenaries - starting at level 24
+          (store_div, ":reinforcement_fm_count", ":player_level", 8),
+          (val_sub, ":reinforcement_fm_count", 2),
+          (val_clamp, ":reinforcement_fm_count", 0, 2),
+          (val_add, ":reinforcement_fm_count", 1),
+          (store_random_in_range, ":reinforcement_count", 0, ":reinforcement_fm_count"),  
+          (try_for_range, ":reinforce_party", 0, ":reinforcement_count"),
+            (party_add_template, ":result", "pt_female_mercenaries"),
+          (try_end),
+          
           (party_set_ai_behavior,":result",ai_bhvr_travel_to_party),
           (party_set_ai_object,":result",":spawn_center"),
           (party_set_flags, ":result", pf_default_behavior, 1),
@@ -25334,35 +25385,6 @@ scripts = [
             (store_add, ":cur_goods_price_slot", ":cur_goods", ":item_to_price_slot"),
             (party_set_slot, ":result", ":cur_goods_price_slot", average_price_factor),
           (try_end),
-##        (else_try),
-##          (eq, ":party_type", spt_messenger),
-##          (faction_get_slot, ":messenger_troop", ":faction_no", slot_faction_messenger_troop),
-##          (party_add_leader, ":result", ":messenger_troop"),
-##          (party_set_ai_behavior,":result",ai_bhvr_travel_to_party),
-##          (party_set_ai_object,":result",":spawn_center"),
-##          (party_set_flags, ":result", pf_default_behavior, 0),
-##        (else_try),
-##          (eq, ":party_type", spt_raider),
-##          (party_add_template, ":result", ":reinforcements_c"),
-##          (party_add_template, ":result", ":reinforcements_b"),
-##          (party_add_template, ":result", "pt_raider_captives"),
-##        (else_try),
-##          (eq, ":party_type", spt_prisoner_train),
-##          (party_add_template, ":result", ":reinforcements_b"),
-##          (party_add_template, ":result", ":reinforcements_a"),
-##          (try_begin),
-##            (call_script,"script_cf_faction_get_random_enemy_faction",":faction_no"),
-##            (store_random_in_range,":r",0,3),
-##            (try_begin),
-##              (lt, ":r", 1),
-##              (faction_get_slot, ":captive_reinforcements", reg0, slot_faction_reinforcements_b),
-##            (else_try),
-##              (faction_get_slot, ":captive_reinforcements", reg0, slot_faction_reinforcements_a),
-##            (try_end),
-##            (party_add_template, ":result", ":captive_reinforcements",1),
-##          (else_try),
-##            (party_add_template, ":result", "pt_default_prisoners"),
-##          (try_end),
         (try_end),
       (try_end),
       (ge, ":result", 0),
@@ -26986,6 +27008,8 @@ scripts = [
           (lt, ":improvement_no", walled_center_improvements_begin),
           (assign, ":continue", 0),
         (try_end),
+        (store_random_in_range, ":build_improvement_gate", 0, 10), # lower the chance of building the improvement even more
+        (eq, ":build_improvement_gate", 0),
         (eq, ":continue", 1),
         (call_script, "script_get_improvement_details", ":improvement_no"),
         (assign, ":improvement_cost", reg0), # 4000-9000
@@ -30044,33 +30068,28 @@ scripts = [
         (assign, "$g_recalculate_ais", 1),
       (try_end),
 
+    (assign, ":truce_duration", dplmc_treaty_truce_days_initial),
+    (store_random_in_range, ":half_truce", 0, 4),
+    (try_begin),
+      (eq, ":half_truce", 0),
+      (assign, ":truce_duration", dplmc_treaty_truce_days_half_done),
+    (try_end),
 	  (try_begin), #add truce
-		(store_add, ":truce_slot", ":kingdom_a", slot_faction_truce_days_with_factions_begin),
-		(val_sub, ":truce_slot", kingdoms_begin),
-		##diplomacy begin
-	    #(faction_set_slot, ":kingdom_b", ":truce_slot", 40),
-        ##nested diplomacy start+ replace "20" with constant for truce length
-#        (faction_set_slot, ":kingdom_b", ":truce_slot", 20),
-        (faction_set_slot, ":kingdom_b", ":truce_slot", dplmc_treaty_truce_days_initial),
-        ##nested diplomacy end+
-	    ##diplomacy end
-		(store_add, ":truce_slot", ":kingdom_b", slot_faction_truce_days_with_factions_begin),
-		(val_sub, ":truce_slot", kingdoms_begin),
-	    ##diplomacy begin
-	    #(faction_set_slot, ":kingdom_a", ":truce_slot", 40),
-        ##nested diplomacy start+ replace "20" with constant for truce length
-        #(faction_set_slot, ":kingdom_a", ":truce_slot", 20),
-        (faction_set_slot, ":kingdom_a", ":truce_slot", dplmc_treaty_truce_days_initial),
-        ##nested diplomacy end+
-        ##diplomacy end
-		(store_add, ":slot_war_damage_inflicted_on_b", ":kingdom_b", slot_faction_war_damage_inflicted_on_factions_begin),
-		(val_sub, ":slot_war_damage_inflicted_on_b", kingdoms_begin),
-		#(faction_get_slot, ":damage_inflicted_by_a", ":kingdom_a", ":slot_war_damage_inflicted_on_b"),
-		(faction_set_slot, ":kingdom_a", ":slot_war_damage_inflicted_on_b", 0),
-		(store_add, ":slot_war_damage_inflicted_on_a", ":kingdom_a", slot_faction_war_damage_inflicted_on_factions_begin),
-		(val_sub, ":slot_war_damage_inflicted_on_a", kingdoms_begin),
-		#(faction_get_slot, ":damage_inflicted_by_b", ":kingdom_b", ":slot_war_damage_inflicted_on_a"),
-		(faction_set_slot, ":kingdom_b", ":slot_war_damage_inflicted_on_a", 0),
+  		(store_add, ":truce_slot", ":kingdom_a", slot_faction_truce_days_with_factions_begin),
+	  	(val_sub, ":truce_slot", kingdoms_begin),
+      (faction_set_slot, ":kingdom_b", ":truce_slot", ":truce_duration"),
+
+  		(store_add, ":truce_slot", ":kingdom_b", slot_faction_truce_days_with_factions_begin),
+		  (val_sub, ":truce_slot", kingdoms_begin),
+      (faction_set_slot, ":kingdom_a", ":truce_slot", ":truce_duration"),
+
+  		(store_add, ":slot_war_damage_inflicted_on_b", ":kingdom_b", slot_faction_war_damage_inflicted_on_factions_begin),
+	  	(val_sub, ":slot_war_damage_inflicted_on_b", kingdoms_begin),
+  		(faction_set_slot, ":kingdom_a", ":slot_war_damage_inflicted_on_b", 0),
+
+	  	(store_add, ":slot_war_damage_inflicted_on_a", ":kingdom_a", slot_faction_war_damage_inflicted_on_factions_begin),
+		  (val_sub, ":slot_war_damage_inflicted_on_a", kingdoms_begin),
+		  (faction_set_slot, ":kingdom_b", ":slot_war_damage_inflicted_on_a", 0),
 	  (try_end),
   ]),
 
@@ -30150,7 +30169,7 @@ scripts = [
   ]),
 
   # script_randomly_start_war_peace
-  # Input: arg1 = initializing_war_peace_cond (1 = true, 0 = false)
+  # Input: arg1 = initializing_war_peace_cond (1 = true, 0 = false / game start)
   # Output: none
 
   #Aims to introduce a slightly simpler system in which the AI kings' reasoning could be made more  transparent to the player. At the start of the game, this may lead to less variation in outcomes, though
@@ -38103,9 +38122,8 @@ scripts = [
          #SB : prosperity linked infestation
          (try_begin),
            (ge, "$g_dplmc_gold_changes", DPLMC_GOLD_CHANGES_MEDIUM),
-           (party_get_slot, ":prosperity", ":village_no", slot_town_prosperity),
-           (val_div, ":prosperity", 2), #0 to 50
-           (val_add, ":prosperity", 75), #75 to 125
+           (party_get_slot, ":prosperity", ":village_no", slot_town_prosperity), # 0 to 100
+           (val_add, ":prosperity", 50), #50 to 150
            (store_random_in_range, ":random_no", 0, ":prosperity"),
          (else_try),
            (store_random_in_range, ":random_no", 0, 100),
@@ -57561,7 +57579,7 @@ scripts = [
 		(val_add, ":cur_town", towns_begin),
 		(troop_clear_inventory, ":cur_merchant"),
 		(party_get_slot, ":cur_faction", ":cur_town", slot_center_original_faction),
-		(troop_add_merchandise_with_faction, ":cur_merchant", ":cur_faction", itp_type_body_armor, 16),
+		(troop_add_merchandise_with_faction, ":cur_merchant", ":cur_faction", itp_type_body_armor, 24),
 		(troop_add_merchandise_with_faction, ":cur_merchant", ":cur_faction", itp_type_head_armor, 16),
 		(troop_add_merchandise_with_faction, ":cur_merchant", ":cur_faction", itp_type_foot_armor, 8),
 		(troop_add_merchandise_with_faction, ":cur_merchant", ":cur_faction", itp_type_hand_armor, 4),
@@ -57607,15 +57625,15 @@ scripts = [
 	    (val_add, ":cur_town", towns_begin),
 	  (troop_clear_inventory, ":cur_merchant"),
 	    (party_get_slot, ":cur_faction", ":cur_town", slot_center_original_faction),
-      (troop_add_merchandise_with_faction, ":cur_merchant", ":cur_faction", itp_type_one_handed_wpn, 5),
+      (troop_add_merchandise_with_faction, ":cur_merchant", ":cur_faction", itp_type_one_handed_wpn, 6),
       (troop_add_merchandise_with_faction, ":cur_merchant", ":cur_faction", itp_type_two_handed_wpn, 5),
-      (troop_add_merchandise_with_faction, ":cur_merchant", ":cur_faction", itp_type_polearm, 5),
+      (troop_add_merchandise_with_faction, ":cur_merchant", ":cur_faction", itp_type_polearm, 6),
       (troop_add_merchandise_with_faction, ":cur_merchant", ":cur_faction", itp_type_shield, 6),
-      (troop_add_merchandise_with_faction, ":cur_merchant", ":cur_faction", itp_type_bow, 4),
-      (troop_add_merchandise_with_faction, ":cur_merchant", ":cur_faction", itp_type_crossbow, 3),
+      (troop_add_merchandise_with_faction, ":cur_merchant", ":cur_faction", itp_type_bow, 5),
+      (troop_add_merchandise_with_faction, ":cur_merchant", ":cur_faction", itp_type_crossbow, 4),
       (troop_add_merchandise_with_faction, ":cur_merchant", ":cur_faction", itp_type_thrown, 5),
-      (troop_add_merchandise_with_faction, ":cur_merchant", ":cur_faction", itp_type_arrows, 2),
-      (troop_add_merchandise_with_faction, ":cur_merchant", ":cur_faction", itp_type_bolts, 2),
+      (troop_add_merchandise_with_faction, ":cur_merchant", ":cur_faction", itp_type_arrows, 3),
+      (troop_add_merchandise_with_faction, ":cur_merchant", ":cur_faction", itp_type_bolts, 3),
       (troop_ensure_inventory_space, ":cur_merchant", merchant_inventory_space),
       (troop_sort_inventory, ":cur_merchant"),
       (store_troop_gold, reg6, ":cur_merchant"),
@@ -57658,7 +57676,7 @@ scripts = [
       (store_sub, ":cur_town", ":cur_merchant", horse_merchants_begin),
       (val_add, ":cur_town", towns_begin),
       (party_get_slot, ":cur_faction", ":cur_town", slot_center_original_faction),
-      (troop_add_merchandise_with_faction,":cur_merchant", ":cur_faction",itp_type_horse,5),
+      (troop_add_merchandise_with_faction,":cur_merchant", ":cur_faction",itp_type_horse,12),
       (troop_ensure_inventory_space,":cur_merchant",65),
       (troop_sort_inventory, ":cur_merchant"),
       (store_troop_gold, ":cur_gold",":cur_merchant"),
@@ -59311,7 +59329,7 @@ scripts = [
   ]),
 
 #script_dplmc_start_alliance_between_kingdoms, 20 days alliance, 40 days truce after that
-  # Input: arg1 = kingdom_1, arg2 = kingdom_2, arg3 = initializing_war_peace_cond
+  # Input: arg1 = kingdom_1, arg2 = kingdom_2, arg3 = initializing_war_peace_cond (0=game start)
   # Output: none
   ("dplmc_start_alliance_between_kingdoms", #sets relations between two kingdoms
     [
@@ -59369,19 +59387,26 @@ scripts = [
 
       (try_end),
 
+    (assign, ":truce_duration", dplmc_treaty_alliance_days_initial),
+    (try_begin),
+      (eq, ":initializing_war_peace_cond", 0), # if game startup
+      (store_random_in_range, ":truce_duration", dplmc_treaty_alliance_days_expire, dplmc_treaty_alliance_days_initial),
+      (val_add, ":truce_duration", 1),
+    (try_end),
+
 	  (try_begin), #add truce
 		(store_add, ":truce_slot", ":kingdom_a", slot_faction_truce_days_with_factions_begin),
 		(val_sub, ":truce_slot", kingdoms_begin),
 	    ##nested diplomacy start+ replace 80 with a named constant
 	    #(faction_set_slot, ":kingdom_b", ":truce_slot", 80),
-	    (faction_set_slot, ":kingdom_b", ":truce_slot", dplmc_treaty_alliance_days_initial),
+	    (faction_set_slot, ":kingdom_b", ":truce_slot", ":truce_duration"),
 	    ##nested diplomacy end+
 
 		(store_add, ":truce_slot", ":kingdom_b", slot_faction_truce_days_with_factions_begin),
 		(val_sub, ":truce_slot", kingdoms_begin),
 	    ##nested diplomacy start+ replace 80 with a named constant
 	    #(faction_set_slot, ":kingdom_a", ":truce_slot", 80),
-	    (faction_set_slot, ":kingdom_a", ":truce_slot", dplmc_treaty_alliance_days_initial),
+	    (faction_set_slot, ":kingdom_a", ":truce_slot", ":truce_duration"),
 	    ##nested diplomacy end+
 
 		(store_add, ":slot_war_damage_inflicted_on_b", ":kingdom_b", slot_faction_war_damage_inflicted_on_factions_begin),
@@ -59485,19 +59510,26 @@ scripts = [
 
       (try_end),
 
+    (assign, ":truce_duration", dplmc_treaty_defense_days_initial),
+    (try_begin),
+      (eq, ":initializing_war_peace_cond", 0), # if game startup
+      (store_random_in_range, ":truce_duration", dplmc_treaty_defense_days_expire, dplmc_treaty_defense_days_initial),
+      (val_add, ":truce_duration", 1),
+    (try_end),
+
 	  (try_begin), #add truce
 		(store_add, ":truce_slot", ":kingdom_a", slot_faction_truce_days_with_factions_begin),
 		(val_sub, ":truce_slot", kingdoms_begin),
 	    ##diplomacy start+ replace 60 with named variable
 	    #(faction_set_slot, ":kingdom_b", ":truce_slot", 60),
-	    (faction_set_slot, ":kingdom_b", ":truce_slot", dplmc_treaty_defense_days_initial),
+	    (faction_set_slot, ":kingdom_b", ":truce_slot", ":truce_duration"),
 	    ##diplomacy end+
 
 		(store_add, ":truce_slot", ":kingdom_b", slot_faction_truce_days_with_factions_begin),
 		(val_sub, ":truce_slot", kingdoms_begin),
 	    ##diplomacy start+ replace 60 with named variable
 	    #(faction_set_slot, ":kingdom_a", ":truce_slot", 60),
-	    (faction_set_slot, ":kingdom_a", ":truce_slot", dplmc_treaty_defense_days_initial),
+	    (faction_set_slot, ":kingdom_a", ":truce_slot", ":truce_duration"),
 	    ##diplomacy end+
 
 		(store_add, ":slot_war_damage_inflicted_on_b", ":kingdom_b", slot_faction_war_damage_inflicted_on_factions_begin),
@@ -59577,19 +59609,26 @@ scripts = [
 
       (try_end),
 
+    (assign, ":truce_duration", dplmc_treaty_trade_days_initial),
+    (try_begin),
+      (eq, ":initializing_war_peace_cond", 0), # if game startup
+      (store_random_in_range, ":truce_duration", dplmc_treaty_trade_days_expire, dplmc_treaty_trade_days_initial),
+      (val_add, ":truce_duration", 1),
+    (try_end),
+
 	  (try_begin), #add truce
 		(store_add, ":truce_slot", ":kingdom_a", slot_faction_truce_days_with_factions_begin),
 		(val_sub, ":truce_slot", kingdoms_begin),
 	    ##nested diplomacy start+ replace hardcoded number of days with a variable
 	    #(faction_set_slot, ":kingdom_b", ":truce_slot", 40),
-	    (faction_set_slot, ":kingdom_b", ":truce_slot", dplmc_treaty_trade_days_initial),
+	    (faction_set_slot, ":kingdom_b", ":truce_slot", ":truce_duration"),
 	    ##nested diplomacy end+
 
 		(store_add, ":truce_slot", ":kingdom_b", slot_faction_truce_days_with_factions_begin),
 		(val_sub, ":truce_slot", kingdoms_begin),
 	    ##nested diplomacy start+ replace hardcoded number of days with a variable
 	    #(faction_set_slot, ":kingdom_a", ":truce_slot", 40),
-	    (faction_set_slot, ":kingdom_a", ":truce_slot", dplmc_treaty_trade_days_initial),
+	    (faction_set_slot, ":kingdom_a", ":truce_slot", ":truce_duration"),
 	    ##nested diplomacy end+
 
 		(store_add, ":slot_war_damage_inflicted_on_b", ":kingdom_b", slot_faction_war_damage_inflicted_on_factions_begin),
@@ -59669,38 +59708,42 @@ scripts = [
 
       (try_end),
 
+    (assign, ":truce_duration", dplmc_treaty_truce_days_initial),
+    (try_begin),
+      (eq, ":initializing_war_peace_cond", 0), # if game startup
+      (store_random_in_range, ":truce_duration", dplmc_treaty_truce_days_expire, dplmc_treaty_truce_days_initial),
+      (val_add, ":truce_duration", 1),
+    (else_try),
+      (store_random_in_range, ":half_truce", 0, 2),
+      (try_begin),
+        (eq, ":half_truce", 0),
+        (assign, ":truce_duration", dplmc_treaty_truce_days_half_done),
+      (try_end),
+    (try_end),
 	  (try_begin), #add truce
-		(store_add, ":truce_slot", ":kingdom_a", slot_faction_truce_days_with_factions_begin),
-		(val_sub, ":truce_slot", kingdoms_begin),
-	    ##nested diplomacy start+ replace hardcoded number with a variable
-	    #(faction_set_slot, ":kingdom_b", ":truce_slot", 20),
-	    (faction_set_slot, ":kingdom_b", ":truce_slot", dplmc_treaty_truce_days_initial),
-	    ##nested diplomacy end+
+  		(store_add, ":truce_slot", ":kingdom_a", slot_faction_truce_days_with_factions_begin),
+	  	(val_sub, ":truce_slot", kingdoms_begin),
+	    (faction_set_slot, ":kingdom_b", ":truce_slot", ":truce_duration"),
 
-		(store_add, ":truce_slot", ":kingdom_b", slot_faction_truce_days_with_factions_begin),
-		(val_sub, ":truce_slot", kingdoms_begin),
-	    ##nested diplomacy start+ replace hardcoded number with a variable
-	    #(faction_set_slot, ":kingdom_a", ":truce_slot", 20),
-	    (faction_set_slot, ":kingdom_a", ":truce_slot", dplmc_treaty_truce_days_initial),
-	    ##nested diplomacy end+
+  		(store_add, ":truce_slot", ":kingdom_b", slot_faction_truce_days_with_factions_begin),
+	  	(val_sub, ":truce_slot", kingdoms_begin),
+	    (faction_set_slot, ":kingdom_a", ":truce_slot", ":truce_duration"),
+	  
+      (store_add, ":slot_war_damage_inflicted_on_b", ":kingdom_b", slot_faction_war_damage_inflicted_on_factions_begin),
+      (val_sub, ":slot_war_damage_inflicted_on_b", kingdoms_begin),
+      (faction_get_slot, ":damage_inflicted_by_a", ":kingdom_a", ":slot_war_damage_inflicted_on_b"),
+      (try_begin),
+        (lt, ":damage_inflicted_by_a", 100),			
+      (try_end),
+      (faction_set_slot, ":kingdom_a", ":slot_war_damage_inflicted_on_b", 0),
 
-		(store_add, ":slot_war_damage_inflicted_on_b", ":kingdom_b", slot_faction_war_damage_inflicted_on_factions_begin),
-		(val_sub, ":slot_war_damage_inflicted_on_b", kingdoms_begin),
-		(faction_get_slot, ":damage_inflicted_by_a", ":kingdom_a", ":slot_war_damage_inflicted_on_b"),
-		(try_begin),
-			(lt, ":damage_inflicted_by_a", 100),
-			#controversial policy
-		(try_end),
-		(faction_set_slot, ":kingdom_a", ":slot_war_damage_inflicted_on_b", 0),
-
-		(store_add, ":slot_war_damage_inflicted_on_a", ":kingdom_a", slot_faction_war_damage_inflicted_on_factions_begin),
-		(val_sub, ":slot_war_damage_inflicted_on_a", kingdoms_begin),
-		(faction_get_slot, ":damage_inflicted_by_b", ":kingdom_b", ":slot_war_damage_inflicted_on_a"),
-		(try_begin),
-			(lt, ":damage_inflicted_by_b", 100),
-			#controversial policy
-		(try_end),
-		(faction_set_slot, ":kingdom_b", ":slot_war_damage_inflicted_on_a", 0),
+      (store_add, ":slot_war_damage_inflicted_on_a", ":kingdom_a", slot_faction_war_damage_inflicted_on_factions_begin),
+      (val_sub, ":slot_war_damage_inflicted_on_a", kingdoms_begin),
+      (faction_get_slot, ":damage_inflicted_by_b", ":kingdom_b", ":slot_war_damage_inflicted_on_a"),
+      (try_begin),
+        (lt, ":damage_inflicted_by_b", 100),
+      (try_end),
+      (faction_set_slot, ":kingdom_b", ":slot_war_damage_inflicted_on_a", 0),
 
 	  (try_end),
   ]),
@@ -64014,52 +64057,55 @@ scripts = [
   #    reg0 amount of gold gained by customer (not actually gained if this was a dry run)
   #    reg1 number of items sold by customer (not actually sold if this was a dry run)
   ("dplmc_auto_sell", [
-	#This script has various changes from the CC version.
-	#In particular, all parameters other than "customer" and "merchant",
-	#and reporting the number of items & gold change.
-	(store_script_param, ":customer", 1),
-	(store_script_param, ":merchant", 2),
-	#dplmc+ start added parameters
-	(store_script_param, ":auto_sell_price_limit", 3),
-	(store_script_param, ":valid_items_begin", 4),
-	(store_script_param, ":valid_items_end", 5),
-	(store_script_param, ":actually_sell_items", 6),
-	#dplmc+ end added parameters
+    #This script has various changes from the CC version.
+    #In particular, all parameters other than "customer" and "merchant",
+    #and reporting the number of items & gold change.
+    (store_script_param, ":customer", 1),
+    (store_script_param, ":merchant", 2),
+    #dplmc+ start added parameters
+    (store_script_param, ":auto_sell_price_limit", 3),
+    (store_script_param, ":valid_items_begin", 4),
+    (store_script_param, ":valid_items_end", 5),
+    (store_script_param, ":actually_sell_items", 6),
+    #dplmc+ end added parameters
 
-	#dplmc+ added section begin
-	(assign, ":save_reg2", reg2),
-	(assign, ":save_reg3", reg3),
-	(assign, ":save_reg65", reg65),
-	(assign, ":save_talk_troop", "$g_talk_troop"),
-	#The talk troop is used for price information, but it's possible for this to be called
-	#from other contexts (like a menu).
-	(assign, "$g_talk_troop", ":merchant"),
+    #dplmc+ added section begin
+    (assign, ":save_reg2", reg2),
+    (assign, ":save_reg3", reg3),
+    (assign, ":save_reg65", reg65),
+    (assign, ":save_talk_troop", "$g_talk_troop"),
+    #The talk troop is used for price information, but it's possible for this to be called
+    #from other contexts (like a menu).
+    (assign, "$g_talk_troop", ":merchant"),
 
-	(assign, ":gold_gained", 0),
-	(assign, ":items_sold", 0),
-	#(assign, ":most_expensive_sold_item", -1),
-	#(assign, ":most_expensive_sold_imod", -1),
-	#(assign, ":most_expensive_sold_price", -1),
-	#dplmc+ added section end
+    (assign, ":gold_gained", 0),
+    (assign, ":items_sold", 0),
+    #(assign, ":most_expensive_sold_item", -1),
+    #(assign, ":most_expensive_sold_imod", -1),
+    #(assign, ":most_expensive_sold_price", -1),
+    #dplmc+ added section end
 
     (store_free_inventory_capacity, ":space", ":merchant"),
     (troop_get_inventory_capacity, ":inv_cap", ":customer"),
-	(set_show_messages, 0),#<-dplmc+ added
-	(store_troop_gold, ":m_gold", ":merchant"),#dplmc+: to support "dry runs", move this out of the loop
+    (set_show_messages, 0),#<-dplmc+ added
+    (store_troop_gold, ":m_gold", ":merchant"),#dplmc+: to support "dry runs", move this out of the loop
+
     (try_for_range_backwards, ":i_slot", dplmc_ek_alt_items_end, ":inv_cap"),#we're reserving several "safe" slots in the beginning of the inventory
+
       (troop_get_inventory_slot, ":item", ":customer", ":i_slot"),
       (troop_get_inventory_slot_modifier, ":imod", ":customer", ":i_slot"),
       (gt, ":item", -1),
+
       (item_get_type, ":type", ":item"),
       (item_slot_eq, ":type", dplmc_slot_item_type_not_for_sell, 0),
-	  #dplmc+ begin added constraints
-	  (is_between, ":item", ":valid_items_begin", ":valid_items_end"),
-	  (neg|is_between, ":type", books_begin, books_end),
-	  (this_or_next|neg|is_between, ":type", food_begin, food_end),
-	     (eq, ":imod", imod_rotten),
-	  (neg|is_between, ":type", trade_goods_begin, trade_goods_end),
-	  (neq, ":imod", imod_lordly),#dplmc+: never sell "lordly" items
-	  #dplmc+ end added constraints
+      #dplmc+ begin added constraints
+      (is_between, ":item", ":valid_items_begin", ":valid_items_end"),
+      (neg|is_between, ":type", books_begin, books_end),
+      (this_or_next|neg|is_between, ":type", food_begin, food_end),
+        (ge, ":imod", imod_rotten),
+      (neg|is_between, ":type", trade_goods_begin, trade_goods_end),
+      (neq, ":imod", imod_lordly),#dplmc+: never sell "lordly" items
+      #dplmc+ end added constraints
 
       (call_script, "script_dplmc_get_item_value_with_imod", ":item", ":imod"),
       (assign, ":score", reg0),
@@ -64070,178 +64116,179 @@ scripts = [
       (val_div, ":score", 100),
       (val_max, ":score",1),
 
-	  #dplmc+ start changed section
-	  (le, ":score", ":auto_sell_price_limit"),
-	  (le, ":score", ":m_gold"),
-	  (gt, ":space", 0),
+      #dplmc+ start changed section
+      (le, ":score", ":auto_sell_price_limit"),
+      (le, ":score", ":m_gold"),
+      (gt, ":space", 0),
 
-	  #For equipment, in general don't sell the item unless you have a better one,
-	  #or the item is useless to you.  (The idea is to stop from accidentally
-	  #selling the player's own equipment.)
-	  (item_get_type, ":this_item_type", ":item"),
+      #For equipment, in general don't sell the item unless you have a better one,
+      #or the item is useless to you.  (The idea is to stop from accidentally
+      #selling the player's own equipment.)
+      (item_get_type, ":this_item_type", ":item"),
 
-	  #Normally, we would do the following:
+      #Normally, we would do the following:
 
-	  #(try_begin),
-	  #   (item_slot_eq, ":item", dplmc_slot_two_handed_one_handed, 1),
-	  #	 (assign, ":this_item_type", 11), # type 11 = two-handed/one-handed
-	  #(try_end),
+      #(try_begin),
+      #   (item_slot_eq, ":item", dplmc_slot_two_handed_one_handed, 1),
+      #	 (assign, ":this_item_type", 11), # type 11 = two-handed/one-handed
+      #(try_end),
 
-	  #However, we are delaying that step until later, because type 11 is the
-	  #same as itp_type_goods.
+      #However, we are delaying that step until later, because type 11 is the
+      #same as itp_type_goods.
 
 
-	  #Don't sell items if there's a reasonable chance that they might
-	  #be the player's alternate personal equipment.  It goes without saying
-	  #that items the player can't use aren't counted.
-	  #
-	  #(Items the player has equipped will not even be considered for sale,
-	  #but it is common for players to have a variety of items they use in
-	  #different circumstances, which might not all be equipped.)
-	  #
-	  #For melee weapons: don't sell the best weapon or the second-best of a type
-	  #   (it might be a backup, or there might be a variety of weapons of
-	  #   the same type in situational use)
-	  #For shields: don't sell the best or second-best shield
-	  #For thrown weapons: don't sell the best three thrown weapons
-	  #For ammunition: don't sell the best three of the ammunition kind (arrows,
-	  #   bolts) unless you lack a weapon that uses the ammunition.
-	  #For armor: don't sell the best armor of a kind.
-	  #For horses: don't sell the best or second-best horse
-	  #For bows and crossbows: don't sell the best item of a kind (all bows are
-	  #   very similar, so there's little chance someone would carry an alternate)
-	  #For muskets and pistols: don't sell the best or second-best weapon of
-	  #   a kind.
+      #Don't sell items if there's a reasonable chance that they might
+      #be the player's alternate personal equipment.  It goes without saying
+      #that items the player can't use aren't counted.
+      #
+      #(Items the player has equipped will not even be considered for sale,
+      #but it is common for players to have a variety of items they use in
+      #different circumstances, which might not all be equipped.)
+      #
+      #For melee weapons: don't sell the best weapon or the second-best of a type
+      #   (it might be a backup, or there might be a variety of weapons of
+      #   the same type in situational use)
+      #For shields: don't sell the best or second-best shield
+      #For thrown weapons: don't sell the best three thrown weapons
+      #For ammunition: don't sell the best three of the ammunition kind (arrows,
+      #   bolts) unless you lack a weapon that uses the ammunition.
+      #For armor: don't sell the best armor of a kind.
+      #For horses: don't sell the best or second-best horse
+      #For bows and crossbows: don't sell the best item of a kind (all bows are
+      #   very similar, so there's little chance someone would carry an alternate)
+      #For muskets and pistols: don't sell the best or second-best weapon of
+      #   a kind.
 
-	  (assign, ":can_sell", 1),
+	    (assign, ":can_sell", 1),
 
-	  (try_begin),
-		 #Ammunition type: arrows (if you have a bow you can use, don't sell the best 3 arrow packs you have)
-	     (eq, ":this_item_type", itp_type_arrows),
-		 (call_script, "script_dplmc_scan_for_best_item_of_type", ":customer", itp_type_bow, ":customer"),
-		 (try_begin),
-			(ge, reg0, 0),
-			(call_script, "script_dplmc_count_better_items_of_same_type", ":customer", ":item", ":imod", ":customer"),
-			(lt, reg0, 3),#must not be best (0), second-best (1), or third-best (2)
-			(assign, ":can_sell", 0),
-		 (try_end),
-	  (else_try),
-		#Ammunition type: bolts (if you have a crossbow you can use, don't sell the best 3 bolt packs you have)
-	     (eq, ":this_item_type", itp_type_bolts),
-		 (call_script, "script_dplmc_scan_for_best_item_of_type", ":customer", itp_type_crossbow, ":customer"),
-		 (try_begin),
-			(ge, reg0, 0),
-			(call_script, "script_dplmc_count_better_items_of_same_type", ":customer", ":item", ":imod", ":customer"),
-			(lt, reg0, 3),#must not be best (0), second-best (1), or third-best (2)
-			(assign, ":can_sell", 0),
-		 (try_end),
-	  (else_try),
-		#Ammunition type: bullets (if you have a pistol or musket you can use, don't sell the best 3 bullet packs you have)
-	     (eq, ":this_item_type", itp_type_bullets),
-		 #Do muskets and pistols both use bullets?  I'll assume so.
-		 (call_script, "script_dplmc_scan_for_best_item_of_type", ":customer", itp_type_musket, ":customer"),
-		 (assign, reg1, reg0),
-		 (call_script, "script_dplmc_scan_for_best_item_of_type", ":customer", itp_type_pistol, ":customer"),
-		 (try_begin),
-			(this_or_next|ge, reg0, 0),
-				(ge, reg1, 0),
-			(call_script, "script_dplmc_count_better_items_of_same_type", ":customer", ":item", ":imod", ":customer"),
-			(lt, reg0, 3),
-			(assign, ":can_sell", 0),
-		 (try_end),
-	  (else_try),
-		#Catch: all non-usable equipment
-		(is_between, ":this_item_type", itp_type_horse, itp_type_musket + 1),
-		(neq, ":this_item_type", itp_type_goods),
-		(call_script, "script_dplmc_troop_can_use_item", ":customer", ":item", ":imod"),
-		(eq, reg0, 0),#Past here, we don't have to check for usability
-	  (else_try),
-		#Thrown weapons: don't sell best 3 you can use
-		(eq, ":this_item_type", itp_type_thrown),
-		(call_script, "script_dplmc_count_better_items_of_same_type", ":customer", ":item", ":imod", ":customer"),
-		(store_sub, ":can_sell", reg0, 2),#must not be best (0) or second-best (1) or third-best (2)
-	  (else_try),
-		#Types where both the best and the second-best aren't sold
-		#Horses, shields, melee weapons, and firearms
-		(this_or_next|is_between, ":this_item_type", itp_type_horse, itp_type_polearm + 1),
-		(this_or_next|eq, ":this_item_type", itp_type_shield),
-		(this_or_next|eq, ":this_item_type", itp_type_pistol),
-			(eq, ":this_item_type", itp_type_musket),
-		(call_script, "script_dplmc_count_better_items_of_same_type", ":customer", ":item", ":imod", ":customer"),
-		(store_sub, ":can_sell", reg0, 1),#must not be best (0) or second best (1)
- 	  (else_try),
-		#Types where the best isn't sold (armor, not including shields)
-		(is_between, ":this_item_type", itp_type_head_armor, itp_type_hand_armor + 1),
-		(call_script, "script_dplmc_count_better_items_of_same_type", ":customer", ":item", ":imod", ":customer"),
-		(assign, ":can_sell", reg0),#must not be best (0)
-	  (try_end),
+      (try_begin),
+        #Ammunition type: arrows (if you have a bow you can use, don't sell the best 3 arrow packs you have)
+        (eq, ":this_item_type", itp_type_arrows),
+        (call_script, "script_dplmc_scan_for_best_item_of_type", ":customer", itp_type_bow, ":customer"),
+        (try_begin),
+          (ge, reg0, 0),
+          (call_script, "script_dplmc_count_better_items_of_same_type", ":customer", ":item", ":imod", ":customer"),
+          (lt, reg0, 3),#must not be best (0), second-best (1), or third-best (2)
+          (assign, ":can_sell", 0),
+        (try_end),
+      (else_try),
+        #Ammunition type: bolts (if you have a crossbow you can use, don't sell the best 3 bolt packs you have)
+        (eq, ":this_item_type", itp_type_bolts),
+        (call_script, "script_dplmc_scan_for_best_item_of_type", ":customer", itp_type_crossbow, ":customer"),
+        (try_begin),
+          (ge, reg0, 0),
+          (call_script, "script_dplmc_count_better_items_of_same_type", ":customer", ":item", ":imod", ":customer"),
+          (lt, reg0, 3),#must not be best (0), second-best (1), or third-best (2)
+          (assign, ":can_sell", 0),
+        (try_end),
+      (else_try),
+        #Ammunition type: bullets (if you have a pistol or musket you can use, don't sell the best 3 bullet packs you have)
+        (eq, ":this_item_type", itp_type_bullets),
+        #Do muskets and pistols both use bullets?  I'll assume so.
+        (call_script, "script_dplmc_scan_for_best_item_of_type", ":customer", itp_type_musket, ":customer"),
+        (assign, reg1, reg0),
+        (call_script, "script_dplmc_scan_for_best_item_of_type", ":customer", itp_type_pistol, ":customer"),
+        (try_begin),
+          (this_or_next|ge, reg0, 0),
+          (ge, reg1, 0),
+          (call_script, "script_dplmc_count_better_items_of_same_type", ":customer", ":item", ":imod", ":customer"),
+          (lt, reg0, 3),
+          (assign, ":can_sell", 0),
+        (try_end),
+      (else_try),
+        #Catch: all non-usable equipment
+        (is_between, ":this_item_type", itp_type_horse, itp_type_musket + 1),
+        (neq, ":this_item_type", itp_type_goods),
+        (call_script, "script_dplmc_troop_can_use_item", ":customer", ":item", ":imod"),
+        (eq, reg0, 0),#Past here, we don't have to check for usability
+      (else_try),
+        #Thrown weapons: don't sell best 3 you can use
+        (eq, ":this_item_type", itp_type_thrown),
+        (call_script, "script_dplmc_count_better_items_of_same_type", ":customer", ":item", ":imod", ":customer"),
+        (store_sub, ":can_sell", reg0, 2),#must not be best (0) or second-best (1) or third-best (2)
+      (else_try),
+        #Types where both the best and the second-best aren't sold
+        #Horses, shields, melee weapons, and firearms
+        (this_or_next|is_between, ":this_item_type", itp_type_horse, itp_type_polearm + 1),
+        (this_or_next|eq, ":this_item_type", itp_type_shield),
+        (this_or_next|eq, ":this_item_type", itp_type_pistol),
+        (eq, ":this_item_type", itp_type_musket),
+        (call_script, "script_dplmc_count_better_items_of_same_type", ":customer", ":item", ":imod", ":customer"),
+        (store_sub, ":can_sell", reg0, 1),#must not be best (0) or second best (1)
+      (else_try),
+        #Types where the best isn't sold (armor, not including shields)
+        (is_between, ":this_item_type", itp_type_head_armor, itp_type_hand_armor + 1),
+        (call_script, "script_dplmc_count_better_items_of_same_type", ":customer", ":item", ":imod", ":customer"),
+        (assign, ":can_sell", reg0),#must not be best (0)
+      (try_end),
 
-	  #(try_begin),
-	  #   (lt, ":can_sell", 1),
-	  #	 (gt, "$cheat_mode", 0),
-	  #	 (call_script, "script_dplmc_count_better_items_of_same_type", ":customer", ":item", ":imod", ":customer"),
- 	  #	 (assign, reg1, ":i_slot"),
-	  #	 (str_store_item_name, s0, ":item"),
-	  #	 (display_message, "@{!} DEBUG - Will not sell item {s0} at slot {reg1}.  Better items of same kind: {reg0}"),
-	  #(try_end),
+      #(try_begin),
+      #   (lt, ":can_sell", 1),
+      #	 (gt, "$cheat_mode", 0),
+      #	 (call_script, "script_dplmc_count_better_items_of_same_type", ":customer", ":item", ":imod", ":customer"),
+      #	 (assign, reg1, ":i_slot"),
+      #	 (str_store_item_name, s0, ":item"),
+      #	 (display_message, "@{!} DEBUG - Will not sell item {s0} at slot {reg1}.  Better items of same kind: {reg0}"),
+      #(try_end),
 
-	  (ge, ":can_sell", 1),
+      (ge, ":can_sell", 1),
 
-	  #(try_begin),
-	  #	(ge, ":score", ":most_expensive_sold_price"),
-	  #	(assign, ":most_expensive_sold_item", ":item"),
-	  #	(assign, ":most_expensive_sold_imod", ":imod"),
-	  #	(assign, ":most_expensive_sold_price", ":score"),
-	  #(try_end),
+      #(try_begin),
+      #	(ge, ":score", ":most_expensive_sold_price"),
+      #	(assign, ":most_expensive_sold_item", ":item"),
+      #	(assign, ":most_expensive_sold_imod", ":imod"),
+      #	(assign, ":most_expensive_sold_price", ":score"),
+      #(try_end),
 
-	  #Log the transaction even if in dry run mode
-	  (val_sub, ":m_gold", ":score"),
-	  (val_add, ":gold_gained", ":score"),
-	  (val_add, ":items_sold", 1),
-	  (val_sub, ":space", 1),
+      #Log the transaction even if in dry run mode
+      (val_sub, ":m_gold", ":score"),
+      (val_add, ":gold_gained", ":score"),
+      (val_add, ":items_sold", 1),
+      (val_sub, ":space", 1),
 
-	  #If not a dry run, apply the transaction
-	  (neq, ":actually_sell_items", 0),
-	  (troop_add_item, ":merchant", ":item", ":imod"),
-	  (troop_set_inventory_slot, ":customer", ":i_slot", -1),
-	  (troop_remove_gold, ":merchant", ":score"),
-	  (troop_add_gold, ":customer", ":score"),
+      #If not a dry run, apply the transaction
+      (neq, ":actually_sell_items", 0),
+      (troop_add_item, ":merchant", ":item", ":imod"),
+      (troop_set_inventory_slot, ":customer", ":i_slot", -1),
+      (troop_remove_gold, ":merchant", ":score"),
+      (troop_add_gold, ":customer", ":score"),
       #dplmc+ end changed section
+    
+    (try_end), # end of loop
+
+    (set_show_messages, 1),#<- dplmc+ added
+
+    #dplmc+ added section begin
+    #Print a message if appropriate
+    (try_begin),
+      (is_between, ":actually_sell_items", 2, 4),#2 or 3
+      (this_or_next|ge, ":items_sold", 1),
+        (eq, ":actually_sell_items", 3),
+      (assign, reg0, ":gold_gained"),
+      (assign, reg1, ":items_sold"),
+      (store_sub, reg3, reg1, 1),
+      (str_store_troop_name, s0, ":merchant"),
+      (try_begin),
+        (this_or_next|is_between, ":merchant", quick_battle_troops_begin, quick_battle_troops_end),
+        (this_or_next|is_between, ":merchant", heroes_begin, heroes_end),
+        (this_or_next|is_between, ":merchant", dplmc_employees_begin, dplmc_employees_end),
+        (is_between, ":merchant", walkers_end, tournament_champions_end),
+        (display_message, "@You sold {reg1} {reg3?items:item} to {s0} and gained {reg0} {reg3?denars:denar}."),
+      (else_try),
+        (display_message, "@You sold {reg1} {reg3?items:item} to the {s0} and gained {reg0} {reg3?denars:denar}."),
+      (try_end),
     (try_end),
 
-	(set_show_messages, 1),#<- dplmc+ added
+    #Revert variables
+    (assign, reg2, ":save_reg2"),
+    (assign, reg3, ":save_reg3"),
+    (assign, reg65, ":save_reg65"),
+    (assign, "$g_talk_troop", ":save_talk_troop"),
 
-	#dplmc+ added section begin
-	#Print a message if appropriate
-	(try_begin),
-		(is_between, ":actually_sell_items", 2, 4),#2 or 3
-		(this_or_next|ge, ":items_sold", 1),
-			(eq, ":actually_sell_items", 3),
-		(assign, reg0, ":gold_gained"),
-		(assign, reg1, ":items_sold"),
-		(store_sub, reg3, reg1, 1),
-		(str_store_troop_name, s0, ":merchant"),
-		(try_begin),
-			(this_or_next|is_between, ":merchant", quick_battle_troops_begin, quick_battle_troops_end),
-			(this_or_next|is_between, ":merchant", heroes_begin, heroes_end),
-			(this_or_next|is_between, ":merchant", dplmc_employees_begin, dplmc_employees_end),
-			(is_between, ":merchant", walkers_end, tournament_champions_end),
-			(display_message, "@You sold {reg1} {reg3?items:item} to {s0} and gained {reg0} {reg3?denars:denar}."),
-		(else_try),
-			(display_message, "@You sold {reg1} {reg3?items:item} to the {s0} and gained {reg0} {reg3?denars:denar}."),
-		(try_end),
-	(try_end),
-
-	#Revert variables
-	(assign, reg2, ":save_reg2"),
-	(assign, reg3, ":save_reg3"),
-	(assign, reg65, ":save_reg65"),
-	(assign, "$g_talk_troop", ":save_talk_troop"),
-
-	#Return diagnostics
-	(assign, reg0, ":gold_gained"),
-	(assign, reg1, ":items_sold"),
-	#dplmc+ added section end
+    #Return diagnostics
+    (assign, reg0, ":gold_gained"),
+    (assign, reg1, ":items_sold"),
+    #dplmc+ added section end
   ]),
   #auto sell credit rubik (CC) end
 
@@ -64375,7 +64422,7 @@ scripts = [
       (gt, ":item", -1),
       (is_between, ":item", food_begin, food_end),
       (troop_get_inventory_slot_modifier, ":imod", ":customer", ":i_slot"),
-      (eq, ":imod", imod_rotten),
+      (ge, ":imod", imod_rotten), # this could also be imod_smelling
       (store_free_inventory_capacity, ":free_inv_cap", ":merchant_troop"),
       (gt, ":free_inv_cap", 0),
 

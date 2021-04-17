@@ -36,14 +36,14 @@ party_templates = [
 ##  ("old_garrison","Old Garrison",icon_vaegir_knight,0,fac_neutral,merchant_personality,[]),
   ("village_defenders","Village Defenders",icon_peasant,0,fac_commoners,merchant_personality,[(trp_farmer,10,20),(trp_peasant_woman,0,4)]),
 
-  ("cattle_herd","Cattle Herd",icon_cattle|carries_goods(10),0,fac_neutral,merchant_personality,[(trp_cattle,80,120)]),
+  ("cattle_herd","Cattle Herd",icon_cattle|carries_goods(10),0,fac_neutral,merchant_personality,[(trp_cattle,40,120)]),
 
 ##  ("vaegir_nobleman","Vaegir Nobleman",icon_vaegir_knight|carries_goods(10)|pf_quest_party,0,fac_commoners,merchant_personality,[(trp_nobleman,1,1),(trp_vaegir_knight,2,6),(trp_vaegir_horseman,4,12)]),
 ##  ("swadian_nobleman","Swadian Nobleman",icon_gray_knight|carries_goods(10)|pf_quest_party,0,fac_commoners,merchant_personality,[(trp_nobleman,1,1),(trp_swadian_knight,2,6),(trp_swadian_man_at_arms,4,12)]),
 # Ryan BEGIN
   ("looters","Looters",icon_axeman|carries_goods(8),0,fac_outlaws,bandit_personality,[(trp_looter,3,45)]),
 # Ryan END
-  ("manhunters","Manhunters",icon_gray_knight,0,fac_manhunters,soldier_personality,[(trp_manhunter,9,40)]),
+  ("manhunters","Manhunters",icon_gray_knight,0,fac_manhunters,soldier_personality,[(trp_manhunter,20,75)]),
 ##  ("peasant","Peasant",icon_peasant,0,fac_commoners,merchant_personality,[(trp_farmer,1,6),(trp_peasant_woman,0,7)]),
 
 #SB : changes to icons
@@ -168,4 +168,10 @@ party_templates = [
    ("dplmc_recruiter","Recruiter",icon_flagbearer_b|pf_show_faction,0,fac_neutral,merchant_personality,[(trp_dplmc_recruiter,1,1)]),
 #recruiter kit end
    ##diplomacy end
+
+# Parties added to kingdom caravans
+  ("caravan_civilians","Caravan Civilians",icon_peasant|carries_goods(5),0,fac_commoners,merchant_personality,[(trp_farmer,0,4),(trp_peasant_woman,0,2),(trp_follower_woman,0,1)]),
+  ("caravan_guards","Caravan Guards",icon_gray_knight|carries_goods(2),0,fac_commoners,soldier_personality,[(trp_caravan_guard,0,10)]),
+  ("female_mercenaries","Mercenaries",icon_gray_knight|carries_goods(2),0,fac_commoners,soldier_personality,[(trp_hunter_woman,0,2),(trp_fighter_woman,0,3),(trp_sword_sister,0,4)]),
+  ("male_mercenaries","Mercenaries",icon_gray_knight|carries_goods(2),0,fac_commoners,soldier_personality,[(trp_mercenary_crossbowman,0,2),(trp_mercenary_swordsman,0,3),(trp_mercenary_horseman,0,4)]),
 ]
