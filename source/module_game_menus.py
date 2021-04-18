@@ -6832,7 +6832,7 @@ TOTAL:  {reg5}"),
          (try_begin),
            (check_quest_active, "qst_join_siege_with_army"),
            (quest_slot_eq, "qst_join_siege_with_army", slot_quest_target_center, "$g_encountered_party"),
-           (add_xp_as_reward, 100),
+           (add_xp_as_reward, 200),
            (call_script, "script_end_quest", "qst_join_siege_with_army"),
            #Reactivating follow army quest
            (faction_get_slot, ":faction_marshall", "$players_kingdom", slot_faction_marshall),

@@ -20024,7 +20024,7 @@ scripts = [
 			(assign, ":quest_target_faction", ":relevant_faction"),
 
 			(assign ,":quest_expiration_days", 30),
-			(assign, ":quest_xp_reward", 1000),
+			(assign, ":quest_xp_reward", 1500),
 			(assign, ":quest_gold_reward", 1000),
 
 		#KINGDOM LORD QUESTS
@@ -20033,7 +20033,7 @@ scripts = [
 			(assign, ":quest_target_faction", ":relevant_faction"),
 	        (assign, ":quest_expiration_days", 30),
 	        (assign, ":quest_dont_give_again_period", 100),
-			(assign, ":quest_xp_reward", 1000),
+			(assign, ":quest_xp_reward", 1500),
 			(assign, ":quest_gold_reward", 1000),
 
 	    (else_try),
@@ -20496,7 +20496,7 @@ scripts = [
                 (assign, ":quest_importance", 1),
                 #SB : this seems extremely low for cost of surgery, give at least 50 gold
                 (store_mul, ":quest_xp_reward", ":max_surgery_level", 10), #slightly better
-                (store_add, ":quest_xp_reward", 100),
+                (store_add, ":quest_xp_reward", 500),
                 (assign, ":quest_gold_reward", ":quest_xp_reward"),
                 (store_random_in_range, ":random_period", 30, 80),
 	              (assign, ":quest_dont_give_again_period", ":random_period"),
@@ -20597,7 +20597,7 @@ scripts = [
 
 	            (assign, ":quest_target_center", ":cur_target_center"),
 	            (assign, ":quest_target_troop", ":cur_target_troop"),
-	            (assign, ":quest_xp_reward", 30),
+	            (assign, ":quest_xp_reward", 100),
 	            (assign, ":quest_gold_reward", 40),
 
               (store_random_in_range, ":random_period", 5, 15),
@@ -20798,7 +20798,7 @@ scripts = [
 	            (assign, ":quest_target_center", reg0),#quest_target_center will definitely be a valid center
 	            (assign, ":quest_target_troop", ":cur_target_troop"),
 	            (assign, ":quest_importance", 1),
-	            (assign, ":quest_xp_reward", 400),
+	            (assign, ":quest_xp_reward", 500),
 			      	(try_begin),
 					      (ge, ":player_level", 26),
 					      (store_sub, ":quest_xp_reward", 25, ":player_level"),
@@ -20947,7 +20947,7 @@ scripts = [
 	            (assign, ":quest_target_center", reg0),
 	            (assign, ":quest_importance", 1),
 	            (assign, ":quest_gold_reward", 0),
-	            (assign, ":quest_xp_reward", 400),
+	            (assign, ":quest_xp_reward", 500),
 	            (assign, ":result", ":quest_no"),
 	            (assign, ":quest_expiration_days", 50),
               (store_random_in_range, ":random_period", 10, 30),
@@ -21229,7 +21229,7 @@ scripts = [
 	            (assign, ":quest_target_center", reg0),#cur_target_center will definitely be a valid center
 	            (neq,":giver_center_no", ":quest_target_center"),#Skip current center
 
-	            (assign, ":quest_xp_reward", 30),
+	            (assign, ":quest_xp_reward", 100),
 	            (assign, ":quest_gold_reward", 40),
 	            (assign, ":result", ":quest_no"),
 	            (store_random_in_range, ":quest_target_amount", 6, 9),

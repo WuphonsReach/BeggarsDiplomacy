@@ -61,6 +61,7 @@ Only changes made on top of [Diplado develop](https://github.com/diegoami/Diplad
 - The town weaponsmith now sells a larger quantity of various weapons.  
 - The town stables now sell more horses.  This makes it easier to find the type / quality of horse that you want.
 - The minimum amount of renown per battle is now 1 (up from zero).  This makes it slightly easier to maintain a higher renown against the renown decay.
+- Various quests now reward more XP; at least 100xp for all, with some offering a few hundred more experience.
 
 ### Experiments
 
