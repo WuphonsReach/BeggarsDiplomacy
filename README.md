@@ -60,12 +60,14 @@ Only changes made on top of [Diplado develop](https://github.com/diegoami/Diplad
 - The town armorer now sells a larger quantity of body armor.  This makes it easier to find that chest piece that you wanted.  Being able to afford it is a different problem.
 - The town weaponsmith now sells a larger quantity of various weapons.  
 - The town stables now sell more horses.  This makes it easier to find the type / quality of horse that you want.
+- The minimum amount of renown per battle is now 1 (up from zero).  This makes it slightly easier to maintain a higher renown against the renown decay.
 
 ### Experiments
 
 - Increase the distance for bandits to join in on a battle.
 - Treaty lengths are now three times as long (60 days per level instead of 20 days).  This should result in a bit more stability in Caladria.
 - Lower the chance that lords will build fief improvements by factor of 10.  The goal is that lords will not have completely built out a fief before the player takes over.  There may be a need to experiment with how long improvements take to build.
+- Lords now wait at least 7 days (was 3 days) between courtship attempts.  This should result in a longer time before all of Caladria's eligible folks are married off.
 
 ### Balance (Towns)
 
@@ -101,6 +103,7 @@ Only changes made on top of [Diplado develop](https://github.com/diegoami/Diplad
 - Trivial quests (qst_deal_with_looters, qst_deal_with_night_bandits, qst_deliver_message_to_enemy_lord, etc.) are given less frequently as the player levels up.  The Diplomacy mod already had this concept, but it has been improved.
 - Lending your surgeon to another lord (qst_lend_surgeon) now adds another 100xp.
 - The quest for following and capturing the spy and master () has been improved.  It is no longer possible for you or your troops to kill the spy or the spy master during the battle (added tf_unkillable).  That makes it much easier to actually complete this quest.
+- Rejecting the quest to capture enemy troops (qst_capture_prisoners) no longer results in a -1 reputation hit.  It was one of the only quests where rejecting the quest from a lord lost you reputation with that lord.  It no longer hurts to ask.
 
 ### Balance (Parties)
 
