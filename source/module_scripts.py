@@ -29374,7 +29374,7 @@ scripts = [
       (assign, ":new_morale", "$g_player_party_morale_modifier_leadership"),
       (val_sub, ":new_morale", "$g_player_party_morale_modifier_party_size"),
 
-      (val_add, ":new_morale", 50),
+      (val_add, ":new_morale", 50), # the "base morale" value
 
       (assign, "$g_player_party_morale_modifier_food", 0),
       (try_for_range, ":cur_edible", food_begin, food_end),
