@@ -7524,17 +7524,17 @@ scripts = [
       (item_set_slot, "itm_dried_meat", slot_item_food_bonus, 5),
       (item_set_slot, "itm_cheese", slot_item_food_bonus, 5),
       (item_set_slot, "itm_sausages", slot_item_food_bonus, 5),
-      (item_set_slot, "itm_butter", slot_item_food_bonus, 4), #brought down from 8
+      (item_set_slot, "itm_butter", slot_item_food_bonus, 5), #brought down from 8
 
 	  #Fat sources - perishable
       (item_set_slot, "itm_chicken", slot_item_food_bonus, 8), #brought up from 7
-      (item_set_slot, "itm_cattle_meat", slot_item_food_bonus, 7), #brought down from 7
-      (item_set_slot, "itm_pork", slot_item_food_bonus, 6), #brought down from 6
+      (item_set_slot, "itm_cattle_meat", slot_item_food_bonus, 7),
+      (item_set_slot, "itm_pork", slot_item_food_bonus, 7),
 
 	  #Produce
-      (item_set_slot, "itm_raw_olives", slot_item_food_bonus, 1),
+      (item_set_slot, "itm_raw_olives", slot_item_food_bonus, 3),
       (item_set_slot, "itm_cabbages", slot_item_food_bonus, 2),
-      (item_set_slot, "itm_raw_grapes", slot_item_food_bonus, 3),
+      (item_set_slot, "itm_raw_grapes", slot_item_food_bonus, 4),
       (item_set_slot, "itm_apples", slot_item_food_bonus, 4), #brought down from 5
 
 	  #Sweet items
