@@ -1,4 +1,4 @@
-6286
+6287
 qstr_Breaking_camp... Breaking_camp...
 qstr_{!}{s3}_commander_of {!}{s3}_commander_of_party_#{reg4}_which_is_not_his_troop_leaded_party_{reg5}
 qstr_{!}_Commanded_party_ {!}_Commanded_party_#{reg4}_is_{s3},_troop_leaded_party_#{reg5}_is_{s65}
@@ -6285,3 +6285,4 @@ qstr_Target_amount_3:_{re Target_amount_3:_{reg0}
 qstr_realm realm
 qstr_{s9}_of_{s3}_asked_you_ {s9}_of_{s3}_asked_you_to_deliver_{reg5}_units_({reg6}_slots)_of_{s6}_to_the_tavern_in_{s4}_in_7_days.
 qstr_{!}DEBUG:_start_mult {!}DEBUG:_start_multipler_{reg10},_item_value_{reg11},_resulting_multiplier_{reg12}.
+qstr_^Buying_{s4}_here_fo ^Buying_{s4}_here_for_{reg7}_denars_and_selling_it_at_{s5}_would_bring_a_profit_of_{reg6}_denars_per_item.{s3}
