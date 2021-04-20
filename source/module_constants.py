@@ -1964,7 +1964,7 @@ arena_grand_prize = 250
 
 
 #Additions
-price_adjustment = 25 #the percent by which a trade at a center alters price
+price_adjustment = 25 #the percent by which a trade at a center alters price (based on 1000, so 25 = 2.5%)
 
 fire_duration = 4 #fires takes 4 hours
 
