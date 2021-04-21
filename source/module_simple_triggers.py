@@ -1307,7 +1307,7 @@ simple_triggers = [
 		(try_begin),
 			(eq, "$cheat_mode", 1),
 			(str_store_troop_name, s9, ":troop_no"),
-			(display_message, "@{!}DEBUG -- Doing political calculations for {s9}"),
+			#(display_message, "@{!}DEBUG -- Doing political calculations for {s9}"),
 		(try_end),
 
         #Tally the fiefs owned by the hero, and cache the value in slot.

@@ -15266,7 +15266,7 @@ presentations = [
           (try_begin),
             (eq, "$cheat_mode", 1),
             (assign, reg20, ":count"),
-            (display_message, "@{!}DEBUG - Drawing line {reg20}"),
+            #(display_message, "@{!}DEBUG - Drawing line {reg20}"),
           (try_end),
         (try_end),
 
