@@ -63,6 +63,9 @@ Only changes made on top of [Diplado develop](https://github.com/diegoami/Diplad
 - The minimum amount of renown per battle is now 1 (up from zero).  This makes it slightly easier to maintain a higher renown against the renown decay.
 - Various quests now reward more XP; at least 100xp for all, with some offering a few hundred more experience.
 - Farmers and peasant women can now carry daggers and throwing knives.
+- Small tweaks to food morale values.  In general, keep foods in the 3-5 range.  Let bread be 8 (as it was in Diplado).  Foods that expire are now all in the 7-8 point range.
+- The town market assessment screen will display the estimated "buy price" for the listed item in addition to the estimated profit amount.  This will make it easier to gauge the potential profit for hauling something to the far corners of Caladria.
+- The faction relations report now displays the game date in the lower-left corner.
 
 ### Experiments
 
@@ -70,6 +73,7 @@ Only changes made on top of [Diplado develop](https://github.com/diegoami/Diplad
 - Treaty lengths are now three times as long (60 days per level instead of 20 days).  This should result in a bit more stability in Caladria.
 - Lower the chance that lords will build fief improvements by factor of 10.  The goal is that lords will not have completely built out a fief before the player takes over.  There may be a need to experiment with how long improvements take to build.
 - Lords now wait at least 7 days (was 3 days) between courtship attempts.  This should result in a longer time before all of Caladria's eligible folks are married off.
+- Adjust the price adjustment as you buy/sell goods to the merchants.  The logic for this is complicated, so see commit 90c578f702b2934a5318c749eaeaa55ee3c9caea for details.  Instead of seeing 4-8% swings every time you purchase/sell one of the trade goods, it should now be down in the 1-3% range.
 
 ### Balance (Towns)
 
