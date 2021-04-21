@@ -90,6 +90,7 @@ Only changes made on top of [Diplado develop](https://github.com/diegoami/Diplad
 - Lower the chance that lords will build fief improvements by factor of 10.  The goal is that lords will not have completely built out a fief before the player takes over.  There may be a need to experiment with how long improvements take to build.
 - Lords now wait at least 7 days (was 3 days) between courtship attempts.  This should result in a longer time before all of Caladria's eligible folks are married off.
 - Adjust the price adjustment as you buy/sell goods to the merchants.  The logic for this is complicated, so see [commit 90c578f for details](https://github.com/WuphonsReach/BeggarsDiplomacy/commit/90c578f702b2934a5318c749eaeaa55ee3c9caea).  Instead of seeing 4-8% swings every time you purchase/sell one of the trade goods, it should now be down in the 1-3% range.
+- Trade good prices and production recipes [have been adjusted](https://docs.google.com/spreadsheets/d/1tbB3DSXtDWWl20p8xGkzv38AmT0rzJeDcC41eqZEPXU/edit?usp=sharing) to try and make player enterprises more rewarding and balanced.  In the base Diplomacy, many businesses would never give more than 100-150 denars/week in profits.  Note that some of these changes only take effect if you start a new game with the new values.  The other goal is to increase trade good prices so that they are worth hauling all over Caladria (but it might break the economy).
 
 ### Balance (Towns)
 
