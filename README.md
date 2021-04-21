@@ -99,7 +99,7 @@ Only changes made on top of [Diplado develop](https://github.com/diegoami/Diplad
 - Rescuing the kidnapped daughter of a town noble (qst_kidnapped_girl) gives +4 reputation (up from +2) as well as more gold (including a larger distance modifier).  It should now be worthwhile trudging to the far corners of Caladria in search of the girl.
 - Tracking down bandits near a town (qst_track_down_bandits) gives +5 reputation (up from +2) and also rewards 2500xp (up from 1000xp). 
 - Defeating troublesome bandits (qst_troublesome_bandits) now gives +5 reputation (up from +2) as well as a larger gold reward (about 1000g) based on player level. 
-- Escorting a merchant caravan to another town (qst_escort_merchant_caravan) gives +4 reputation (up from +1) as well as a more gold.  The gold reward now has a higher base value and also includes a distance-based reward.
+- Escorting a merchant caravan to another town (qst_escort_merchant_caravan) gives +4 reputation (up from +1) as well as a more gold.  The gold reward now has a higher base value and also includes a distance-based reward.  The XP reward is equivalent to the gold reward, plus another 300xp.
 - Delivering wine/food to another town's tavern (qst_deliver_wine) gives more gold both as a base amount, plus gold based on the distance to the other town.
 - Dealing with night bandits (qst_deal_with_night_bandits) now rewards you with 250 denars (was 150) and increases reputation by +2 (was +1).
 
