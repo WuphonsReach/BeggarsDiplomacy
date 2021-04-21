@@ -42548,7 +42548,7 @@ I suppose there are plenty of bounty hunters around to get the job done . . .", 
     (troop_remove_items, "trp_player", "itm_grain", ":quest_target_amount"),
     (add_xp_as_reward, 500),
     (call_script, "script_change_center_prosperity", "$current_town", 4),
-    (call_script, "script_change_player_relation_with_center", "$current_town", 7),
+    (call_script, "script_change_player_relation_with_center", "$current_town", 5),
     (call_script, "script_end_quest", "qst_deliver_grain"),
 #Troop commentaries begin
     (call_script, "script_add_log_entry", logent_helped_peasants, "trp_player",  "$current_town", -1, -1),
