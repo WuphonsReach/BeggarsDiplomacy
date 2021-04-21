@@ -73,7 +73,7 @@ Only changes made on top of [Diplado develop](https://github.com/diegoami/Diplad
 - Treaty lengths are now three times as long (60 days per level instead of 20 days).  This should result in a bit more stability in Caladria.
 - Lower the chance that lords will build fief improvements by factor of 10.  The goal is that lords will not have completely built out a fief before the player takes over.  There may be a need to experiment with how long improvements take to build.
 - Lords now wait at least 7 days (was 3 days) between courtship attempts.  This should result in a longer time before all of Caladria's eligible folks are married off.
-- Adjust the price adjustment as you buy/sell goods to the merchants.  The logic for this is complicated, so see commit 90c578f702b2934a5318c749eaeaa55ee3c9caea for details.  Instead of seeing 4-8% swings every time you purchase/sell one of the trade goods, it should now be down in the 1-3% range.
+- Adjust the price adjustment as you buy/sell goods to the merchants.  The logic for this is complicated, so see [commit 90c578f for details](https://github.com/WuphonsReach/BeggarsDiplomacy/commit/90c578f702b2934a5318c749eaeaa55ee3c9caea).  Instead of seeing 4-8% swings every time you purchase/sell one of the trade goods, it should now be down in the 1-3% range.
 
 ### Balance (Towns)
 
