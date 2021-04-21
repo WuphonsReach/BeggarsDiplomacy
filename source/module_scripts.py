@@ -43209,7 +43209,7 @@ scripts = [
        (eq, "$cheat_mode", 1),
        (assign, reg3, "$num_log_entries"),
        (assign, reg4, ":entry_type"),
-       (display_message, "@{!}Log entry {reg3}: type {reg4}"),
+       #(display_message, "@{!}Log entry {reg3}: type {reg4}"),
        (try_begin),
           (gt, ":center_object", 0),
 		  (neq, ":entry_type", logent_traveller_attacked),
@@ -54384,7 +54384,7 @@ scripts = [
 
 	(try_begin),
 		(eq, "$cheat_mode", 1),
-		(display_message, "@{!}DEBUG -- hardship index for {s4} = {reg0}"),
+		#(display_message, "@{!}DEBUG -- hardship index for {s4} = {reg0}"),
 	(try_end),
 	]),
 
