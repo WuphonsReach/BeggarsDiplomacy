@@ -13,6 +13,8 @@ The goal of BeggarsDiplomacy is to take the improvements from [Diplado develop](
     - [Installation](#installation)
     - [Using the mod](#using-the-mod)
   - [Changes](#changes)
+    - [DPLMC_GOLD_CHANGES_MEDIUM](#dplmc_gold_changes_medium)
+    - [DPLMC_GOLD_CHANGES_HIGH](#dplmc_gold_changes_high)
     - [Miscellaneous](#miscellaneous)
     - [Experiments](#experiments)
     - [Balance (Towns)](#balance-towns)
@@ -49,6 +51,15 @@ Alternately, you can locate the "last_module_warband" file (under ~/.mbwarband u
 Since this work is based on top of [DIPLADO](https://github.com/diegoami/Diplado/tree/develop) it includes all the fixes listed in the [Diplado README](https://github.com/diegoami/Diplado/tree/develop/README.md).
 
 Only changes made on top of [Diplado develop](https://github.com/diegoami/Diplado/tree/develop) are mentioned here.
+
+### DPLMC_GOLD_CHANGES_MEDIUM
+
+- Player must have +2 relations with the town's liege before purchasing land for a business.
+
+### DPLMC_GOLD_CHANGES_HIGH
+
+- Player must have higher relations with the town's liege before purchasing land for a business.  Good-natured lords require +1, upstanding lords require +3, all other lords require +5.  This was done because the enterprises now reward more gold per week, so there needs to be a bit more work before you can purchase a business.
+- Player must have +10 reputation with the town before purchasing a business.  This is reduced by 1/2 of the party's trade skill value.  Again, businesses are more profitable, so do more work.
 
 ### Miscellaneous
 

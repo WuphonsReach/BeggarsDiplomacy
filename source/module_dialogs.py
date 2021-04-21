@@ -40371,14 +40371,34 @@ I suppose there are plenty of bounty hunters around to get the job done . . .", 
 
   [anyone,"mayor_investment_possible",[
   (party_get_slot, ":town_liege", "$g_encountered_party", slot_town_lord),
-  ##diplomacy start+ Add support for ladies etc.
-  #(is_between, ":town_liege", active_npcs_begin, active_npcs_end),
+  (troop_get_slot, ":reputation", ":town_liege", slot_lord_reputation_type),
+  (str_store_troop_name, s4, ":town_liege"),
   (is_between, ":town_liege", heroes_begin, heroes_end),
-  ##diplomacy end+
   (call_script, "script_troop_get_relation_with_troop", "trp_player", ":town_liege"),
   (assign, ":relation", reg0),
-  (lt, ":relation", 0),
-  (str_store_troop_name, s4, ":town_liege"),
+  (assign, ":required_relation", 0),#need 0+ normally
+  (try_begin),
+	  (eq, "$g_dplmc_gold_changes", DPLMC_GOLD_CHANGES_MEDIUM),
+    (assign, ":required_relation", 2),
+  (else_try),
+	  (ge, "$g_dplmc_gold_changes", DPLMC_GOLD_CHANGES_HIGH),
+    (assign, ":required_relation", 5),
+    (try_begin),
+      (eq,  ":reputation", lrep_upstanding),
+      (assign, ":required_relation", 3),
+    (else_try),
+      (eq,  ":reputation", lrep_goodnatured),
+      (assign, ":required_relation", 1),
+    (try_end),
+  (try_end),
+  (val_clamp, ":required_relation", 0, 100),
+  (try_begin),
+    (eq, "$cheat_mode", 1),
+    (assign, reg10, ":relation"),
+    (assign, reg11, ":required_relation"),
+    (display_message, "@{!}DEBUG: Required relation with {s4} is {reg11}, current relation {reg10}."),
+  (try_end),
+  (lt, ":relation", ":required_relation"),
   ], "Well... Given your relationship with our liege, {s4}, I think that you will not find many here who are brave enough to sell you any land.", "mayor_investment",[
   ]],
 
@@ -40386,18 +40406,31 @@ I suppose there are plenty of bounty hunters around to get the job done . . .", 
 
 
   [anyone,"mayor_investment_possible",[
-  ##diplomacy start+ Optional economic change, increase relation required
-  ##OLD:
-  #	(neg|party_slot_ge, "$current_town", slot_center_player_relation, 0),
-  ##NEW:
   (assign, ":required_relation", 0),#need 0+ normally
   (try_begin),
-	(ge, "$g_dplmc_gold_changes", DPLMC_GOLD_CHANGES_MEDIUM),
-	(neq, "$g_encountered_party", "$g_starting_town"),
-	(val_add, ":required_relation", 1),#need 1+ with economic changes on medium+
+	  (ge, "$g_dplmc_gold_changes", DPLMC_GOLD_CHANGES_MEDIUM),
+	  (neq, "$g_encountered_party", "$g_starting_town"),
+	  (assign, ":required_relation", 1),#need 1+ with economic changes on medium+
+  (try_end),
+  (try_begin),
+	  (ge, "$g_dplmc_gold_changes", DPLMC_GOLD_CHANGES_HIGH), # Require higher relation with the center, party trade skill reduces it
+	  (neq, "$g_encountered_party", "$g_starting_town"),
+	  (assign, ":required_relation", 10),
+    (call_script, "script_get_max_skill_of_player_party", "skl_trade"),
+    (assign, ":trade_skill", reg0),
+    (assign, ":relation_adjustment", reg0), # could be 0..14
+    (val_div, ":relation_adjustment", 2),
+    (val_sub, ":required_relation", ":relation_adjustment"),
+  (try_end),
+  (val_clamp, ":required_relation", 0, 100),
+  (try_begin),
+    (eq, "$cheat_mode", 1),
+    (assign, reg10, ":trade_skill"),
+    (assign, reg11, ":required_relation"),
+    (str_store_party_name, s4, "$current_town"),
+    (display_message, "@{!}DEBUG: Required relation with {s4} is {reg11}, using party trade skill {reg10}."),
   (try_end),
   (neg|party_slot_ge, "$current_town", slot_center_player_relation, ":required_relation"),
-  ##diplomacy end+
   ], "Well... To be honest, I think that we in the guild would like to know you a little better. We can be very particular about outsiders coming in here and buying land.", "mayor_pretalk",[
   ]],
 
