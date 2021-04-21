@@ -15189,6 +15189,13 @@ presentations = [
         (position_set_y, pos1, 1500),
     (overlay_set_size, reg1, pos1),
 
+        (store_current_hours, ":hours"),
+        (call_script, "script_game_get_date_text", 0, ":hours"),
+        (create_text_overlay, reg1, s1, tf_left_align),
+        (position_set_x, pos1, 60), # Higher, means more toward the right
+        (position_set_y, pos1, 50), # Higher, means more toward the top
+        (overlay_set_position, reg1, pos1),
+
     # Back to menu - graphical button
     (create_game_button_overlay, reg1, "@_Return to menu_"),
     (position_set_x, pos1, 500),
