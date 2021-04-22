@@ -96,14 +96,14 @@ Only changes made on top of [Diplado develop](https://github.com/diegoami/Diplad
 ### Balance (Towns)
 
 - The starting quest gives more reputation along the way as you complete the various steps.
-- Delivering cattle to another town (qst_move_cattle_herd) gives +4 reputation (up from +3), along with more base gold plus more based on the distance.  The number of cattle now ranges from 40-120 (down from 80-120) to make it more likely that you can use the Diplomacy "drag cattle" option.
+- Delivering cattle to another town (qst_move_cattle_herd) gives +4 reputation (up from +3), along with more base gold and more gold based on the distance.  The number of cattle now ranges from 40-120 (down from 80-120) to make it more likely that you can use the Diplomacy "drag cattle" option.
 - Rescuing the kidnapped daughter of a town noble (qst_kidnapped_girl) gives +4 reputation (up from +2) as well as more gold (including a larger distance modifier).  It should now be worthwhile trudging to the far corners of Caladria in search of the girl.
-- Tracking down bandits near a town (qst_track_down_bandits) gives +5 reputation (up from +2) and also rewards 2500xp (up from 1000xp). 
-- Defeating troublesome bandits (qst_troublesome_bandits) now gives +5 reputation (up from +2) as well as a larger gold reward (about 1000g) based on player level. 
+- Tracking down bandits near a town (qst_track_down_bandits) gives +5 reputation (up from +2) and also rewards 2500xp (up from 1000xp). The bandits often get killed by other parties and the player has to then wait ~48 hours for new bandits to spawn.  The quest logic also fails to deal properly with aggro'ing multiple bandit parties into a single battle.  It might be better to redesign the quest to drive off the count of enemies defeated or something.
+- Defeating troublesome bandits (qst_troublesome_bandits) now gives +5 reputation (up from +2) as well as a larger gold reward (about 1000g) based on player level. These bandits tend to wander.
 - Escorting a merchant caravan to another town (qst_escort_merchant_caravan) gives +4 reputation (up from +1) as well as a more gold.  The gold reward now has a higher base value and also includes a distance-based reward.  The XP reward is equivalent to the gold reward, plus another 300xp.
-- Delivering wine/food to another town's tavern (qst_deliver_wine) gives more gold both as a base amount, plus gold based on the distance to the other town.
+- Delivering wine/food to another town's tavern (qst_deliver_wine) gives more gold both as a base amount, plus gold based on the distance to the other town.  Experience is reduced if you fail (tavernkeeper_deliver_wine_incomplete).  You will get 2x the gold reward in XP for completion of the quest.
 - Dealing with night bandits (qst_deal_with_night_bandits) now rewards you with 250 denars (was 150) and increases reputation by +2 (was +1).
-- The quest for destroying the bandit lair will no longer only be given by the lord of the closest town.  Instead, the distance calculation is fuzzed a bit so that sometimes the 2nd or 3rd closest town will "win" and that lord can offer the quest.
+- The quest for destroying the bandit lair will no longer only be given by the lord of the closest town.  Instead, the distance calculation is fuzzed a bit so that sometimes the 2nd or 3rd closest town will "win" and that lord can offer the quest.  This means that the lord will stop giving that quest as their only quest and also allow other lords to use it.  It can be gamed a bit because you can keep asking the lord over and over until it comes up as a quest option.
 
 ### Balance (Villages)
 
