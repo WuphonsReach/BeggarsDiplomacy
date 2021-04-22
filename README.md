@@ -103,6 +103,7 @@ Only changes made on top of [Diplado develop](https://github.com/diegoami/Diplad
 - Escorting a merchant caravan to another town (qst_escort_merchant_caravan) gives +4 reputation (up from +1) as well as a more gold.  The gold reward now has a higher base value and also includes a distance-based reward.  The XP reward is equivalent to the gold reward, plus another 300xp.
 - Delivering wine/food to another town's tavern (qst_deliver_wine) gives more gold both as a base amount, plus gold based on the distance to the other town.
 - Dealing with night bandits (qst_deal_with_night_bandits) now rewards you with 250 denars (was 150) and increases reputation by +2 (was +1).
+- The quest for destroying the bandit lair will no longer only be given by the lord of the closest town.  Instead, the distance calculation is fuzzed a bit so that sometimes the 2nd or 3rd closest town will "win" and that lord can offer the quest.
 
 ### Balance (Villages)
 
