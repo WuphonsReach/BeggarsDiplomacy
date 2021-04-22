@@ -82,6 +82,7 @@ Only changes made on top of [Diplado develop](https://github.com/diegoami/Diplad
 - Small tweaks to food morale values.  In general, keep foods in the 3-5 range.  Let bread be 8 (as it was in Diplado).  Foods that expire are now all in the 7-8 point range.
 - The town market assessment screen will display the estimated "buy price" for the listed item in addition to the estimated profit amount.  This will make it easier to gauge the potential profit for hauling something to the far corners of Caladria.
 - The faction relations report now displays the game date in the lower-left corner.
+- Increase the map zoom distance so you can see more of Caladria.  Going past 260 or so for map_max_distance causes the map valleys to vanish at maximum zoom.  The value of 300 was definitely too much.
 
 ### Experiments
 
