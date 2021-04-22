@@ -21656,6 +21656,7 @@ scripts = [
 
 			(try_for_range, ":town_no", towns_begin, towns_end),
 				(store_distance_to_party_from_party, ":distance", ":bandit_lair", ":town_no"),
+        #TODO: randomize the distance by +/-20% or so, lair distances are usually in the 100-300 range
 				(lt, ":distance", ":score_to_beat"),
 				(assign, ":closest_town", ":town_no"),
 				(assign, ":score_to_beat", ":distance"),
@@ -21666,6 +21667,12 @@ scripts = [
 			#(str_store_troop_name, s8, ":closest_town_lord"),
 
 			(party_slot_eq, ":closest_town", slot_town_lord, ":giver_troop"),
+      (try_begin),
+        (eq, "$cheat_mode", 1),
+        (assign, reg10, ":distance"),
+        (str_store_party_name, s4, ":closest_town"),
+        (display_message, "@{!}DEBUG: Lair distance from {s4} is {reg10}."),
+      (try_end),
 			(assign, ":lair_found", ":bandit_lair"),
 		(try_end),
 
