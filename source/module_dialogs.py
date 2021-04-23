@@ -40381,13 +40381,13 @@ I suppose there are plenty of bounty hunters around to get the job done . . .", 
     (assign, ":required_relation", 2),
   (else_try),
 	  (ge, "$g_dplmc_gold_changes", DPLMC_GOLD_CHANGES_HIGH),
-    (assign, ":required_relation", 5),
+    (assign, ":required_relation", 10),
     (try_begin),
       (eq,  ":reputation", lrep_upstanding),
-      (assign, ":required_relation", 3),
+      (assign, ":required_relation", 6),
     (else_try),
       (eq,  ":reputation", lrep_goodnatured),
-      (assign, ":required_relation", 1),
+      (assign, ":required_relation", 3),
     (try_end),
   (try_end),
   (val_clamp, ":required_relation", 0, 100),
@@ -40400,6 +40400,8 @@ I suppose there are plenty of bounty hunters around to get the job done . . .", 
   (lt, ":relation", ":required_relation"),
   ], "Well... Given your relationship with our liege, {s4}, I think that you will not find many here who are brave enough to sell you any land.", "mayor_investment",[
   ]],
+
+  ## TODO: Add a version of mayor_investment_possible that looks at the relations with the king (require +3 or +5)
 
   [anyone|auto_proceed,"mayor_investment",[], "{!}.", "mayor_pretalk",[]],
 
@@ -40414,7 +40416,7 @@ I suppose there are plenty of bounty hunters around to get the job done . . .", 
   (try_begin),
 	  (ge, "$g_dplmc_gold_changes", DPLMC_GOLD_CHANGES_HIGH), # Require higher relation with the center, party trade skill reduces it
 	  (neq, "$g_encountered_party", "$g_starting_town"),
-	  (assign, ":required_relation", 10),
+	  (assign, ":required_relation", 15),
     (call_script, "script_get_max_skill_of_player_party", "skl_trade"),
     (assign, ":trade_skill", reg0),
     (assign, ":relation_adjustment", reg0), # could be 0..14
