@@ -83,6 +83,7 @@ Only changes made on top of [Diplado develop](https://github.com/diegoami/Diplad
 - The town market assessment screen will display the estimated "buy price" for the listed item in addition to the estimated profit amount.  This will make it easier to gauge the potential profit for hauling something to the far corners of Caladria.
 - The faction relations report now displays the game date in the lower-left corner.
 - Increase the map zoom distance so you can see more of Caladria.  Going past 260 or so for map_max_distance causes the map valleys to vanish at maximum zoom.  The value of 300 was definitely too much.
+- The base rent for villages/castles/towns is now raised slightly to 1200/1800/3000 (was 1200/1200/2400).
 
 ### Experiments
 
