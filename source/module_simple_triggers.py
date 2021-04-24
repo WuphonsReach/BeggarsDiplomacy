@@ -5121,13 +5121,13 @@ simple_triggers = [
       (item_set_slot, "itm_ale", slot_item_food_bonus, 4),
    ]),
   
-  # randomly give small amounts of gold to village elders based on prosperity
+  # randomly give small amounts of gold to village elders based on prosperity, they eventually turn this into prosperity
   (24,
    [
     (ge, "$g_dplmc_gold_changes", DPLMC_GOLD_CHANGES_LOW),
-    (try_for_range, ":village", villages_begin, villages_end),
-      (party_get_slot, ":prosperity", ":village", slot_town_prosperity),
-      (party_get_slot, ":merchant_troop", ":village", slot_town_elder),
+    (try_for_range, ":center_no", villages_begin, villages_end),
+      (party_get_slot, ":prosperity", ":center_no", slot_town_prosperity),
+      (party_get_slot, ":elder", ":center_no", slot_town_elder),
       (try_begin),
         (store_random_in_range, ":random", 0, 100),
         (lt, ":random", 10), # percent chance to add gold to village elder per day
@@ -5135,13 +5135,43 @@ simple_triggers = [
         (val_clamp, ":prosperity", 5, 30),
         (store_random_in_range, ":gold", 0, ":prosperity"),
         (val_add, ":gold", 5),
-        (troop_add_gold, ":merchant_troop", ":gold"),
+        (troop_add_gold, ":elder", ":gold"),
+        (try_begin),
+          (eq, "$cheat_mode", DPLMC_DEBUG_ECONOMY),
+          (str_store_party_name, s11, ":center_no"),
+          (assign, reg4, ":gold"),
+          (display_message, "@{!}Elder in {s11} was given {reg4} denars."),
+        (try_end),
       (try_end),
     (try_end),
    ]),
-  
-  (24,
-   []),
+
+  # walled centers get a bit of random wealth if they are under a value so that they can hire reinforcements
+  # goal is to simulate townspeople manning the walls after a defeat and not have zero-levels of troops for too long
+  (6,
+   [
+    (ge, "$g_dplmc_gold_changes", DPLMC_GOLD_CHANGES_MEDIUM),
+    (try_for_range, ":center_no", walled_centers_begin, walled_centers_end),
+      (party_get_slot, ":cur_wealth", ":center_no", slot_town_wealth),
+      (try_begin),
+        (store_random_in_range, ":random", 0, 100),
+        (lt, ":random", 10), # percent chance
+        (lt, ":cur_wealth", 300),
+        (store_random_in_range, ":gold", 0, 50),
+        (val_add, ":gold", 25),
+        (val_add, ":cur_wealth", ":gold"),
+        (party_set_slot, ":center_no", slot_town_wealth, ":cur_wealth"),
+        (try_begin),
+          (eq, "$cheat_mode", DPLMC_DEBUG_ECONOMY),
+          (str_store_party_name, s11, ":center_no"),
+          (assign, reg4, ":gold"),
+          (assign, reg5, ":cur_wealth"),
+          (display_message, "@{!}Center {s11} was given {reg4} denars for a total wealth of {reg5}."),
+        (try_end),
+      (try_end),
+    (try_end),
+   ]),
+
   (24,
    []),
   (24,
