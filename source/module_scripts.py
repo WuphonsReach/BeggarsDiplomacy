@@ -26410,7 +26410,7 @@ scripts = [
           #So if there is already a battle inside the center, do not sortie and search enemy outside.
           (party_get_battle_opponent, ":center_battle_opponent", ":center_no"),
           (try_begin),
-		        (ge, "$cheat_mode", DPLMC_DEBUG_MIN),
+		        (eq, "$cheat_mode", DPLMC_DEBUG_MILITARY),
             (ge, ":center_battle_opponent", 0),
             (str_store_party_name, s7, ":center_no"),
             (str_store_party_name, s6, ":center_battle_opponent"),
@@ -47285,8 +47285,8 @@ scripts = [
 		(try_begin),
 			(ge, "$cheat_mode", DPLMC_DEBUG_MIN),
 			(neg|is_between, ":winner_faction", kingdoms_begin, kingdoms_end),
-			(str_store_string, s65, "str_bandits_attacked_a_party_on_the_roads_so_a_bounty_is_probably_available"),
-			(call_script, "script_add_notification_menu", "mnu_debug_alert_from_s65", 0, 0),
+			#(str_store_string, s65, "str_bandits_attacked_a_party_on_the_roads_so_a_bounty_is_probably_available"),
+			#(call_script, "script_add_notification_menu", "mnu_debug_alert_from_s65", 0, 0),
 
 			(str_store_party_name, s15, ":origin"),
 			(str_store_party_name, s16, ":destination"),
@@ -48341,7 +48341,7 @@ scripts = [
 			(neg|check_quest_active, "qst_rebel_against_kingdom"),
 
 		(try_begin),
-			(ge, "$cheat_mode", DPLMC_DEBUG_MIN),
+			(eq, "$cheat_mode", DPLMC_DEBUG_POLITICS),
 			(str_store_faction_name, s15, ":faction_no"),
 			(display_message, "str_checking_lord_reactions_in_s15"),
 		(try_end),
@@ -49360,7 +49360,7 @@ scripts = [
 		(call_script, "script_add_log_entry", logent_lady_favors_suitor, ":lady", 0, ":suitor", 0),
 
 		(try_begin),
-			(ge, "$cheat_mode", DPLMC_DEBUG_MIN),
+			(eq, "$cheat_mode", DPLMC_DEBUG_POLITICS),
 			(display_message, "str_note__favor_event_logged"),
 		(try_end),
 
@@ -55102,7 +55102,7 @@ scripts = [
 			(val_mul, ":score_to_beat", 2),
 
 			(try_begin),
-				(ge, "$cheat_mode", DPLMC_DEBUG_MIN),
+				(eq, "$cheat_mode", DPLMC_DEBUG_POLITICS),
 				(assign, reg3, ":score_to_beat"),
 				(display_message, "@{!}Two-thirds average_renown = {reg3}"),
 			(try_end),
@@ -55191,7 +55191,7 @@ scripts = [
 
 
 				(try_begin),
-					(ge, "$cheat_mode", DPLMC_DEBUG_MIN),
+					(eq, "$cheat_mode", DPLMC_DEBUG_POLITICS),
 					(str_store_troop_name, s10, ":active_npc"),
 					(assign, reg3, ":renown_divided_by_center_points"),
 					(display_message, "@{!}DEBUG -- Colleague test: score for {s10} = {reg3}"),
@@ -55282,7 +55282,7 @@ scripts = [
 				(gt, ":renown_divided_by_center_points", ":score_to_beat"),
 
 				(try_begin),
-					(ge, "$cheat_mode", DPLMC_DEBUG_MIN),
+					(eq, "$cheat_mode", DPLMC_DEBUG_POLITICS),
 					(str_store_string, s10, ":active_npc"),
 					(assign, reg3, ":renown_divided_by_center_points"),
 					(display_message, "@{!}DEBUG -- Open test: score for {s10} = {reg3}"),
@@ -65295,7 +65295,7 @@ scripts = [
 		(assign, ":is_eligible", 1),
 	(else_try),
 		#Cheat mode: add faction leaders to test this out
-		(ge, "$cheat_mode", DPLMC_CHEAT_YES),
+		(eq, "$cheat_mode", DPLMC_DEBUG_MILITARY),
 		(is_between, ":faction_no", kingdoms_begin, kingdoms_end),
 		(faction_slot_eq, ":faction_no", slot_faction_leader, ":troop_no"),
 		(assign, ":is_eligible", 1),

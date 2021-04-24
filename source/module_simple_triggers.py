@@ -4838,7 +4838,7 @@ simple_triggers = [
 
 (1,
    [
-     (ge, "$cheat_mode", DPLMC_DEBUG_MIN),
+     (eq, "$cheat_mode", DPLMC_DEBUG_MILITARY),
      (try_for_range, ":center_no", centers_begin, centers_end),
        (party_get_battle_opponent, ":besieger_party", ":center_no"),
        (try_begin),
