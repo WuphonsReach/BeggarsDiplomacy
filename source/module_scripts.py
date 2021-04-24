@@ -3704,7 +3704,7 @@ scripts = [
                   (call_script, "script_cf_prisoner_offered_parole", ":cur_troop_id", ":leader_troop_id"),
 
                   (try_begin),
-                    (ge, "$cheat_mode", DPLMC_DEBUG_MIN),
+                    (eq, "$cheat_mode", DPLMC_DEBUG_MILITARY),
                     (display_message, "@{!}DEBUG : Prisoner granted parole"),
                   (try_end),
 
@@ -3712,7 +3712,7 @@ scripts = [
                   (val_add, "$total_battle_enemy_changes", 3),
                 (else_try),
                   (try_begin),
-                    (ge, "$cheat_mode", DPLMC_DEBUG_MIN),
+                    (eq, "$cheat_mode", DPLMC_DEBUG_MILITARY),
                     (display_message, "@{!}DEBUG : Prisoner not offered parole"),
                   (try_end),
                   (call_script, "script_troop_change_relation_with_troop", ":leader_troop_id", ":cur_troop_id", -5),
@@ -4202,7 +4202,7 @@ scripts = [
           (try_end),
           (eq, ":continue", 1),
           (try_begin),
-            (ge, "$cheat_mode", DPLMC_DEBUG_MIN),
+            (eq, "$cheat_mode", DPLMC_DEBUG_MILITARY),
             (str_store_troop_name, s1, ":cur_troop"),
             (display_message, "@{!}DEBUG: {s1} is no longer a prisoner."),
           (try_end),
@@ -4214,7 +4214,7 @@ scripts = [
             (troop_set_slot, ":cur_troop", slot_troop_prisoner_of_party, "p_main_party"),
             (assign, ":continue", 0),
             (try_begin),
-              (ge, "$cheat_mode", DPLMC_DEBUG_MIN),
+              (eq, "$cheat_mode", DPLMC_DEBUG_MILITARY),
               (str_store_troop_name, s1, ":cur_troop"),
               (display_message, "@{!}DEBUG: {s1} is now a prisoner of player."),
             (try_end),
@@ -4245,7 +4245,7 @@ scripts = [
 			  (display_message, "@{s1} is now a prisoner of {s2}."),
 			(else_try),
 			##diplomacy end+
-              (ge, "$cheat_mode", DPLMC_DEBUG_MIN),
+              (eq, "$cheat_mode", DPLMC_DEBUG_MILITARY),
               (str_store_troop_name, s1, ":cur_troop"),
               (str_store_party_name, s2, ":cur_prisoner_of_party_2"),
               (display_message, "@{!}DEBUG: {s1} is now a prisoner of {s2}."),
@@ -4266,7 +4266,7 @@ scripts = [
 			  (display_message, "@{s1} is now a prisoner of {s2}."),
 			(else_try),
 			##diplomacy end+
-              (ge, "$cheat_mode", DPLMC_DEBUG_MIN),
+              (eq, "$cheat_mode", DPLMC_DEBUG_MILITARY),
               (str_store_troop_name, s1, ":cur_troop"),
               (str_store_party_name, s2, ":cur_prisoner_of_party_2"),
               (display_message, "@{!}DEBUG: {s1} is now a prisoner of {s2}."),
@@ -26420,7 +26420,7 @@ scripts = [
           #New added by ozan ended.
 
           (try_begin),
-            (ge, "$cheat_mode", DPLMC_DEBUG_MIN),
+            (eq, "$cheat_mode", DPLMC_DEBUG_MILITARY),
             (str_store_party_name, s4, ":center_no"),
             (assign, reg3, ":sortie_strength"),
             (assign, reg4, ":enemy_strength"),
@@ -26445,7 +26445,7 @@ scripts = [
             (call_script, "script_party_set_ai_state", ":sortie_party",  spai_patrolling_around_center, ":center_no"),
 
             (try_begin),
-              (ge, "$cheat_mode", DPLMC_DEBUG_MIN),
+              (eq, "$cheat_mode", DPLMC_DEBUG_MILITARY),
               (str_store_party_name, s4, ":sortie_party"),
               (display_message, "str_s4_sorties"),
             (try_end),
@@ -26456,7 +26456,7 @@ scripts = [
 
           (try_begin),
             (party_is_in_town, "p_main_party", ":center_no"),
-			(eq, "$g_player_is_captive", 0),
+			      (eq, "$g_player_is_captive", 0),
             (gt, ":at_least_one_party_sorties", 0),
             (call_script, "script_add_notification_menu", "mnu_notification_sortie_possible", ":center_no", ":sortie_party"),
           (try_end),
@@ -26491,7 +26491,7 @@ scripts = [
 		  (assign, ":has_messenger", 1),
 		(try_end),
 
-		(this_or_next|eq, "$cheat_mode", 1),
+		(this_or_next|ge, "$cheat_mode", DPLMC_DEBUG_MIN),
 		(this_or_next|lt, ":dist", 30),
 			(eq, ":has_messenger", 1),
 
