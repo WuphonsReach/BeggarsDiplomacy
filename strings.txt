@@ -1,5 +1,5 @@
 stringsfile version 1
-3838
+3839
 str_no_string NO_STRING!
 str_empty_string _
 str_yes Yes.
@@ -3796,6 +3796,7 @@ str_dplmc_cheat_setting_debug Debug
 str_dplmc_cheat_setting_debug_economy Debug_Economy
 str_dplmc_cheat_setting_debug_military Debug_Military
 str_dplmc_cheat_setting_debug_politics Debug_Politics
+str_dplmc_cheat_setting_debug_experimental Debug_Experiments
 str_skl_trade Trade
 str_skl_leadership Leadership
 str_skl_prisoner_management Prisoner_Management

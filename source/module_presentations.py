@@ -18806,6 +18806,7 @@ presentations = [
 					(overlay_set_position, reg0, pos2),
 					(overlay_set_size, reg0, pos5),
           # add items in reverse order to what you want displayed
+          (overlay_add_item, reg0, "str_dplmc_cheat_setting_debug_experimental"),
           (overlay_add_item, reg0, "str_dplmc_cheat_setting_debug_politics"),
 					(overlay_add_item, reg0, "str_dplmc_cheat_setting_debug_military"),
 					(overlay_add_item, reg0, "str_dplmc_cheat_setting_debug_economy"),
