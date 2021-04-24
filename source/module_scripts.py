@@ -16722,7 +16722,8 @@ scripts = [
 		#now we have the final value of origin_tariffs_generated
 		(val_add, ":origin_accumulated_tariffs", ":origin_tariffs_generated"),
 		(party_set_slot, ":origin", slot_center_accumulated_tariffs, ":origin_accumulated_tariffs"),
-		#print economic debug message if enabled
+	
+  	#print economic debug message if enabled
 		(eq, "$cheat_mode", DPLMC_DEBUG_ECONOMY),
 		(assign, reg4, ":origin_tariffs_generated"),
 		(str_store_party_name, s4, ":origin"),
@@ -16746,11 +16747,11 @@ scripts = [
 	  (val_add, ":accumulated_tariffs", ":tariffs_generated"),
 
 	  (try_begin),
-		(ge, "$cheat_mode", DPLMC_DEBUG_ECONOMY),
-		(assign, reg4, ":tariffs_generated"),
-		(str_store_party_name, s4, ":center_no"),
-		(assign, reg5, ":accumulated_tariffs"),
-		(display_message, "@{!}New tariffs at {s4} = {reg4}, total = {reg5}"),
+		  (eq, "$cheat_mode", DPLMC_DEBUG_ECONOMY),
+	  	(assign, reg4, ":tariffs_generated"),
+	  	(str_store_party_name, s4, ":center_no"),
+	  	(assign, reg5, ":accumulated_tariffs"),
+	  	(display_message, "@{!}New tariffs at {s4} = {reg4}, total = {reg5}"),
 	  (try_end),
 
       (party_set_slot, ":center_no", slot_center_accumulated_tariffs, ":accumulated_tariffs"),
