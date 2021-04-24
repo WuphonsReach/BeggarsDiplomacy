@@ -22848,7 +22848,7 @@ scripts = [
             (assign, ":join_distance", 5), #day/not bandit
             (try_begin),
               (is_currently_night),
-              (assign, ":join_distance", 3), #nigh/not bandit
+              (assign, ":join_distance", 3), #night/not bandit
             (try_end),
           (else_try),
             (assign, ":join_distance", 4), #day/bandit
@@ -22870,7 +22870,9 @@ scripts = [
             (val_sub, ":join_distance", 1), #day/bandit, value of 3
             (val_sub, ":join_distance", ":join_sub"), #can reduce it down to 1 on easy mode
             (is_currently_night), #night/bandit
-            (val_add, ":join_distance", 2), #less sharp penalty, value of 2
+            (store_random_in_range, ":join_add", 0, 2),
+            (val_add, ":join_distance", ":join_add"),
+            (val_add, ":join_distance", 1), # ends up adding 1..3
           (try_end),
           #booster to patrols etc. that makes up for new base of 4
           (try_begin),
