@@ -26584,7 +26584,7 @@ scripts = [
          (call_script, "script_party_set_ai_state", ":party_no", spai_engaging_army, ":commander_object"), #go and help commander
 
          (try_begin),
-           (ge, "$cheat_mode", DPLMC_DEBUG_MIN),
+           (eq, "$cheat_mode", DPLMC_DEBUG_MILITARY),
            (str_store_party_name, s7, ":party_no"),
            (str_store_party_name, s6, ":commander_object"),
            (display_message, "@{!}DEBUG : {s7} is helping his commander by fighting with {s6}."),
@@ -26608,12 +26608,12 @@ scripts = [
 
          (call_script, "script_party_set_ai_state", ":party_no", spai_engaging_army, ":besieged_center"), #go and help commander
 
-         #(try_begin),
-         #  (eq, "$cheat_mode", 1),
-         #  (str_store_party_name, s7, ":party_no"),
-         #  (str_store_party_name, s6, ":besieged_center"),
-         #  (display_message, "@{!}DEBUG : {s7} is helping his commander by attacking {s6}."),
-         #(try_end),
+         (try_begin),
+           (eq, "$cheat_mode", DPLMC_DEBUG_MILITARY),
+           (str_store_party_name, s7, ":party_no"),
+           (str_store_party_name, s6, ":besieged_center"),
+           (display_message, "@{!}DEBUG : {s7} is helping his commander by attacking {s6}."),
+         (try_end),
 
          #(party_set_ai_behavior, ":party_no", ai_bhvr_attack_party),
          #(party_set_ai_object, ":party_no", ":besieged_center"),
@@ -37109,13 +37109,14 @@ scripts = [
         (party_set_slot, ":center_no", ":cur_good_price_slot", ":cur_center_price"),
 
 		(try_begin),
+      (eq, -1, 1), # disabled this results in a lot of message spam
 			(eq, "$cheat_mode", DPLMC_DEBUG_ECONOMY),
 			(str_store_party_name, s3, ":origin"),
 			(str_store_party_name, s4, ":center_no"),
 			(str_store_item_name, s5, ":cur_good"),
 			(assign, reg4, ":initial_price"),
-			(assign, reg5, ":cur_center_price"),
-			(display_log_message, "@{!}DEBUG -- Trade of {s5} from {s3} to {s4} brings price from {reg4} to {reg5}"),
+			(assign, reg5, ":cur_center_price"),      
+			#(display_log_message, "@{!}DEBUG -- Trade of {s5} from {s3} to {s4} brings price from {reg4} to {reg5}"),
 		(try_end),
 
       (try_end),
