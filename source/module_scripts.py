@@ -30401,7 +30401,7 @@ scripts = [
           (val_sub, ":barrier", 1),
 
           (try_begin), #debug
-            (ge, "$cheat_mode", DPLMC_DEBUG_POLITICS),
+            (eq, "$cheat_mode", DPLMC_DEBUG_POLITICS),
             (str_store_faction_name, s5, ":cur_kingdom"),
             (str_store_faction_name, s6, ":third_kingdom"),
             (str_store_faction_name, s7, ":cur_kingdom_2"),
