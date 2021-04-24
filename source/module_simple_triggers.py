@@ -5112,8 +5112,26 @@ simple_triggers = [
       (item_set_slot, "itm_wine", slot_item_food_bonus, 5),
       (item_set_slot, "itm_ale", slot_item_food_bonus, 4),
    ]),
+  
+  # randomly give small amounts of gold to village elders based on prosperity
   (24,
-   []),
+   [
+    (ge, "$g_dplmc_gold_changes", DPLMC_GOLD_CHANGES_LOW),
+    (try_for_range, ":village", villages_begin, villages_end),
+      (party_get_slot, ":prosperity", ":village", slot_town_prosperity),
+      (party_get_slot, ":merchant_troop", ":village", slot_town_elder),
+      (try_begin),
+        (store_random_in_range, ":random", 0, 100),
+        (lt, ":random", 10), # percent chance to add gold to village elder per day
+        (val_div, ":prosperity", 3),
+        (val_clamp, ":prosperity", 5, 30),
+        (store_random_in_range, ":gold", 0, ":prosperity"),
+        (val_add, ":gold", 5),
+        (troop_add_gold, ":merchant_troop", ":gold"),
+      (try_end),
+    (try_end),
+   ]),
+  
   (24,
    []),
   (24,
