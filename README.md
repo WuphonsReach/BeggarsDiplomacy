@@ -109,6 +109,7 @@ Only changes made on top of [Diplado develop](https://github.com/diegoami/Diplad
 - Delivering wine/food to another town's tavern (qst_deliver_wine) gives more gold both as a base amount, plus gold based on the distance to the other town.  Experience is reduced if you fail (tavernkeeper_deliver_wine_incomplete).  You will get 2x the gold reward in XP for completion of the quest.
 - Dealing with night bandits (qst_deal_with_night_bandits) now rewards you with 250 denars (was 150) and increases reputation by +2 (was +1).
 - The quest for destroying the bandit lair will no longer only be given by the lord of the closest town.  Instead, the distance calculation is fuzzed a bit so that sometimes the 2nd or 3rd closest town will "win" and that lord can offer the quest.  This means that the lord will stop giving that quest as their only quest and also allow other lords to use it.  It can be gamed a bit because you can keep asking the lord over and over until it comes up as a quest option.
+- The party_set_bandit_attraction trigger also looks at the number of healthy units in the player's party when calculating the 0..100 score.
 
 ### Balance (Villages)
 
