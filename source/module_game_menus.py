@@ -3777,41 +3777,6 @@ TOTAL:  {reg5}"),
        ),
 	   ##nested diplomacy end+
 
-      ("cheat_faction_orders",[(neq,"$cheat_mode",0),
-      (try_begin),
-        (eq, "$cheat_mode", 1),
-        (str_store_string, s1, "@all"),
-      (else_try),
-        (eq, "$cheat_mode", 2),
-        (str_store_string, s1, "@troop"),
-      (else_try),
-        (eq, "$cheat_mode", 3),
-        (str_store_string, s1, "@economic"),
-      (else_try),
-        (eq, "$cheat_mode", 4),
-        (str_store_string, s1, "@political"),
-      (try_end),
-      ],
-      "{!}Debug messages to {s1}.",
-       [(val_add,"$cheat_mode",1),
-        (val_mod, "$cheat_mode", 5),
-         (jump_to_menu, "mnu_camp_cheat"),
-        ]
-       ),
-      # ("cheat_faction_orders",[
-	  # (ge, "$cheat_mode", 1),
-	  # (neq,"$cheat_mode",3)],"{!}Cheat: Set Debug messages to Econ Only.",
-       # [(assign,"$cheat_mode",3),
-         # (jump_to_menu, "mnu_camp_cheat"),
-        # ]
-       # ),
-      # ("cheat_faction_orders",[
-	  # (ge, "$cheat_mode", 1),
-	  # (neq,"$cheat_mode",4)],"{!}Cheat: Set Debug messages to Political Only.",
-       # [(assign,"$cheat_mode",4),
-         # (jump_to_menu, "mnu_camp_cheat"),
-        # ]
-       # ),
       ("camp_cheat_heal",[],"Heal party.",
        [
          (heal_party, "p_main_party"),
