@@ -18468,7 +18468,7 @@ You certainly earned your reward. Here, take it, with my compliments.", "lord_ge
  (quest_get_slot, ":village", "qst_deal_with_bandits_at_lords_village", slot_quest_target_center),
  (str_store_party_name, s5, ":village"),
  (quest_get_slot, reg14, "qst_deal_with_bandits_at_lords_village", slot_quest_gold_reward),
- (call_script, "script_finish_quest", "qst_deal_with_bandits_at_lords_village"),
+ (call_script, "script_finish_quest", "qst_deal_with_bandits_at_lords_village", 100),
  ]],
 
 [anyone|plyr, "lord_deal_with_bandits_completed", [],
