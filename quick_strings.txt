@@ -1,4 +1,4 @@
-6293
+6294
 qstr_Breaking_camp... Breaking_camp...
 qstr_{!}{s3}_commander_of {!}{s3}_commander_of_party_#{reg4}_which_is_not_his_troop_leaded_party_{reg5}
 qstr_{!}_Commanded_party_ {!}_Commanded_party_#{reg4}_is_{s3},_troop_leaded_party_#{reg5}_is_{s65}
@@ -6292,3 +6292,4 @@ qstr_{!}DEBUG:_Lair_dista {!}DEBUG:_Lair_distance_from_{s4}_is_{reg10}.
 qstr_{!}DEBUG_:_{s2}_is_be {!}DEBUG_:_{s2}_is_besieged_by_{s3}
 qstr_{!}Elder_in_{s11}_wa {!}Elder_in_{s11}_was_given_{reg4}_denars.
 qstr_{!}Center_{s11}_was_ {!}Center_{s11}_was_given_{reg4}_denars_for_a_total_wealth_of_{reg5}.
+qstr_{!}DEBUG_:_{s7}_is_he {!}DEBUG_:_{s7}_is_helping_his_commander_by_attacking_{s6}.

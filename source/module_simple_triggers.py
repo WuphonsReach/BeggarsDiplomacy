@@ -5156,9 +5156,9 @@ simple_triggers = [
       (try_begin),
         (store_random_in_range, ":random", 0, 100),
         (lt, ":random", 10), # percent chance
-        (lt, ":cur_wealth", 300),
-        (store_random_in_range, ":gold", 0, 50),
-        (val_add, ":gold", 25),
+        (lt, ":cur_wealth", 500),
+        (store_random_in_range, ":gold", 0, 100),
+        (val_add, ":gold", 100),
         (val_add, ":cur_wealth", ":gold"),
         (party_set_slot, ":center_no", slot_town_wealth, ":cur_wealth"),
         (try_begin),
