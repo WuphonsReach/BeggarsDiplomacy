@@ -10475,7 +10475,7 @@ TOTAL:  {reg5}"),
        (quest_slot_eq, "qst_eliminate_bandits_infesting_village", slot_quest_target_center, "$g_encountered_party"),
        (call_script, "script_end_quest", "qst_eliminate_bandits_infesting_village"),
        #Add quest reward
-       (call_script, "script_change_player_relation_with_center", "$g_encountered_party", 9),
+       (call_script, "script_change_player_relation_with_center", "$g_encountered_party", 7),
        #SB : back up elder inventory
        (call_script, "script_dplmc_copy_inventory", ":merchant_troop", "trp_temp_troop"),
        (assign, "$g_train_peasants_against_bandits_training_succeeded", 1),
@@ -10484,7 +10484,7 @@ TOTAL:  {reg5}"),
        (check_quest_active, "qst_deal_with_bandits_at_lords_village"),
        (quest_slot_eq, "qst_deal_with_bandits_at_lords_village", slot_quest_target_center, "$g_encountered_party"),
        (call_script, "script_succeed_quest", "qst_deal_with_bandits_at_lords_village"),
-       (call_script, "script_change_player_relation_with_center", "$g_encountered_party", 9),
+       (call_script, "script_change_player_relation_with_center", "$g_encountered_party", 7),
      (else_try),
      #Add normal reward
        (call_script, "script_change_player_relation_with_center", "$g_encountered_party", 4),
