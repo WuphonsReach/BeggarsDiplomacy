@@ -3099,8 +3099,8 @@ simple_triggers = [
      (try_end),
     ]),
 
-  # Consuming food at every 14 hours
-  (14,
+  # Consuming food at every N hours
+  (11,
    [
     (eq, "$g_player_is_captive", 0),
     (party_get_num_companion_stacks, ":num_stacks","p_main_party"),

@@ -142,6 +142,7 @@ Only changes made on top of [Diplado develop](https://github.com/diegoami/Diplad
 - Kingdom parties now add additional units (create_kingdom_party_if_below_limit) as the player levels up.  Early on, this will just be additional civilians, kingdom troops and caravan guards, but eventually includes male and female mercenaries.  Look for reinforcement_cg_count, reinforcement_civs_count, reinforcement_a_count, reinforcement_b_count, reinforcement_mm_count, and reinforcement_fm_count to see the values.  Overall, kingdom caravans are less of a pushover but rewards have also been increased.
 - The number of bandits in a bandit lair no longer increases after player level 45.  Given that the player can only bring up to six other party members into the lair, this makes things fairer at higher levels.  The number of bandits that spawn per wave is now 3-5 (instead of a flat 4).
 - Bandits will now join at a random distance if DPLMC_TERRAIN_ADVANTAGE_ENABLE is active.  Currently adds 1-2 points of extra range for them to join in on the fight.
+- Your party now consumes food every 11 hours (was every 14 hours).
 
 ### Bug Fixes
 
