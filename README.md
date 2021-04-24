@@ -88,6 +88,7 @@ Only changes made on top of [Diplado develop](https://github.com/diegoami/Diplad
 - Caravans have a 50% chance per 8 hour interval to decide not to leave. This will let them trickle out over time instead of seeing all the caravans leave at the same instant.
 - Randomize the caravan destination decision (cf_select_most_profitable_town_at_peace_with_faction_in_trade_route) by adding a random 0-30% bonus score to each destination's score. This should help spread the caravans out across the 2nd/3rd best destinations if the 1st/2nd/3rd choices all score similarly.  TODO: Examine whether the proper value is 10%/20%/30%.
 - The village menu option of demand to meet family of the fugitive (qst_hunt_down_fugitive) does a better job of rolling against persuasion instead of jumping straight to murdering villagers.
+- There is a gold penalty for being captured (10-20% of your purse).  Captors no longer overlook the gold in your pockets.
 
 ### Experiments
 

@@ -41093,9 +41093,16 @@ scripts = [
           (eq, ":quest_target_faction", ":capturer_faction"),
           (call_script, "script_fail_quest", "qst_raid_caravan_to_start_war"),
         (try_end),
+        # Remove some gold from player (12-25%, max of 30k)
+        (store_troop_gold, ":player_gold", "trp_player"),
+        (val_div, ":player_gold", 8), # calculate 12.5%
+        (val_clamp, ":player_gold", 0, 15000),
+        (store_random_in_range, ":penalty", 0, ":player_gold"),
+        (val_add, ":penalty", ":player_gold"),
+        (troop_remove_gold, "trp_player", ":penalty"),
         #Removing followers of the player
         (try_for_range, ":troop_no", active_npcs_begin, active_npcs_end),
-		  (troop_slot_eq, ":troop_no", slot_troop_occupation, slto_kingdom_hero),
+		      (troop_slot_eq, ":troop_no", slot_troop_occupation, slto_kingdom_hero),
           (troop_get_slot, ":party_no", ":troop_no", slot_troop_leaded_party),
           (gt, ":party_no", 0),
           (party_is_active, ":party_no"),
