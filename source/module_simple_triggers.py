@@ -6,15 +6,12 @@ from header_skills import *
 from header_triggers import *
 from header_troops import *
 from header_music import *
-##diplomacy start+
 from header_terrain_types import *
+from module_constants import *
 from module_factions import dplmc_factions_end
 from ID_info_pages import ip_morale
-##diplomacy end+
-
-from module_constants import *
-
 from compiler import *
+
 ####################################################################################################################
 # Simple triggers are the alternative to old style triggers. They do not preserve state, and thus simpler to maintain.
 #
@@ -226,7 +223,7 @@ simple_triggers = [
       # (try_end),
       #SB : debug block
       (try_begin),
-        (ge, "$cheat_mode", 1),
+        (ge, "$cheat_mode", DPLMC_DEBUG_MIN),
         (troop_is_hero, "$g_talk_troop"),
         (str_store_troop_name, s17, "$g_talk_troop"),
         (troop_get_slot, reg17, "$g_talk_troop", slot_troop_wealth),
@@ -287,7 +284,7 @@ simple_triggers = [
 
  (2, #Error check for multiple parties on the map
 	[
-	(eq, "$cheat_mode", 1),
+	(ge, "$cheat_mode", DPLMC_DEBUG_MIN),
 	(assign, ":debug_menu_noted", 0),
 	(try_for_parties, ":party_no"),
 		(gt, ":party_no", "p_spawn_points_end"),
@@ -1305,9 +1302,9 @@ simple_triggers = [
 		(try_end),
 
 		(try_begin),
-			(eq, "$cheat_mode", 1),
+			(eq, "$cheat_mode", DPLMC_DEBUG_POLITICS),
 			(str_store_troop_name, s9, ":troop_no"),
-			#(display_message, "@{!}DEBUG -- Doing political calculations for {s9}"),
+			(display_message, "@{!}DEBUG -- Doing political calculations for {s9}"),
 		(try_end),
 
         #Tally the fiefs owned by the hero, and cache the value in slot.
@@ -1432,7 +1429,7 @@ simple_triggers = [
                 (str_store_faction_name_link, s3, ":faction"),
                 (call_script, "script_change_troop_faction", ":troop_no", ":new_faction"),
                 (try_begin),
-                  (ge, "$cheat_mode", 1),
+                  (eq, "$cheat_mode", DPLMC_DEBUG_POLITICS),
                   (str_store_troop_name, s4, ":troop_no"),
                   (display_message, "@{!}DEBUG - {s4} faction changed in defection"),
                 (try_end),
@@ -1443,7 +1440,7 @@ simple_triggers = [
                 (faction_get_color, ":color", ":new_faction"),
                 (display_log_message, s4, ":color"),
                 (try_begin),
-                  (eq, "$cheat_mode", 1),
+                  (eq, "$cheat_mode", DPLMC_DEBUG_POLITICS),
                   (this_or_next|eq, ":new_faction", "$players_kingdom"),
                   (eq, ":faction", "$players_kingdom"),
                   (call_script, "script_add_notification_menu", "mnu_notification_lord_defects", ":troop_no", ":faction"),
@@ -1972,9 +1969,9 @@ simple_triggers = [
 	  (val_add, ":grazing_capacity", ":sheep_addition"),
 	  (val_div, ":grazing_capacity", ":num_acres"),
 	  (try_begin),
-		(eq, "$cheat_mode", 1),
+		(eq, "$cheat_mode", DPLMC_DEBUG_ECONOMY),
 	    (assign, reg4, ":grazing_capacity"),
-		(str_store_party_name, s4, ":village_no"),
+		  (str_store_party_name, s4, ":village_no"),
 	    #(display_message, "@{!}DEBUG -- Herd adjustment: {s4} at {reg4}% of grazing capacity"),
 	  (try_end),
 
@@ -2140,7 +2137,7 @@ simple_triggers = [
             (val_div, ":rent_change", 100),
 
             (try_begin), #debug
-              (eq, "$cheat_mode", 1),
+              (eq, "$cheat_mode", DPLMC_DEBUG_ECONOMY),
               (assign, reg0, ":tax_rate"),
               (display_message, "@{!}DEBUG : tax rate in {s6}: {reg0}"),
               (assign, reg0, ":accumulated_rents"),
@@ -2160,7 +2157,7 @@ simple_triggers = [
               (val_mul, ":tax_rate", 2),
 
               (try_begin), #debug
-                (eq, "$cheat_mode", 1),
+                (eq, "$cheat_mode", DPLMC_DEBUG_ECONOMY),
                 (assign, reg0, ":tax_rate"),
                 (display_message, "@{!}DEBUG : tax rate after modi in {s6}: {reg0}"),
               (try_end),
@@ -2173,7 +2170,7 @@ simple_triggers = [
                 (party_get_slot, ":center_relation", ":center_no", slot_center_player_relation),
 
                 (try_begin), #debug
-                  (eq, "$cheat_mode", 1),
+                  (ge, "$cheat_mode", DPLMC_DEBUG_MIN),
                   (assign, reg0, ":center_relation"),
                   (display_message, "@{!}DEBUG : center relation: {reg0}"),
                 (try_end),
@@ -2564,7 +2561,7 @@ simple_triggers = [
            (is_between, ":cur_faction", kingdoms_begin, kingdoms_end),
            (faction_slot_eq, ":cur_faction", slot_faction_state, sfs_active),
            (try_begin),
-             (eq, "$cheat_mode", 2),
+             (ge, "$cheat_mode", DPLMC_DEBUG_MIN),
              (str_store_troop_name, s4, ":troop_no"),
              (display_message, "str_debug__attempting_to_spawn_s4"),
            (try_end),
@@ -2573,7 +2570,7 @@ simple_triggers = [
            (assign, ":center_no", reg0),
 
            (try_begin),
-             (eq, "$cheat_mode", 2),
+             (ge, "$cheat_mode", DPLMC_DEBUG_MIN),
              (str_store_party_name, s7, ":center_no"),
              (str_store_troop_name, s0, ":troop_no"),
              (display_message, "str_debug__s0_is_spawning_around_party__s7"),
@@ -2868,7 +2865,7 @@ simple_triggers = [
         (try_end),
 	     ##diplomacy end
 			 (try_begin),
-				(ge, "$cheat_mode", 3),
+				(eq, "$cheat_mode", DPLMC_DEBUG_ECONOMY),
 				(assign, reg4, ":tariffs_generated"),
 				(str_store_party_name, s4, ":cur_ai_object"),
 				(assign, reg5, ":accumulated_tariffs"),
@@ -3545,7 +3542,7 @@ simple_triggers = [
           (assign, ":bandit_troop", reg0),
           (party_set_slot, ":center_no", slot_center_has_bandits, ":bandit_troop"),
           (try_begin),
-            (eq, "$cheat_mode", 1),
+            (ge, "$cheat_mode", DPLMC_DEBUG_MIN),
             (str_store_party_name, s1, ":center_no"),
             (str_store_troop_name_plural, s2, ":bandit_troop"),
             (display_message, "@{!}{s1} is infested by {s2} (at night)."),
@@ -3562,7 +3559,7 @@ simple_triggers = [
           (lt, ":random_no", ":random_chance"),
           (party_set_slot, ":center_no", slot_center_has_bandits, 0),
           (try_begin),
-            (eq, "$cheat_mode", 1),
+            (ge, "$cheat_mode", DPLMC_DEBUG_MIN),
             (str_store_party_name, s1, ":center_no"),
             (display_message, "@{s1} is no longer infested by bandits (at night)."),
           (try_end),
@@ -3590,7 +3587,7 @@ simple_triggers = [
       (store_random_in_range, ":random_days", 12, 15),
       (party_set_slot, ":random_town", slot_town_has_tournament, ":random_days"),
       (try_begin),
-        (eq, "$cheat_mode", 1),
+        (ge, "$cheat_mode", DPLMC_DEBUG_MIN),
         (str_store_party_name, s1, ":random_town"),
         (display_message, "@{!}{s1} is holding a tournament."),
       (try_end),
@@ -4813,7 +4810,7 @@ simple_triggers = [
       (eq, ":continue", 1),
 
 		(try_begin),
-			(ge, "$cheat_mode", 1),
+			(ge, "$cheat_mode", DPLMC_DEBUG_MIN),
 			(str_store_troop_name, s4, ":troop_no"),
 			(display_message, "@{!}DEBUG - {s4} faction changed from slot_troop_change_to_faction"),
 		(try_end),
@@ -4841,14 +4838,14 @@ simple_triggers = [
 
 (1,
    [
-     (eq, "$cheat_mode", 1),
+     (ge, "$cheat_mode", DPLMC_DEBUG_MIN),
      (try_for_range, ":center_no", centers_begin, centers_end),
        (party_get_battle_opponent, ":besieger_party", ":center_no"),
        (try_begin),
          (gt, ":besieger_party", 0),
          (str_store_party_name, s2, ":center_no"),
          (str_store_party_name, s3, ":besieger_party"),
-         (display_message, "@{!}DEBUG : {s2} is besieging by {s3}"),
+         (display_message, "@{!}DEBUG : {s2} is besieged by {s3}"),
        (try_end),
      (try_end),
      ]),
@@ -5026,7 +5023,7 @@ simple_triggers = [
        (store_current_hours, ":cur_hours"),
 
 	   (try_begin),
-		(eq, "$cheat_mode", 1),
+		(ge, "$cheat_mode", DPLMC_DEBUG_MIN),
 		(is_between, ":village_no", centers_begin, centers_end),
 		(is_between, ":bound_center", centers_begin, centers_end),
 		(str_store_party_name, s4, ":village_no"),
@@ -5443,7 +5440,7 @@ simple_triggers = [
       (str_store_party_name, s15,":target_party"),
 
       (try_begin), #debug
-        (eq, "$cheat_mode", 1),
+        (ge, "$cheat_mode", DPLMC_DEBUG_MIN),
         (assign, reg0, ":distance_to_target"),
         (display_message, "@Distance between {s14} and {s15}: {reg0}"),
       (try_end),
@@ -5638,7 +5635,7 @@ simple_triggers = [
 		(try_end),
 
 		(try_begin),
-			(ge, "$cheat_mode", 1),
+			(ge, "$cheat_mode", DPLMC_DEBUG_MIN),
 			(assign, reg0, ":gift_value_factor"),
 			(store_mul, reg1, ":gift_value", ":gift_value_factor"),
 			(val_add, reg1, 50),
@@ -5726,7 +5723,7 @@ simple_triggers = [
       (str_store_party_name, s15,":target_party"),
 
       (try_begin), #debug
-        (eq, "$cheat_mode", 1),
+        (ge, "$cheat_mode", DPLMC_DEBUG_MIN),
         (assign, reg0, ":distance_to_target"),
         (display_message, "@Distance between {s14} and {s15}: {reg0}"),
       (try_end),
@@ -5786,7 +5783,7 @@ simple_triggers = [
           (str_store_troop_name, s13, ":party_leader"),
 
           (try_begin), #debug
-            (eq, "$cheat_mode", 1),
+            (ge, "$cheat_mode", DPLMC_DEBUG_MIN),
             (display_log_message, "@Your messenger reached {s13}.", 0x00FF00),
             (assign, "$g_talk_troop", ":party_leader"), #debug
           (try_end),
@@ -5805,7 +5802,7 @@ simple_triggers = [
 
 
             (try_begin), #debug
-              (eq, "$cheat_mode", 1),
+              (ge, "$cheat_mode", DPLMC_DEBUG_MIN),
               (display_message, "@{s14}"), #debug
             (try_end),
 
@@ -6045,7 +6042,7 @@ simple_triggers = [
            #Remove patrols above the maximum number allowed.
            (ge, ":count", ":max_patrols"),
            (try_begin),
-              (ge, "$cheat_mode", 1),
+              (ge, "$cheat_mode", DPLMC_DEBUG_MIN),
               (str_store_faction_name, s4, ":kingdom"),
               (str_store_party_name, s5, ":party_no"),
               (display_message, "@{!}DEBUG - Removed {s5} because {s4} cannot support that many patrols"),
@@ -6248,7 +6245,7 @@ simple_triggers = [
 	 ##nested diplomacy end+
 
     (try_begin),
-      (eq, "$cheat_mode", 1),
+      (ge, "$cheat_mode", DPLMC_DEBUG_MIN),
       (str_store_faction_name, s9, ":kingdom"),
       (assign, reg1, ":centralization"),
       (display_message, "@{!}DEBUG - centralization {reg1}"),
@@ -6283,7 +6280,7 @@ simple_triggers = [
         (store_random_in_range, ":change", -1, 2),
 
         (try_begin),
-          (eq, "$cheat_mode", 1),
+          (ge, "$cheat_mode", DPLMC_DEBUG_MIN),
           (str_store_faction_name, s12, ":kingdom"),
           (assign, reg1, ":change"),
           (assign, reg2, ":random"),
@@ -6348,7 +6345,7 @@ simple_triggers = [
         (neq, ":relation_change", 0),
 
         (try_begin),
-          (eq, "$cheat_mode", 1),
+          (ge, "$cheat_mode", DPLMC_DEBUG_MIN),
           (str_store_faction_name, s9, ":kingdom"),
           (assign, reg1, ":relation_change"),
           (display_message, "@{!}DEBUG - relation_change =  {reg1} for {s9}"),
@@ -6496,7 +6493,7 @@ simple_triggers = [
 		 #no lord found
 		 (eq, ":chosen_lord", -1),
 		 (try_begin),
-			(ge, "$cheat_mode", 1),
+			(ge, "$cheat_mode", DPLMC_DEBUG_MIN),
 			(display_message, "@{!}DEBUG - no eligible lords in exile"),
 		 (try_end),
 	    (else_try),
@@ -6505,7 +6502,7 @@ simple_triggers = [
 			(store_random_in_range, ":random", 0, 256),
 			(ge, ":random", 128),
 			(try_begin),
-				(ge, "$cheat_mode", 1),
+				(ge, "$cheat_mode", DPLMC_DEBUG_MIN),
 				(assign, reg0, ":num_exiles"),
 				(display_message, "@{!}DEBUG - {reg0} lords found in exile; randomly decided not to try to return anyone."),
 			(try_end),
@@ -6513,7 +6510,7 @@ simple_triggers = [
 		 #found a lord
 		 (neq, ":chosen_lord", -1),
 		 (try_begin),
-			(ge, "$cheat_mode", 1),
+			(ge, "$cheat_mode", DPLMC_DEBUG_MIN),
 			(str_store_troop_name, s4, ":chosen_lord"),
 			(assign, reg0, ":best_score"),
 			(assign, reg1, ":num_exiles"),
@@ -6532,7 +6529,7 @@ simple_triggers = [
 		 (try_end),
 		 (try_begin),
 		   (neg|is_between, ":new_faction", kingdoms_begin, kingdoms_end),
-			(ge, "$cheat_mode", 1),
+			(ge, "$cheat_mode", DPLMC_DEBUG_MIN),
 			(str_store_troop_name, s4, ":chosen_lord"),
 			(display_message, "@{!}DEBUG - {s4} found no faction to return to!"),
 		 (try_end),
@@ -6552,7 +6549,7 @@ simple_triggers = [
 			(try_end),
 			(gt, ":num_inactive", 1),
 			(try_begin),
-				(ge, "$cheat_mode", 1),
+				(ge, "$cheat_mode", DPLMC_DEBUG_MIN),
 				(assign, reg0, ":num_inactive"),
 				(display_message, "@{!}DEBUG - Not returning a lord to the player's kingdom, since there are already {reg0} lords waiting for their petitions to be heard."),
 			(try_end),

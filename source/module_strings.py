@@ -5155,6 +5155,7 @@ Only you know exactly what caused you to give up your old life and become an adv
   ("s4_is_at_s5_but_reg4_he_she_is_held_as_a_prisoner_at_s13_dungeon", "{s4} is at {s5}, but {reg4?she:he} is being held as a prisoner in the {s13}'s dungeon"),
   ("i_dont_know_where_s4_is", "I don't know where {s4} is"),
 
+  ("dplmc_cheat_setting_debug", "Debug"),
   ("dplmc_cheat_setting_debug_economy", "Debug Economy"),
   ("dplmc_cheat_setting_debug_military", "Debug Military"),
   ("dplmc_cheat_setting_debug_politics", "Debug Politics"),

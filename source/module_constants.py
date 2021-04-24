@@ -2365,9 +2365,12 @@ DPLMC_FACTION_STANDING_UNAFFILIATED = 0
 
 DPLMC_CHEAT_DISABLED = 0
 DPLMC_CHEAT_YES = 1
-DPLMC_DEBUG_ECONOMY = 2
-DPLMC_DEBUG_MILITARY = 3
-DPLMC_DEBUG_POLITICS = 4
+DPLMC_DEBUG_MIN = 2 # for always-display messages use: (ge, "$cheat_mode", DPLMC_DEBUG_MIN)
+# messages for specific categories, use: (eq, "$cheat_mode", DPLMC_DEBUG_ECONOMY)
+# use "this_or_next" if a message is for multiple categories
+DPLMC_DEBUG_ECONOMY = 3 
+DPLMC_DEBUG_MILITARY = 4
+DPLMC_DEBUG_POLITICS = 5
 DPLMC_CHEAT_MAX = DPLMC_DEBUG_POLITICS
 
 ##INVASION/CAPTAIN COOP

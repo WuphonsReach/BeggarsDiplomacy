@@ -74,7 +74,7 @@ dialogs = [
           (try_end),
           (val_clamp, "$g_talk_troop_effective_relation", -100, 101),
           (try_begin),
-            (eq, "$cheat_mode", 1),
+            (ge, "$cheat_mode", DPLMC_DEBUG_MIN),
             (assign, reg3, "$g_talk_troop_effective_relation"),
             (display_message, "str_test_effective_relation_=_reg3"),
           (try_end),
@@ -195,13 +195,13 @@ dialogs = [
                 (try_end),
 
           (try_begin),
-            (gt, "$cheat_mode", 0),
+            (ge, "$cheat_mode", DPLMC_DEBUG_MIN),
             (assign, reg4, "$talk_context"),
             (display_message, "@{!}DEBUG -- Talk context: {reg4}"),
           (try_end),
 
           (try_begin),
-            (gt, "$cheat_mode", 0),
+            (ge, "$cheat_mode", DPLMC_DEBUG_MIN),
             (assign, reg4, "$g_time_since_last_talk"),
             (display_message, "@{!}DEBUG -- Time since last talk: {reg4}"),
           (try_end),
@@ -1334,7 +1334,7 @@ If you would like to practice your horsemanship, you can take my horse here. The
 [
 (eq, "$talk_context", tc_prison_break),
 (try_begin),
- (eq, "$cheat_mode", 1),
+ (ge, "$cheat_mode", DPLMC_DEBUG_MIN),
  (assign, reg0, "$g_talk_troop"),
  (assign, reg1, "$g_encountered_party"),
  (troop_get_slot, reg2, "$g_talk_troop", slot_troop_prisoner_of_party),
@@ -1501,7 +1501,7 @@ If you would like to practice your horsemanship, you can take my horse here. The
 (store_skill_level, reg1, "skl_persuasion", "trp_player"),
 (store_random_in_range, reg0, -2, 13),
 (try_begin),
-   (ge, "$cheat_mode", 1),
+   (ge, "$cheat_mode", DPLMC_DEBUG_MIN),
 	(display_message, "@{!}Persuasion attempt: skill {reg1} versus random roll {reg0} (-2 through 12)"),
 (try_end),
 (le, reg0, reg1),
@@ -3846,7 +3846,7 @@ Still I am sorry that I'll leave you soon. You must promise me, you'll come visi
 ##diplomacy start+ Allow skipping the tutorial.
 [anyone|plyr,"merchant_quest_persuasion",
 [
-(ge, "$cheat_mode", 1),
+(ge, "$cheat_mode", DPLMC_CHEAT_YES),
 ],
 "{!}[CHEAT] I have played this before, and would prefer to skip the tutorial.", "dplmc_devel_merchant_quest_skip",
 []],
@@ -4596,7 +4596,7 @@ Still I am sorry that I'll leave you soon. You must promise me, you'll come visi
  (troop_set_slot, "$g_talk_troop", slot_troop_cur_center, ":town_no"),
 
  (try_begin),
-   (ge, "$cheat_mode", 1),
+   (ge, "$cheat_mode", DPLMC_DEBUG_MIN),
    (assign, reg1, ":current_town_no"),
    (str_store_party_name, s7, ":town_no"),
    (display_message, "@{!}current town was {reg1}, now moved to {s7}"),
@@ -6895,7 +6895,7 @@ Still I am sorry that I'll leave you soon. You must promise me, you'll come visi
 (val_div, ":war_damage_ratio", ":war_damage_suffered"),
 
 (try_begin),
-   (eq, "$cheat_mode", 1),
+   (eq, "$cheat_mode", DPLMC_DEBUG_MILITARY),
    (assign, reg3, ":war_damage_inflicted"),
    (assign, reg4, ":war_damage_suffered"),
    (assign, reg5, ":war_damage_ratio"),
@@ -7079,7 +7079,7 @@ Still I am sorry that I'll leave you soon. You must promise me, you'll come visi
 (troop_get_slot, ":party", "$diplomacy_var", slot_troop_prisoner_of_party),
 
 (try_begin),
-  (eq, "$cheat_mode", 1),
+  (ge, "$cheat_mode", DPLMC_DEBUG_MIN),
   (str_store_party_name, s7, ":party"), #debug
   (display_message, "@{!}DEBUG - prisoner of: {s7}"),
 (try_end),
@@ -10754,7 +10754,7 @@ What kind of recruits do you want?", "dplmc_constable_recruit_select",
 (val_add, ":sum", "$player_honor"),
 
 (try_begin), #debug
-  (eq, "$cheat_mode", 1),
+  (ge, "$cheat_mode", DPLMC_DEBUG_MIN),
   (assign, reg0, ":sum"),
   (display_message, "@{!}DEBUG : sum: {reg0}"),
 (try_end),
@@ -10816,7 +10816,7 @@ What kind of recruits do you want?", "dplmc_constable_recruit_select",
 (assign, reg53, 0),
 
 (try_begin), #debug
-(eq, "$cheat_mode", 1),
+(ge, "$cheat_mode", DPLMC_DEBUG_MIN),
 (assign, reg0, "$diplomacy_var"),
 (display_message, "@{!}DEBUG : diplomacy_var: {reg0}"),
 (try_end),
@@ -10882,7 +10882,7 @@ What kind of recruits do you want?", "dplmc_constable_recruit_select",
 (val_add, "$diplomacy_var", ":persuasion"),
 
 (try_begin), #debug
-(eq, "$cheat_mode", 1),
+(ge, "$cheat_mode", DPLMC_DEBUG_MIN),
 (assign, reg0, ":persuasion"),
 (display_message, "@{!}DEBUG : persuasion: {reg0}"),
 (assign, reg0, "$diplomacy_var"),
@@ -10910,7 +10910,7 @@ What kind of recruits do you want?", "dplmc_constable_recruit_select",
 (val_add, "$diplomacy_var", ":persuasion"),
 
 (try_begin), #debug
-(eq, "$cheat_mode", 1),
+(ge, "$cheat_mode", DPLMC_DEBUG_MIN),
 (assign, reg0, ":persuasion"),
 (display_message, "@{!}DEBUG : persuasion: {reg0}"),
 (assign, reg0, "$diplomacy_var"),
@@ -10938,7 +10938,7 @@ What kind of recruits do you want?", "dplmc_constable_recruit_select",
 (val_add, "$diplomacy_var", ":persuasion"),
 
 (try_begin), #debug
-(eq, "$cheat_mode", 1),
+(ge, "$cheat_mode", DPLMC_DEBUG_MIN),
 (assign, reg0, ":persuasion"),
 (display_message, "@{!}DEBUG : persuasion: {reg0}"),
 (assign, reg0, "$diplomacy_var"),
@@ -10965,7 +10965,7 @@ What kind of recruits do you want?", "dplmc_constable_recruit_select",
 (val_add, "$diplomacy_var", ":persuasion"),
 
 (try_begin), #debug
-(eq, "$cheat_mode", 1),
+(ge, "$cheat_mode", DPLMC_DEBUG_MIN),
 (assign, reg0, ":persuasion"),
 (display_message, "@{!}DEBUG : persuasion: {reg0}"),
 (assign, reg0, "$diplomacy_var"),
@@ -10995,7 +10995,7 @@ What kind of recruits do you want?", "dplmc_constable_recruit_select",
 (val_add, "$diplomacy_var", ":persuasion"),
 
 (try_begin), #debug
-(eq, "$cheat_mode", 1),
+(ge, "$cheat_mode", DPLMC_DEBUG_MIN),
 (assign, reg0, ":persuasion"),
 (display_message, "@{!}DEBUG : persuasion: {reg0}"),
 (assign, reg0, "$diplomacy_var"),
@@ -11030,7 +11030,7 @@ What kind of recruits do you want?", "dplmc_constable_recruit_select",
 	(gt, reg0, 0),
 
     (try_begin),
-       (eq, "$cheat_mode", 1),
+       (ge, "$cheat_mode", DPLMC_DEBUG_MIN),
        (assign, reg0, "$diplomacy_var"),
        (display_message, "@{!}DEBUG : pre-treaty diplomacy_var: {reg0}"),
     (try_end),
@@ -11073,7 +11073,7 @@ What kind of recruits do you want?", "dplmc_constable_recruit_select",
 (store_random_in_range, ":random", 5, 25),
 
 (try_begin), #debug
-(eq, "$cheat_mode", 1),
+(ge, "$cheat_mode", DPLMC_DEBUG_MIN),
 (assign, reg0, ":random"),
 (display_message, "@{!}DEBUG : random: {reg0}"),
 (assign, reg0, "$diplomacy_var"),
@@ -12216,7 +12216,7 @@ What kind of recruits do you want?", "dplmc_constable_recruit_select",
 #  (assign, ":no_join", 1),
 ##NEW:
   (try_begin),
-     (ge, "$cheat_mode", 1),
+     (ge, "$cheat_mode", DPLMC_DEBUG_MIN),
 	 (assign, reg0, ":persuasion_random"),
 	 (assign, reg1, ":persuasion_skill"),
 	 (display_message, "@{!} Emissary persuasion attempt: skill factor {reg1} versus random number {reg0}"),
@@ -12261,7 +12261,7 @@ What kind of recruits do you want?", "dplmc_constable_recruit_select",
 (store_mod, ":random", ":temp_ai_seed", 100),
 
 (try_begin),
-  (eq, "$cheat_mode", 1),
+  (ge, "$cheat_mode", DPLMC_DEBUG_MIN),
   (assign, reg2, ":result_for_security"),
   (display_message, "@{!}DEBUG - result_for_security: {reg2} > 10"),
   (assign, reg2, ":result_for_political"),
@@ -12299,7 +12299,7 @@ What kind of recruits do you want?", "dplmc_constable_recruit_select",
          (try_begin),
            (assign, reg41, ":result_for_political"),
            ##diplomacy start+ Only show debug messages with cheat mode on
-           (ge, "$cheat_mode", 1),
+           (ge, "$cheat_mode", DPLMC_DEBUG_MIN),
            ##diplomacy end+
            (display_message, "str_result_for_political_=_reg41"),
          (try_end),
@@ -12485,7 +12485,7 @@ What kind of recruits do you want?", "dplmc_constable_recruit_select",
 (store_random_in_range, ":random", 0, 100),
 
 (try_begin),#debug
-  (eq, "$cheat_mode", 1),
+  (ge, "$cheat_mode", DPLMC_DEBUG_MIN),
   (assign, reg0, ":emissary_spotting"),
   (assign, reg1, ":random"),
   (display_message, "@{!}DEBUG : emissary_spotting: {reg0} random {reg1}"),
@@ -14756,7 +14756,7 @@ What kind of recruits do you want?", "dplmc_constable_recruit_select",
 #    ]],
 #
 [anyone|plyr, "companion_quitting_response", [
-      (ge, "$cheat_mode", 1),#only enable in cheat mode
+      (ge, "$cheat_mode", DPLMC_CHEAT_YES),
       (eq, "$player_can_refuse_npc_quitting", 1),
 ], "CHEAT -- We hang deserters in this company.", "companion_quitting_no", [
     ]],
@@ -15504,7 +15504,7 @@ What kind of recruits do you want?", "dplmc_constable_recruit_select",
           (assign, "$g_mission_result", reg0),
 ##diplomacy start+
 		(try_begin),
-			(ge, "$cheat_mode", 1),
+			(ge, "$cheat_mode", DPLMC_DEBUG_MIN),
 			(display_message, "@{!} DEBUG - Native checklist-peace-or-war result {reg0}, because {s14}"),
 		(try_end),
 		#make gender correct
@@ -15586,7 +15586,7 @@ What kind of recruits do you want?", "dplmc_constable_recruit_select",
 
 	#Needs to hold territory (aside from territory the target faction considers to belong to itself)
 	(try_begin),
-		(ge, "$cheat_mode", 1),
+		(ge, "$cheat_mode", DPLMC_DEBUG_MIN),
 		(lt,  ":player_points", 1),
 		(display_message, "@{!} Recognition refused because player owns no fortresses not claimed by target faction"),
 	(try_end),
@@ -15626,7 +15626,7 @@ What kind of recruits do you want?", "dplmc_constable_recruit_select",
 	(store_div, ":average_points", ":global_points", ":num_kingdoms"),
 
 	(try_begin),
-		(ge, "$cheat_mode", 1),
+		(ge, "$cheat_mode", DPLMC_DEBUG_MIN),
 		(assign, reg0, ":player_points"),
 		(assign, reg1, ":target_points"),
 		(assign, reg2, ":average_points"),
@@ -15701,7 +15701,7 @@ What kind of recruits do you want?", "dplmc_constable_recruit_select",
 	(val_div, ":target_points", 100),
 
 	(try_begin),
-		(ge, "$cheat_mode", 1),
+		(ge, "$cheat_mode", DPLMC_DEBUG_MIN),
 		(assign, reg0, ":player_points"),
 		(assign, reg1, ":target_points"),
 		(display_message, "@{!} Player faction score for recognition is {reg0}, needs to be at least {reg1}"),
@@ -16351,7 +16351,7 @@ Here, take this purse of {reg3} denars, as I promised. I hope we can travel toge
 		(neg|party_slot_eq, "$g_encountered_party", slot_party_type, spt_castle),
 		(neg|party_slot_eq, "$g_encountered_party", slot_party_type, spt_town),
 		(try_begin),
-			(ge, "$cheat_mode", 1),
+			(ge, "$cheat_mode", DPLMC_DEBUG_MIN),
 			(assign, reg0, "$g_encountered_party"),
 			(str_store_party_name, s0, "$g_encountered_party"),
 			(party_get_slot, reg1, "$g_encountered_party", slot_party_type),
@@ -17793,7 +17793,7 @@ I knew that I had found someone worthy of becoming my vassal.", "lord_invite_1",
 [anyone,"lord_start", [(gt, "$g_comment_found", 0), #changed to s32 from s62 because overlaps with setup_talk_info strings
              (str_store_string, s1, "$g_last_comment_copied_to_s42"),
              (try_begin),
-               (eq, "$cheat_mode", 1),
+               (ge, "$cheat_mode", DPLMC_DEBUG_MIN),
                (display_message, "str_comment_found_s1"),
              (try_end),
 
@@ -17810,7 +17810,7 @@ I knew that I had found someone worthy of becoming my vassal.", "lord_invite_1",
              (try_begin),
                (gt, "$g_rejoinder_to_last_comment", 0),
                (try_begin),
-                 (eq, "$cheat_mode", 1),
+                 (ge, "$cheat_mode", DPLMC_DEBUG_MIN),
                  (display_message, "str_rejoinder_noted"),
                (try_end),
                (assign, "$g_comment_has_rejoinder", 1),
@@ -19266,7 +19266,7 @@ I'll send some men to take him to our prison with due haste.", "lord_pretalk", [
 (assign, reg5, "$g_talk_troop_effective_relation"),
 
 (try_begin),
-  (eq, "$cheat_mode", 1),
+  (ge, "$cheat_mode", DPLMC_DEBUG_MIN),
   (str_store_string, s12, "str_intrigue_success_chance"),
   (display_message, "str_s12_period"),
 (try_end),
@@ -19732,7 +19732,7 @@ I'll send some men to take him to our prison with due haste.", "lord_pretalk", [
 	#Refuse to switch
 	(ge, ":old_score", ":new_score"),
 	(try_begin),
-		(ge, "$cheat_mode", 1),
+		(ge, "$cheat_mode", DPLMC_DEBUG_MIN),
 		(assign, reg0, ":old_score"),
 		(assign, reg1, ":new_score"),
 		(display_message, "@{!} DEBUG - current kingdom score {reg0} vs player kingdom score {reg1}"),
@@ -19759,7 +19759,7 @@ I'll send some men to take him to our prison with due haste.", "lord_pretalk", [
   (ge, ":relation", 0),
 
   (try_begin),
-    (eq, "$cheat_mode", 1),
+    (ge, "$cheat_mode", DPLMC_DEBUG_MIN),
     (display_message, "str_lord_recruitment_provokes_home_faction"),
   (try_end),
 
@@ -19815,7 +19815,7 @@ I'll send some men to take him to our prison with due haste.", "lord_pretalk", [
 
 [anyone|plyr,"lord_talk",[#(troop_slot_eq, "$g_talk_troop", slot_troop_is_prisoner, 0),
                       (troop_slot_ge, "$g_talk_troop", slot_troop_intrigue_impatience, 1),
-               (eq, "$cheat_mode", 1),
+               (ge, "$cheat_mode", DPLMC_CHEAT_YES),
 
                #other requirements
 
@@ -19827,7 +19827,7 @@ I'll send some men to take him to our prison with due haste.", "lord_pretalk", [
 (troop_set_slot, "$g_talk_troop", slot_troop_temp_decision_seed, ":random"),
 ]],
 
-[anyone|plyr,"lord_talk",[(eq, "$cheat_mode", 1),
+[anyone|plyr,"lord_talk",[(ge, "$cheat_mode", DPLMC_CHEAT_YES),
                       ],
 "CHEAT -- Let's duel (insult)", "lord_respond_to_insult_challenge_duel",
 [
@@ -20272,7 +20272,7 @@ I'll send some men to take him to our prison with due haste.", "lord_pretalk", [
 ]],
 
 [anyone|plyr,"lord_internal_politics_cur_stance_plyr_response", [
-(eq, "$cheat_mode", 1),
+(ge, "$cheat_mode", DPLMC_CHEAT_YES),
 (eq, "$player_has_homage", 1),
 ],
 "CHEAT -- Reset support", "lord_internal_politics_cur_stance_plyr_response",
@@ -20676,7 +20676,7 @@ I'll send some men to take him to our prison with due haste.", "lord_pretalk", [
 	(assign, reg3, 1),
 (try_end),
 (try_begin),
-	(ge, "$cheat_mode", 1),
+	(ge, "$cheat_mode", DPLMC_DEBUG_MIN),
 	(assign, reg0, ":player_pick_renown"),
 	(str_store_string, s0, "str_score_reg0"),
 	(assign, reg0, 400),
@@ -20703,7 +20703,7 @@ I'll send some men to take him to our prison with due haste.", "lord_pretalk", [
 (str_store_troop_name, s3, ":other_pick"),
 (str_store_troop_name, s4, "$lord_selected"),
 (try_begin),
-	(ge, "$cheat_mode", 1),
+	(ge, "$cheat_mode", DPLMC_DEBUG_MIN),
 	(assign, reg0, ":player_pick_renown_per_center_point"),
 	(str_store_string, s0, "str_score_reg0"),
 	(assign, reg0, ":threshold"),
@@ -20735,7 +20735,7 @@ I'll send some men to take him to our prison with due haste.", "lord_pretalk", [
 	(assign, reg3, 1),
 (try_end),
 (try_begin),
-	(ge, "$cheat_mode", 1),
+	(ge, "$cheat_mode", DPLMC_DEBUG_MIN),
 	(assign, reg0, ":player_pick_renown"),
 	(str_store_string, s0, "str_score_reg0"),
 	(assign, reg0, ":threshold"),
@@ -20828,7 +20828,7 @@ I'll send some men to take him to our prison with due haste.", "lord_pretalk", [
 (neq, ":other_pick", "trp_player"),
 (str_store_troop_name, s4, ":other_pick"),
 (try_begin),
-	(ge, "$cheat_mode", 1),
+	(ge, "$cheat_mode", DPLMC_DEBUG_MIN),
 	(assign, reg0, ":player_pick_relation"),
 	(str_store_troop_name, s3, "$lord_selected"),#s3 not s4
 	(str_store_string, s0, "str_score_reg0"),
@@ -21004,7 +21004,7 @@ I'll send some men to take him to our prison with due haste.", "lord_pretalk", [
 [
 (troop_get_slot, reg3, "$g_talk_troop", slot_troop_intrigue_impatience),
 (try_begin),
-(eq, "$cheat_mode", 1),
+(ge, "$cheat_mode", DPLMC_DEBUG_MIN),
 (display_message, "str_intrigue_impatience=_reg3_must_be_less_than_100"),
 (try_end),
 ]],
@@ -21026,7 +21026,7 @@ I'll send some men to take him to our prison with due haste.", "lord_pretalk", [
 (str_store_string, s12, "str_this_is_no_time_for_words"),
 (try_end),
 (try_begin),
-(eq, "$cheat_mode", 1),
+(ge, "$cheat_mode", DPLMC_DEBUG_MIN),
 (display_message, "str_lord_not_alone"),
 (try_end),
 ],
@@ -21154,7 +21154,7 @@ I'll send some men to take him to our prison with due haste.", "lord_pretalk", [
 (try_begin),
   (lt, "$g_talk_troop_relation", -5),
   (try_begin),
-    (eq, "$cheat_mode", 1),
+    (ge, "$cheat_mode", DPLMC_DEBUG_MIN),
     (display_message, "str_persuasion__relation_less_than_5"),
   (try_end),
   (str_store_string, s12, "str_s15"),
@@ -21176,7 +21176,7 @@ I'll send some men to take him to our prison with due haste.", "lord_pretalk", [
 
   (str_store_string, s12, "str_s14"),
   (try_begin),
-    (eq, "$cheat_mode", 1),
+    (ge, "$cheat_mode", DPLMC_DEBUG_MIN),
     (display_message, "str_persuasion__2__lord_reputation_modifier__relation_less_than_10"),
   (try_end),
 
@@ -21194,7 +21194,7 @@ I'll send some men to take him to our prison with due haste.", "lord_pretalk", [
   (str_store_string, s12, "str_s13"),
   (assign, ":continue", 1),
   (try_begin),
-   (ge, "$cheat_mode", 1),
+   (ge, "$cheat_mode", DPLMC_DEBUG_MIN),
    (display_message, "@{!} DEBUG -- affiliated family member, overriding logic to continue"),
   (try_end),
 (try_end),
@@ -21411,7 +21411,7 @@ I'll send some men to take him to our prison with due haste.", "lord_pretalk", [
 	(store_add, ":liege_score", ":liege_bonus", ":liege_relation"),
 	(store_add, ":player_score", "$player_right_to_rule", "$g_talk_troop_effective_relation"),
 	(try_begin),
-		(ge, "$cheat_mode", 1),
+		(ge, "$cheat_mode", DPLMC_DEBUG_MIN),
 		(assign, reg0, ":liege_score"),
 		(assign, reg1, ":player_score"),
 		(display_message, "@{!}DEBUG - liege score {reg0} vs player score {reg1}"),
@@ -21911,7 +21911,7 @@ I'll send some men to take him to our prison with due haste.", "lord_pretalk", [
 (assign, ":result_for_political", reg3),
 
 (try_begin),
-(eq, "$cheat_mode", 1),
+(ge, "$cheat_mode", DPLMC_DEBUG_MIN),
 (display_message, "@{!}DEBUG : result_for_political is {reg3}"),
 (try_end),
 
@@ -22477,8 +22477,8 @@ I'll send some men to take him to our prison with due haste.", "lord_pretalk", [
 
 (troop_get_slot, ":persuasion_random", "$g_talk_troop", slot_troop_recruitment_random),
 
-  (try_begin),
-    (eq, "$cheat_mode", 1),
+(try_begin),
+  (ge, "$cheat_mode", DPLMC_DEBUG_MIN),
   #(assign, reg3, ":persuasion_skill"),
   #(assign, reg4, ":persuasion_random"),
   #(display_message, "str_trump_check_random_reg4_skill_reg3"),
@@ -22535,7 +22535,7 @@ I'll send some men to take him to our prison with due haste.", "lord_pretalk", [
 
    #this will store
    (try_begin),
-     (eq, "$cheat_mode", 1),
+     (ge, "$cheat_mode", DPLMC_DEBUG_MIN),
      (display_message, "str_preliminary_result_for_political_=_reg4"),
    (try_end),
 
@@ -22554,7 +22554,7 @@ I'll send some men to take him to our prison with due haste.", "lord_pretalk", [
    (assign, ":result_for_old_liege", reg0),
 
    (try_begin),
-     (eq, "$cheat_mode", 1),
+     (ge, "$cheat_mode", DPLMC_DEBUG_MIN),
      (assign, reg31, ":result_for_new_liege"),
      (assign, reg32, ":result_for_old_liege"),
 
@@ -22578,7 +22578,7 @@ I'll send some men to take him to our prison with due haste.", "lord_pretalk", [
          (try_begin),
            (assign, reg41, ":result_for_political"),
            ##diplomacy start+ Only show debug messages if cheat mode is on
-           (ge, "$cheat_mode", 1),
+           (ge, "$cheat_mode", DPLMC_DEBUG_MIN),
            ##diplomacy end+
            (display_message, "str_result_for_political_=_reg41"),
          (try_end),
@@ -22685,7 +22685,7 @@ I'll send some men to take him to our prison with due haste.", "lord_pretalk", [
 "{s34}", "lord_recruit_6",
 [
 (try_begin),
- (eq, "$cheat_mode", 1),
+ (ge, "$cheat_mode", DPLMC_DEBUG_MIN),
  (assign, reg1, "$pledge_chance"),
  (display_message, "str_chance_of_success_=_reg1"),
 (try_end),
@@ -22720,7 +22720,7 @@ I'll send some men to take him to our prison with due haste.", "lord_pretalk", [
 (store_mod, ":random", ":temp_ai_seed", 100),
 
 (try_begin),
-  (eq, "$cheat_mode", 1),
+  (ge, "$cheat_mode", DPLMC_DEBUG_MIN),
   (assign, reg3, ":random"),
   (display_message, "str_random_=_reg3"),
 (try_end),
@@ -22791,7 +22791,7 @@ I'll send some men to take him to our prison with due haste.", "lord_pretalk", [
 (try_end),
 
 (try_begin),
-  (eq, "$cheat_mode", 1),
+  (ge, "$cheat_mode", DPLMC_DEBUG_MIN),
   (display_message, "str_lord_pledges_to_s4"),
 (try_end),
 (call_script, "script_dplmc_store_troop_is_female_reg", ":recruitment_candidate", 3),
@@ -22836,7 +22836,7 @@ I'll send some men to take him to our prison with due haste.", "lord_pretalk", [
   (ge, ":relation", 0),
 
   (try_begin),
-    (eq, "$cheat_mode", 1),
+    (ge, "$cheat_mode", DPLMC_DEBUG_MIN),
     (display_message, "str_lord_recruitment_provokes_home_faction"),
   (try_end),
 
@@ -25129,7 +25129,7 @@ I will use this to make amends to those you have wronged, and I will let it be k
 (party_get_slot, ":ai_object", "$g_talk_troop_party", slot_party_ai_object),
 
 (try_begin),
-   (eq, "$cheat_mode", 1),
+   (ge, "$cheat_mode", DPLMC_DEBUG_MIN),
    (party_get_ai_initiative, reg4, "$g_talk_troop_party"),
    (party_get_helpfulness, reg5, "$g_talk_troop_party"),
    (display_message, "@{!}DEBUG : Initiative {reg4}, helpfulness {reg5}"),
@@ -25147,7 +25147,7 @@ I will use this to make amends to those you have wronged, and I will let it be k
   (call_script, "script_party_set_ai_state", "$g_talk_troop_party", reg0, reg1),
    (str_store_string, s14, "str_however_circumstances_have_changed_since_we_made_that_decision_and_i_may_reconsider_shortly_s16"),
   (try_begin),
-   (ge, "$cheat_mode", 1),
+   (ge, "$cheat_mode", DPLMC_DEBUG_MIN),
    (display_message, "@{!}DEBUG -- ai behavior: {reg0}, ai object: {reg1}"),
   (try_end),
 (try_end),
@@ -26284,7 +26284,7 @@ I will use this to make amends to those you have wronged, and I will let it be k
    (val_div, ":war_damage_ratio", ":war_damage_suffered"),
 
    (try_begin),
-      (eq, "$cheat_mode", 1),
+      (ge, "$cheat_mode", DPLMC_DEBUG_MIN),
       (assign, reg3, ":war_damage_inflicted"),
       (assign, reg4, ":war_damage_suffered"),
       (assign, reg5, ":war_damage_ratio"),
@@ -26781,7 +26781,7 @@ I will use this to make amends to those you have wronged, and I will let it be k
   (store_repeat_object, "$temp"),
 
   (try_begin),
-    (eq, "$cheat_mode", 1),
+    (ge, "$cheat_mode", DPLMC_DEBUG_MIN),
     (store_sub, ":faction_recce_slot", "$g_talk_troop_faction", kingdoms_begin),
     (val_add, ":faction_recce_slot", slot_center_last_reconnoitered_by_faction_time),
     (store_current_hours, ":hours_since_last_recon"),
@@ -26945,7 +26945,7 @@ I will use this to make amends to those you have wronged, and I will let it be k
 (str_store_troop_name, s5, ":faction_marshal"),
 
 (try_begin),
-  (eq, "$cheat_mode", 1),
+  (ge, "$cheat_mode", DPLMC_DEBUG_MIN),
   (store_sub, ":faction_recce_slot", "$g_talk_troop_faction", kingdoms_begin),
   (val_add, ":faction_recce_slot", slot_center_last_reconnoitered_by_faction_time),
   (store_current_hours, ":hours_since_last_recon"),
@@ -27241,7 +27241,7 @@ I will use this to make amends to those you have wronged, and I will let it be k
 
 
 [anyone|plyr,"lord_courtship_pre_permission", [
-(eq, "$cheat_mode", 2),
+(ge, "$cheat_mode", DPLMC_DEBUG_MIN),
 ],
 "CHEAT -- Start engagement",
 "lord_marriage_permission_engagement_date",[
@@ -27617,7 +27617,7 @@ I will use this to make amends to those you have wronged, and I will let it be k
 
 [anyone|plyr,"lord_talk",
 [
-  (eq, "$cheat_mode", 2),
+  (ge, "$cheat_mode", DPLMC_DEBUG_MIN),
   (gt, "$supported_pretender", 0),
   (eq, "$supported_pretender_old_faction", "$g_talk_troop_faction"),
   (neg|faction_slot_eq, "$g_talk_troop_faction", slot_faction_leader, "$g_talk_troop"),
@@ -27627,7 +27627,7 @@ I will use this to make amends to those you have wronged, and I will let it be k
 
 [anyone|plyr,"party_encounter_lord_hostile_attacker_2",
 [
-  (eq, "$cheat_mode", 2),
+  (ge, "$cheat_mode", DPLMC_DEBUG_MIN),
   (gt, "$supported_pretender", 0),
   (eq, "$supported_pretender_old_faction", "$g_talk_troop_faction"),
   (neg|faction_slot_eq, "$g_talk_troop_faction", slot_faction_leader, "$g_talk_troop"),
@@ -27693,7 +27693,7 @@ I will use this to make amends to those you have wronged, and I will let it be k
 
 [anyone|plyr,"lord_talk",
 [
- (ge, "$cheat_mode", 1),
+ (ge, "$cheat_mode", DPLMC_CHEAT_YES),
  (neg|troop_slot_ge, "$g_talk_troop", slot_troop_prisoner_of_party, 0),
 ],
 "{!}CHEAT - Take the following action.", "lord_suggest_action_ask",[]],
@@ -31691,10 +31691,10 @@ I suppose there are plenty of bounty hunters around to get the job done . . .", 
    (faction_get_slot, ":last_feast_time", "$players_kingdom", slot_faction_last_feast_start_time),
    (val_sub, ":hours_since_last_feast", ":last_feast_time"),
    (try_begin),
-	(ge, "$cheat_mode", 1),
-	(assign, reg4, ":hours_since_last_feast"),
-	(str_store_faction_name, s4, "$players_kingdom"),
-	(display_message, "@{!}DEBUG -- {reg4} hours since last feast for {s4}"),
+    (ge, "$cheat_mode", DPLMC_DEBUG_MIN),
+    (assign, reg4, ":hours_since_last_feast"),
+    (str_store_faction_name, s4, "$players_kingdom"),
+    (display_message, "@{!}DEBUG -- {reg4} hours since last feast for {s4}"),
    (try_end),
    (lt, ":hours_since_last_feast", 120),
    (store_sub, ":days_to_wait", 168, ":hours_since_last_feast"),
@@ -32775,7 +32775,7 @@ I suppose there are plenty of bounty hunters around to get the job done . . .", 
 	    (call_script, "script_troop_get_relation_with_troop", "$g_talk_troop", ":possible_rival"),
 
 	    (try_begin),
-	      (eq, "$cheat_mode", 1),
+	      (ge, "$cheat_mode", DPLMC_DEBUG_MIN),
 	      (str_store_troop_name, s4, ":possible_rival"),
 	      (display_message, "str_rival_found_s4_reg0_relation"),
 		(try_end),
@@ -33073,7 +33073,7 @@ I suppose there are plenty of bounty hunters around to get the job done . . .", 
 		(str_store_troop_name, s9, "$lady_selected"), #lady
 
 		(try_begin),
-			(eq, "$cheat_mode", 1), #for some reason, speaking to tavern merchant does not yield rumor. Try for Lady Baoth, Lord Etr
+			(ge, "$cheat_mode", DPLMC_DEBUG_MIN), #for some reason, speaking to tavern merchant does not yield rumor. Try for Lady Baoth, Lord Etr
 			(display_message, "str_searching_for_rumors_for_s9"),
 		(try_end),
 
@@ -33621,7 +33621,7 @@ I suppose there are plenty of bounty hunters around to get the job done . . .", 
 		(call_script, "script_troop_get_relation_with_troop", "$g_talk_troop", ":possible_rival"),
 
 		(try_begin),
-			(eq, "$cheat_mode", 1),
+			(ge, "$cheat_mode", DPLMC_DEBUG_MIN),
 			(str_store_troop_name, s4, ":possible_rival"),
 			(display_message, "str_rival_found_s4_reg0_relation"),
 		(try_end),
@@ -33810,7 +33810,7 @@ I suppose there are plenty of bounty hunters around to get the job done . . .", 
     [
 	##diplomacy start+
 	#Enable this if "enhanced prejudice" mode is active.
-    (this_or_next|ge, "$cheat_mode", 1),
+    (this_or_next|ge, "$cheat_mode", DPLMC_CHEAT_YES),
 	(lt, "$g_disable_condescending_comments", 0),
 	##(eq, 1, 0),
 	##diplomacy end+
@@ -38412,7 +38412,7 @@ I suppose there are plenty of bounty hunters around to get the job done . . .", 
 		(eq, ":lady_faction", ":town_faction"),
 		(assign, "$lady_selected", ":lady"),
 		(try_begin),
-			(eq, "$cheat_mode", 1),
+			(ge, "$cheat_mode", DPLMC_DEBUG_MIN),
 			(str_store_troop_name, s4, ":lady"),
 			(troop_get_slot, reg4, "trp_log_array_entry_type", ":log_entry"),
 			(assign, reg5, "$num_log_entries"),
@@ -38445,7 +38445,7 @@ I suppose there are plenty of bounty hunters around to get the job done . . .", 
    [anyone,"minstrel_gossip_maiden_selected",
    [
 	(try_begin),
-		(eq, "$cheat_mode", 1),
+		(ge, "$cheat_mode", DPLMC_DEBUG_MIN),
 		(assign, reg3, "$lady_selected"),
 		(display_message, "@{!}DEBUG: Gossip for troop {reg3}"),
 		(gt, reg3, -1),
@@ -38552,7 +38552,7 @@ I suppose there are plenty of bounty hunters around to get the job done . . .", 
 		(str_store_troop_name, s9, "$lady_selected"), #lady
 
 		(try_begin),
-			(eq, "$cheat_mode", 1), #for some reason, speaking to tavern merchant does not yield rumor. Try for Lady Baoth, Lord Etr
+			(ge, "$cheat_mode", DPLMC_DEBUG_MIN), #for some reason, speaking to tavern merchant does not yield rumor. Try for Lady Baoth, Lord Etr
 			(display_message, "str_searching_for_rumors_for_s9"),
 		(try_end),
 
@@ -40368,7 +40368,7 @@ I suppose there are plenty of bounty hunters around to get the job done . . .", 
   ]],
 
   [anyone,"mayor_investment_possible",[
-  (ge, "$cheat_mode", 3)
+  (ge, "$cheat_mode", DPLMC_CHEAT_YES)
   ], "{!}CHEAT: Yes, we're playtesting this feature, and you're in cheat mode. Go right ahead.", "mayor_investment_advice",[
   ]],
   #SB : disguise conditional
@@ -40413,7 +40413,7 @@ I suppose there are plenty of bounty hunters around to get the job done . . .", 
     (try_end),
     (val_clamp, ":required_relation", 0, 100),
     (try_begin),
-      (eq, "$cheat_mode", 1),
+      (ge, "$cheat_mode", DPLMC_DEBUG_MIN),
       (assign, reg10, ":relation"),
       (assign, reg11, ":required_relation"),
       (display_message, "@{!}DEBUG: Required relation with {s4} is {reg11}, current relation {reg10}."),
@@ -40444,7 +40444,7 @@ I suppose there are plenty of bounty hunters around to get the job done . . .", 
     (try_end),
     (val_clamp, ":required_relation", 0, 100),
     (try_begin),
-      (eq, "$cheat_mode", 1),
+      (ge, "$cheat_mode", DPLMC_DEBUG_MIN),
       (assign, reg10, ":relation"),
       (assign, reg11, ":required_relation"),
       (display_message, "@{!}DEBUG: Required relation with {s4} is {reg11}, current relation {reg10}."),
@@ -40475,7 +40475,7 @@ I suppose there are plenty of bounty hunters around to get the job done . . .", 
   (try_end),
   (val_clamp, ":required_relation", 0, 100),
   (try_begin),
-    (eq, "$cheat_mode", 1),
+    (ge, "$cheat_mode", DPLMC_DEBUG_MIN),
     (assign, reg10, ":trade_skill"),
     (assign, reg11, ":required_relation"),
     (str_store_party_name, s4, "$current_town"),
@@ -40560,7 +40560,6 @@ I suppose there are plenty of bounty hunters around to get the job done . . .", 
 	(assign, ":save_reg0", reg0),
 	(assign, ":save_reg1", reg1),
 	(try_begin),
-		(ge, "$cheat_mode", 1),
 		(ge, "$g_dplmc_gold_changes", DPLMC_GOLD_CHANGES_MEDIUM),
 		(try_begin),
 			(call_script, "script_dplmc_good_produced_at_center_or_its_villages", ":primary_raw_material", "$g_encountered_party"),
@@ -40594,7 +40593,6 @@ I suppose there are plenty of bounty hunters around to get the job done . . .", 
     (try_end),
 	##diplomacy end+
 	(try_begin),
-		(ge, "$cheat_mode", 1),
 		(ge, "$g_dplmc_gold_changes", DPLMC_GOLD_CHANGES_MEDIUM),
 		(gt, ":cost_of_secondary_input", 0),
 		(try_begin),
@@ -45102,7 +45100,7 @@ I suppose there are plenty of bounty hunters around to get the job done . . .", 
   ##diplomacy start+ Allow skipping the tutorial.
   [anyone|plyr,"merchant_quest_1a",
   [
-     (ge, "$cheat_mode", 1),
+     (ge, "$cheat_mode", DPLMC_CHEAT_YES),
   ],
   "{!}[CHEAT] I have played this before, and would prefer to skip the tutorial.", "dplmc_devel_merchant_quest_skip",
   []],

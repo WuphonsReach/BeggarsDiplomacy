@@ -2,7 +2,6 @@
 from header_common import *
 from header_operations import *
 from module_constants import *
-from module_constants import *
 from header_parties import *
 from header_skills import *
 from header_mission_templates import *
@@ -239,7 +238,7 @@ scripts = [
       (faction_set_slot, "fac_culture_6", slot_faction_town_spy_female_troop, "trp_spy_walker_2"),
 
       (try_begin),
-        (eq, "$cheat_mode", 1),
+        (ge, "$cheat_mode", DPLMC_DEBUG_MIN),
         (assign, reg3, "$cheat_mode"),
         (display_message, "@{!}DEBUG : Completed faction troop assignments, cheat mode: {reg3}"),
       (try_end),
@@ -789,7 +788,7 @@ scripts = [
 	  #this should come after assignment of territorial grievances
       (try_for_range, ":unused", 0, 70),
         (try_begin),
-          (eq, "$cheat_mode", 1),
+          (ge, "$cheat_mode", DPLMC_DEBUG_MIN),
           (display_message, "@{!}DEBUG -- initial war/peace check begins"),
         (try_end),
         (call_script, "script_randomly_start_war_peace_new", 0),
@@ -963,7 +962,7 @@ scripts = [
 	  #Warband changes end
 
 	  (try_begin),
-	    (eq, "$cheat_mode", 1),
+	    (ge, "$cheat_mode", DPLMC_DEBUG_MIN),
 	    (assign, reg3, "$cheat_mode"),
 	    (display_message, "@{!}DEBUG : Completed political events, cheat mode: {reg3}"),
 	  (try_end),
@@ -983,7 +982,7 @@ scripts = [
 	  (store_random_in_range, "$romantic_attraction_seed", 0, 5),
 
 	  (try_begin),
-	    (eq, "$cheat_mode", 1),
+	    (ge, "$cheat_mode", DPLMC_DEBUG_MIN),
 	    (assign, reg3, "$romantic_attraction_seed"),
 	    (display_message, "@{!}DEBUG : Assigned love interests. Attraction seed: {reg3}"),
 	  (try_end),
@@ -1106,7 +1105,7 @@ scripts = [
 
 
 	  (try_begin),
-	    (eq, "$cheat_mode", 1),
+	    (ge, "$cheat_mode", DPLMC_DEBUG_MIN),
 	    (assign, reg3, "$cheat_mode"),
 	    (display_message, "@{!}DEBUG : Located kingdom ladies, cheat mode: {reg3}"),
 	  (try_end),
@@ -3705,7 +3704,7 @@ scripts = [
                   (call_script, "script_cf_prisoner_offered_parole", ":cur_troop_id", ":leader_troop_id"),
 
                   (try_begin),
-                    (eq, "$cheat_mode", 1),
+                    (ge, "$cheat_mode", DPLMC_DEBUG_MIN),
                     (display_message, "@{!}DEBUG : Prisoner granted parole"),
                   (try_end),
 
@@ -3713,7 +3712,7 @@ scripts = [
                   (val_add, "$total_battle_enemy_changes", 3),
                 (else_try),
                   (try_begin),
-                    (eq, "$cheat_mode", 1),
+                    (ge, "$cheat_mode", DPLMC_DEBUG_MIN),
                     (display_message, "@{!}DEBUG : Prisoner not offered parole"),
                   (try_end),
                   (call_script, "script_troop_change_relation_with_troop", ":leader_troop_id", ":cur_troop_id", -5),
@@ -4141,7 +4140,7 @@ scripts = [
                (assign, "$g_recalculate_ais", 1), #added new
 
                (try_begin),
-                 (eq, "$cheat_mode", 1),
+                 (ge, "$cheat_mode", DPLMC_DEBUG_MIN),
                  (display_message, "@{!}DEBUG : Siege attackers are running away"),
                (try_end),
              (try_end),
@@ -4181,7 +4180,7 @@ scripts = [
           (try_end),
           (eq, ":continue", 1),
           (try_begin),
-            (eq, "$cheat_mode", 1),
+            (ge, "$cheat_mode", DPLMC_DEBUG_MIN),
             (str_store_troop_name, s1, ":cur_troop"),
             (display_message, "@{!}DEBUG: {s1} no longer leads a party."),
           (try_end),
@@ -4203,7 +4202,7 @@ scripts = [
           (try_end),
           (eq, ":continue", 1),
           (try_begin),
-            (eq, "$cheat_mode", 1),
+            (ge, "$cheat_mode", DPLMC_DEBUG_MIN),
             (str_store_troop_name, s1, ":cur_troop"),
             (display_message, "@{!}DEBUG: {s1} is no longer a prisoner."),
           (try_end),
@@ -4215,7 +4214,7 @@ scripts = [
             (troop_set_slot, ":cur_troop", slot_troop_prisoner_of_party, "p_main_party"),
             (assign, ":continue", 0),
             (try_begin),
-              (eq, "$cheat_mode", 1),
+              (ge, "$cheat_mode", DPLMC_DEBUG_MIN),
               (str_store_troop_name, s1, ":cur_troop"),
               (display_message, "@{!}DEBUG: {s1} is now a prisoner of player."),
             (try_end),
@@ -4246,7 +4245,7 @@ scripts = [
 			  (display_message, "@{s1} is now a prisoner of {s2}."),
 			(else_try),
 			##diplomacy end+
-              (eq, "$cheat_mode", 1),
+              (ge, "$cheat_mode", DPLMC_DEBUG_MIN),
               (str_store_troop_name, s1, ":cur_troop"),
               (str_store_party_name, s2, ":cur_prisoner_of_party_2"),
               (display_message, "@{!}DEBUG: {s1} is now a prisoner of {s2}."),
@@ -4267,7 +4266,7 @@ scripts = [
 			  (display_message, "@{s1} is now a prisoner of {s2}."),
 			(else_try),
 			##diplomacy end+
-              (eq, "$cheat_mode", 1),
+              (ge, "$cheat_mode", DPLMC_DEBUG_MIN),
               (str_store_troop_name, s1, ":cur_troop"),
               (str_store_party_name, s2, ":cur_prisoner_of_party_2"),
               (display_message, "@{!}DEBUG: {s1} is now a prisoner of {s2}."),
@@ -4627,7 +4626,7 @@ scripts = [
         (assign, reg12, ":multiplier"),
 
         (try_begin),
-          (eq, "$cheat_mode", 1),
+          (ge, "$cheat_mode", DPLMC_DEBUG_MIN),
           (display_message, "@{!}DEBUG: start multipler {reg10}, item_value {reg11}, resulting multiplier {reg12}."),
         (try_end),
 
@@ -4668,7 +4667,7 @@ scripts = [
         (assign, reg12, ":multiplier"),
 
         (try_begin),
-          (eq, "$cheat_mode", 1),
+          (ge, "$cheat_mode", DPLMC_DEBUG_MIN),
           (display_message, "@{!}DEBUG: start multipler {reg10}, item_value {reg11}, resulting multiplier {reg12}."),
         (try_end),
 
@@ -5666,7 +5665,7 @@ scripts = [
             (gt, reg0, 0),
             (try_begin),
               (neg|is_between, ":aristocrat", kingdom_ladies_begin, kingdom_ladies_end),
-              (eq, "$cheat_mode", 1),
+              (ge, "$cheat_mode", DPLMC_DEBUG_MIN),
               (str_store_troop_name_link, s12, ":aristocrat"),
               (call_script, "script_troop_get_relation_with_troop", ":aristocrat", ":troop_no"),
               (str_store_string, s49, "str_s49_s12_s11_rel_reg0"),
@@ -6268,7 +6267,7 @@ scripts = [
                 (str_store_string, s21, "str_s21_the_fighting_has_begun_relatively_recently_and_the_war_may_continue_for_some_time"),
               (try_end),
               (try_begin),
-                (eq, "$cheat_mode", 1),
+                (ge, "$cheat_mode", DPLMC_DEBUG_MIN),
                 (assign, reg4, ":war_damage_inflicted"),
                 (assign, reg5, ":war_damage_suffered"),
                 (str_store_string, s21, "str_s21_reg4reg5"),
@@ -6324,7 +6323,7 @@ scripts = [
               (str_store_string, s21, "str_s21_the_s14_was_recently_provoked_by_subjects_of_the_s5_and_there_is_a_risk_of_war_"),
             (try_end),
             (try_begin),
-              (eq, "$cheat_mode", 1),
+              (ge, "$cheat_mode", DPLMC_DEBUG_MIN),
               (call_script, "script_npc_decision_checklist_peace_or_war", ":faction_no", ":cur_faction", -1),
 			  (str_store_string, s21, "@{!}DEBUG : {s21}.^CHEAT MODE ASSESSMENT: {s14}^"),
             (try_end),
@@ -7258,7 +7257,7 @@ scripts = [
 	  (try_end),
 
 	  (try_begin),
-	    (eq, "$cheat_mode", 1),
+	    (ge, "$cheat_mode", DPLMC_DEBUG_MIN),
 	    (assign, reg3, "$cheat_mode"),
 	    (display_message, "@{!}DEBUG -- Assigned lord reputation and relations"),
 
@@ -15318,7 +15317,7 @@ scripts = [
 
       # sb : debug
         (try_begin),
-          (ge, "$cheat_mode", 1),
+          (ge, "$cheat_mode", DPLMC_DEBUG_MIN),
           (eq, ":extra_text_id", 4),
           (call_script, "script_dplmc_get_item_value_with_imod", ":item_no", ":item_modifier"),
           (assign, ":value", reg0),
@@ -15409,7 +15408,7 @@ scripts = [
 
       #SB : debug cheats
       (try_begin),
-        (ge, "$cheat_mode", 1),
+        (ge, "$cheat_mode", DPLMC_DEBUG_MIN),
         (try_begin),
            (neq, ":party_no", "p_main_party"),
            (context_menu_add_item, "@Attach", cmenu_attach),
@@ -16647,7 +16646,7 @@ scripts = [
 	  (party_get_slot, ":origin", ":party_no", slot_party_last_traded_center),
 
 	  (try_begin),
-		(eq, "$cheat_mode", 2),
+		(eq, "$cheat_mode", DPLMC_DEBUG_ECONOMY),
 		(str_store_party_name, s4, ":center_no"),
 		(str_store_party_name, s5, ":origin"),
 		(display_message, "@{!}DEBUG -- Caravan trades in {s4}, originally from {s5}"),
@@ -16724,7 +16723,7 @@ scripts = [
 		(val_add, ":origin_accumulated_tariffs", ":origin_tariffs_generated"),
 		(party_set_slot, ":origin", slot_center_accumulated_tariffs, ":origin_accumulated_tariffs"),
 		#print economic debug message if enabled
-		(ge, "$cheat_mode", 3),
+		(eq, "$cheat_mode", DPLMC_DEBUG_ECONOMY),
 		(assign, reg4, ":origin_tariffs_generated"),
 		(str_store_party_name, s4, ":origin"),
 		(assign, reg5, ":origin_accumulated_tariffs"),
@@ -16747,7 +16746,7 @@ scripts = [
 	  (val_add, ":accumulated_tariffs", ":tariffs_generated"),
 
 	  (try_begin),
-		(ge, "$cheat_mode", 3),
+		(ge, "$cheat_mode", DPLMC_DEBUG_ECONOMY),
 		(assign, reg4, ":tariffs_generated"),
 		(str_store_party_name, s4, ":center_no"),
 		(assign, reg5, ":accumulated_tariffs"),
@@ -16989,13 +16988,13 @@ scripts = [
 		(assign, ":merciful", 1),
 	  (try_end),
 	  (try_begin),
-		(ge, "$cheat_mode", 1),
-		(ge, "$g_dplmc_gold_changes", DPLMC_GOLD_CHANGES_LOW),#don't display when nonapplicable
-		(assign, ":save_reg1", reg1),
-		(assign, reg0, "$g_player_surrenders"),
-		(assign, reg1, ":merciful"),
-		(display_message, "@{!} DEBUG loot_player_items: g_player_surrenders = {reg0}, merciful = {reg1}"),
-        (assign, reg1, ":save_reg1"),
+		  (ge, "$cheat_mode", DPLMC_DEBUG_MIN),
+		  (ge, "$g_dplmc_gold_changes", DPLMC_GOLD_CHANGES_LOW),#don't display when nonapplicable
+		  (assign, ":save_reg1", reg1),
+		  (assign, reg0, "$g_player_surrenders"),
+		  (assign, reg1, ":merciful"),
+		  (display_message, "@{!} DEBUG loot_player_items: g_player_surrenders = {reg0}, merciful = {reg1}"),
+      (assign, reg1, ":save_reg1"),
 	  (try_end),
 	  ##diplomacy end+
       (troop_get_inventory_capacity, ":inv_cap", "trp_player"),
@@ -17472,7 +17471,7 @@ scripts = [
             (troop_set_slot, ":stack_troop", slot_troop_occupation, 0),
             (party_remove_members, ":party", ":stack_troop", ":stack_size"),
             (try_begin),
-              (eq, "$cheat_mode", 1),
+              (ge, "$cheat_mode", DPLMC_DEBUG_MIN),
               (str_store_party_name, s1, ":prison_center"),
               (display_message, "str_your_hero_prisoned_at_s1"),
             (try_end),
@@ -17505,7 +17504,7 @@ scripts = [
             (party_remove_members, ":party", ":stack_troop", ":stack_size"),
             (call_script, "script_change_troop_renown", ":stack_troop", dplmc_taken_prisoner_renown + dplmc_escape_prisoner_renown), #SB : lose renown
             (try_begin),
-              (eq, "$cheat_mode", 1),
+              (ge, "$cheat_mode", DPLMC_DEBUG_MIN),
               (str_store_troop_name, 4, ":stack_troop"),
               (str_store_party_name, 5, ":town_no"),
               (display_message, "@{!}{s4} is sent to {s5} after defeat"),
@@ -17812,7 +17811,7 @@ scripts = [
       (try_end),
 
       (try_begin),
-        (eq, "$cheat_mode", 1),
+        (ge, "$cheat_mode", DPLMC_DEBUG_MIN),
         (assign, reg1, ":stack_size"),
         (assign, reg2, ":gain"),
         (display_message, "str_our_per_person__reg0_num_people__reg1_total_gain__reg2"),
@@ -17852,7 +17851,7 @@ scripts = [
       (try_end),
 
       (try_begin),
-        (eq, "$cheat_mode", 1),
+        (ge, "$cheat_mode", DPLMC_DEBUG_MIN),
         (assign, reg1, ":stack_size"),
         (assign, reg2, ":gain"),
         (display_message, "str_ene_per_person__reg0_num_people__reg1_total_gain__reg2"),
@@ -17897,7 +17896,7 @@ scripts = [
         (try_end),
 
         (try_begin),
-          (eq, "$cheat_mode", 1),
+          (ge, "$cheat_mode", DPLMC_DEBUG_MIN),
           (assign, reg1, ":stack_size"),
           (assign, reg2, ":gain"),
           (display_message, "str_all_per_person__reg0_num_people__reg1_total_gain__reg2"),
@@ -17911,7 +17910,7 @@ scripts = [
     (val_mul, ":our_losses", 100),
 
     (try_begin),
-      (eq, "$cheat_mode", 1),
+      (ge, "$cheat_mode", DPLMC_DEBUG_MIN),
       (assign, reg0, ":enemy_losses"),
       (display_message, "@{!}DEBUGS : enemy_loses : {reg0}"),
     (try_end),
@@ -17924,7 +17923,7 @@ scripts = [
     (try_end),
 
     (try_begin),
-      (eq, "$cheat_mode", 1),
+      (ge, "$cheat_mode", DPLMC_DEBUG_MIN),
       (assign, reg1, ":loss_ratio"),
       (display_message, "str_loss_ratio_is_reg1"),
     (try_end),
@@ -17942,7 +17941,7 @@ scripts = [
     (try_end),
 
     (try_begin),
-      (eq, "$cheat_mode", 1),
+      (ge, "$cheat_mode", DPLMC_DEBUG_MIN),
       (assign, reg0, ":total_gain"),
       (display_message, "@{!}DEBUGS1 : total_gain : {reg0}"),
     (try_end),
@@ -17956,7 +17955,7 @@ scripts = [
     (val_div, ":total_gain", 100),
 
     (try_begin),
-      (eq, "$cheat_mode", 1),
+      (ge, "$cheat_mode", DPLMC_DEBUG_MIN),
       (assign, reg0, ":total_gain"),
       (display_message, "@{!}DEBUGS2 : total_gain : {reg0}"),
     (try_end),
@@ -18009,7 +18008,7 @@ scripts = [
       (val_div, ":total_enemy_morale_gain", 4),
 
       (try_begin),
-        (eq, "$cheat_mode", 1),
+        (ge, "$cheat_mode", DPLMC_DEBUG_MIN),
         (assign, reg7, ":total_enemy_morale_gain"),
         (display_message, "str_total_enemy_morale_gain__reg6_last_total_enemy_morale_gain__reg7_remaining_enemy_population__reg5"),
       (try_end),
@@ -18045,7 +18044,7 @@ scripts = [
     (val_div, ":morale_gain", ":num_player_party_shares"),#if there are lots of soldiers in my party there will be less morale increase.
 
     (try_begin),
-      (eq, "$cheat_mode", 1),
+      (ge, "$cheat_mode", DPLMC_DEBUG_MIN),
       (assign, reg0, ":num_player_party_shares"),
       (assign, reg1, ":total_gain"),
       (display_message, "@{!}DEBUGS3 : num_player_party_shares:{reg0}, total_gain:{reg1}"),
@@ -20399,7 +20398,7 @@ scripts = [
                 (try_end),
 
                 (try_begin),
-                  (eq, "$cheat_mode", 1),
+                  (ge, "$cheat_mode", DPLMC_DEBUG_MIN),
                   (assign, reg0, ":prisoner_relative"),
                   (display_message, "str_prisoner_relative_is_reg0"),
                 (try_end),
@@ -21679,7 +21678,7 @@ scripts = [
 
 			(party_slot_eq, ":closest_town", slot_town_lord, ":giver_troop"),
       (try_begin),
-        (eq, "$cheat_mode", 1),
+        (ge, "$cheat_mode", DPLMC_DEBUG_MIN),
         (assign, reg10, ":distance"),
         (str_store_party_name, s4, ":closest_town"),
         (display_message, "@{!}DEBUG: Lair distance from {s4} is {reg10}."),
@@ -21709,7 +21708,7 @@ scripts = [
 		(gt, ":bandit_party_found", 0),
 
         (try_begin),
-            (eq, "$cheat_mode", 1),
+            (ge, "$cheat_mode", DPLMC_DEBUG_MIN),
             (display_message, "str_traveller_attack_found"),
         (try_end),
 
@@ -21830,7 +21829,7 @@ scripts = [
 	(try_begin), #this for kingdom hero, "we have a mutual enemy"
 		(neg|check_quest_active, "qst_denounce_lord"),
 		(try_begin),
-			(ge, "$cheat_mode", 1),
+			(ge, "$cheat_mode", DPLMC_DEBUG_MIN),
 			(quest_get_slot, reg4, "qst_denounce_lord", slot_quest_dont_give_again_remaining_days),
 			(display_message, "@{!}DEBUG -- Checking for denounce lord, eligible in {reg4} days"),
 		(try_end),
@@ -21873,7 +21872,7 @@ scripts = [
 
 			(str_store_troop_name, s4, ":potential_target"),
 			(try_begin),
-				(ge, "$cheat_mode", 1),
+				(ge, "$cheat_mode", DPLMC_DEBUG_MIN),
 				(display_message, "@{!}DEBUG -- Rival found in {s4}"),
 			(try_end),
 
@@ -21896,7 +21895,7 @@ scripts = [
 
 			(str_store_troop_name, s4, ":potential_target"),
 			(try_begin),
-				(ge, "$cheat_mode", 1),
+				(ge, "$cheat_mode", DPLMC_DEBUG_MIN),
 				(display_message, "@{!}DEBUG -- {s4} is not close friend of player"),
 			(try_end),
 
@@ -21918,13 +21917,13 @@ scripts = [
 
 			(str_store_troop_name, s4, ":potential_target"),
 			(try_begin),
-				(ge, "$cheat_mode", 1),
+				(ge, "$cheat_mode", DPLMC_DEBUG_MIN),
 				(assign, reg3, ":enemies_in_faction"),
 				(display_message, "@{!}DEBUG -- {s4} has {reg3} rivals"),
 			(try_end),
 
 			(this_or_next|ge, ":enemies_in_faction", 3),
-				(ge, "$cheat_mode", 1),
+				(ge, "$cheat_mode", DPLMC_DEBUG_MIN),
 
 			(assign, ":score_to_beat", ":relation_with_giver_troop"),
 			(assign, ":target_lord", ":potential_target"),
@@ -21941,7 +21940,7 @@ scripts = [
 	(else_try),
 		(neg|check_quest_active, "qst_intrigue_against_lord"),
 		(try_begin),
-			(eq, "$cheat_mode", 1),
+			(eq, "$cheat_mode", DPLMC_DEBUG_MIN),
 			(quest_get_slot, reg4, "qst_intrigue_against_lord", slot_quest_dont_give_again_remaining_days),
 			(display_message, "@{!}DEBUG -- Checking for intrigue, eligible in {reg4} days"),
 		(try_end),
@@ -21955,7 +21954,7 @@ scripts = [
 		(neg|faction_slot_eq, "$players_kingdom", slot_faction_leader, "trp_player"),
 
 		(try_begin),
-			(ge, "$cheat_mode", 1),
+			(ge, "$cheat_mode", DPLMC_DEBUG_MIN),
 			(display_message, "@{!}DEBUG -- Trying for intrigue against lord"),
 		(try_end),
 
@@ -21987,7 +21986,7 @@ scripts = [
 
 			(str_store_troop_name, s4, ":potential_target"),
 			(try_begin),
-				(ge, "$cheat_mode", 1),
+				(ge, "$cheat_mode", DPLMC_DEBUG_MIN),
 				(display_message, "@{!}DEBUG -- {s4} has sufficiently low relation with liege"),
 			(try_end),
 
@@ -21998,7 +21997,7 @@ scripts = [
 
 			(str_store_troop_name, s4, ":potential_target"),
 			(try_begin),
-				(ge, "$cheat_mode", 1),
+				(ge, "$cheat_mode", DPLMC_DEBUG_MIN),
 				(display_message, "@{!}DEBUG -- {s4} has sufficiently low relation with giver troop"),
 			(try_end),
 
@@ -22009,7 +22008,7 @@ scripts = [
 
 			(str_store_troop_name, s4, ":potential_target"),
 			(try_begin),
-				(ge, "$cheat_mode", 1),
+				(ge, "$cheat_mode", DPLMC_DEBUG_MIN),
 				(display_message, "@{!}DEBUG -- {s4} has sufficiently low relation with player"),
 			(try_end),
 
@@ -22029,7 +22028,7 @@ scripts = [
 	(else_try),
 		#Resolve dispute, if there is a good chance of achieving the result
 		(try_begin),
-			(ge, "$cheat_mode", 1),
+			(ge, "$cheat_mode", DPLMC_DEBUG_MIN),
 			(quest_get_slot, reg4, "qst_resolve_dispute", slot_quest_dont_give_again_remaining_days),
 			(display_message, "@{!}DEBUG -- Checking for resolve dispute, eligible in {reg4} days"),
 		(try_end),
@@ -22110,7 +22109,7 @@ scripts = [
 
 	(else_try),
 		(try_begin),
-			(ge, "$cheat_mode", 1),
+			(ge, "$cheat_mode", DPLMC_DEBUG_MIN),
 			(quest_get_slot, reg4, "qst_offer_gift", slot_quest_dont_give_again_remaining_days),
 			(display_message, "@{!}DEBUG -- Checking for offer gift, eligible in {reg4} days"),
 		(try_end),
@@ -22220,11 +22219,11 @@ scripts = [
     (gt, reg0, -1),
 
     (assign, ":quest_giver_found", ":quest_giver"),
-	(try_begin),
-          (eq, "$cheat_mode", 1),
-	  (str_store_troop_name, s4, ":quest_giver_found"),
-	  (display_message, "str_test_diagnostic_quest_found_for_s4"),
-        (try_end),
+	  (try_begin),
+      (ge, "$cheat_mode", DPLMC_DEBUG_MIN),
+	    (str_store_troop_name, s4, ":quest_giver_found"),
+	    (display_message, "str_test_diagnostic_quest_found_for_s4"),
+    (try_end),
 
   (try_end),
 
@@ -23504,7 +23503,7 @@ scripts = [
 
 
 		(try_begin),
-			(ge, "$cheat_mode", 1),
+			(ge, "$cheat_mode", DPLMC_DEBUG_MIN),
 			(str_store_troop_name, s4, ":troop_no"),
 			(display_message, "@{!}DEBUG - {s4} faction changed in normal faction change"),
 		(try_end),
@@ -23592,7 +23591,7 @@ scripts = [
 		(eq, ":closest_male_relative", ":troop_no"),
 
 		(try_begin),
-			(ge, "$cheat_mode", 1),
+			(ge, "$cheat_mode", DPLMC_DEBUG_MIN),
 			(str_store_troop_name, s4, ":kingdom_lady"),
 			(display_message, "@{!}DEBUG - {s4} faction changed by guardian moving"),
 		(try_end),
@@ -23639,9 +23638,9 @@ scripts = [
 
 		(str_store_troop_name, s4, ":troop_no"),
 		(try_begin),
-		  (eq, "$cheat_mode", 1),
-  		  (display_message, "str_s4_changing_sides_aborts_quest"),
-        (try_end),
+		  (eq, "$cheat_mode", DPLMC_DEBUG_MIN),
+      (display_message, "str_s4_changing_sides_aborts_quest"),
+    (try_end),
 		(call_script, "script_abort_quest", ":quest", 0),
 	  (try_end),
 
@@ -23964,13 +23963,12 @@ scripts = [
            (display_log_message, "@{s4} has been awarded to {s5} of the {s7}.", ":color"),
         (try_end),
       (else_try),
-	  ##diplomacy end+
-	   (eq, "$cheat_mode", 1),
-		(ge, ":lord_troop_id", 0),
-		(str_store_party_name, s4, ":center_no"),
-		(str_store_troop_name, s5, ":lord_troop_id"),
-		(display_message, "@{!}DEBUG -- {s4} awarded to {s5}"),
-	  (try_end),
+	      (ge, "$cheat_mode", DPLMC_DEBUG_MIN),
+	  	  (ge, ":lord_troop_id", 0),
+  		  (str_store_party_name, s4, ":center_no"),
+	  	  (str_store_troop_name, s5, ":lord_troop_id"),
+	   	  (display_message, "@{!}DEBUG -- {s4} awarded to {s5}"),
+	    (try_end),
 
 	  (try_begin),
 	    (eq, ":lord_troop_id", "trp_player"),
@@ -25988,7 +25986,7 @@ scripts = [
                (val_add, ":raid_leader_gold", ":value_of_loot"),
                (troop_set_slot, ":raid_leader", slot_troop_wealth, ":raid_leader_gold"),
                (try_begin), #SB : debug printout
-                 (eq, "$cheat_mode", 2),
+                 (eq, "$cheat_mode", DPLMC_DEBUG_ECONOMY),
                  (assign, reg2, ":raid_leader_gold"),
                  (str_store_troop_name_link, s2, ":raid_leader"),
                  (display_message, "@{s2} now has {reg2} denars from raiding"),#SB : debug
@@ -26026,7 +26024,7 @@ scripts = [
                  (val_max, ":village_lord_gold", 0),
                  (troop_set_slot, ":village_lord", slot_troop_wealth, ":village_lord_gold"),
                  (try_begin), #SB : debug printout
-                   (eq, "$cheat_mode", 2),
+                   (eq, "$cheat_mode", DPLMC_DEBUG_ECONOMY),
                    (assign, reg2, ":village_lord_gold"),
                    (str_store_troop_name_link, s2, ":village_lord"),
                    (display_message, "@{s2} now has {reg2} denars from being raided"),
@@ -26373,7 +26371,7 @@ scripts = [
 				(val_add, ":faction_recce_slot", slot_center_last_reconnoitered_by_faction_time),
 				(party_set_slot, ":center_no", ":faction_recce_slot", ":hours"),
 
-				#(eq, "$cheat_mode", 1),
+				#(ge, "$cheat_mode", DPLMC_DEBUG_MIN),
 				#(str_store_faction_name, s4, ":party_faction"),
 				#(str_store_party_name, s5, ":center_no"),
 				#(display_message, "@{!}DEBUG -- {s4} reconnoiters {s5}"),
@@ -26412,7 +26410,7 @@ scripts = [
           #So if there is already a battle inside the center, do not sortie and search enemy outside.
           (party_get_battle_opponent, ":center_battle_opponent", ":center_no"),
           (try_begin),
-		    (ge, "$cheat_mode", 1),
+		        (ge, "$cheat_mode", DPLMC_DEBUG_MIN),
             (ge, ":center_battle_opponent", 0),
             (str_store_party_name, s7, ":center_no"),
             (str_store_party_name, s6, ":center_battle_opponent"),
@@ -26422,7 +26420,7 @@ scripts = [
           #New added by ozan ended.
 
           (try_begin),
-            (eq, "$cheat_mode", 1),
+            (ge, "$cheat_mode", DPLMC_DEBUG_MIN),
             (str_store_party_name, s4, ":center_no"),
             (assign, reg3, ":sortie_strength"),
             (assign, reg4, ":enemy_strength"),
@@ -26447,7 +26445,7 @@ scripts = [
             (call_script, "script_party_set_ai_state", ":sortie_party",  spai_patrolling_around_center, ":center_no"),
 
             (try_begin),
-              (eq, "$cheat_mode", 1),
+              (ge, "$cheat_mode", DPLMC_DEBUG_MIN),
               (str_store_party_name, s4, ":sortie_party"),
               (display_message, "str_s4_sorties"),
             (try_end),
@@ -26586,7 +26584,7 @@ scripts = [
          (call_script, "script_party_set_ai_state", ":party_no", spai_engaging_army, ":commander_object"), #go and help commander
 
          (try_begin),
-           (eq, "$cheat_mode", 1),
+           (ge, "$cheat_mode", DPLMC_DEBUG_MIN),
            (str_store_party_name, s7, ":party_no"),
            (str_store_party_name, s6, ":commander_object"),
            (display_message, "@{!}DEBUG : {s7} is helping his commander by fighting with {s6}."),
@@ -27084,7 +27082,7 @@ scripts = [
         (val_sub, ":troop_wealth", ":improvement_cost"),
         (troop_set_slot, ":troop_no", slot_troop_wealth, ":troop_wealth"),
         (try_begin),
-          (this_or_next|eq, "$cheat_mode", 3),
+          (this_or_next|eq, "$cheat_mode", DPLMC_DEBUG_ECONOMY),
           (ge, ":is_affiliated", 1),#<-- dplmc+ added
           (assign, reg6, ":improvement_time"),
           (str_store_troop_name_link, s10, ":troop_no"),
@@ -27100,7 +27098,7 @@ scripts = [
       #Modify the next block to display for affiliates
       (try_begin),
         (this_or_next|ge, ":is_affiliated", 1),#<-- dplmc+ added
-        (eq, "$cheat_mode", 3),
+        (eq, "$cheat_mode", DPLMC_DEBUG_ECONOMY),
         (assign, reg1, ":troop_wealth"),
         (str_store_party_name_link, s4, ":center_no"),
         (add_troop_note_from_sreg, ":troop_no", 1, "str_current_wealth_reg1_taxes_last_collected_from_s4", 0),
@@ -27135,7 +27133,7 @@ scripts = [
         (try_begin), #debug
           ##nested diplomacy start+
           (this_or_next|ge, ":is_affiliated", 1),#<- Show for affiliates
-          (eq, "$cheat_mode", 2),
+          (eq, "$cheat_mode", DPLMC_DEBUG_MILITARY),
           ##nested diplomacy end+
           (assign, reg2, ":troop_amount"),
           # (str_store_string, s11, "@{reg2}"),
@@ -27203,7 +27201,7 @@ scripts = [
           (try_end),
           (try_begin), #debug
             (this_or_next|ge, ":is_affiliated", 1),#<- Show for affiliates
-            (eq, "$cheat_mode", 2),
+            (eq, "$cheat_mode", DPLMC_DEBUG_MILITARY),
             (assign, reg2, ":divider"),
             (str_store_troop_name_by_count, s12, ":mercenary_troop", reg2),
             (str_store_party_name_link, s11, ":center_no"),
@@ -27264,7 +27262,7 @@ scripts = [
           (val_div, ":cost", 100),#base
           (gt, ":troop_wealth", ":cost"),
           (try_begin), #debug
-            (eq, "$cheat_mode", 2),
+            (eq, "$cheat_mode", DPLMC_DEBUG_ECONOMY),
             #(str_store_string, s11, "@{reg2}"),
 
             # (str_store_party_name_link, s14, ":center_no"),
@@ -27328,7 +27326,7 @@ scripts = [
             (troop_set_class, ":troop_no", ":lord_group"),
             # DA
         (try_end),
-        (eq, "$cheat_mode", 2),
+        (eq, "$cheat_mode", DPLMC_DEBUG_MILITARY),
         (troop_get_class, ":class_no", ":troop_no"),
         (assign, reg0, ":class_no"),
         (str_store_troop_name_link, s1, ":troop_no"),
@@ -27339,7 +27337,7 @@ scripts = [
     (troop_set_slot, ":troop_no", slot_troop_wealth, ":troop_wealth"),
     #DEBUG
     (try_begin),
-      (eq, "$cheat_mode", 2),
+      (eq, "$cheat_mode", DPLMC_DEBUG_ECONOMY),
       (neq, ":troop_wealth", ":initial_wealth"),
       (assign, reg1, ":initial_wealth"),
       (str_store_troop_name_link, s1, ":troop_no"),
@@ -28067,7 +28065,7 @@ scripts = [
 		(neq, ":disputed_center_faction", ":faction_no"),
 
 		(try_begin),
-			(eq, "$cheat_mode", 1),
+			(eq, "$cheat_mode", DPLMC_DEBUG_POLITICS),
 			(str_store_faction_name, s4, ":faction_no"),
 			(str_store_party_name, s5, ":disputed_center_faction"),
 			(display_message, "@{!}DEBUG -- {s4} drops {s5} as issue as it has changed hands"),
@@ -28224,7 +28222,7 @@ scripts = [
 		##diplomacy end+
 
 		(try_begin),
-			(eq, "$cheat_mode", 1),
+			(eq, "$cheat_mode", DPLMC_DEBUG_POLITICS),
 			(assign, reg4, ":lords_who_have_voted"),
 			(assign, reg5, ":number_required_for_quorum"),
 			(assign, reg7, ":hours_on_agenda"),
@@ -28234,7 +28232,7 @@ scripts = [
 
 
 		(try_begin),
-		  (eq, "$cheat_mode", 1),
+		  (eq, "$cheat_mode", DPLMC_DEBUG_POLITICS),
 		  (display_message, "@{!}DEBUG -- Faction resolves political issue"),
 		(try_end),
 
@@ -28307,7 +28305,7 @@ scripts = [
 				(eq, reg0, 1),
 				(gt, ":popular_favorite", -1),
             		(this_or_next|eq, "$players_kingdom", ":faction_no"),
-            		(ge, "$cheat_mode", 1),
+            		(eq, "$cheat_mode", DPLMC_DEBUG_POLITICS),
             		(str_store_faction_name, s4, ":faction_no"),
             		(str_store_troop_name, s5, ":popular_favorite"),
             		(str_store_troop_name, s0, ":faction_leader"),
@@ -28326,7 +28324,7 @@ scripts = [
 				#Print a message letting people know when this happens.
 				(gt, ":popular_favorite", -1),
 				(this_or_next|eq, "$players_kingdom", ":faction_no"),
-					(ge, "$cheat_mode", 1),
+        (eq, "$cheat_mode", DPLMC_DEBUG_POLITICS),
 				(str_store_faction_name, s4, ":faction_no"),
 				(str_store_troop_name, s5, ":popular_favorite"),
 				(str_store_troop_name, s0, ":faction_leader"),
@@ -28358,7 +28356,7 @@ scripts = [
 			(neq, "$players_kingdom", ":faction_no"),
 
 			(try_begin),
-				(eq, "$cheat_mode", 1),
+				(eq, "$cheat_mode", DPLMC_DEBUG_POLITICS),
 				(str_store_faction_name, s4, ":faction_no"),
 				(str_store_party_name, s5, ":winning_candidate"),
 				(display_message, "@{!}DEBUG -- {s4} drops {s5} as winner, for having changed sides"),
@@ -28383,7 +28381,7 @@ scripts = [
 			(neq, ":winning_candidate_faction", ":faction_no"),
 
 			(try_begin),
-				(eq, "$cheat_mode", 1),
+				(eq, "$cheat_mode", DPLMC_DEBUG_POLITICS),
 				(str_store_faction_name, s4, ":faction_no"),
 				(str_store_party_name, s5, ":winning_candidate"),
 				(display_message, "@{!}DEBUG -- {s4} drops {s5} as winner, for having changed sides"),
@@ -28633,7 +28631,7 @@ scripts = [
        (neq, ":new_strategy", ":old_faction_ai_state"),
 
        (try_begin),
-         (ge, "$cheat_mode", 1),
+         (eq, "$cheat_mode", DPLMC_DEBUG_POLITICS),
          (str_store_faction_name, s5, ":faction_no"),
          (display_message, "str_s5_decides_s14"),
        (try_end),
@@ -28689,7 +28687,7 @@ scripts = [
          (eq, ":old_faction_ai_state", sfai_gathering_army),
          (is_between, ":new_strategy", sfai_attacking_center, sfai_feast),
 		 (try_begin),
-			(eq, "$cheat_mode", 1),
+			(eq, "$cheat_mode", DPLMC_DEBUG_MILITARY),
 			(str_store_faction_name, s5, ":faction_no"),
 			(display_message, "str_s5_begins_offensive"),
 		 (try_end),
@@ -28719,9 +28717,9 @@ scripts = [
              (val_add, ":total_lords_participating", 1),
 
 		     (try_begin),
-			  (ge, "$cheat_mode", 1),
+			    (eq, "$cheat_mode", DPLMC_DEBUG_MILITARY),
 		      (str_store_party_name, s4, ":screening_party"),
-			  (display_message, "@{!}DEBUG -- {s4} participates in offensive"),
+			    (display_message, "@{!}DEBUG -- {s4} participates in offensive"),
 		     (try_end),
 
 
@@ -28742,7 +28740,7 @@ scripts = [
            (party_is_active, ":faction_marshal_party"),
            (call_script, "script_party_set_ai_state", ":best_screening_party", spai_screening_army, ":faction_marshal_party"),
            (try_begin),
-             (ge, "$cheat_mode", 1),
+             (eq, "$cheat_mode", DPLMC_DEBUG_MILITARY),
              (str_store_party_name, s4, ":best_screening_party"),
              (display_message, "@{!}DEBUG -- {s4} chosen as screen"),
            (try_end),
@@ -28945,17 +28943,17 @@ scripts = [
       (troop_get_slot, ":old_renown", ":troop_no", slot_troop_renown),
 
 	  (try_begin),
-		(gt, ":renown_change", 0),
-		(assign, reg4, ":renown_change"),
+		  (gt, ":renown_change", 0),
+		  (assign, reg4, ":renown_change"),
 
-		(store_div, ":subtraction", ":old_renown", 200),
+		  (store_div, ":subtraction", ":old_renown", 200),
 	    (val_sub, ":renown_change", ":subtraction"),
 	    (val_max, ":renown_change", 0),
 
 	    (eq, ":troop_no", "trp_player"),
 	    (assign, reg5, ":renown_change"),
 
-		(eq, "$cheat_mode", 1),
+		  (ge, "$cheat_mode", DPLMC_DEBUG_MIN),
 	    (display_message, "str_renown_change_of_reg4_reduced_to_reg5_because_of_high_existing_renown"),
 	  (try_end),
 
@@ -29728,7 +29726,7 @@ scripts = [
 	    # (neq, ":template", "pt_kingdom_hero_party"),
 	    (eq, ":template", "pt_kingdom_caravan_party"), #SB: fix this to specifically apply to caravans
 		(try_begin),
-			(ge, "$cheat_mode", 1),
+			(ge, "$cheat_mode", DPLMC_DEBUG_MIN),
 			(str_store_faction_name, s5, ":defender_faction"),
 			(display_message, "@{!}Debug - {s5} caravan attacked"),
 		(try_end),
@@ -29741,7 +29739,7 @@ scripts = [
 	    # (this_or_next|eq, ":template", "pt_center_reinforcements"), #are these "villagers" though?
 	    (eq, ":template", "pt_village_farmers"),
 		(try_begin),
-			(ge, "$cheat_mode", 1),
+			(ge, "$cheat_mode", DPLMC_DEBUG_MIN),
 			(str_store_faction_name, s5, ":defender_faction"),
 			(display_message, "@{!}Debug - {s5} villagers attacked"),
 		(try_end),
@@ -30402,7 +30400,7 @@ scripts = [
           (val_sub, ":barrier", 1),
 
           (try_begin), #debug
-            (eq, "$cheat_mode", 1),
+            (ge, "$cheat_mode", DPLMC_DEBUG_POLITICS),
             (str_store_faction_name, s5, ":cur_kingdom"),
             (str_store_faction_name, s6, ":third_kingdom"),
             (str_store_faction_name, s7, ":cur_kingdom_2"),
@@ -30525,7 +30523,7 @@ scripts = [
 		(eq, ":players_kingdom_at_peace", 1),
 		(val_add, "$players_kingdom_days_at_peace", 1),
 		(try_begin),
-			(eq, "$cheat_mode", 1),
+			(ge, "$cheat_mode", DPLMC_DEBUG_POLITICS),
 			(assign, reg3, "$players_kingdom_days_at_peace"),
 			(display_message, "@{!}DEBUG -- Player's kingdom has had {reg3} days of peace"),
 		(try_end),
@@ -31273,7 +31271,7 @@ scripts = [
             (troop_slot_eq, "trp_player", slot_troop_betrothed, ":cur_troop"), #player spouse goes in position of honor
             (assign, ":lady_meets_visitors", 0), #She is already in the place of honor
             (try_begin), #SB : primary spouse
-                (eq, "$cheat_mode", 1),
+                (ge, "$cheat_mode", DPLMC_DEBUG_MIN),
                 (str_store_troop_name, s4, ":cur_troop"),
                 (display_message, "str_s4_is_present_at_the_center_and_in_place_of_honor"),
             (try_end),
@@ -31282,7 +31280,7 @@ scripts = [
             (troop_slot_eq, ":cur_troop", slot_troop_betrothed, "trp_player"),
             (assign, ":lady_meets_visitors", 1),
             (try_begin), #SB : secondary spouse, normally shadowed due to above behaviour
-                (eq, "$cheat_mode", 1),
+                (ge, "$cheat_mode", DPLMC_DEBUG_MIN),
                 (str_store_troop_name, s4, ":cur_troop"),
                 (display_message, "str_s4_is_present_at_the_center_and_is_married"),
             (try_end),
@@ -31294,7 +31292,7 @@ scripts = [
 
 
             (try_begin),
-                (eq, "$cheat_mode", 1),
+                (ge, "$cheat_mode", DPLMC_DEBUG_MIN),
                 (str_store_troop_name, s4, ":cur_troop"),
                 (try_begin), #SB : distinguish between refugee and prisoner
                   (troop_slot_eq, ":cur_troop", slot_troop_prisoner_of_party, ":center_no"),
@@ -31314,7 +31312,7 @@ scripts = [
                 (assign, ":lady_meets_visitors", 0),
 
                 (try_begin),
-                    (eq, "$cheat_mode", 1),
+                    (ge, "$cheat_mode", DPLMC_DEBUG_MIN),
                     (str_store_troop_name, s4, ":cur_troop"),
                     (display_message, "str_s4_is_present_at_the_center_and_not_attending_the_feast"),
                 (try_end),
@@ -31322,7 +31320,7 @@ scripts = [
                 (assign, ":lady_meets_visitors", 1),
 
                 (try_begin),
-                    (eq, "$cheat_mode", 1),
+                    (ge, "$cheat_mode", DPLMC_DEBUG_MIN),
                     (str_store_troop_name, s4, ":cur_troop"),
                     (display_message, "str_s4_is_present_at_the_center_and_is_married"),
                 (try_end),
@@ -31334,7 +31332,7 @@ scripts = [
 			(assign, ":lady_meets_visitors", 1),
 
 			(try_begin),
-				(eq, "$cheat_mode", 1),
+				(ge, "$cheat_mode", DPLMC_DEBUG_MIN),
 				(str_store_troop_name, s4, ":cur_troop"),
 				(display_message, "@{!}DEBUG -- {s4} is present at the center and is attending the feast"),
 			(try_end),
@@ -31344,7 +31342,7 @@ scripts = [
 			(assign, ":lady_meets_visitors", 0),
 
 			(try_begin),
-				(eq, "$cheat_mode", 1),
+				(ge, "$cheat_mode", DPLMC_DEBUG_MIN),
 				(str_store_troop_name, s4, ":cur_troop"),
 				(display_message, "@{!}DEBUG -- {s4} is present at the center and is awaiting the player in private"),
 			(try_end),
@@ -31356,14 +31354,14 @@ scripts = [
 			(assign, ":lady_meets_visitors", 1),
 
 			(try_begin),
-				(eq, "$cheat_mode", 1),
+				(ge, "$cheat_mode", DPLMC_DEBUG_MIN),
 				(str_store_troop_name, s4, ":cur_troop"),
 				(display_message, "@{!}DEBUG -- {s4} is_present_at_the_center_and_is_allowed_to_meet_the_player"),
 			(try_end),
 
 		(else_try),
 			(try_begin),
-				(eq, "$cheat_mode", 1),
+				(ge, "$cheat_mode", DPLMC_DEBUG_MIN),
 				(str_store_troop_name, s4, ":cur_troop"),
 				(display_message, "@{!}DEBUG -- {s4}is_present_at_the_center_and_is_not_allowed_to_meet_the_player"),
 			(try_end),
@@ -34047,7 +34045,7 @@ scripts = [
 		 (assign, "$g_starting_strength_main_party", reg0),
 		 (try_begin),
 			#Print debug Message
-		    (ge, "$cheat_mode", 1),
+		    (ge, "$cheat_mode", DPLMC_DEBUG_MIN),
 		    (assign, reg2, ":terrain_code"),
 			(display_message, "@{!}DEBUG - Main party raw strength {reg1}, terrain code {reg2}, modified strength {reg0}"),
 		 (try_end),
@@ -34057,7 +34055,7 @@ scripts = [
 		 (assign, "$g_starting_strength_enemy_party", reg0),
 		 (assign, "$g_strength_contribution_of_player", 100),
 		 (try_begin),
-		    (ge, "$cheat_mode", 1),#debug
+		    (ge, "$cheat_mode", DPLMC_DEBUG_MIN),#debug
 		    (assign, reg2, ":terrain_code"),
 			(display_message, "@{!} DEBUG - Enemy party raw strength {reg1}, terrain code {reg2}, modified strength {reg0}"),
 		 (try_end),
@@ -34841,7 +34839,7 @@ scripts = [
 
 
 	(try_begin),
-		(eq, "$cheat_mode", 1),
+		(ge, "$cheat_mode", DPLMC_DEBUG_MIN),
 		(assign, reg4, ":walker_dna"),
 		(assign, reg5, ":total_item_production"),
 		(assign, reg7, ":semi_random_number"),
@@ -34854,7 +34852,7 @@ scripts = [
         (val_sub, ":semi_random_number", reg0),
         (lt, ":semi_random_number", 0),
         (try_begin),
-          (eq, "$cheat_mode", 1),
+          (eq, "$cheat_mode", DPLMC_DEBUG_ECONOMY),
           (str_store_item_name, s9, ":trade_good"),
           (display_message, "str_agent_produces_s9"),
         (try_end),
@@ -35036,7 +35034,7 @@ scripts = [
 
 
 			(try_begin),
-				(eq, "$cheat_mode", 1),
+				(eq, "$cheat_mode", DPLMC_DEBUG_ECONOMY),
 				(assign, reg4, ":price_in_other_town"),
 				(assign, reg5, ":score_to_beat"),
 				(str_store_party_name, s10, ":other_town"),
@@ -36710,10 +36708,10 @@ scripts = [
    [
 
     (try_begin),
-		(eq, "$cheat_mode", 1),
-		(display_message, "str_assigning_lords_to_empty_centers"),
-		(str_store_string, s65, "str_assign_lords_to_empty_centers_just_happened"),
-		(call_script, "script_add_notification_menu", "mnu_debug_alert_from_s65", 0, 0),
+		  (ge, "$cheat_mode", DPLMC_DEBUG_MIN),
+		  (display_message, "str_assigning_lords_to_empty_centers"),
+		  (str_store_string, s65, "str_assign_lords_to_empty_centers_just_happened"),
+		  (call_script, "script_add_notification_menu", "mnu_debug_alert_from_s65", 0, 0),
     (try_end),
 
 	(try_for_range, ":faction", kingdoms_begin, kingdoms_end),
@@ -36733,7 +36731,7 @@ scripts = [
 			(store_faction_of_party, ":center_faction", ":cur_center"),
 
 			(try_begin),
-				(eq, "$cheat_mode", 1),
+				(ge, "$cheat_mode", DPLMC_DEBUG_MIN),
 				(str_store_party_name, s4, ":cur_center"),
 				(str_store_faction_name, s5, ":center_faction"),
 				(display_message, "str_s4_of_the_s5_is_unassigned"),
@@ -36746,7 +36744,7 @@ scripts = [
 			(eq, ":center_lord", stl_reserved_for_player),
 
 			(try_begin),
-				(eq, "$cheat_mode", 1),
+				(ge, "$cheat_mode", DPLMC_DEBUG_MIN),
 				(str_store_party_name, s4, ":cur_center"),
 				(str_store_faction_name, s5, ":center_faction"),
 				(display_message, "str_s4_of_the_s5_is_reserved_for_player"),
@@ -36769,7 +36767,7 @@ scripts = [
 		(is_between, ":npc_faction", npc_kingdoms_begin, npc_kingdoms_end),
 
 		(try_begin),
-			(eq, "$cheat_mode", 1),
+			(ge, "$cheat_mode", DPLMC_DEBUG_MIN),
 			(str_store_troop_name, s4, ":active_npc"),
 			(str_store_faction_name, s5, ":npc_faction"),
 			(display_message, "str_s4_of_the_s5_has_no_fiefs"),
@@ -36781,12 +36779,12 @@ scripts = [
 	(try_end),
 
    	(try_begin),
-	  (eq, "$cheat_mode", 1),
- 	  (try_for_range, ":faction", kingdoms_begin, kingdoms_end),
-		(faction_get_slot, reg4, ":faction", slot_faction_temp_slot),
-		(str_store_faction_name, s4, ":faction"),
-		(display_message, "str_s4_unassigned_centers_plus_landless_lords_=_reg4"),
-	  (try_end),
+	   (ge, "$cheat_mode", DPLMC_DEBUG_MIN),
+ 	   (try_for_range, ":faction", kingdoms_begin, kingdoms_end),
+	  	(faction_get_slot, reg4, ":faction", slot_faction_temp_slot),
+	  	(str_store_faction_name, s4, ":faction"),
+  		(display_message, "str_s4_unassigned_centers_plus_landless_lords_=_reg4"),
+  	  (try_end),
     (try_end),
 
 	(try_for_range, ":cur_center", centers_begin, centers_end),
@@ -36799,13 +36797,13 @@ scripts = [
         (neg|faction_slot_eq, ":center_faction", slot_faction_leader, "trp_player"),
 
         (try_begin),
-	      (eq, "$cheat_mode", 1),
-		  (str_store_party_name, s5, ":cur_center"),
-	      (try_begin),
-			(neg|faction_slot_ge, ":center_faction", slot_faction_temp_slot, 2),
-			(str_store_faction_name, s4, ":center_faction"),
-			(display_message, "str_s4_holds_s5_in_reserve"),
-		  (try_end),
+	        (ge, "$cheat_mode", DPLMC_DEBUG_MIN),
+	    	  (str_store_party_name, s5, ":cur_center"),
+	        (try_begin),
+		      	(neg|faction_slot_ge, ":center_faction", slot_faction_temp_slot, 2),
+	      		(str_store_faction_name, s4, ":center_faction"),
+	      		(display_message, "str_s4_holds_s5_in_reserve"),
+    		  (try_end),
         (try_end),
 
 		(faction_slot_ge, ":center_faction", slot_faction_temp_slot, 2),
@@ -36965,7 +36963,7 @@ scripts = [
 		(val_add, ":percentage_change", 1),
 		(store_random_in_range, ":percentage_change", 0, ":percentage_change"),
 		#Display economics diagnostic
-		(ge, "$cheat_mode", 3),
+		(eq, "$cheat_mode", DPLMC_DEBUG_ECONOMY),
 		(str_store_party_name, s3, ":origin"),
 		(str_store_party_name, s4, ":center_no"),
 		(assign, reg4, ":percentage_change"),
@@ -37111,7 +37109,7 @@ scripts = [
         (party_set_slot, ":center_no", ":cur_good_price_slot", ":cur_center_price"),
 
 		(try_begin),
-			(eq, "$cheat_mode", 3),
+			(eq, "$cheat_mode", DPLMC_DEBUG_ECONOMY),
 			(str_store_party_name, s3, ":origin"),
 			(str_store_party_name, s4, ":center_no"),
 			(str_store_item_name, s5, ":cur_good"),
@@ -37187,7 +37185,7 @@ scripts = [
 	    (is_between, ":spouse", kingdom_ladies_begin, kingdom_ladies_end),
 
 		(try_begin),
-			(ge, "$cheat_mode", 1),
+			(eq, "$cheat_mode", DPLMC_DEBUG_POLITICS),
 			(str_store_troop_name, s4, ":spouse"),
 			(display_message, "@{!}DEBUG - {s4} faction changed by marriage, case 1"),
 		(try_end),
@@ -37212,7 +37210,7 @@ scripts = [
 			 (this_or_next|neq, ":troop_no", ":spouse"),
 				(neg|is_between, ":spouse", kingdom_ladies_begin, kingdom_ladies_end),
 			(try_begin),
-				(ge, "$cheat_mode", 1),
+				(eq, "$cheat_mode", DPLMC_DEBUG_POLITICS),
 				(str_store_troop_name, s4, ":troop_no"),
 				(display_message, "@{!} DEBUG - {s4} changed by player's defection"),
 			(try_end),
@@ -37355,7 +37353,7 @@ scripts = [
         (is_between, ":spouse", kingdom_ladies_begin, kingdom_ladies_end),
 
         (try_begin),
-            (ge, "$cheat_mode", 1),
+            (eq, "$cheat_mode", DPLMC_DEBUG_POLITICS),
             (str_store_troop_name, s4, ":spouse"),
             (display_message, "@{!}DEBUG - {s4} faction changed by marriage, case 3"),
         (try_end),
@@ -37554,7 +37552,7 @@ scripts = [
 
 
 		(try_begin),
-			(ge, "$cheat_mode", 1),
+			(eq, "$cheat_mode", DPLMC_DEBUG_POLITICS),
 			(str_store_troop_name, s4, ":spouse"),
 			(display_message, "@{!}DEBUG - {s4} faction changed by marriage, case 2"),
 		(try_end),
@@ -37997,7 +37995,7 @@ scripts = [
 ("update_companion_candidates_in_taverns",
     [
       (try_begin),
-        (eq, "$cheat_mode", 1),
+        (ge, "$cheat_mode", DPLMC_DEBUG_MIN),
         (display_message, "str_shuffling_companion_locations"),
       (try_end),
 
@@ -38050,7 +38048,7 @@ scripts = [
                   ##diplomacy end+
           (troop_set_slot, ":troop_no", slot_troop_cur_center, ":town_no"),
           (try_begin),
-            (eq, "$cheat_mode", 1),
+            (ge, "$cheat_mode", DPLMC_DEBUG_MIN),
             (str_store_troop_name, 4, ":troop_no"),
             (str_store_party_name, 5, ":town_no"),
             (display_message, "@{!}{s4} is in {s5}"),
@@ -38199,7 +38197,7 @@ scripts = [
          (call_script, "script_change_center_prosperity", ":village_no", -1),
          (val_add, "$newglob_total_prosperity_from_bandits", -1),
          (try_begin),
-           (eq, "$cheat_mode", 2),
+           (eq, "$cheat_mode", DPLMC_DEBUG_ECONOMY),
            (str_store_party_name, s1, ":village_no"),
            (display_message, "@{!}DEBUG --{s1} is infested by bandits."),
          (try_end),
@@ -38251,7 +38249,7 @@ scripts = [
        (party_set_slot, ":town_no", slot_center_tavern_minstrel, ":troop_no"),
        (troop_set_slot, ":troop_no", slot_troop_cur_center, ":town_no"), #SB : set troop slot
        (try_begin),
-        (eq, "$cheat_mode", 1),
+        (ge, "$cheat_mode", DPLMC_DEBUG_MIN),
         (str_store_troop_name, s4, ":troop_no"),
         (str_store_party_name, s5, ":town_no"),
 
@@ -38781,7 +38779,7 @@ scripts = [
 
 			(str_clear, s48),
 
-		    (try_begin),
+      (try_begin),
 				(eq, "$cheat_mode", 1),
 				(store_current_hours, ":hours"),
 				(gt, ":hours", 0),
@@ -39828,7 +39826,7 @@ scripts = [
      (set_spawn_radius,1),
 
 	 (try_begin),
-		(eq, "$cheat_mode", 1),
+		(ge, "$cheat_mode", DPLMC_DEBUG_MIN),
 		(display_message, "@{!}DEBUG : Doing spawn bandit script"),
 	 (try_end),
 
@@ -40269,7 +40267,7 @@ scripts = [
     [
 
 	 (try_begin),
-		(eq, "$cheat_mode", 1),
+		(ge, "$cheat_mode", DPLMC_DEBUG_MIN),
 		(display_message, "str_checking_volunteer_availability_script"),
 	 (try_end),
 
@@ -40284,7 +40282,7 @@ scripts = [
 
      (ge, ":center_relation", 0),
 	 (try_begin),
-		(eq, "$cheat_mode", 1),
+		(ge, "$cheat_mode", DPLMC_DEBUG_MIN),
 		(display_message, "str_center_relation_at_least_zero"),
 	 (try_end),
 
@@ -40298,7 +40296,7 @@ scripts = [
 		(eq, "$players_kingdom", 0),
 
 	 (try_begin),
-		(eq, "$cheat_mode", 1),
+		(ge, "$cheat_mode", DPLMC_DEBUG_MIN),
 		(display_message, "str_relationfaction_conditions_met"),
 	 (try_end),
 
@@ -40307,7 +40305,7 @@ scripts = [
      (party_slot_ge, "$current_town", slot_center_volunteer_troop_type, 1),
 
 	 (try_begin),
-		(eq, "$cheat_mode", 1),
+		(ge, "$cheat_mode", DPLMC_DEBUG_MIN),
 		(display_message, "str_troops_available"),
 	 (try_end),
 
@@ -40316,7 +40314,7 @@ scripts = [
      (ge, ":free_capacity", 1),
 
 	 (try_begin),
-		(eq, "$cheat_mode", 1),
+		(ge, "$cheat_mode", DPLMC_DEBUG_MIN),
 		(display_message, "str_party_has_capacity"),
 	 (try_end),
 
@@ -40420,7 +40418,7 @@ scripts = [
 
 	 #This will add up all non-trade prosperity
 	 (try_begin),
-		(eq, "$cheat_mode", 3),
+		(eq, "$cheat_mode", DPLMC_DEBUG_ECONOMY),
 		(assign, reg4, "$newglob_total_prosperity_from_bandits"),
 		(assign, reg5, "$newglob_total_prosperity_from_caravan_trade"),
 	    (assign, reg7, "$newglob_total_prosperity_from_villageloot"),
@@ -41026,7 +41024,7 @@ scripts = [
             (try_begin),
                 (gt, "$npc_with_personality_clash_2", 0),
 				(try_begin),
-					(eq, "$cheat_mode", 1),
+					(ge, "$cheat_mode", DPLMC_DEBUG_MIN),
 					(display_message, "str_personality_clash_conversation_begins"),
 				(try_end),
 
@@ -41040,7 +41038,7 @@ scripts = [
             (else_try),
                 (gt, "$npc_with_personality_match", 0),
 				(try_begin),
-					(eq, "$cheat_mode", 1),
+					(ge, "$cheat_mode", DPLMC_DEBUG_MIN),
 					(display_message, "str_personality_match_conversation_begins"),
 				(try_end),
 
@@ -42752,7 +42750,7 @@ scripts = [
         (str_store_party_name_link, s1, ":party_no"),
         (display_message, "@You brought {reg3} heads of cattle to {s1}."),
 		(try_begin),
-			(gt, "$cheat_mode", 0),
+			(ge, "$cheat_mode", DPLMC_DEBUG_ECONOMY),
 			(assign, reg4, ":village_cattle_amount"),
 			(display_message, "@{!}Village now has {reg4}"),
 		(try_end),
@@ -43285,7 +43283,7 @@ scripts = [
 		(eq, ":entry_type", logent_player_participated_in_siege),
 
        (try_begin),
-         (eq, "$cheat_mode", 1),
+         (ge, "$cheat_mode", DPLMC_DEBUG_MIN),
          (display_message, "@{!}Ally party is present"),
        (try_end),
 	   ##diplomacy start+ support kingdom ladies as well
@@ -43302,7 +43300,7 @@ scripts = [
 #         (store_sub, ":skip_up_to_here", "$num_log_entries", 1),
 #         (troop_set_slot, ":hero", slot_troop_last_comment_slot, ":skip_up_to_here"),
          (try_begin),
-           (eq, "$cheat_mode", 1),
+           (ge, "$cheat_mode", DPLMC_DEBUG_MIN),
            (str_store_troop_name, s4, ":hero"),
            (display_message, "@{!}{s4} is present at event"),
          (try_end),
@@ -44413,7 +44411,7 @@ scripts = [
 
        (eq, ":troop_object", "$g_talk_troop"),
        (try_begin),
-         (eq, "$cheat_mode", 1),
+         (ge, "$cheat_mode", DPLMC_DEBUG_MIN),
          (assign, reg7, ":entry_hours_elapsed"),
          (display_message, "@{!}Elapsed hours: {reg7}"),
        (try_end),
@@ -44966,7 +44964,7 @@ scripts = [
 
      (troop_get_slot, ":reputation", "$g_talk_troop", slot_lord_reputation_type),
      (try_begin),
-       (eq, "$cheat_mode", 1),
+       (ge, "$cheat_mode", DPLMC_DEBUG_MIN),
        (store_add, ":rep_string", ":reputation", "str_personality_archetypes"),
        (str_store_string, s15, ":rep_string"),
        (display_message, "@{!}Reputation type: {s15}"),
@@ -45005,7 +45003,7 @@ scripts = [
 #         (le, ":entry_time", ":talk_troop_last_comment_time"),
          (try_begin),
            (eq, ":log_entry_no", ":talk_troop_last_comment_slot"),
-           (eq, "$cheat_mode", 1),
+           (ge, "$cheat_mode", DPLMC_DEBUG_MIN),
            (assign, reg5, ":log_entry_no"),
            (display_message, "@{!}Entries up to #{reg5} skipped"),
          (try_end),
@@ -45173,11 +45171,11 @@ scripts = [
 		(lt, ":hours_ago", 672), #four weeks
 
 		(try_begin),
-			(eq, "$cheat_mode", 1),
+			(ge, "$cheat_mode", DPLMC_DEBUG_MIN),
 			(troop_slot_eq, "trp_log_array_entry_type", ":log_entry_no", logent_traveller_attacked),
 			(display_message, "str_attack_on_travellers_found_reg3_hours_ago"),
 		(else_try),
-			(eq, "$cheat_mode", 1),
+			(ge, "$cheat_mode", DPLMC_DEBUG_MIN),
 			(troop_slot_eq, "trp_log_array_entry_type", ":log_entry_no", logent_party_traded),
 			(display_message, "str_trade_event_found_reg3_hours_ago"),
 		(try_end),
@@ -47035,7 +47033,7 @@ scripts = [
 		(str_store_troop_name, s5, ":lord_1"),
 		(str_store_troop_name, s6, ":lord_2"),
 		(try_begin),
-			(eq, "$cheat_mode", 1),
+			(eq, "$cheat_mode", DPLMC_DEBUG_POLITICS),
 			(display_message, "str_check_reg8_s4_reconciles_s5_and_s6_"),
 		(try_end),
 
@@ -47049,7 +47047,7 @@ scripts = [
 		(try_begin),
 			(eq, ":faction_1_leader", "trp_player"),
 			(try_begin),
-				(eq, "$cheat_mode", 1),
+				(ge, "$cheat_mode", DPLMC_DEBUG_MIN),
 				(display_message, "str_diagnostic__player_should_receive_consultation_quest_here_if_not_already_active"),
 			(try_end),
 			(neg|check_quest_active, "qst_consult_with_minister"),
@@ -47087,7 +47085,7 @@ scripts = [
 			(str_store_troop_name, s6, ":loser_lord"),
 
 			(try_begin),
-				(eq, "$cheat_mode", 1),
+				(eq, "$cheat_mode", DPLMC_DEBUG_POLITICS),
 				(display_message, "str_check_reg8_s4_rules_in_s5s_favor_in_quarrel_with_s6_"),
 			(try_end),
 
@@ -47112,7 +47110,7 @@ scripts = [
 		(str_store_troop_name, s6, ":lord_2"),
 
 		(try_begin),
-			(eq, "$cheat_mode", 1),
+			(eq, "$cheat_mode", DPLMC_DEBUG_POLITICS),
 			(display_message, "str_check_reg8_new_rivalry_generated_between_s5_and_s6"),
 		(try_end),
 
@@ -47136,7 +47134,7 @@ scripts = [
 		(str_store_troop_name, s5, ":lord_1"),
 		(str_store_troop_name, s6, ":lord_2"),
 		(try_begin),
-			(eq, "$cheat_mode", 1),
+			(eq, "$cheat_mode", DPLMC_DEBUG_POLITICS),
 			(display_message, "str_check_reg8_new_rivalry_generated_between_s5_and_s6"),
 		(try_end),
 
@@ -47161,7 +47159,7 @@ scripts = [
 		(str_store_troop_name, s6, ":lord_2"),
 
 		(try_begin),
-			(ge, "$cheat_mode", 1),
+			(eq, "$cheat_mode", DPLMC_DEBUG_POLITICS),
 			(display_message, "str_check_reg8_s5_attempts_to_win_over_s6"),
 		(try_end),
 
@@ -47176,7 +47174,7 @@ scripts = [
 
 
 			(try_begin),
-				(ge, "$cheat_mode", 1),
+				(eq, "$cheat_mode", DPLMC_DEBUG_POLITICS),
 				(str_store_troop_name, s4, ":lord_2"),
 				(display_message, "@{!}DEBUG - {s4} faction changed in subornment"),
 			(try_end),
@@ -47236,7 +47234,7 @@ scripts = [
 		(assign, reg1, ":restless_quotient"),
 	(else_try),
 		(try_begin),
-			(eq, "$cheat_mode", 1),
+			(eq, "$cheat_mode", DPLMC_DEBUG_POLITICS),
 			(str_store_faction_name, s1, ":realm"),
 			(display_message, "str_s1_has_no_lords"),
 		(try_end),
@@ -47259,7 +47257,7 @@ scripts = [
 	(store_script_param, ":winner_party", 2),
 
 	(try_begin),
-		(eq, "$cheat_mode", 1),
+		(eq, "$cheat_mode", DPLMC_DEBUG_POLITICS),
 		(str_store_party_name, s4, ":winner_party"),
 		(str_store_party_name, s5, ":defeated_party"),
 		(display_message, "str_do_political_consequences_for_s4_victory_over_s5"),
@@ -47285,7 +47283,7 @@ scripts = [
         (call_script, "script_add_log_entry", logent_traveller_attacked, ":winner_party",  ":origin", ":destination", ":winner_faction"),
 
 		(try_begin),
-			(eq, "$cheat_mode", 2),
+			(ge, "$cheat_mode", DPLMC_DEBUG_MIN),
 			(neg|is_between, ":winner_faction", kingdoms_begin, kingdoms_end),
 			(str_store_string, s65, "str_bandits_attacked_a_party_on_the_roads_so_a_bounty_is_probably_available"),
 			(call_script, "script_add_notification_menu", "mnu_debug_alert_from_s65", 0, 0),
@@ -47340,7 +47338,7 @@ scripts = [
 			(neq, ":cur_troop_id", ":winner_leader"),
 
 			(try_begin),
-				(eq, "$cheat_mode", 4),
+				(eq, "$cheat_mode", DPLMC_DEBUG_POLITICS),
 				(str_store_troop_name, s15, ":cur_troop_id"),
 				(str_store_troop_name, s16, ":winner_leader"),
 				(display_message, "str_s15_shares_joy_of_victory_with_s16"),
@@ -47367,16 +47365,16 @@ scripts = [
 			(str_store_troop_name, s15, "$marshall_defeated_in_battle"),
 			(store_faction_of_troop, ":defeated_marshall_faction", "$marshall_defeated_in_battle"),
             (try_begin),
-                (eq, "$cheat_mode", 1),
-			    (display_message, "str_faction_marshall_s15_involved_in_defeat"),
+              (eq, "$cheat_mode", DPLMC_DEBUG_MILITARY),
+			        (display_message, "str_faction_marshall_s15_involved_in_defeat"),
             (try_end),
 		(else_try),
 			(eq, "$marshall_defeated_in_battle", "trp_player"),
 			(eq, ":defeated_party", "p_main_party"),
 			(faction_slot_eq, "fac_player_supporters_faction", slot_faction_state, sfs_active),
             (try_begin),
-                (eq, "$cheat_mode", 1),
-			    (display_message, "str_player_faction_marshall_involved_in_defeat"),
+              (eq, "$cheat_mode", DPLMC_DEBUG_MILITARY),
+			        (display_message, "str_player_faction_marshall_involved_in_defeat"),
             (try_end),
 		(else_try),
 			(assign, "$marshall_defeated_in_battle", -1),
@@ -47403,7 +47401,7 @@ scripts = [
 
 			#Lose one point relation with liege
 			(try_begin),
-				(eq, "$cheat_mode", 1),
+				(eq, "$cheat_mode", DPLMC_DEBUG_MILITARY),
 				(str_store_troop_name, s14, ":cur_troop_id"),
 				(str_store_faction_name, s15, ":troop_faction"),
 
@@ -47437,7 +47435,7 @@ scripts = [
 				(val_add, "$total_battle_enemy_changes", -1),
 
 				(try_begin),
-					(eq, "$cheat_mode", 1),
+					(eq, "$cheat_mode", DPLMC_DEBUG_MILITARY),
 					(str_store_troop_name, s14, ":cur_troop_id"),
 					(str_store_troop_name, s15, ":winner_leader"),
 
@@ -47453,8 +47451,8 @@ scripts = [
 
 			(call_script, "script_cf_test_lord_incompatibility_to_s17", ":cur_troop_id", "$marshall_defeated_in_battle"),
             (try_begin),
-                (eq, "$cheat_mode", 1),
-			    (display_message, "str_s14_blames_s15_for_defeat"),
+              (eq, "$cheat_mode", DPLMC_DEBUG_MILITARY),
+			        (display_message, "str_s14_blames_s15_for_defeat"),
             (try_end),
 
 			(call_script, "script_add_log_entry", logent_lord_blames_defeat, ":cur_troop_id", "$marshall_defeated_in_battle", ":faction_leader", ":winner_faction"),
@@ -47502,7 +47500,7 @@ scripts = [
 
 
 	(try_begin),
-	  (ge, "$cheat_mode", 1),
+	  (eq, "$cheat_mode", DPLMC_DEBUG_MILITARY),
 	  (str_store_faction_name, s4, ":actor_faction"),
 	  (str_store_faction_name, s5, ":target_faction"),
 	  (assign, reg3, ":cur_war_damage"),
@@ -47522,7 +47520,7 @@ scripts = [
 		(troop_set_slot, ":faction_marshal", slot_troop_controversy, ":controversy"),
 
 		(try_begin),
-			(ge, "$cheat_mode", 1),
+			(eq, "$cheat_mode", DPLMC_DEBUG_MILITARY),
 			(str_store_troop_name, s4, ":faction_marshal"),
 			(assign, reg4, ":amount"),
 			(assign, reg5, ":controversy"),
@@ -47543,7 +47541,7 @@ scripts = [
 		(troop_set_slot, ":faction_marshal", slot_troop_controversy, ":controversy"),
 
 		(try_begin),
-			(ge, "$cheat_mode", 1),
+			(eq, "$cheat_mode", DPLMC_DEBUG_MILITARY),
 			(str_store_troop_name, s4, ":faction_marshal"),
 			(assign, reg4, ":amount"),
 			(assign, reg5, ":controversy"),
@@ -47610,7 +47608,7 @@ scripts = [
 		#the liege is a rebel
 		(assign, ":liege_is_undeclared_rebel", 1),
 		(try_begin),
-			(eq, "$cheat_mode", 1),
+			(eq, "$cheat_mode", DPLMC_DEBUG_POLITICS),
                         ##diplomacy start+ Guard against bad liege
                         (ge, ":liege", 0),
                         ##diplomacy end+
@@ -47693,7 +47691,7 @@ scripts = [
 		(eq, ":faction_has_base", 0),
 		(val_add, ":result_for_security", 20),
 		(try_begin),
-			(eq, "$cheat_mode", 2),
+			(eq, "$cheat_mode", DPLMC_DEBUG_MILITARY),
 			(display_message, "str_small_bonus_for_no_base"),
 		(try_end),
 	(try_end),
@@ -47771,7 +47769,7 @@ scripts = [
 		(val_div, ":lord_political_weight", 100),
 
 		(try_begin),
-			(eq, "$cheat_mode", 2), #disabled
+			(eq, "$cheat_mode", DPLMC_DEBUG_POLITICS),
 			(eq, "$g_talk_troop", ":troop"),
 			(str_store_faction_name, s20, ":kingdom_hero_faction"),
 			(str_store_troop_name, s15, ":kingdom_hero"),
@@ -47937,7 +47935,7 @@ scripts = [
 
 
 	(try_begin),
-		(eq, "$cheat_mode", 1),
+		(eq, "$cheat_mode", DPLMC_DEBUG_POLITICS),
 		(eq, "$g_talk_troop", ":troop"),
 		(str_store_troop_name, s20, ":troop"),
 		(str_store_faction_name, s21, ":faction"),
@@ -47982,7 +47980,7 @@ scripts = [
 	(assign, reg0, ":total"),
 
 	(try_begin),
-		(eq, "$cheat_mode", 2),
+		(eq, "$cheat_mode", DPLMC_DEBUG_POLITICS),
 		(display_message, "@{!}DEBUG -- Analyzing lord allegiances, combined bonuses and penalties = {reg0}"),
 		#(display_message, "str_combined_bonuses_and_penalties_=_reg0"),
 	(try_end),
@@ -48012,7 +48010,7 @@ scripts = [
       (party_is_active, ":led_party_1"),
 
       (try_begin),
-        (eq, "$cheat_mode", 1),
+        (ge, "$cheat_mode", DPLMC_DEBUG_MIN),
         (eq, ":troop", "$g_talk_troop"),
         (display_message, "str_intrigue_test_troop_party_is_active"),
       (try_end),
@@ -48021,7 +48019,7 @@ scripts = [
       (le, ":battle_opponent", 0), #battle opponent can be 0 for an attached party?
 
       (try_begin),
-        (eq, "$cheat_mode", 1),
+        (ge, "$cheat_mode", DPLMC_DEBUG_MIN),
         (eq, ":troop", "$g_talk_troop"),
         (display_message, "str_intrigue_test_troop_party_is_not_in_battle"),
       (try_end),
@@ -48029,7 +48027,7 @@ scripts = [
       (troop_slot_eq, ":troop", slot_troop_prisoner_of_party, -1),
 
       (try_begin),
-        (eq, "$cheat_mode", 1),
+        (ge, "$cheat_mode", DPLMC_DEBUG_MIN),
         (eq, ":troop", "$g_talk_troop"),
         (display_message, "str_intrigue_test_troop_is_not_prisoner"),
       (try_end),
@@ -48066,7 +48064,7 @@ scripts = [
       (try_end),
 
       (try_begin),
-        (eq, "$cheat_mode", 1),
+        (ge, "$cheat_mode", DPLMC_DEBUG_MIN),
         (eq, ":troop", "$g_talk_troop"),
         (display_message, "str_intrigue_test_troop_is_nearby"),
       (try_end),
@@ -48343,7 +48341,7 @@ scripts = [
 			(neg|check_quest_active, "qst_rebel_against_kingdom"),
 
 		(try_begin),
-			(eq, "$cheat_mode", 1),
+			(ge, "$cheat_mode", DPLMC_DEBUG_MIN),
 			(str_store_faction_name, s15, ":faction_no"),
 			(display_message, "str_checking_lord_reactions_in_s15"),
 		(try_end),
@@ -48421,10 +48419,9 @@ scripts = [
 			(else_try),
 				(call_script, "script_dplmc_store_troop_is_eligible_for_affiliate_messages", ":lord"),
 				(this_or_next|gt, reg0, 0),
-			##diplomacy end+
-                (eq, "$cheat_mode", 1),
-                (display_message, "str_s14_protests_the_appointment_of_s15_as_marshall"),
-            (try_end),
+        (eq, "$cheat_mode", DPLMC_DEBUG_POLITICS),
+        (display_message, "str_s14_protests_the_appointment_of_s15_as_marshall"),
+      (try_end),
 
 			(call_script, "script_troop_change_relation_with_troop", ":faction_leader", ":lord", -10),
 			(call_script, "script_troop_change_relation_with_troop", ":faction_marshall", ":lord", -5),
@@ -48711,7 +48708,7 @@ scripts = [
 			(try_end),
 
 			(try_begin),
-				(eq, "$cheat_mode", 2),
+				(eq, "$cheat_mode", DPLMC_DEBUG_POLITICS),
 				(str_store_troop_name, s3, ":kingdom_lady"),
 				(str_store_troop_name, s4, ":castle_lord"),
 				(str_store_party_name, s5, ":walled_center"),
@@ -49076,7 +49073,7 @@ scripts = [
 	(str_store_party_name, s4, ":venue"),
 
     (try_begin),
-        (eq, "$cheat_mode", 1),
+      (ge, "$cheat_mode", DPLMC_DEBUG_MIN),
 	    (display_message, "str_s3_feast_concludes_at_s4"),
     (try_end),
 
@@ -49203,7 +49200,7 @@ scripts = [
 
 
 	(try_begin),
-		(ge, "$cheat_mode", 1),
+		(ge, "$cheat_mode", DPLMC_DEBUG_MIN),
 		(str_store_troop_name, s4, ":feast_host"),
 		(assign, reg4, ":quality_of_feast"),
 		(display_message, "@{!}DEBUG - {s4}'s feast has rating of {reg4}"),
@@ -49240,7 +49237,7 @@ scripts = [
 	(assign, reg4, ":nobility_in_faction"),
 
 	(try_begin),
-		(eq, "$cheat_mode", 1),
+		(ge, "$cheat_mode", DPLMC_DEBUG_MIN),
 		(display_message, "str_attendance_reg3_nobles_out_of_reg4"),
 	(try_end),
 	]),
@@ -49363,7 +49360,7 @@ scripts = [
 		(call_script, "script_add_log_entry", logent_lady_favors_suitor, ":lady", 0, ":suitor", 0),
 
 		(try_begin),
-			(eq, "$cheat_mode", 1),
+			(ge, "$cheat_mode", DPLMC_DEBUG_MIN),
 			(display_message, "str_note__favor_event_logged"),
 		(try_end),
 
@@ -49429,7 +49426,7 @@ scripts = [
 			(troop_set_slot, ":lady", slot_troop_betrothal_time, ":hours"),
 			(troop_set_slot, ":suitor", slot_troop_betrothal_time, ":hours"),
 			(try_begin),
-				(eq, "$cheat_mode", 1),
+				(eq, "$cheat_mode", DPLMC_DEBUG_POLITICS),
 				(display_message, "str_result_lady_forced_to_agree_to_engagement"),
 			(try_end),
 
@@ -49440,7 +49437,7 @@ scripts = [
 			(call_script, "script_add_log_entry", logent_lady_rejects_suitor, ":lady", 0, ":suitor", 0),
 			(call_script, "script_courtship_event_lady_break_relation_with_suitor", ":lady", ":suitor"),
 			(try_begin),
-				(eq, "$cheat_mode", 1),
+				(eq, "$cheat_mode", DPLMC_DEBUG_POLITICS),
 				(display_message, "str_result_lady_rejects_suitor"),
 			(try_end),
 
@@ -49461,7 +49458,7 @@ scripts = [
 			(troop_set_slot, ":suitor", slot_troop_betrothal_time, ":hours"),
 
 			(try_begin),
-				(eq, "$cheat_mode", 1),
+				(eq, "$cheat_mode", DPLMC_DEBUG_POLITICS),
 				(str_store_troop_name, s4, ":lady"),
 				(str_store_troop_name, s5, ":suitor"),
 				(display_message, "str_result_happy_engagement_between_s4_and_s5"),
@@ -49490,7 +49487,7 @@ scripts = [
 			#add elopements to quarrel descriptions
 
 			(try_begin),
-				(eq, "$cheat_mode", 1),
+				(eq, "$cheat_mode", DPLMC_DEBUG_POLITICS),
 				(str_store_troop_name, s4, ":lady"),
 				(str_store_troop_name, s5, ":suitor"),
 				(display_message, "str_result_s4_elopes_with_s5"),
@@ -49515,7 +49512,7 @@ scripts = [
 			(troop_set_slot, ":lady", slot_troop_betrothal_time, ":hours"),
 			(troop_set_slot, ":suitor", slot_troop_betrothal_time, ":hours"),
 			(try_begin),
-				(eq, "$cheat_mode", 1),
+				(eq, "$cheat_mode", DPLMC_DEBUG_POLITICS),
 				(str_store_troop_name, s4, ":lady"),
 				(str_store_troop_name, s5, ":suitor"),
 				(display_message, "str_result_s4_reluctantly_agrees_to_engagement_with_s5"),
@@ -49527,7 +49524,7 @@ scripts = [
 
 			(store_random_in_range, reg3, 0, 3),
 			(try_begin),
-				(eq, "$cheat_mode", 1),
+				(eq, "$cheat_mode", DPLMC_DEBUG_POLITICS),
 				(display_message, "str_result_stalemate_patience_roll_=_reg3"),
 			(try_end),
 
@@ -49707,7 +49704,7 @@ scripts = [
 		(eq, ":groom", "trp_player"),
 
 		(try_begin),
-			(ge, "$cheat_mode", 1),
+			(eq, "$cheat_mode", DPLMC_DEBUG_POLITICS),
 			(str_store_troop_name, s4, ":bride"),
 			(display_message, "@{!} DEBUG - {s4} faction change in marriage case 5"),
 		(try_end),
@@ -49716,7 +49713,7 @@ scripts = [
 	(else_try),
 
 		(try_begin),
-			(ge, "$cheat_mode", 1),
+			(eq, "$cheat_mode", DPLMC_DEBUG_POLITICS),
 			(str_store_troop_name, s4, ":bride"),
 			(display_message, "@{!}DEBUG - {s4} faction changed by marriage, case 6"),
 		(try_end),
@@ -49919,7 +49916,7 @@ scripts = [
     (try_end),
 
     (try_begin),
-      (eq, "$cheat_mode", 1), #100
+      (ge, "$cheat_mode", DPLMC_DEBUG_MIN),
       (eq, ":troop_no", "$g_talk_troop"),
       (str_store_troop_name, s4, ":troop_no"),
       (assign, reg3, ":hours_since_last_rest"),
@@ -50697,7 +50694,7 @@ scripts = [
 	  (assign, ":action", spai_besieging_center),
 	  (assign, ":object", ":walled_center_to_attack"),
 	  (try_begin),
-	    (eq, "$cheat_mode", 1),
+	    (eq, "$cheat_mode", DPLMC_DEBUG_MILITARY),
 	    (str_store_faction_name, s20, ":faction_no"),
 	    (str_store_party_name, s21, ":object"),
 	    (display_message, "str_s20_decided_to_attack_s21"),
@@ -51246,7 +51243,7 @@ scripts = [
 	(try_end),
 
 	(try_begin),
-		(eq, "$cheat_mode", 2),
+		(eq, "$cheat_mode", DPLMC_DEBUG_MILITARY),
 		(str_store_troop_name, s10, ":troop_no"),
 		(display_message, "str_debug__s10_decides_s14_faction_ai_s15"),
 	(try_end),
@@ -52160,7 +52157,7 @@ scripts = [
         (try_end),
 
         (try_begin),
-          (ge, "$cheat_mode", 1),
+          (eq, "$cheat_mode", DPLMC_DEBUG_MILITARY),
           (eq, ":faction_no", "fac_kingdom_4"),
           (ge, ":target_score", -1),
           (assign, reg0, ":target_score"),
@@ -52374,7 +52371,7 @@ scripts = [
         (val_div, ":threat_score", 10000),
 
         (try_begin),
-		  (ge, "$cheat_mode", 1),
+		      (eq, "$cheat_mode", DPLMC_DEBUG_MILITARY),
           (gt, ":threat_score", 0),
           (eq, ":faction_no", "fac_kingdom_6"),
           (assign, reg0, ":threat_score"),
@@ -52508,7 +52505,7 @@ scripts = [
 		(val_add, ":modified_honor_and_relation", ":persuasion_x_2"),
 
 		(try_begin),
-			(eq, "$cheat_mode", 1),
+			(ge, "$cheat_mode", DPLMC_DEBUG_MIN),
 			(assign, reg4, ":modified_honor_and_relation"),
 			(display_message, "str_envoymodified_diplomacy_score_honor_plus_relation_plus_envoy_persuasion_=_reg4"),
 		(try_end),
@@ -52680,7 +52677,7 @@ scripts = [
 
 
 	(try_begin),
-		(eq, "$cheat_mode", 2),
+		(eq, "$cheat_mode", DPLMC_DEBUG_MILITARY),
 		(gt, ":strongest_kingdom", 1),
 		(str_store_faction_name, s4, ":strongest_kingdom"),
 		(assign, reg3, ":score_to_beat"),
@@ -52804,14 +52801,14 @@ scripts = [
 	(else_try),
 		(gt, ":actor_centers_held_by_target", 0),
 		(try_begin),
-		  (eq, "$cheat_mode", 1),
+		  (eq, "$cheat_mode", DPLMC_DEBUG_MILITARY),
 		  (display_message, "@{!}Actor centers held by target noted"),
 		(try_end),
 
 		(lt, ":war_damage_suffered", 200),
 		(try_begin),
-		  (eq, "$cheat_mode", 1),
-          (display_message, "@{!}War damage under minimum"),
+		  (eq, "$cheat_mode", DPLMC_DEBUG_MILITARY),
+      (display_message, "@{!}War damage under minimum"),
 		(try_end),
 
 		##diplomacy start+ Take into account strengths including alliances
@@ -52819,16 +52816,16 @@ scripts = [
 		##diplomacy end+
 		(lt, ":strength_ratio", 125),
 		(try_begin),
-		  (eq, "$cheat_mode", 1),
-          (display_message, "@{!}Strength ratio correct"),
+		  (eq, "$cheat_mode", DPLMC_DEBUG_MILITARY),
+      (display_message, "@{!}Strength ratio correct"),
 		(try_end),
 		##diplomacy start+ Examine strength of enemies versus allies
 		(this_or_next|lt, ":strength_ratio_all_enemies_actor", 125),
 		##diplomacy end+
 		(eq, ":num_third_party_wars", 0),
 		(try_begin),
-		  (eq, "$cheat_mode", 1),
-          (display_message, "@{!}Third party wars"),
+		  (eq, "$cheat_mode", DPLMC_DEBUG_MILITARY),
+      (display_message, "@{!}Third party wars"),
 		(try_end),
 
 		(assign, ":result", -2),
@@ -52938,14 +52935,14 @@ scripts = [
 	(else_try),
 		(eq, ":num_third_party_wars", 0),
 		(try_begin),
-			(ge, "$cheat_mode", 1),
+			(eq, "$cheat_mode", DPLMC_DEBUG_MILITARY),
 			(display_message, "@{!}DEBUG -- No third party wars for {s15}"),
 		(try_end),
 		(eq, ":actor_faction", ":strongest_kingdom"),
 		#peace with no truce or provocation
 
 		(try_begin),
-			(ge, "$cheat_mode", 1),
+			(eq, "$cheat_mode", DPLMC_DEBUG_MILITARY),
 			(display_message, "@{!}DEBUG -- {s15} is strongest kingdom"),
 		(try_end),
 
@@ -52960,7 +52957,7 @@ scripts = [
 		(ge, ":strength_difference", 30),
 
 		(try_begin),
-			(ge, "$cheat_mode", 1),
+			(eq, "$cheat_mode", DPLMC_DEBUG_MILITARY),
 			(display_message, "@{!}DEBUG -- {s15} has 30 point advantage over {s16}"),
 		(try_end),
 
@@ -52981,7 +52978,7 @@ scripts = [
 
 
 		(try_begin),
-			(ge, "$cheat_mode", 1),
+			(eq, "$cheat_mode", DPLMC_DEBUG_MILITARY),
 			(display_message, "@{!}DEBUG -- {s15} has proximity to {s16}"),
 		(try_end),
 
@@ -53544,7 +53541,7 @@ scripts = [
 	(troop_get_slot, ":lady_reputation", ":lady", slot_lord_reputation_type),
 
 	(try_begin),
-		(eq, "$cheat_mode", 1),
+		(ge, "$cheat_mode", DPLMC_DEBUG_MIN),
 		(assign, reg4, ":poem"),
 		(assign, reg5, ":lady_reputation"),
 		(display_message, "str_poem_choice_reg4_lady_rep_reg5"),
@@ -53667,7 +53664,7 @@ scripts = [
 
 
 	(try_begin),
-		(eq, "$cheat_mode", 1),
+		(ge, "$cheat_mode", DPLMC_DEBUG_MIN),
 		(assign, reg4, ":result"),
 		(display_message, "str_result_reg4_string_s11"),
 	(try_end),
@@ -53728,7 +53725,7 @@ scripts = [
 	(faction_get_slot, ":faction_leader", ":faction_no", slot_faction_leader),
 
 	(try_begin),
-		(ge, "$cheat_mode", 1),
+		(ge, "$cheat_mode", DPLMC_DEBUG_MIN),
 		(str_store_faction_name, s3, ":faction_no"),
 		(display_message, "str_calculating_effect_for_policy_for_s3"),
 
@@ -54262,7 +54259,7 @@ scripts = [
 		(party_stack_get_size, ":size", "p_temp_casualties", ":stack"),
 		(party_remove_members, ":party", ":troop_type", ":size"),
 
-		(eq, "$cheat_mode", 1),
+		(ge, "$cheat_mode", DPLMC_DEBUG_MIN),
 		(assign, reg3, ":size"),
 		(str_store_troop_name, s4, ":troop_type"),
 		(str_store_party_name, s5, ":party"),
@@ -54322,7 +54319,7 @@ scripts = [
         (add_troop_note_from_sreg, ":object_1", ":current_rumor_note", s5, 0), #troop, note slot, string, show
 
         (try_begin),
-          (eq, "$cheat_mode", 1),
+          (ge, "$cheat_mode", DPLMC_DEBUG_MIN),
           (str_store_troop_name, s3, ":object_1"),
           (assign, reg4, ":current_rumor_note"),
           (display_message, "str_rumor_note_to_s3s_slot_reg4_s5"),
@@ -54342,7 +54339,7 @@ scripts = [
         (add_troop_note_from_sreg, ":object_2", ":current_rumor_note", s5, 0), #troop, note slot, string, show
 
         (try_begin),
-          (eq, "$cheat_mode", 1),
+          (ge, "$cheat_mode", DPLMC_DEBUG_MIN),
           (str_store_troop_name, s3, ":object_2"),
           (assign, reg4, ":current_rumor_note"),
           (display_message, "str_rumor_note_to_s3s_slot_reg4_s5"),
@@ -54424,8 +54421,8 @@ scripts = [
 	(assign, reg0, ":hardship_index"),
 
 	(try_begin),
-		(eq, "$cheat_mode", 1),
-		#(display_message, "@{!}DEBUG -- hardship index for {s4} = {reg0}"),
+		(eq, "$cheat_mode", DPLMC_DEBUG_ECONOMY),
+		(display_message, "@{!}DEBUG -- hardship index for {s4} = {reg0}"),
 	(try_end),
 	]),
 
@@ -55037,7 +55034,7 @@ scripts = [
 			(gt, ":last_taken_by_troop", -1),
 
 			(try_begin),
-				(eq, "$cheat_mode", 1),
+				(eq, "$cheat_mode", DPLMC_DEBUG_MILITARY),
 				(gt, ":last_taken_by_troop", -1),
 				(str_store_troop_name, s3, ":last_taken_by_troop"),
 				(display_message, "@{!}Castle taken by {s3}"),
@@ -55105,7 +55102,7 @@ scripts = [
 			(val_mul, ":score_to_beat", 2),
 
 			(try_begin),
-				(eq, "$cheat_mode", 1),
+				(ge, "$cheat_mode", DPLMC_DEBUG_MIN),
 				(assign, reg3, ":score_to_beat"),
 				(display_message, "@{!}Two-thirds average_renown = {reg3}"),
 			(try_end),
@@ -55194,7 +55191,7 @@ scripts = [
 
 
 				(try_begin),
-					(eq, "$cheat_mode", 1),
+					(ge, "$cheat_mode", DPLMC_DEBUG_MIN),
 					(str_store_troop_name, s10, ":active_npc"),
 					(assign, reg3, ":renown_divided_by_center_points"),
 					(display_message, "@{!}DEBUG -- Colleague test: score for {s10} = {reg3}"),
@@ -55285,7 +55282,7 @@ scripts = [
 				(gt, ":renown_divided_by_center_points", ":score_to_beat"),
 
 				(try_begin),
-					(eq, "$cheat_mode", 1),
+					(ge, "$cheat_mode", DPLMC_DEBUG_MIN),
 					(str_store_string, s10, ":active_npc"),
 					(assign, reg3, ":renown_divided_by_center_points"),
 					(display_message, "@{!}DEBUG -- Open test: score for {s10} = {reg3}"),
@@ -55436,7 +55433,7 @@ scripts = [
 	(try_end),
 
 	(try_begin),
-		(eq, "$cheat_mode", 1),
+		(eq, "$cheat_mode", DPLMC_DEBUG_POLITICS),
 		(gt, ":result", -1),
 		(str_store_troop_name, s8, ":troop_no"),
 		(str_store_troop_name, s9, ":result"),
@@ -56011,7 +56008,7 @@ scripts = [
         #(assign, ":explainer_string", "str_center_value_outweighed_by_difficulty_of_capture"),
       (else_try),
         (try_begin),
-          (eq, "$cheat_mode", 1),
+          (eq, "$cheat_mode", DPLMC_DEBUG_MILITARY),
           (eq, ":faction_no", "fac_kingdom_3"),
           (store_faction_of_party, ":potential_target_faction", ":potential_target"),
           (store_relation, ":relation", ":potential_target_faction", ":faction_no"),
@@ -56087,8 +56084,8 @@ scripts = [
 		(str_store_troop_name, s4, ":troop_no"),
 		(str_store_faction_name, s33, ":faction_no"),
 		(try_begin),
-			(eq, "$cheat_mode", 1),
-		    (display_message, "@{!}DEBUG -- {s4} produces a faction strategy for {s33}"),
+			(eq, "$cheat_mode", DPLMC_DEBUG_POLITICS),
+      (display_message, "@{!}DEBUG -- {s4} produces a faction strategy for {s33}"),
 		(try_end),
 
 		#INFORMATIONS COLLECTING STEP 0: Here we obtain general information about current faction like how much parties that faction has, which lord is the marshall, current ai state and current ai target object
@@ -56231,7 +56228,7 @@ scripts = [
 		(try_end),
 
 		(try_begin),
-		  (eq, "$cheat_mode", 1),
+		  (eq, "$cheat_mode", DPLMC_DEBUG_MILITARY),
 		  (try_begin),
 		    (is_between, ":center_to_attack", centers_begin, centers_end),
 		    (str_store_party_name, s4, ":center_to_attack"),
@@ -56251,7 +56248,7 @@ scripts = [
 		(try_end),
 
 		(try_begin),
-		  (eq, "$cheat_mode", 1),
+		  (eq, "$cheat_mode", DPLMC_DEBUG_MILITARY),
 
 		  (try_begin),
   		    (is_between, ":most_threatened_center", centers_begin, centers_end),
@@ -57338,7 +57335,7 @@ scripts = [
 		(call_script, "script_troop_change_relation_with_troop", ":faction_leader", ":active_npc", ":relation_modifier"),
 		(val_add, "$total_indictment_changes", ":relation_modifier"),
 		(try_begin),
-			(eq, "$cheat_mode", 1),
+			(eq, "$cheat_mode", DPLMC_DEBUG_POLITICS),
 			(str_store_troop_name, s17, ":active_npc"),
 			(str_store_troop_name, s18, ":faction_leader"),
 
@@ -57363,7 +57360,7 @@ scripts = [
 
 
 		(try_begin),
-			(ge, "$cheat_mode", 1),
+			(eq, "$cheat_mode", DPLMC_DEBUG_POLITICS),
 			(str_store_troop_name, s4, ":troop_no"),
 			(display_message, "@{!}DEBUG - {s4} faction changed in indictment"),
 		(try_end),
@@ -59248,7 +59245,7 @@ scripts = [
     (store_script_param_1, ":percent"),
 
     (try_begin),#debug
-     (eq, "$cheat_mode", 1),
+     (ge, "$cheat_mode", DPLMC_DEBUG_MIN),
      (assign, reg0, ":percent"),
      (display_message, "@{!}DEBUG : removing player troops: {reg0}%"),
     (try_end),
@@ -59381,7 +59378,7 @@ scripts = [
       (assign, reg0, ":sum"),
 
       (try_begin), #debug
-        (eq, "$cheat_mode", 1),
+        (ge, "$cheat_mode", DPLMC_DEBUG_MIN),
         (display_message, "@{!}DEBUG : sum: {reg0}"),
       (try_end),
   ]),
@@ -59833,7 +59830,7 @@ scripts = [
                (val_add, ":faction_no_1_value", reg0),
 
                (try_begin),#debug
-                 (eq, "$cheat_mode", 1),
+                 (ge, "$cheat_mode", DPLMC_DEBUG_MIN),
                  (assign, reg0, ":faction_no_1_value"),
                  (display_message, "@{!}DEBUG : faction_no_1_value: {reg0}"),
                (try_end),
@@ -59854,7 +59851,7 @@ scripts = [
                (val_add, ":faction_no_2_value", reg0),
 
                (try_begin), #debug
-                 (eq, "$cheat_mode", 1),
+                 (ge, "$cheat_mode", DPLMC_DEBUG_MIN),
                  (assign, reg0, ":faction_no_2_value"),
                  (display_message, "@{!}DEBUG : faction_no_2_value: {reg0}"),
                (try_end),
@@ -59882,7 +59879,7 @@ scripts = [
 	   ##diplomacy end+
 
        (try_begin),
-         (eq, "$cheat_mode", 1),
+         (ge, "$cheat_mode", DPLMC_DEBUG_MIN),
          (assign, reg0, ":check_peace_war_result"), #debug
          (display_message, "@{!}DEBUG : peace_war_result: {reg0}"),#debug
        (try_end),
@@ -60085,7 +60082,7 @@ scripts = [
        (call_script, "script_dplmc_get_prisoners_value_between_factions", ":faction_no_1", ":faction_no_2"),
 
        (try_begin),
-         (eq, "$cheat_mode", 1),
+         (ge, "$cheat_mode", DPLMC_DEBUG_MIN),
          (display_message, "@{!}DEBUG : prisoner_value: {reg0}"),#debug
        (try_end),
        (assign, ":prisoner_value", reg0),
@@ -60149,7 +60146,7 @@ scripts = [
        (val_max, reg0, ":min_cost"),
 
        (try_begin),
-         (eq, "$cheat_mode", 1),
+         (ge, "$cheat_mode", DPLMC_DEBUG_MIN),
          (display_message, "@{!}DEBUG : peace_war_result after prisoners: {reg0}"),#debug
        (try_end),
 
@@ -60170,7 +60167,7 @@ scripts = [
        (try_end),
 
      (try_begin), #debug
-       (eq, "$cheat_mode", 1),
+       (ge, "$cheat_mode", DPLMC_DEBUG_MIN),
 	     (display_message, "@{!}DEBUG : truce_pay_amount0: {reg0}"),
 	     (display_message, "@{!}DEBUG : truce_pay_amount1: {reg1}"),
      (try_end),
@@ -60364,7 +60361,7 @@ scripts = [
     (party_set_slot, ":spawned_party", dplmc_slot_party_origin, ":target_troop"),
 
     (try_begin), #debug
-      (eq, "$cheat_mode", 1),
+      (ge, "$cheat_mode", DPLMC_DEBUG_MIN),
       (str_store_party_name, s13, ":target_party"),
       (display_message, "@{!}DEBUG - Send message to {s13}"),
     (try_end),
@@ -60407,7 +60404,7 @@ scripts = [
     (party_set_slot, ":spawned_party", slot_party_orders_object, ":orders_object"),
 
     (try_begin), #debug
-      (eq, "$cheat_mode", 1),
+      (ge, "$cheat_mode", DPLMC_DEBUG_MIN),
       (str_store_party_name, s13, ":target_party"),
       (display_message, "@{!}DEBUG - Send message to {s13}"),
     (try_end),
@@ -60430,7 +60427,7 @@ scripts = [
 
 
     (try_begin), #debug
-      (eq, "$cheat_mode", 1),
+      (ge, "$cheat_mode", DPLMC_DEBUG_MIN),
       (str_store_item_name, s12, ":gift"),
       (str_store_party_name, s13, ":target_party"),
       (display_message, "@{!}DEBUG - Bring {s12} to {s13}"),
@@ -60487,7 +60484,7 @@ scripts = [
     (store_script_param, ":amount", 3),
 
     (try_begin), #debug
-      (eq, "$cheat_mode", 1),
+      (ge, "$cheat_mode", DPLMC_DEBUG_MIN),
       (str_store_item_name, s12, ":gift"),
       (str_store_party_name, s13, ":target_party"),
       (display_message, "@{!}DEBUG - Bring {s12} to {s13}"),
@@ -60820,7 +60817,7 @@ scripts = [
     (str_clear, s48),
 
     (try_begin),
-      (eq, "$cheat_mode", 1),
+      (ge, "$cheat_mode", DPLMC_DEBUG_MIN),
       (store_current_hours, ":hours"),
       (gt, ":hours", 0),
       (call_script, "script_calculate_troop_political_factors_for_liege", ":troop_no", ":faction_leader"),
@@ -60914,7 +60911,7 @@ scripts = [
         (try_end),
 
         (try_begin), #debug
-          (eq, "$cheat_mode", 1),
+          (ge, "$cheat_mode", DPLMC_DEBUG_MIN),
           (assign, reg0, ":cur_i"),
           (str_store_faction_name, s7, ":template_faction"),
           (display_message, "@{!}DEBUG - Added {reg0}.template of faction {s7} to patrol."),
@@ -60924,7 +60921,7 @@ scripts = [
 
 
     (try_begin), #debug
-      (eq, "$cheat_mode", 1),
+      (ge, "$cheat_mode", DPLMC_DEBUG_MIN),
       (str_store_party_name, s13, ":target_party"),
       (str_store_faction_name, s14, ":template_faction"),
       (str_store_party_name, s15, ":start_party"),
@@ -61572,7 +61569,7 @@ scripts = [
 
 	(val_add, ":king_gold", ":lord_gold"),#Give remaining gold to king
 	(try_begin),
-		(ge, "$cheat_mode", 1),
+		(ge, "$cheat_mode", DPLMC_DEBUG_MIN),
 		(str_store_troop_name, s4, ":troop_no"),
 		(str_store_faction_name, s5, ":faction_no"),
 		(str_store_troop_name, s6, ":faction_liege"),
@@ -61656,7 +61653,7 @@ scripts = [
 
 				(call_script, "script_troop_change_relation_with_troop", ":faction_liege", ":active_npc", ":relation_change"),
 				(try_begin),
-					(eq, "$cheat_mode", 1),
+					(ge, "$cheat_mode", DPLMC_DEBUG_MIN),
 					(str_store_troop_name, s17, ":active_npc"),
 					(str_store_troop_name, s18, ":faction_liege"),
 					(assign, reg3, ":relation_change"),
@@ -62371,7 +62368,7 @@ scripts = [
 		 (lt, ":player_renown", ":min_score"),
 		 (assign, ":answer", -1),
 		 (try_begin),
-			(ge, "$cheat_mode", 1),
+			(ge, "$cheat_mode", DPLMC_DEBUG_MIN),
 			(assign, reg0, ":player_renown"),
 			(assign, reg1, ":min_score"),
 			(display_message, "@{!}DEBUG - player renown {reg0}, required renown {reg1}"),
@@ -62404,7 +62401,7 @@ scripts = [
 		  (lt, ":player_score", ":min_score"),
 		  (assign, ":answer", -1),
 		  (try_begin),
-			(ge, "$cheat_mode", 1),
+			(ge, "$cheat_mode", DPLMC_DEBUG_MIN),
 			(assign, reg0, ":player_score"),
 			(assign, reg1, ":min_score"),
 			(display_message, "@{!}DEBUG - player score {reg0} out of a required {reg1}"),
@@ -62416,7 +62413,7 @@ scripts = [
 	      (assign, ":answer", -1),
 		  (str_store_troop_name, s14, ":c"),
 		  (try_begin),
-			(ge, "$cheat_mode", 1),
+			(ge, "$cheat_mode", DPLMC_DEBUG_MIN),
 			(assign, reg0, ":player_renown"),
 			(assign, reg1, ":c_renown"),
 			(display_message, "@{!}DEBUG - player score {reg0}, competitor score {reg1}"),
@@ -62444,7 +62441,7 @@ scripts = [
 	     (assign, ":answer", -1),
 		  (str_store_troop_name, s14, ":highest_score_lord"),
 		  (try_begin),
-			(ge, "$cheat_mode", 1),
+			(ge, "$cheat_mode", DPLMC_DEBUG_MIN),
 			(assign, reg0, ":player_score"),
 			(assign, reg1, ":highest_score"),
 			(display_message, "@{!}DEBUG - player score {reg0}, competitor score {reg1}"),
@@ -62459,7 +62456,7 @@ scripts = [
 		  (ge, ":b_relation", 5),
 		  (assign, ":answer", -1),
 		 (try_begin),
-			(ge, "$cheat_mode", 1),
+			(ge, "$cheat_mode", DPLMC_DEBUG_MIN),
 			(assign, reg0, ":player_relation"),
 			(assign, reg1, ":b_relation"),
 			(display_message, "@{!}DEBUG - player relation {reg0}, rival relation {reg1}"),
@@ -62482,7 +62479,7 @@ scripts = [
 		  (lt, ":faction_lords", ":needed_lords"),
 		  (assign, ":answer", -1),
 		  (try_begin),
-			(ge, "$cheat_mode", 1),
+			(ge, "$cheat_mode", DPLMC_DEBUG_MIN),
 			(assign, reg0, ":faction_lords"),
 			(assign, reg1, ":needed_lords"),
 			(display_message, "@{!}DEBUG - lords in faction {reg0}, required lords {reg1}"),
@@ -62506,7 +62503,7 @@ scripts = [
 
 		  (assign, ":answer", -1),
 		  (try_begin),
-			(ge, "$cheat_mode", 1),
+			(ge, "$cheat_mode", DPLMC_DEBUG_MIN),
 			(assign, reg1, reg0),
 			(assign, reg0, ":pretender_score"),
 			(display_message, "@{!}DEBUG - liege has {reg0} center points, needs at least {reg1}"),
@@ -62530,7 +62527,7 @@ scripts = [
 
 		  (assign, ":answer", -1),
 		  (try_begin),
-			(ge, "$cheat_mode", 1),
+			(ge, "$cheat_mode", DPLMC_DEBUG_MIN),
 			(assign, reg0, ":pretender_score"),
 			(assign, reg1, ":points_per_lord"),
 			(display_message, "@{!}DEBUG - liege has {reg0} center points, needs at least {reg1}"),
@@ -65085,7 +65082,7 @@ scripts = [
 			(neq, "$g_autoloot", 2),
       (try_begin),
 		   #Print a message to make it obvious when this is happening more than it should.
-		   (ge, "$cheat_mode", 1),
+		   (ge, "$cheat_mode", DPLMC_DEBUG_MIN),
 		   (store_current_hours, ":hours"),
 		   (gt, ":hours", 0),
 		   (display_message, "@{!}Initializing auto-loot.  This message should not appear more than once."),
@@ -65298,7 +65295,7 @@ scripts = [
 		(assign, ":is_eligible", 1),
 	(else_try),
 		#Cheat mode: add faction leaders to test this out
-		(gt, "$cheat_mode", 0),
+		(ge, "$cheat_mode", DPLMC_CHEAT_YES),
 		(is_between, ":faction_no", kingdoms_begin, kingdoms_end),
 		(faction_slot_eq, ":faction_no", slot_faction_leader, ":troop_no"),
 		(assign, ":is_eligible", 1),
@@ -66001,7 +65998,7 @@ scripts = [
 	(try_end),
 
 	(try_begin),
-		(eq, "$cheat_mode", 4), #SB : political debugmode
+		(eq, "$cheat_mode", DPLMC_DEBUG_POLITICS), #SB : political debugmode
 		(assign, ":end_cond", reg1),#just save reg1 and reg2 (ignore the normal meaning of the variable names)
 		(assign, ":active_npc", reg2),
 		(assign, reg1, ":faction_no"),
@@ -69342,7 +69339,7 @@ Born at {s43}^Contact in {s44} of the {s45}.^\
         (gt, ":item_no", 0),
         # (neg|item_has_property, ":item_no", itp_civilian),
         (try_begin),
-          (ge, "$cheat_mode", 1),
+          (ge, "$cheat_mode", DPLMC_DEBUG_MIN),
           (str_store_item_name, s1, ":item_no"),
           (display_message, "@adding {s1} to entry"),
         (try_end),
@@ -72287,7 +72284,7 @@ Born at {s43}^Contact in {s44} of the {s45}.^\
       #Update if necessary.
       (lt, ":diplomacy_version_code", DPLMC_CURRENT_VERSION_CODE),
       (try_begin), #SB : do not block
-        (ge, "$cheat_mode", 1),
+        (ge, "$cheat_mode", DPLMC_DEBUG_MIN),
         (assign, reg0, ":diplomacy_version_code"),
         (assign, reg1, DPLMC_CURRENT_VERSION_CODE),
         (display_message, "@{!} DEBUG - Detected a new version of diplomacy: previous version was {reg0}, and current version is {reg1}.  Performing updates."),
@@ -72417,14 +72414,14 @@ Born at {s43}^Contact in {s44} of the {s45}.^\
 				(troop_set_slot, ":troop_no", slot_troop_mother, ":mother"),
 				(try_begin),
 					#Print a message if desired
-					(ge, "$cheat_mode", 1),
+					(ge, "$cheat_mode", DPLMC_DEBUG_MIN),
 					(str_store_troop_name, s0, ":troop_no"),
 					(display_message, "@{!}DEBUG - Fixed slot_troop_mother for {s0}."),
 				(try_end),
 			(else_try),
 				(troop_set_slot, ":troop_no", slot_troop_mother, -1),#better than being set to herself
 				#Print a message if desired
-				(ge, "$cheat_mode", 1),
+				(ge, "$cheat_mode", DPLMC_DEBUG_MIN),
 				(str_store_troop_name, s0, ":troop_no"),
 				(display_message, "@{!}DEBUG - When fixing slot_troop_mother for {s0}, could not find a valid mother."),
 			(try_end),
@@ -72543,7 +72540,7 @@ Born at {s43}^Contact in {s44} of the {s45}.^\
 		#this easier in the future.
 		(troop_set_slot, ":troop_no", slot_troop_occupation, dplmc_slto_exile),
 		(try_begin),
-			(ge, "$cheat_mode", 1),
+			(ge, "$cheat_mode", DPLMC_DEBUG_MIN),
 			(str_store_troop_name, s0, ":troop_no"),
 			(display_message, "@{!}DEBUG - Changed occupation of {s0} to dplmc_slto_exile"),
 		(try_end),
@@ -72657,7 +72654,7 @@ Born at {s43}^Contact in {s44} of the {s45}.^\
     (try_end),
 
     (try_begin),
-      (ge, "$cheat_mode", 1),
+      (ge, "$cheat_mode", DPLMC_DEBUG_MIN),
       (store_sub, reg1, reg0, 1),
       (display_message, "@{!} Bug fix: set personality types for {reg0} {reg1?lords:lord}"),
     (try_end),
@@ -72674,7 +72671,7 @@ Born at {s43}^Contact in {s44} of the {s45}.^\
 
 
     (try_begin),
-      (ge, "$cheat_mode", 1),
+      (ge, "$cheat_mode", DPLMC_DEBUG_MIN),
       (store_sub, reg1, reg0, 1),
       (display_message, "@{!} Bug fix: set personality types for {reg0} {reg1?ladies:lady}"),
     (try_end),
@@ -73127,7 +73124,7 @@ Born at {s43}^Contact in {s44} of the {s45}.^\
     (try_end),
     (party_set_slot, ":party_no", slot_party_temp_slot_1, ":continue"),
     (try_begin),
-      (ge, "$cheat_mode", 1),
+      (ge, "$cheat_mode", DPLMC_DEBUG_MIN),
       (eq, ":continue", 0),
       # (str_store_party_name, s0, ":party_no"),
       (str_store_party_name, s0, ":party_no"),
@@ -73430,7 +73427,7 @@ Born at {s43}^Contact in {s44} of the {s45}.^\
       (assign, ":wealthiest_town_production", ":mayor_town_production"),
       (assign, ":wealthiest_center", -1),
       (try_begin),
-        (ge, "$cheat_mode", 1),
+        (ge, "$cheat_mode", DPLMC_DEBUG_MIN),
         (assign, reg4, ":mayor_town_production"),
         (str_store_party_name, s4, ":this_center"),
         (display_message, "@{!}DEBUG -- Total production for {s4}: {reg4}"),
@@ -73439,7 +73436,7 @@ Born at {s43}^Contact in {s44} of the {s45}.^\
         (neq, ":other_center", ":this_center"),
         (party_get_slot, ":other_town_production", ":other_center", slot_party_temp_slot_1),
         (try_begin),
-            (ge, "$cheat_mode", 1),
+            (ge, "$cheat_mode", DPLMC_DEBUG_MIN),
             (assign, reg4, ":other_town_production"),
             # (assign, reg4, ":richer_centers"),
             # (assign, reg5, ":poorer_centers"),

@@ -1,5 +1,5 @@
 stringsfile version 1
-3837
+3838
 str_no_string NO_STRING!
 str_empty_string _
 str_yes Yes.
@@ -3792,6 +3792,7 @@ str_dplmc_reputation_benefactor It_is_widely_known_that_{s46}_is_a_friend_of_the
 str_dplmc_reputation_custodian It_is_believed_that_{s46}_is_a_wise_investor.
 str_s4_is_at_s5_but_reg4_he_she_is_held_as_a_prisoner_at_s13_dungeon {s4}_is_at_{s5},_but_{reg4?she:he}_is_being_held_as_a_prisoner_in_the_{s13}'s_dungeon
 str_i_dont_know_where_s4_is I_don't_know_where_{s4}_is
+str_dplmc_cheat_setting_debug Debug
 str_dplmc_cheat_setting_debug_economy Debug_Economy
 str_dplmc_cheat_setting_debug_military Debug_Military
 str_dplmc_cheat_setting_debug_politics Debug_Politics

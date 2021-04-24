@@ -15263,7 +15263,7 @@ presentations = [
           (val_add, ":x_poshl", 90),
 
           (try_begin),
-            (eq, "$cheat_mode", 1),
+            (ge, "$cheat_mode", DPLMC_DEBUG_MIN),
             (assign, reg20, ":count"),
             #(display_message, "@{!}DEBUG - Drawing line {reg20}"),
           (try_end),
@@ -18809,6 +18809,7 @@ presentations = [
           (overlay_add_item, reg0, "str_dplmc_cheat_setting_debug_politics"),
 					(overlay_add_item, reg0, "str_dplmc_cheat_setting_debug_military"),
 					(overlay_add_item, reg0, "str_dplmc_cheat_setting_debug_economy"),
+          (overlay_add_item, reg0, "str_dplmc_cheat_setting_debug"),
           (overlay_add_item, reg0, "str_dplmc_setting_on"),
           (overlay_add_item, reg0, "str_dplmc_setting_off"),
 					(position_set_x, pos2, 450),
