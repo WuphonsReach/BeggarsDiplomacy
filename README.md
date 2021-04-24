@@ -85,6 +85,7 @@ Only changes made on top of [Diplado develop](https://github.com/diegoami/Diplad
 - Increase the map zoom distance so you can see more of Caladria.  Going past 260 or so for map_max_distance causes the map valleys to vanish at maximum zoom.  The value of 300 was definitely too much.
 - The base rent for villages/castles/towns is now raised slightly to 1200/1800/3000 (was 1200/1200/2400).
 - Once per day, 10% of the village elders receive a small amount of gold (up to 30) based on village prosperity.  TODO: Might be good to invert this award so that poorer villages get the larger gold amount.
+- Caravans have a 50% chance per 8 hour interval to decide not to leave. This will let them trickle out over time instead of seeing all the caravans leave at the same instant.
 
 ### Experiments
 

@@ -2708,13 +2708,17 @@ simple_triggers = [
 
            (lt, ":random_no", ":tariff_succeed_limit"),
 
-           #SB : todo queue caravans so they don't blob together, obvious if same destination
            (assign, ":can_leave", 1),
            (try_begin),
              (is_between, ":cur_center", walled_centers_begin, walled_centers_end),
              (neg|party_slot_eq, ":cur_center", slot_center_is_besieged_by, -1),
              (assign, ":can_leave", 0),
            (try_end),
+           (try_begin),
+            (store_random_in_range, ":random_can_leave", 0, 100),
+            (lt, ":random_can_leave", 50), # chance that caravan will leave, helps with blobbing of multiple caravans to same destination
+            (assign, ":can_leave", 0),
+           (try_end),           
            (eq, ":can_leave", 1),
 
            (assign, ":do_trade", 0),
