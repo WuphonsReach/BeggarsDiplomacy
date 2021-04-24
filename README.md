@@ -132,6 +132,7 @@ Only changes made on top of [Diplado develop](https://github.com/diegoami/Diplad
 - Lending your surgeon to another lord (qst_lend_surgeon) now adds another 100xp.
 - The quest for following and capturing the spy and master () has been improved.  It is no longer possible for you or your troops to kill the spy or the spy master during the battle (added tf_unkillable).  That makes it much easier to actually complete this quest.
 - Rejecting the quest to capture enemy troops (qst_capture_prisoners) no longer results in a -1 reputation hit.  It was one of the only quests where rejecting the quest from a lord lost you reputation with that lord.  It no longer hurts to ask.
+- Eliminating the bandit lair only (qst_destroy_bandit_lair) rewards +3 relations (was +4).  These quests give a large amount of XP/gold and are easily farmed.
 
 ### Balance (Parties)
 
