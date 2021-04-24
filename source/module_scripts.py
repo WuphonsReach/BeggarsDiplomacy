@@ -19715,6 +19715,14 @@ scripts = [
 		(try_end),
 		##diplomacy end+
 
+    (try_begin), # fuzz the results by up to 30% so that different caravans choose different destinations
+      (ge, "$g_dplmc_gold_changes", DPLMC_GOLD_CHANGES_MEDIUM),
+      (store_random_in_range, ":score_bonus_percent", 0, 300),
+      (val_add, ":score_bonus_percent", 1000),
+      (val_mul, ":cur_town_score", ":score_bonus_percent"),
+      (val_div, ":cur_town_score", 1000),
+    (try_end),
+
 		(gt, ":cur_town_score", ":best_town_score"),
 		(assign, ":best_town_score", ":cur_town_score"),
 		(assign, ":result", ":cur_town"),
