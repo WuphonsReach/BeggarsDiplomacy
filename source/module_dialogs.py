@@ -19903,11 +19903,14 @@ I'll send some men to take him to our prison with due haste.", "lord_pretalk", [
 (try_end),
 # "Are you trying to provoke me? Well, I would have you know that I am under no obligation to duel women, commoners, rebels, or brigands. I could
 #, however, order my men to seize you and horsewhip you. Would you like them to do that?", "lord_respond_to_insult_challenge_battle",
-], "Are you trying to provoke me? Well, I would have you know that I am under no obligation to duel {reg0?women:{reg1?boys:fools}}, commoners, rebels, or brigands. I could, however, order my {reg1?{reg65?women:soldiers}:{reg65?soldiers:men}} to seize you and horsewhip you. Would you like them to do that?", "lord_respond_to_insult_challenge_battle",
+], "Are you trying to provoke me? Well, I would have you know that I am under no obligation to duel {reg0?women:{reg1?boys:fools}}, commoners, rebels, or brigands. I could, however, order my {reg1?{reg65?women:soldiers}:{reg65?soldiers:men}} to seize you and horsewhip you. Would you like them to do that?", 
+  "lord_respond_to_insult_challenge_battle",
 ##diplomacy end+
 [
-(call_script, "script_troop_change_relation_with_troop", "trp_player", "$g_talk_troop", -10),
-(call_script, "script_change_troop_renown", "trp_player", 2),
+  (store_random_in_range, ":relation_penalty", -15, -4),
+  (call_script, "script_troop_change_relation_with_troop", "trp_player", "$g_talk_troop", ":relation_penalty"),
+  (store_random_in_range, ":renown_gain", 2, 16),
+  (call_script, "script_change_troop_renown", "trp_player", ":renown_gain"),
 ]],
 
 [anyone,"lord_respond_to_insult", [
@@ -19927,11 +19930,14 @@ I'll send some men to take him to our prison with due haste.", "lord_pretalk", [
    (assign, reg1, 0),
 (try_end),
 #], "Are you trying to provoke me? Well, I would have you know that I am under no obligation to duel women, commoners, rebels, or brigands. However#, in your case, I would be delighted to make an exception. Are you ready for a lesson in deference to your betters, {varlot/girl}?", "lord_respond#_to_insult_challenge_duel",
-], "Are you trying to provoke me? Well, I would have you know that I am under no obligation to duel {reg0?women:{reg1?boys:fools}}, commoners, rebels, or brigands. However, in your case, I would be delighted to make an exception. Are you ready for a lesson in deference to your betters, {varlot/girl}?", "lord_respond_to_insult_challenge_duel",
+], "Are you trying to provoke me? Well, I would have you know that I am under no obligation to duel {reg0?women:{reg1?boys:fools}}, commoners, rebels, or brigands. However, in your case, I would be delighted to make an exception. Are you ready for a lesson in deference to your betters, {varlot/girl}?", 
+  "lord_respond_to_insult_challenge_duel",
 ##diplomacy end+
 [
-(call_script, "script_troop_change_relation_with_troop", "trp_player", "$g_talk_troop", -10),
-(call_script, "script_change_troop_renown", "trp_player", 2),
+  (store_random_in_range, ":relation_penalty", -12, -4),
+  (call_script, "script_troop_change_relation_with_troop", "trp_player", "$g_talk_troop", ":relation_penalty"),
+  (store_random_in_range, ":renown_gain", 2, 11),
+  (call_script, "script_change_troop_renown", "trp_player", ":renown_gain"),
 ]],
 
 [anyone,"lord_respond_to_insult", [
@@ -19951,26 +19957,35 @@ I'll send some men to take him to our prison with due haste.", "lord_pretalk", [
    (assign, reg1, 0),
 (try_end),
 #], "Are you trying to provoke me? Well, I would have you know that I am under no obligation to duel women, commoners, rebels, or brigands. You are lucky that I am in a good mood, because I am perfectly within my rights to order my men to seize you and horsewhip you. Now begone -- I have had enough of you.", "close_window",
-], "Are you trying to provoke me? Well, I would have you know that I am under no obligation to duel {reg0?women:{reg1?boys:fools}}, commoners, rebels, or brigands. You are lucky that I am in a good mood, because I am perfectly within my rights to order my {reg1?{reg65?women:soldiers}:{reg65?soldiers:men}} to seize you and horsewhip you. Now begone -- I have had enough of you.", "close_window",
+], "Are you trying to provoke me? Well, I would have you know that I am under no obligation to duel {reg0?women:{reg1?boys:fools}}, commoners, rebels, or brigands. You are lucky that I am in a good mood, because I am perfectly within my rights to order my {reg1?{reg65?women:soldiers}:{reg65?soldiers:men}} to seize you and horsewhip you. Now begone -- I have had enough of you.", 
+  "close_window",
 ##diplomacy end+
 [
-(call_script, "script_troop_change_relation_with_troop", "trp_player", "$g_talk_troop", -10),
-(call_script, "script_change_troop_renown", "trp_player", 2),
-(assign, "$g_leave_encounter", 1),
+  (store_random_in_range, ":relation_penalty", -8, -2),
+  (call_script, "script_troop_change_relation_with_troop", "trp_player", "$g_talk_troop", ":relation_penalty"),
+  (store_random_in_range, ":renown_gain", 2, 9),
+  (call_script, "script_change_troop_renown", "trp_player", ":renown_gain"),
+  (assign, "$g_leave_encounter", 1),
 ]],
 
 
 [anyone|plyr,"lord_respond_to_insult_challenge_battle", [
 ], "I would like to see them try.", "lord_respond_to_insult_challenge_battle_confirm",
 [
-(call_script, "script_troop_change_relation_with_troop", "trp_player", "$g_talk_troop", -10),
-(call_script, "script_change_troop_renown", "trp_player", 3),
+  (store_random_in_range, ":relation_penalty", -8, -2),
+  (call_script, "script_troop_change_relation_with_troop", "trp_player", "$g_talk_troop", ":relation_penalty"),
+  (store_random_in_range, ":renown_gain", 5, 16),
+  (call_script, "script_change_troop_renown", "trp_player", ":renown_gain"),
 ]],
 
 [anyone|plyr,"lord_respond_to_insult_challenge_battle", [
 ], "This is not worth the shedding of blood.", "close_window",
 [
-(assign, "$g_leave_encounter", 1),
+  (store_random_in_range, ":relation_change", 1, 3),
+  (call_script, "script_troop_change_relation_with_troop", "trp_player", "$g_talk_troop", ":relation_change"),
+  (store_random_in_range, ":renown_loss", -5, -1),
+  (call_script, "script_change_troop_renown", "trp_player", ":renown_loss"),
+  (assign, "$g_leave_encounter", 1),
 ]],
 
 [anyone,"lord_respond_to_insult_challenge_battle_confirm", [
@@ -19986,23 +20001,26 @@ I'll send some men to take him to our prison with due haste.", "lord_pretalk", [
 [anyone|plyr,"lord_respond_to_insult_challenge_duel", [
 ], "I am ready to teach you one.", "lord_respond_to_insult_challenge_duel_confirm",
 [
-(str_store_troop_name_link, s13, "$g_talk_troop"),
-(setup_quest_text, "qst_duel_avenge_insult"),
-##diplomacy start+ use correct pronoun for gender
-(call_script, "script_dplmc_store_troop_is_female_reg", "$g_talk_troop", 4),
-##diplomacy end+
-(str_store_string, s2, "str_you_intend_to_challenge_s13_to_force_him_to_retract_an_insult"),
+  (str_store_troop_name_link, s13, "$g_talk_troop"),
+  (setup_quest_text, "qst_duel_avenge_insult"),
+  (call_script, "script_dplmc_store_troop_is_female_reg", "$g_talk_troop", 4),
+  (str_store_string, s2, "str_you_intend_to_challenge_s13_to_force_him_to_retract_an_insult"),
 
-(call_script, "script_start_quest", "qst_duel_avenge_insult", "$g_talk_troop"),
-(quest_set_slot, "qst_duel_avenge_insult", slot_quest_target_troop, "$g_talk_troop"),
+  (call_script, "script_start_quest", "qst_duel_avenge_insult", "$g_talk_troop"),
+  (quest_set_slot, "qst_duel_avenge_insult", slot_quest_target_troop, "$g_talk_troop"),
 
-(call_script, "script_troop_change_relation_with_troop", "trp_player", "$g_talk_troop", -10),
+  (store_random_in_range, ":relation_penalty", -8, -2),
+  (call_script, "script_troop_change_relation_with_troop", "trp_player", "$g_talk_troop", ":relation_penalty"),
 ]],
 
 [anyone|plyr,"lord_respond_to_insult_challenge_duel", [
 ], "This is not worth the shedding of blood.", "close_window",
 [
-(assign, "$g_leave_encounter", 1),
+  (store_random_in_range, ":relation_change", 1, 2),
+  (call_script, "script_troop_change_relation_with_troop", "trp_player", "$g_talk_troop", ":relation_change"),
+  (store_random_in_range, ":renown_loss", -5, -1),
+  (call_script, "script_change_troop_renown", "trp_player", ":renown_loss"),
+  (assign, "$g_leave_encounter", 1),
 ]],
 
 
@@ -40403,8 +40421,37 @@ I suppose there are plenty of bounty hunters around to get the job done . . .", 
     (lt, ":relation", ":required_relation"),
   ], "Well... Given your relationship with our liege, {s4}, I think that you will not find many here who are brave enough to sell you any land.", "mayor_investment",[
   ]],
-
-  ## TODO: Add a version of mayor_investment_possible that looks at the relations with the king (require +3 or +5)
+  
+  # Look at player's relations with the king (require +4 or +8)
+  [anyone,"mayor_investment_possible",[
+    (assign, ":required_relation", 0),
+    (try_begin),
+      (store_faction_of_party, ":town_faction", "$g_encountered_party"),
+      (faction_get_slot, ":faction_leader", ":town_faction", slot_faction_leader),
+      (gt, ":faction_leader", stl_unassigned),
+      (troop_get_slot, ":reputation", ":faction_leader", slot_lord_reputation_type),
+      (str_store_troop_name, s4, ":faction_leader"),
+      (is_between, ":faction_leader", heroes_begin, heroes_end),
+      (call_script, "script_troop_get_relation_with_troop", "trp_player", ":faction_leader"),
+      (assign, ":relation", reg0),
+      (try_begin),
+        (eq, "$g_dplmc_gold_changes", DPLMC_GOLD_CHANGES_MEDIUM),
+        (assign, ":required_relation", 4),
+      (else_try),
+        (eq, "$g_dplmc_gold_changes", DPLMC_GOLD_CHANGES_HIGH),
+        (assign, ":required_relation", 8),
+      (try_end),
+    (try_end),
+    (val_clamp, ":required_relation", 0, 100),
+    (try_begin),
+      (eq, "$cheat_mode", 1),
+      (assign, reg10, ":relation"),
+      (assign, reg11, ":required_relation"),
+      (display_message, "@{!}DEBUG: Required relation with {s4} is {reg11}, current relation {reg10}."),
+    (try_end),
+    (lt, ":relation", ":required_relation"),
+  ], "Well... Given your relationship {s4}, I think that you will not find many here who are brave enough to sell you any land.", "mayor_investment",[
+  ]],
 
   [anyone|auto_proceed,"mayor_investment",[], "{!}.", "mayor_pretalk",[]],
 
