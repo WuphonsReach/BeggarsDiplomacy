@@ -61,7 +61,7 @@ game_menus = [
           (store_random_in_range, "$background_answer_3", dplmc_cb3_bravo, cb3_student + 1),
           (store_random_in_range, "$background_answer_4", cb4_revenge, cb4_greed + 1),
           (str_store_string, s13, "@Perhaps you have forgotten the face of your father."),
-          (assign, "$cheat_mode", 1),
+          (assign, "$cheat_mode", DPLMC_CHEAT_YES),
           (jump_to_menu, "mnu_choose_skill"),
         (else_try),
           (jump_to_menu, "mnu_start_game_1"),
@@ -178,7 +178,7 @@ game_menus = [
 
     [##diplomacy start+ Replace "join" with "Join" in the following
 #SB : skip merchant quest
-      ("town_none",[(eq, "$cheat_mode", 1),], "boldly go where no {man/woman} has gone before..",
+      ("town_none",[(eq, "$cheat_mode", DPLMC_CHEAT_YES),], "boldly go where no {man/woman} has gone before..",
        [
          #(jump_to_menu, "mnu_start_phase_2_5"),
          (store_random_in_range, ":destination", training_grounds_begin, training_grounds_end),
@@ -264,7 +264,7 @@ game_menus = [
       ("tutorial_cheat",[(eq,1,0)],"{!}CHEAT!",
        [
          (change_screen_return),
-         (assign, "$cheat_mode", 1),
+         (assign, "$cheat_mode", DPLMC_CHEAT_YES),
          (set_show_messages, 0),
 		 (add_xp_to_troop, 15000, "trp_player"),
          (troop_raise_skill, "trp_player", skl_leadership, 7),
@@ -695,7 +695,7 @@ game_menus = [
     ##diplomacy end
    ],
     [
-      ("cheat_faction_orders",[(ge,"$cheat_mode",1)],"{!}Cheat: Faction orders.",
+      ("cheat_faction_orders",[(ge,"$cheat_mode",DPLMC_CHEAT_YES)],"{!}Cheat: Faction orders.",
        [(jump_to_menu, "mnu_faction_orders"),
         ]
        ),
@@ -744,7 +744,7 @@ game_menus = [
 	##diplomacy start+ see dplmc_affiliated_family_report
      ("view_affiliated_family_report",[
 		#(this_or_next|troop_slot_ge, "trp_player", slot_troop_spouse, 1),
-        (this_or_next|ge,"$cheat_mode",1),
+        (this_or_next|ge,"$cheat_mode",DPLMC_CHEAT_YES),
 		(is_between, "$g_player_affiliated_troop", kingdoms_begin, kingdoms_end),
 		], "View affiliated family member / spouse report.",
        [
@@ -759,7 +759,7 @@ game_menus = [
         ]
        ),
 
-      ("status_check",[(eq,"$cheat_mode",1)],"{!}NPC status check.",
+      ("status_check",[(ge,"$cheat_mode",DPLMC_CHEAT_YES)],"{!}NPC status check.",
        [
         (try_for_range, ":npc", companions_begin, companions_end),
             (main_party_has_troop, ":npc"),
@@ -3133,7 +3133,7 @@ game_menus = [
 
 	#lord recruitment changes begin
 
-	("continue",[(eq,"$cheat_mode",1)],"{!}CHEAT! - increase Right to Rule",
+	("continue",[(ge,"$cheat_mode",DPLMC_CHEAT_YES)],"{!}CHEAT! - increase Right to Rule",
        [
 	   (val_add, "$player_right_to_rule", 10),
 	   (jump_to_menu, "mnu_character_report"),
@@ -3141,7 +3141,7 @@ game_menus = [
        ),
 
 
-	("continue",[(eq,"$cheat_mode",1),
+	("continue",[(ge,"$cheat_mode",DPLMC_CHEAT_YES),
 		(str_store_troop_name, s14, "$g_talk_troop"),
 	],"{!}CHEAT! - increase your relation with {s14}",
        [
@@ -3150,7 +3150,7 @@ game_menus = [
        ]
        ),
        
-	("cheat_slots",[(eq,"$cheat_mode",1),
+	("cheat_slots",[(ge,"$cheat_mode",DPLMC_CHEAT_YES),
         (str_store_troop_name, s14, "$g_talk_troop"),
 	],"{!}CHEAT! - Access {s14} troop slots",
        [
@@ -3161,14 +3161,14 @@ game_menus = [
 
 
 
-	("continue",[(eq,"$cheat_mode",1)],"{!}CHEAT! - increase honor",
+	("continue",[(ge,"$cheat_mode",DPLMC_CHEAT_YES)],"{!}CHEAT! - increase honor",
        [
 	   (val_add, "$player_honor", 10),
 	   (jump_to_menu, "mnu_character_report"),
        ]
        ),
 
-	("continue",[(eq,"$cheat_mode",1)],"{!}CHEAT! - increase renown",
+	("continue",[(ge,"$cheat_mode",DPLMC_CHEAT_YES)],"{!}CHEAT! - increase renown",
        [
 	   (troop_get_slot, ":renown", "trp_player", slot_troop_renown),
 	   (val_add, ":renown", 50),
@@ -3178,7 +3178,7 @@ game_menus = [
        ]
        ),
 
-	("continue",[(eq,"$cheat_mode",1)],"{!}CHEAT! - increase persuasion",
+	("continue",[(ge,"$cheat_mode",DPLMC_CHEAT_YES)],"{!}CHEAT! - increase persuasion",
        [
 	   (troop_raise_skill, "trp_player", "skl_persuasion", 1),
 
@@ -3478,7 +3478,7 @@ TOTAL:  {reg5}"),
     (try_end),
     ],
     [
-      ("camp_action_1",[(eq,"$cheat_mode",1)],"{!}Cheat: Walk around.",
+      ("camp_action_1",[(eq,"$cheat_mode",DPLMC_CHEAT_YES)],"{!}Cheat: Walk around.",
        [(set_jump_mission,"mt_ai_training"),
         (call_script, "script_setup_random_scene"),
         (change_screen_mission),
@@ -3584,7 +3584,7 @@ TOTAL:  {reg5}"),
         ]
        ),
       ("camp_cheat",
-       [(ge, "$cheat_mode", 1)
+       [(eq, "$cheat_mode", DPLMC_CHEAT_YES)
         ], "CHEAT MENU!",
        [(jump_to_menu, "mnu_camp_cheat"),
         ],
@@ -4065,7 +4065,7 @@ TOTAL:  {reg5}"),
            (faction_slot_eq, "$players_kingdom", slot_faction_leader, "trp_player"),
            (assign, ":continue", 1),
          (else_try),
-           (ge, "$cheat_mode", 1),
+           (ge, "$cheat_mode", DPLMC_CHEAT_YES),
            (assign, ":continue", 1),
          (try_end),
          (eq, ":continue", 1),
@@ -4120,7 +4120,7 @@ TOTAL:  {reg5}"),
        ),
        ("action_change_policies",
         [
-          (gt, "$cheat_mode", 0),
+          (ge, "$cheat_mode", DPLMC_CHEAT_YES),
           #SB : name set bits
           (store_and, ":name_set", "$players_kingdom_name_set", rename_kingdom),
           (eq, ":name_set", rename_kingdom),
@@ -4134,7 +4134,7 @@ TOTAL:  {reg5}"),
        ),
       ##Custom player kingdom vassal titles, credit Caba'drin end
       ##diplomacy end+
-      ("action_modify_banner",[(this_or_next|gt, "$cheat_mode", 0),(ge, "$g_player_banner_granted", 1)],
+      ("action_modify_banner",[(this_or_next|ge, "$cheat_mode", DPLMC_CHEAT_YES),(ge, "$g_player_banner_granted", 1)],
        "Modify your banner (Shift to change back colour).",
        [
         #SB : recolor mode
@@ -7302,7 +7302,7 @@ TOTAL:  {reg5}"),
           (store_add, ":get_caught_chance", ":player_alarm", ":num_men"),
           (store_random_in_range, ":random_chance", 0, 100),
           (try_begin),
-            (this_or_next|ge, "$cheat_mode", 1),
+            (this_or_next|ge, "$cheat_mode", DPLMC_CHEAT_YES),
             (this_or_next|ge, ":random_chance", ":get_caught_chance"),
             (eq, "$g_last_defeated_bandits_town", "$g_encountered_party"),
             (assign, "$g_last_defeated_bandits_town", 0),
@@ -7386,7 +7386,7 @@ TOTAL:  {reg5}"),
 
       ("cheat_castle_start_siege",
        [
-         (eq, "$cheat_mode", 1),
+         (ge, "$cheat_mode", DPLMC_CHEAT_YES),
          (this_or_next|party_slot_eq, "$g_encountered_party", slot_center_is_besieged_by, -1),
          (             party_slot_eq, "$g_encountered_party", slot_center_is_besieged_by, "p_main_party"),
          (store_relation, ":reln", "$g_encountered_party_faction", "fac_player_supporters_faction"),
@@ -7409,7 +7409,7 @@ TOTAL:  {reg5}"),
 
       ("castle_leave",[],"Leave.",[(change_screen_return,0)]),
       #SB : the three options below are covered in cheats
-      ("castle_cheat", [(ge, "$cheat_mode", 1)], "{!}Use Cheats", [
+      ("castle_cheat", [(ge, "$cheat_mode", DPLMC_CHEAT_YES)], "{!}Use Cheats", [
         # (assign, "$sneaked_into_town", disguise_pilgrim),
         (assign, "$town_entered", 1),
         # (assign, "$g_mt_mode", tcm_disguised),
@@ -7864,7 +7864,7 @@ TOTAL:  {reg5}"),
       ("build_siege_tower",[(party_slot_eq, "$current_town", slot_center_siege_with_belfry, 1),(eq, "$g_siege_method", 0)],
        "Build a siege tower.", [(jump_to_menu,"mnu_construct_siege_tower")]),
 
-      ("cheat_castle_lead_attack",[(eq, "$cheat_mode", 1),
+      ("cheat_castle_lead_attack",[(ge, "$cheat_mode", DPLMC_CHEAT_YES),
                                    (eq, "$g_siege_method", 0)],
        "{!}CHEAT: Instant build equipments.",
        [
@@ -7873,7 +7873,7 @@ TOTAL:  {reg5}"),
          (jump_to_menu, "mnu_castle_besiege"),
        ]),
 
-      ("cheat_conquer_castle",[(eq, "$cheat_mode", 1),
+      ("cheat_conquer_castle",[(ge, "$cheat_mode", DPLMC_CHEAT_YES),
                                    ],
        "{!}CHEAT: Instant conquer castle.",
        [
@@ -9900,7 +9900,7 @@ TOTAL:  {reg5}"),
 		#rubik had a good idea: only enable this after having met the village elder
 		(party_get_slot, ":village_elder_troop", "$current_town",slot_town_elder),
 		(gt, ":village_elder_troop", 0),
-		(this_or_next|eq, "$cheat_mode", 1),#Always can jump to village elder in cheat mode
+		(this_or_next|ge, "$cheat_mode", DPLMC_CHEAT_YES),#Always can jump to village elder in cheat mode
 		(this_or_next|eq, "$players_kingdom", "$g_encountered_party_faction"), #allow when member
         (troop_slot_ge,":village_elder_troop", slot_troop_met, 1),
 		##diplomacy end+
@@ -9937,7 +9937,7 @@ TOTAL:  {reg5}"),
 		#and there isn't another condition that enables the jump.
 		(party_get_slot, ":village_elder_troop", "$current_town",slot_town_elder),
 		(gt, ":village_elder_troop", 0),
-		(eq, "$cheat_mode", 0),
+		(eq, "$cheat_mode", DPLMC_CHEAT_DISABLED),
 		(troop_slot_eq, ":village_elder_troop", slot_troop_met, 0),
 		(disable_menu_option),
 		],
@@ -10142,7 +10142,7 @@ TOTAL:  {reg5}"),
        [(jump_to_menu,"mnu_village_hostile_action"),
            ]),
 
-      # ("village_reports",[(eq, "$cheat_mode", 1),], "{!}CHEAT! Show reports.",
+      # ("village_reports",[(ge, "$cheat_mode", DPLMC_CHEAT_YES),], "{!}CHEAT! Show reports.",
        # [(jump_to_menu,"mnu_center_reports"),
            # ]),
       ("village_leave",[],"Leave...",[(change_screen_return,0),
@@ -10166,7 +10166,7 @@ TOTAL:  {reg5}"),
 	  ##diplomacy end+
 	  ]),
       #SB : consolidated cheats
-      ("village_cheat", [(ge, "$cheat_mode", 1),],
+      ("village_cheat", [(ge, "$cheat_mode", DPLMC_CHEAT_YES),],
       "Use cheats.",
       [(jump_to_menu, "mnu_town_cheats"),
       ]),
@@ -10712,7 +10712,7 @@ TOTAL:  {reg5}"),
                        (ge, ":cur_gold", "$diplomacy_var")],
        "Go on.", [
                   (try_begin), #fast build
-                    (ge, "$cheat_mode", 1),
+                    (ge, "$cheat_mode", DPLMC_CHEAT_YES),
                     (assign, "$diplomacy_var2", 0),
                   (else_try),
                     (troop_remove_gold, "trp_player", "$diplomacy_var"),
@@ -12115,10 +12115,10 @@ TOTAL:  {reg5}"),
 			 #this is just a cheat right now
              #(troop_set_slot, "trp_belligerent_drunk", slot_troop_cur_center, "$g_encountered_party"),
 			 (try_begin),
-				(eq, "$cheat_mode", 1),
+				(ge, "$cheat_mode", DPLMC_CHEAT_YES),
 				(troop_get_slot, ":drunk_location", "trp_belligerent_drunk", slot_troop_cur_center),
 				(try_begin),
-					(eq, "$cheat_mode", 0),
+					(eq, "$cheat_mode", DPLMC_CHEAT_DISABLED),
 				(else_try),
 					(is_between, ":drunk_location", centers_begin, centers_end),
 					(str_store_party_name, s4, ":drunk_location"),
@@ -12953,7 +12953,7 @@ TOTAL:  {reg5}"),
 		(assign, ":can_meet_guild_master", 0),
 		(try_begin),
 			#Always can jump to guild master in cheat mode.
-			(eq, "$cheat_mode", 1),
+			(ge, "$cheat_mode", DPLMC_CHEAT_YES),
 			(assign, ":can_meet_guild_master", 1),
 		(else_try),
 			#SB : can jump when part of faction
@@ -13009,7 +13009,7 @@ TOTAL:  {reg5}"),
 		#and there isn't another condition that enables the jump.
 		(party_get_slot, ":guild_master_troop", "$current_town",slot_town_elder),
 		(gt, ":guild_master_troop", 0),
-		(eq, "$cheat_mode", 0),
+		(eq, "$cheat_mode", DPLMC_CHEAT_DISABLED),
 		(neq, "$g_starting_town", "$current_town"),
 		(neq, "$current_town", "p_town_6"),
 		(troop_slot_eq, ":guild_master_troop", slot_troop_met, 0),
@@ -13413,7 +13413,7 @@ TOTAL:  {reg5}"),
         ],
     [
       ("host_tournament",
-      [(ge, "$cheat_mode", 1),],
+      [(ge, "$cheat_mode", DPLMC_CHEAT_YES),],
       "{!}Cheat : Win tournament",
       [
            (jump_to_menu, "mnu_town_tournament_won"),
@@ -15475,7 +15475,7 @@ goods, and books will never be sold. ^^You can change some settings here freely.
          (music_set_situation, 0),
          ]),
 
-      ("go_to_track",[(eq, "$cheat_mode", 1)],"{!}Cheat: Go to track.",
+      ("go_to_track",[(ge, "$cheat_mode", DPLMC_CHEAT_YES)],"{!}Cheat: Go to track.",
        [
          (set_jump_mission, "mt_ai_training"),
          (try_begin), #SB : slots
@@ -15488,7 +15488,7 @@ goods, and books will never be sold. ^^You can change some settings here freely.
          (change_screen_mission),
         ]
        ),
-      ("go_to_range",[(eq, "$cheat_mode", 1)],"{!}Cheat: Go to range.",
+      ("go_to_range",[(ge, "$cheat_mode", DPLMC_CHEAT_YES)],"{!}Cheat: Go to range.",
        [
          (set_jump_mission, "mt_ai_training"),
          (jump_to_scene, "$g_training_ground_melee_training_scene"),
@@ -21097,7 +21097,7 @@ goods, and books will never be sold. ^^You can change some settings here freely.
       ]),
       
       ("display_slots",
-      [(ge, "$cheat_mode", 1)], "Show me all your secrets...",
+      [(ge, "$cheat_mode", DPLMC_CHEAT_YES)], "Show me all your secrets...",
       [ 
         (assign, "$g_talk_troop", "$g_player_troop"),
         (jump_to_menu, "mnu_display_troop_slots"),
@@ -21883,7 +21883,7 @@ goods, and books will never be sold. ^^You can change some settings here freely.
         (store_add, ":get_caught_chance", ":player_alarm", ":num_men"),
         (store_random_in_range, ":random_chance", 0, 100),
         (try_begin),
-          (this_or_next|ge, "$cheat_mode", 1),
+          (this_or_next|ge, "$cheat_mode", DPLMC_CHEAT_YES),
           (this_or_next|ge, ":random_chance", ":get_caught_chance"),
           (eq, "$g_last_defeated_bandits_town", "$g_encountered_party"),
           (assign, "$g_last_defeated_bandits_town", 0),
