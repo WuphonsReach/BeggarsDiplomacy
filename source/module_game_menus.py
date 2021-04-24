@@ -10136,33 +10136,39 @@ TOTAL:  {reg5}"),
          ], "Train the peasants.",
        [(jump_to_menu, "mnu_train_peasants_against_bandits"),]),
 
-      ("village_hostile_action",[(party_slot_eq, "$current_town", slot_village_state, svs_normal),
-                                 (neg|party_slot_ge, "$current_town", slot_village_infested_by_bandits, 1),
-                                 (party_slot_ge, "$current_town", slot_center_player_relation, -1), #relationship check, non-negative
-                                 (check_quest_active, "qst_hunt_down_fugitive"),
-                                 (quest_slot_eq, "qst_hunt_down_fugitive", slot_quest_target_center, "$current_town"),
-                                 (neg|check_quest_concluded, "qst_hunt_down_fugitive"), #SB : other condition
-                                 (neg|check_quest_succeeded, "qst_hunt_down_fugitive"),
-                                 (neg|check_quest_failed, "qst_hunt_down_fugitive"),
-                                 (quest_get_slot, ":quest_target_dna", "qst_hunt_down_fugitive", slot_quest_target_dna),
-                                 (call_script, "script_get_name_from_dna_to_s50", ":quest_target_dna"),
-								 ], "Demand to meet the family of {s50}.",
+      ("village_demand_to_meet_family",
+        [
+          (party_slot_eq, "$current_town", slot_village_state, svs_normal),
+          (neg|party_slot_ge, "$current_town", slot_village_infested_by_bandits, 1),
+          (party_slot_ge, "$current_town", slot_center_player_relation, -1), #relationship check, non-negative
+          (check_quest_active, "qst_hunt_down_fugitive"),
+          (quest_slot_eq, "qst_hunt_down_fugitive", slot_quest_target_center, "$current_town"),
+          (neg|check_quest_concluded, "qst_hunt_down_fugitive"), #SB : other condition
+          (neg|check_quest_succeeded, "qst_hunt_down_fugitive"),
+          (neg|check_quest_failed, "qst_hunt_down_fugitive"),
+          (quest_get_slot, ":quest_target_dna", "qst_hunt_down_fugitive", slot_quest_target_dna),
+          (call_script, "script_get_name_from_dna_to_s50", ":quest_target_dna"),
+        ], "Demand to meet the family of {s50}.",
        [
-       (call_script, "script_get_max_skill_of_player_party", "skl_persuasion"),
-       (store_random_in_range, ":random_no", reg0, 100),
-       #persuasion instead of straight out murdering everyone
-       (call_script, "script_party_count_members_with_full_health","p_main_party"),
-       (assign, ":player_party_size", reg0),
-       (call_script, "script_party_count_members_with_full_health","$current_town"),
-       (store_mul, ":villagers_party_size", reg0, 2), #twice the effective size
-       (try_begin),
-         (this_or_next|gt, ":random_no", 40),
-         (gt, ":player_party_size", ":villagers_party_size"),
-         (jump_to_menu, "mnu_village_hunt_down_fugitive_persuaded"),
-       (else_try),
-         (jump_to_menu,"mnu_village_start_attack"),
-       (try_end),
-           ]),
+          # persuasion roll instead of straight out murdering everyone
+          (call_script, "script_get_max_skill_of_player_party", "skl_persuasion"),
+          (assign, ":pursuasion_skill", reg0),
+          (val_mul, ":pursuasion_skill", 10), # should be 0..100
+          (store_random_in_range, ":random_no", 0, 100),
+          # or the player's calc size is larger than the village's calc size
+          (call_script, "script_party_count_members_with_full_health","p_main_party"),
+          (assign, ":player_party_size", reg0),
+          (call_script, "script_party_count_members_with_full_health","$current_town"),
+          (store_mul, ":villagers_party_size", reg0, 3), #twice the effective size
+          (try_begin),
+            (this_or_next|ge, ":pursuasion_skill", ":random_no"),
+            (gt, ":player_party_size", ":villagers_party_size"),
+            (jump_to_menu, "mnu_village_hunt_down_fugitive_persuaded"),
+          (else_try),
+            # go to being murder-hobos
+            (jump_to_menu,"mnu_village_start_attack"),
+          (try_end),
+        ]),
 
       ("village_hostile_action",[(party_slot_eq, "$current_town", slot_village_state, svs_normal),
                                  (neg|party_slot_ge, "$current_town", slot_village_infested_by_bandits, 1),
