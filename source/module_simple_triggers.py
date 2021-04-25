@@ -3112,22 +3112,22 @@ simple_triggers = [
      (try_end),
     ]),
 
-  # Consuming food at every N hours
-  (11,
+  # Consuming food at every N hours, see also the script: consume_food
+  # Vanilla rule: Your party will eat every 14 hours, with every unit of food quantity feeding 3 troops.
+  (12,
    [
-    (eq, "$g_player_is_captive", 0),
+    (eq, "$g_player_is_captive", 0), # no food consumption while player is captive
+
     (party_get_num_companion_stacks, ":num_stacks","p_main_party"),
     (assign, ":num_men", 0),
     (try_for_range, ":i_stack", 0, ":num_stacks"),
       (party_stack_get_size, ":stack_size","p_main_party",":i_stack"),
       (val_add, ":num_men", ":stack_size"),
     (try_end),
-    (val_div, ":num_men", 3),
     (val_max, ":num_men", 1),
-    # (try_begin), #SB : val_max
-      # (eq, ":num_men", 0),
-      # (val_add, ":num_men", 1),
-    # (try_end),
+    (store_mul, ":daily_consumption", ":num_men", 2), # two meals per day
+    (val_div, ":daily_consumption", 3), # every unit of food feeds 3 troops
+    (store_div, ":food_units_needed", ":num_men", 3), # food units needed per meal
 
     (try_begin),
       (assign, ":number_of_foods_player_has", 0),
@@ -3141,49 +3141,77 @@ simple_triggers = [
       (try_end),
     (try_end),
 
-    # #SB : pre-calculate consumption amount for qst_deliver_wine items, although as with deliver_grain we might not care
-    # (try_begin),
-      # (check_quest_active,"qst_deliver_wine"),
-      # (quest_get_slot, ":quest_target_item", "qst_deliver_wine", slot_quest_target_item),
-      # (quest_get_slot, ":quest_target_amount", "qst_deliver_wine", slot_quest_target_amount),
-      # (assign, ":quest_amount", 0),
-      # (troop_get_inventory_capacity, ":capacity", "trp_player"),
-      # (try_for_range, ":cur_slot", 10, ":capacity"),
-        # (troop_get_inventory_slot, ":cur_item", "trp_player", ":cur_slot"),
-        # (eq, ":cur_item", ":quest_target_item"),
-        # (troop_inventory_slot_get_item_amount, ":cur_amount", "trp_player", ":cur_slot"),
-        # (val_add, ":quest_amount", ":cur_amount"),
-      # (try_end),
-    # (try_end),
-    (assign, ":consumption_amount", ":num_men"),
-    (assign, ":no_food_displayed", 0),
-    (try_for_range, ":unused", 0, ":consumption_amount"),
-      (assign, ":available_food", 0),
-      (try_for_range, ":cur_food", food_begin, food_end),
-        (item_set_slot, ":cur_food", slot_item_is_checked, 0),
-        (call_script, "script_cf_player_has_item_without_modifier", ":cur_food", imod_rotten),
-        (val_add, ":available_food", 1),
-      (try_end),
-      (try_begin),
-        (gt, ":available_food", 0),
-        (store_random_in_range, ":selected_food", 0, ":available_food"),
-        (call_script, "script_consume_food", ":selected_food"),
-      (else_try),
-        (eq, ":no_food_displayed", 0),
-        (display_message, "@Party has nothing to eat!", message_defeated), #SB : same colour const
-        (call_script, "script_change_player_party_morale", -3),
-        (assign, ":no_food_displayed", 1),
-#NPC companion changes begin
-        (try_begin),
-          (gt, ":num_men", 1), #SB : easier check
-            # (call_script, "script_party_count_fit_regulars", "p_main_party"),
-            # (gt, reg0, 0),
-          (call_script, "script_objectionable_action", tmt_egalitarian, "str_men_hungry"),
-        (try_end),
-#NPC companion changes end
+    (try_begin), # this also helps the consumption algorithm down below avoid having non-zero food_units_needed at the end
+      (gt, ":num_men", 10), # only grumble if party size > 10
+      (try_begin), 
+        (le, ":number_of_foods_player_has", 3),
+        (display_message, "@Your party is grumbling about the lack of variety in their diet."),
+        (call_script, "script_change_player_party_morale", -1),
       (try_end),
     (try_end),
-    ]),
+
+    (assign, ":available_food_qty", 0),
+    (troop_get_inventory_capacity, ":capacity", "trp_player"),
+    (try_for_range, ":cur_slot", 0, ":capacity"),
+      (item_set_slot, ":cur_slot", slot_item_is_checked, 0), #de-flag all items in all slots
+
+      #TODO: Figure out if a slot item is for the deliver ale/wine/food quest and flag it
+
+      # add up food item      
+      (troop_get_inventory_slot, ":cur_item", "trp_player", ":cur_slot"),
+      (is_between, ":cur_item", food_begin, food_end), # must be food
+      (troop_get_inventory_slot_modifier, ":item_modifier", "trp_player", ":cur_slot"),
+      (neq, ":item_modifier", imod_rotten), # not rotten
+      (troop_inventory_slot_get_item_amount, ":cur_amount", "trp_player", ":cur_slot"),
+      (val_add, ":available_food_qty", ":cur_amount"),
+    (try_end),
+    (store_div, ":days_until_starvation", ":available_food_qty", ":daily_consumption"),
+
+    (try_begin),
+      (eq, "$cheat_mode", DPLMC_DEBUG_NEVER),
+      (assign, reg10, ":available_food_qty"),
+      (assign, reg11, ":daily_consumption"),
+      (assign, reg12, ":days_until_starvation"),
+      (display_message, "@{!}Food available is {reg10}, daily consumption is {reg11}, days of food is {reg12}."),
+    (try_end),
+
+    (try_begin), # warn the player before they run out of food, increase penalties as stocks run lower
+      (gt, ":num_men", 1),
+      (try_begin),
+        (le, ":days_until_starvation", 0),
+        (display_message, "@Party has nothing to eat!", message_defeated),
+        (call_script, "script_change_player_party_morale", -5),
+        (call_script, "script_objectionable_action", tmt_egalitarian, "str_men_hungry"),
+      (else_try),
+        (le, ":days_until_starvation", 3),
+        (display_message, "@Your party is running very low on food."),
+        (call_script, "script_change_player_party_morale", -2),
+      (else_try),
+        (le, ":days_until_starvation", 5),
+        (display_message, "@Your party is running low on food."),
+      (try_end),
+    (try_end),
+
+    # this approach means troops start skipping meals as food variety goes down
+    # it's still unlikely, given that we try to use about 10 food units per attempt
+    (store_mul, ":feed_attempts", ":num_men", 1),
+    (try_for_range, ":unused", 0, ":feed_attempts"),
+      (gt, ":food_units_needed", 0),
+      (store_random_in_range, ":consume_amount", 5, 16), # units per attempt (5-15)
+      (val_min, ":consume_amount", ":food_units_needed"),
+      (store_random_in_range, ":candidate_food", food_begin, food_end),
+      (call_script, "script_consume_food", ":candidate_food", ":consume_amount"),
+      (val_sub, ":food_units_needed", reg0),
+    (try_end),
+
+    (try_begin),
+      (eq, "$cheat_mode", DPLMC_DEBUG_EXPERIMENTAL),
+      (gt, ":food_units_needed", 0),
+      (assign, reg10, ":food_units_needed"),
+      (display_message, "@{!}Failed to feed everyone, food_units_needed {reg10}"),
+    (try_end),
+
+  ]),
 
   # Setting item modifiers for food
   (24,

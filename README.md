@@ -90,6 +90,7 @@ Only changes made on top of [Diplado develop](https://github.com/diegoami/Diplad
 - The village menu option of demand to meet family of the fugitive (qst_hunt_down_fugitive) does a better job of rolling against persuasion instead of jumping straight to murdering villagers.
 - There is a gold penalty for being captured (10-20% of your purse).  Captors no longer overlook the gold in your pockets.
 - Insulting lords that you have just met can reward more random renown in exchange for the risk.  Backing down after a challenge gains back a little relations but loses renown.
+- Troops now start consuming your food stores from the bottom of the inventory first.  This should play better with the "buy food" feature of Diplomacy+ so that you don't end up with half a dozen half-eaten stacks of food.
 
 ### Experiments
 
@@ -144,7 +145,7 @@ Only changes made on top of [Diplado develop](https://github.com/diegoami/Diplad
 - Kingdom parties now add additional units (create_kingdom_party_if_below_limit) as the player levels up.  Early on, this will just be additional civilians, kingdom troops and caravan guards, but eventually includes male and female mercenaries.  Look for reinforcement_cg_count, reinforcement_civs_count, reinforcement_a_count, reinforcement_b_count, reinforcement_mm_count, and reinforcement_fm_count to see the values.  Overall, kingdom caravans are less of a pushover but rewards have also been increased.
 - The number of bandits in a bandit lair no longer increases after player level 45.  Given that the player can only bring up to six other party members into the lair, this makes things fairer at higher levels.  The number of bandits that spawn per wave is now 3-5 (instead of a flat 4).
 - Bandits will now join at a random distance if DPLMC_TERRAIN_ADVANTAGE_ENABLE is active.  Currently adds 1-2 points of extra range for them to join in on the fight.
-- Your party now consumes food every 11 hours (was every 14 hours).
+- Player party now consumes food every 12 hours (was every 14 hours), making it easier to calculate food required per day. Food consumption is randomized and it will attempt to pull evenly from each type of food that you have.  Troops will grumble if there are fewer than three different types of food or low on food (three days).  Player gets warning message when there are less than five days of food.  Food consumption now starts at the bottom of your inventory (instead of the top). When combined with the automatic purchase of food, you should see fewer half-eaten stacks of food cluttering up your inventory.
 
 ### Bug Fixes
 
