@@ -22871,12 +22871,17 @@ scripts = [
           (try_end),
           (try_begin),
             (eq, ":is_bandit", 1),
-            (val_sub, ":join_distance", 1), #day/bandit, value of 3
             (val_sub, ":join_distance", ":join_sub"), #can reduce it down to 1 on easy mode
-            (is_currently_night), #night/bandit
-            (store_random_in_range, ":join_add", 0, 2),
-            (val_add, ":join_distance", ":join_add"),
-            (val_add, ":join_distance", 1), # ends up adding 1..3
+            (try_begin),
+              (eq, ":template_id", "pt_looters"),
+              (val_sub, ":join_distance", 1), # looters are shy
+            (else_try),
+              (store_random_in_range, ":join_add", 0, 3), # add 0..2 to bandits
+              (val_add, ":join_distance", ":join_add"), 
+              (is_currently_night),
+              (store_random_in_range, ":join_add", 0, 2), # add another 0..1 at night
+              (val_add, ":join_distance", ":join_add"),
+            (try_end),
           (try_end),
           #booster to patrols etc. that makes up for new base of 4
           (try_begin),
