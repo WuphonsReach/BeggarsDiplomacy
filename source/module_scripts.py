@@ -60913,7 +60913,7 @@ scripts = [
         (try_end),
 
         (try_begin), #debug
-          (ge, "$cheat_mode", DPLMC_DEBUG_MIN),
+          (eq, "$cheat_mode", DPLMC_DEBUG_MILITARY),
           (assign, reg0, ":cur_i"),
           (str_store_faction_name, s7, ":template_faction"),
           (display_message, "@{!}DEBUG - Added {reg0}.template of faction {s7} to patrol."),
