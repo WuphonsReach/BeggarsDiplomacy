@@ -827,6 +827,13 @@ simple_triggers = [
             (party_set_ai_object,":result", ":center_no"),
             (party_set_flags, ":result", pf_default_behavior, 1),
           (try_end),
+          (try_begin),
+            (eq, "$cheat_mode", DPLMC_DEBUG_EXPERIMENTAL),
+            (str_store_party_name, s11, ":center_no"),
+            (str_store_party_name, s12, ":village_reinforcements"),
+            (assign, reg11, ":reinforcement_cost"),
+            (display_message, "@{!}Hire reinforcements for {s11} from {s12} for {reg11} denars."),
+          (try_end),
           (val_sub, ":cur_wealth", ":reinforcement_cost"),
           (val_sub, ":num_hiring_rounds", 1),
         (try_end),
@@ -2872,6 +2879,7 @@ simple_triggers = [
           (assign,":accumulated_tariffs", 0),
         (try_end),
 	     ##diplomacy end
+
 			 (try_begin),
 				(eq, "$cheat_mode", DPLMC_DEBUG_ECONOMY),
 				(assign, reg4, ":tariffs_generated"),
@@ -5129,20 +5137,19 @@ simple_triggers = [
       (item_set_slot, "itm_ale", slot_item_food_bonus, 4),
    ]),
   
-  # randomly give small amounts of gold to village elders based on prosperity, they eventually turn this into prosperity
-  (24,
+  # randomly give small amounts of gold to village elders with low prosperity, they eventually turn this into prosperity
+  (12,
    [
     (ge, "$g_dplmc_gold_changes", DPLMC_GOLD_CHANGES_LOW),
     (try_for_range, ":center_no", villages_begin, villages_end),
       (party_get_slot, ":prosperity", ":center_no", slot_town_prosperity),
+      (lt, ":prosperity", 30), # only for low-prosperity villages
       (party_get_slot, ":elder", ":center_no", slot_town_elder),
       (try_begin),
         (store_random_in_range, ":random", 0, 100),
-        (lt, ":random", 10), # percent chance to add gold to village elder per day
-        (val_div, ":prosperity", 3),
-        (val_clamp, ":prosperity", 5, 30),
-        (store_random_in_range, ":gold", 0, ":prosperity"),
-        (val_add, ":gold", 5),
+        (lt, ":random", 5), # percent chance to add gold to village elder per day
+        (store_random_in_range, ":gold", 0, 80),
+        (val_add, ":gold", 20),
         (troop_add_gold, ":elder", ":gold"),
         (try_begin),
           (eq, "$cheat_mode", DPLMC_DEBUG_ECONOMY),
@@ -5154,27 +5161,31 @@ simple_triggers = [
     (try_end),
    ]),
 
-  # walled centers get a bit of random wealth if they are under a value so that they can hire reinforcements
-  # goal is to simulate townspeople manning the walls after a defeat and not have zero-levels of troops for too long
+  # walled centers get a bit of random wealth if they are under-strength so that they can hire reinforcements
+  # goal is to not have zero-levels of troops for too long (maybe the king hired the reinforcements?)
+  # see: reinforcement_cost_easy
   (6,
    [
     (ge, "$g_dplmc_gold_changes", DPLMC_GOLD_CHANGES_MEDIUM),
     (try_for_range, ":center_no", walled_centers_begin, walled_centers_end),
       (party_get_slot, ":cur_wealth", ":center_no", slot_town_wealth),
+      (lt, ":cur_wealth", reinforcement_cost_easy),
+      (party_get_slot, ":center_strength", ":center_no", slot_party_cached_strength),
+      (lt, ":center_strength", 400), # roughly, strength = 10x the number of troops (give or take 30-50%)
       (try_begin),
         (store_random_in_range, ":random", 0, 100),
-        (lt, ":random", 10), # percent chance
-        (lt, ":cur_wealth", 500),
-        (store_random_in_range, ":gold", 0, 100),
+        (lt, ":random", 20), # percent chance        
+        (store_random_in_range, ":gold", 0, 200),
         (val_add, ":gold", 100),
         (val_add, ":cur_wealth", ":gold"),
         (party_set_slot, ":center_no", slot_town_wealth, ":cur_wealth"),
         (try_begin),
-          (eq, "$cheat_mode", DPLMC_DEBUG_ECONOMY),
+          (eq, "$cheat_mode", DPLMC_DEBUG_EXPERIMENTAL),
           (str_store_party_name, s11, ":center_no"),
           (assign, reg4, ":gold"),
           (assign, reg5, ":cur_wealth"),
-          (display_message, "@{!}Center {s11} was given {reg4} denars for a total wealth of {reg5}."),
+          (assign, reg6, ":center_strength"),
+          (display_message, "@{!}Center {s11} (str: {reg6}) was given {reg4} denars for a total wealth of {reg5}."),
         (try_end),
       (try_end),
     (try_end),
