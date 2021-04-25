@@ -2620,20 +2620,21 @@ simple_triggers = [
 ##    ]),
 
   # Spawn village farmer parties
-  (24,
+  (4,
    [
-       (try_for_range, ":village_no", villages_begin, villages_end),
-         (party_slot_eq, ":village_no", slot_village_state, svs_normal),
-         (party_get_slot, ":farmer_party", ":village_no", slot_village_farmer_party),
-         (this_or_next|eq, ":farmer_party", 0),
-         (neg|party_is_active, ":farmer_party"),
-         (store_random_in_range, ":random_no", 0, 100),
-         (lt, ":random_no", 60),
-         (call_script, "script_create_village_farmer_party", ":village_no"),
-         (party_set_slot, ":village_no", slot_village_farmer_party, reg0),
-#         (str_store_party_name, s1, ":village_no"),
-#         (display_message, "@Village farmers created at {s1}."),
-       (try_end),
+      (neg|is_currently_night), # only spawn farmers during the day
+      (try_for_range, ":village_no", villages_begin, villages_end),
+        (party_slot_eq, ":village_no", slot_village_state, svs_normal),
+        (party_get_slot, ":farmer_party", ":village_no", slot_village_farmer_party),
+        (this_or_next|eq, ":farmer_party", 0),
+        (neg|party_is_active, ":farmer_party"),
+        (store_random_in_range, ":random_no", 0, 100),
+        (lt, ":random_no", 25),
+        (call_script, "script_create_village_farmer_party", ":village_no"),
+        (party_set_slot, ":village_no", slot_village_farmer_party, reg0),
+#       (str_store_party_name, s1, ":village_no"),
+#       (display_message, "@Village farmers created at {s1}."),
+      (try_end),
     ]),
 
 
@@ -2661,8 +2662,9 @@ simple_triggers = [
 
 
   #Troop AI: Merchants thinking
-  (8,
+  (4,
    [
+     (neg|is_currently_night), # only spawn during the day
        (game_get_reduce_campaign_ai, ":reduce_campaign_ai"), #SB : moved this up top
        (val_sub, ":reduce_campaign_ai", 1),
        (val_mul, ":reduce_campaign_ai", 10), #pre-calculate amount
@@ -2713,7 +2715,7 @@ simple_triggers = [
            (try_end),
            (try_begin),
             (store_random_in_range, ":random_can_leave", 0, 100),
-            (lt, ":random_can_leave", 50), # chance that caravan will leave, helps with blobbing of multiple caravans to same destination
+            (ge, ":random_can_leave", 30), # chance they leave, helps with blobbing 
             (assign, ":can_leave", 0),
            (try_end),           
            (eq, ":can_leave", 1),
@@ -2773,21 +2775,27 @@ simple_triggers = [
     ]),
 
   #Troop AI: Village farmers thinking
-  (8,
+  (3,
    [
-       (try_for_parties, ":party_no"),
-         (party_slot_eq, ":party_no", slot_party_type, spt_village_farmer),
-         (party_is_in_any_town, ":party_no"),
-         (party_get_slot, ":home_center", ":party_no", slot_party_home_center),
-         (party_get_cur_town, ":cur_center", ":party_no"),
+     (neg|is_currently_night), # only spawn farmers during the day
+      (try_for_parties, ":party_no"),
+        (party_slot_eq, ":party_no", slot_party_type, spt_village_farmer),
+        (party_is_in_any_town, ":party_no"),
+        (party_get_slot, ":home_center", ":party_no", slot_party_home_center),
+        (party_get_cur_town, ":cur_center", ":party_no"),
 
-         (assign, ":can_leave", 1),
-         (try_begin),
-           (is_between, ":cur_center", walled_centers_begin, walled_centers_end),
-           (neg|party_slot_eq, ":cur_center", slot_center_is_besieged_by, -1),
-           (assign, ":can_leave", 0),
-         (try_end),
-         (eq, ":can_leave", 1),
+        (assign, ":can_leave", 1),
+        (try_begin),
+          (is_between, ":cur_center", walled_centers_begin, walled_centers_end),
+          (neg|party_slot_eq, ":cur_center", slot_center_is_besieged_by, -1),
+          (assign, ":can_leave", 0),
+        (try_end),
+        (try_begin),
+          (store_random_in_range, ":random_can_leave", 0, 100),
+          (ge, ":random_can_leave", 25), # chance that they will leave, reduce all leaving at same hour
+          (assign, ":can_leave", 0),
+        (try_end), 
+        (eq, ":can_leave", 1),
 
          (try_begin),
            (eq, ":cur_center", ":home_center"),
