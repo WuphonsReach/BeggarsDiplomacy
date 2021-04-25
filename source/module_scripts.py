@@ -24770,17 +24770,17 @@ scripts = [
       (val_add, ":cur_wealth", ":weekly_income"),
 
 	  (try_begin),
-		(lt, ":cur_wealth", 0),
-		(store_sub, ":percent_under", 0, ":cur_wealth"),
-		(val_mul, ":percent_under", 100),
-		(val_div, ":percent_under", ":cur_weekly_wage"),
-		(val_div, ":percent_under", 5), #Max 20 percent
-		##diplomacy start+
-		#The above assumption could be violated if the lord entered this
-		#script with a negative wealth.  Add a failsafe.
-		(val_clamp, ":percent_under", 0, 21),
-		##diplomacy end+
-		(call_script, "script_party_inflict_attrition", ":party_no", ":percent_under", 1),
+      (lt, ":cur_wealth", 0),
+      (store_sub, ":percent_under", 0, ":cur_wealth"),
+      (val_mul, ":percent_under", 100),
+      (val_div, ":percent_under", ":cur_weekly_wage"),
+      (val_div, ":percent_under", 5), #Max 20 percent
+      ##diplomacy start+
+      #The above assumption could be violated if the lord entered this
+      #script with a negative wealth.  Add a failsafe.
+      (val_clamp, ":percent_under", 0, 21),
+      ##diplomacy end+
+      (call_script, "script_party_inflict_attrition", ":party_no", ":percent_under", 1),
 	  (try_end),
 
 	  ##diplomacy start+
@@ -54261,18 +54261,18 @@ scripts = [
 		(party_stack_get_size, ":size", "p_temp_casualties", ":stack"),
 		(party_remove_members, ":party", ":troop_type", ":size"),
 
-		(ge, "$cheat_mode", DPLMC_DEBUG_MIN),
-		(assign, reg3, ":size"),
-		(str_store_troop_name, s4, ":troop_type"),
-		(str_store_party_name, s5, ":party"),
-#		(display_message, "str_s5_suffers_attrition_reg3_x_s4"),
-		(str_store_string, s65, "str_s5_suffers_attrition_reg3_x_s4"),
-		(display_message, "str_s65"),
-		(try_begin),
-			(eq, "$debug_message_in_queue", 0),
-			(call_script, "script_add_notification_menu", "mnu_debug_alert_from_s65", 0, 0),
-			(assign, "$debug_message_in_queue", 1),
-		(try_end),
+		#(ge, "$cheat_mode", DPLMC_DEBUG_MIN),
+		#(assign, reg3, ":size"),
+		#(str_store_troop_name, s4, ":troop_type"),
+		#(str_store_party_name, s5, ":party"),
+		#(display_message, "str_s5_suffers_attrition_reg3_x_s4"),
+		#(str_store_string, s65, "str_s5_suffers_attrition_reg3_x_s4"),
+		#(display_message, "str_s65"),
+		#(try_begin),
+		#	(eq, "$debug_message_in_queue", 0),
+		#	(call_script, "script_add_notification_menu", "mnu_debug_alert_from_s65", 0, 0),
+		#	(assign, "$debug_message_in_queue", 1),
+		#(try_end),
 	(try_end),
 
 	]),
