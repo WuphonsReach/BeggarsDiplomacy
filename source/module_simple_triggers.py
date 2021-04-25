@@ -2568,7 +2568,7 @@ simple_triggers = [
            (is_between, ":cur_faction", kingdoms_begin, kingdoms_end),
            (faction_slot_eq, ":cur_faction", slot_faction_state, sfs_active),
            (try_begin),
-             (ge, "$cheat_mode", DPLMC_DEBUG_MIN),
+             (eq, "$cheat_mode", DPLMC_DEBUG_MILITARY),
              (str_store_troop_name, s4, ":troop_no"),
              (display_message, "str_debug__attempting_to_spawn_s4"),
            (try_end),
@@ -2577,7 +2577,7 @@ simple_triggers = [
            (assign, ":center_no", reg0),
 
            (try_begin),
-             (ge, "$cheat_mode", DPLMC_DEBUG_MIN),
+             (eq, "$cheat_mode", DPLMC_DEBUG_MILITARY),
              (str_store_party_name, s7, ":center_no"),
              (str_store_troop_name, s0, ":troop_no"),
              (display_message, "str_debug__s0_is_spawning_around_party__s7"),
