@@ -25568,12 +25568,12 @@ scripts = [
       (troop_add_merchandise, ":merchant_troop", itp_type_goods, ":number_of_items_in_village"),
       (troop_ensure_inventory_space, ":merchant_troop", 80),
 
-      #Adding 1 prosperity to the village while reducing each 3000 gold from the elder
+      # Add prosperity to the village while reducing gold from the elder
       (store_troop_gold, ":gold",":merchant_troop"),
       (try_begin),
-        (gt, ":gold", 3500),
-        (store_div, ":prosperity_added", ":gold", 3000),
-        (store_mul, ":gold_removed", ":prosperity_added", 3000),
+        (gt, ":gold", 1500),
+        (store_div, ":prosperity_added", ":gold", 1000),
+        (store_mul, ":gold_removed", ":prosperity_added", 1000),
         (troop_remove_gold, ":merchant_troop", ":gold_removed"),
         (call_script, "script_change_center_prosperity", ":village_no", ":prosperity_added"),
       (try_end),

@@ -123,6 +123,7 @@ Only changes made on top of [Diplado develop](https://github.com/diegoami/Diplad
 - The quest for eliminating bandits at an infested village by talking to the lord of the fief (qst_deal_with_bandits_at_lords_village) gives +7 reputation (up from +5).
 - village_bandits_defeated_cont: Refusing the rewards after defeating bandits at an infested village now gives +4 reputation (up from +3).  This gain is on top of the reputation reward for accepting an eliminate bandit infestation quest.
 - take_supplies: Taking supplies from a town results in a larger reputation hit. If you are a lord, -1 changed to -2, otherwise changed -3 to -4.
+- Poor villages have a small chance per day to be blessed with some gold, which the elder can then turn into +1 prosperity.
 
 ### Balance (Misc Quests)
 

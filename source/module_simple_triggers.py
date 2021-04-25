@@ -5166,6 +5166,7 @@ simple_triggers = [
    ]),
   
   # randomly give small amounts of gold to village elders with low prosperity, they eventually turn this into prosperity
+  # see: refresh_village_merchant_inventory
   (12,
    [
     (ge, "$g_dplmc_gold_changes", DPLMC_GOLD_CHANGES_LOW),
@@ -5175,7 +5176,7 @@ simple_triggers = [
       (party_get_slot, ":elder", ":center_no", slot_town_elder),
       (try_begin),
         (store_random_in_range, ":random", 0, 100),
-        (lt, ":random", 5), # percent chance to add gold to village elder per day
+        (lt, ":random", 5), # percent chance to add gold to village elder
         (store_random_in_range, ":gold", 0, 80),
         (val_add, ":gold", 20),
         (troop_add_gold, ":elder", ":gold"),
@@ -5199,7 +5200,7 @@ simple_triggers = [
       (party_get_slot, ":cur_wealth", ":center_no", slot_town_wealth),
       (lt, ":cur_wealth", reinforcement_cost_easy),
       (party_get_slot, ":center_strength", ":center_no", slot_party_cached_strength),
-      (lt, ":center_strength", 400), # roughly, strength = 10x the number of troops (give or take 30-50%)
+      (lt, ":center_strength", 500), # roughly, strength = 10x the number of troops (give or take 30-50%)
       (try_begin),
         (store_random_in_range, ":random", 0, 100),
         (lt, ":random", 20), # percent chance        
