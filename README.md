@@ -155,6 +155,7 @@ Only changes made on top of [Diplado develop](https://github.com/diegoami/Diplad
 - Prevent the food stack modifier (denoting freshness) from going out of range.  This helps with making sure that rotten food gets sold.  Note that the dplmc_auto_sell script does not properly sell rotten food but the dplmc_auto_buy_food script does now work.
 - It is now possible to use custom values for the various trade / non-aggression / alliance pact durations.  The code in module_presentations.py was using hard-coded values instead of the Diplomacy constants.
 - The huntress, camp defender and sword sister units now properly spawn with boots and helmets.  Some additional armor options have been added to those units.  The goal is to make them roughly equivalent to their male counterparts.
+- Fix a bug in the script where a lord asks you to deal with bandits in one of their villages.  This resulted in a script-error because the script did not pass two parameters to the second script.
 
 ## Making Changes
 
