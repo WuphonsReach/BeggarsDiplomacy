@@ -4140,7 +4140,7 @@ scripts = [
                (assign, "$g_recalculate_ais", 1), #added new
 
                (try_begin),
-                 (ge, "$cheat_mode", DPLMC_DEBUG_MIN),
+                 (eq, "$cheat_mode", DPLMC_DEBUG_MILITARY),
                  (display_message, "@{!}DEBUG : Siege attackers are running away"),
                (try_end),
              (try_end),
@@ -54002,7 +54002,7 @@ scripts = [
 				(this_or_next|eq, ":item", "itm_oil"),
 				(this_or_next|eq, ":item", "itm_wine"),
 				(this_or_next|eq, ":item", "itm_ale"),
-					(is_between, ":item",  food_begin, food_end),
+				(is_between, ":item",  food_begin, food_end),
 				(item_slot_eq, ":item", slot_item_is_checked, 0),
 				(troop_inventory_slot_get_item_amount, ":cur_amount", ":householder", ":i_slot"),
 				(gt, ":cur_amount", 0),
