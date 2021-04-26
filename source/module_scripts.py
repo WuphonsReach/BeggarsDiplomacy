@@ -22856,7 +22856,7 @@ scripts = [
             (val_sub, ":join_distance", ":join_sub"), #can reduce it down to 1 on easy mode
             (try_begin),
               (eq, ":template_id", "pt_looters"),
-              (val_sub, ":join_distance", 1), # looters are shy
+              (val_sub, ":join_distance", 3), # looters are shy
             (else_try),
               (store_random_in_range, ":join_add", 0, 3), # add 0..2 to bandits
               (val_add, ":join_distance", ":join_add"), 
