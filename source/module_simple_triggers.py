@@ -5172,6 +5172,8 @@ simple_triggers = [
    [
     (ge, "$g_dplmc_gold_changes", DPLMC_GOLD_CHANGES_LOW),
     (try_for_range, ":center_no", villages_begin, villages_end),
+      (party_slot_eq, ":center_no", slot_village_state, svs_normal), # must not be looted, being raided, etc.
+      (party_slot_eq, ":center_no", slot_center_has_bandits, 0), # must not be infested
       (party_get_slot, ":prosperity", ":center_no", slot_town_prosperity),
       (lt, ":prosperity", 30), # only for low-prosperity villages
       (party_get_slot, ":elder", ":center_no", slot_town_elder),
