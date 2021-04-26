@@ -40311,7 +40311,7 @@ scripts = [
     [
 
 	 (try_begin),
-		(ge, "$cheat_mode", DPLMC_DEBUG_MIN),
+		(eq, "$cheat_mode", DPLMC_DEBUG_MILITARY),
 		(display_message, "str_checking_volunteer_availability_script"),
 	 (try_end),
 
@@ -40325,10 +40325,10 @@ scripts = [
      (store_relation, ":village_faction_relation", ":village_faction", "fac_player_faction"),
 
      (ge, ":center_relation", 0),
-	 (try_begin),
-		(ge, "$cheat_mode", DPLMC_DEBUG_MIN),
-		(display_message, "str_center_relation_at_least_zero"),
-	 (try_end),
+      (try_begin),
+        (eq, "$cheat_mode", DPLMC_DEBUG_NEVER),
+        (display_message, "str_center_relation_at_least_zero"),
+      (try_end),
 
 
 
@@ -40340,7 +40340,7 @@ scripts = [
 		(eq, "$players_kingdom", 0),
 
 	 (try_begin),
-		(ge, "$cheat_mode", DPLMC_DEBUG_MIN),
+		(eq, "$cheat_mode", DPLMC_DEBUG_MILITARY),
 		(display_message, "str_relationfaction_conditions_met"),
 	 (try_end),
 
@@ -40349,7 +40349,7 @@ scripts = [
      (party_slot_ge, "$current_town", slot_center_volunteer_troop_type, 1),
 
 	 (try_begin),
-		(ge, "$cheat_mode", DPLMC_DEBUG_MIN),
+		(eq, "$cheat_mode", DPLMC_DEBUG_MILITARY),
 		(display_message, "str_troops_available"),
 	 (try_end),
 
@@ -40358,7 +40358,7 @@ scripts = [
      (ge, ":free_capacity", 1),
 
 	 (try_begin),
-		(ge, "$cheat_mode", DPLMC_DEBUG_MIN),
+		(eq, "$cheat_mode", DPLMC_DEBUG_NEVER),
 		(display_message, "str_party_has_capacity"),
 	 (try_end),
 
