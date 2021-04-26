@@ -19883,6 +19883,40 @@ scripts = [
       (try_end),
   ]),
 
+  # script_calculate_bother_with_less_trivia_period
+  # Input: 
+  #   arg1: triviality of quest (1..5), lower is more trivial
+  # Output:
+  #   reg0: additional days to tack onto the "don't give again period"
+  ("calculate_bother_with_less_trivia_period",
+   [
+      (store_script_param, ":triviality", 1),
+      (val_clamp, ":triviality", 1, 6),
+      (assign, reg0, 0),
+
+      (store_character_level, ":player_level", "trp_player"),
+      (val_sub, ":player_level", 10),
+      (val_max, ":player_level", 0),
+      (val_div, ":player_level", ":triviality"),
+      (store_random_in_range, ":add_days", 0, ":player_level"),
+      (val_add, reg0, ":add_days"),
+
+      (troop_get_slot, ":player_renown", "trp_player", slot_troop_renown),
+      (val_sub, ":player_renown", 100),
+      (val_max, ":player_renown", 0),
+      (val_div, ":player_renown", 50),
+      (val_div, ":player_renown", ":triviality"),
+      (store_random_in_range, ":add_days", 0, ":player_renown"),
+      (val_add, reg0, ":add_days"),
+
+      (try_begin),
+        (eq, "$cheat_mode", DPLMC_DEBUG_EXPERIMENTAL),
+        (assign, reg20, ":player_level"),
+        (assign, reg21, ":player_renown"),
+        (assign, reg22, ":triviality"),
+        (display_message, "@{!}DEBUG: Add {reg0} days (lvl: {reg20} renown: {reg21}) for trivial quest (triviality: {reg22})"),
+      (try_end),
+    ]),
 
   # script_get_quest - combines old get_random_quest with new get_dynamic_quest
 
@@ -20331,12 +20365,8 @@ scripts = [
               (assign, ":quest_expiration_days", 20),
               (store_random_in_range, ":random_period", 10, 30),
               (assign, ":quest_dont_give_again_period", ":random_period"),
-              (try_begin),
-                (this_or_next|troop_slot_ge, "trp_player", slot_troop_renown, 125),
-                (ge, ":player_level", 10),
-                (store_random_in_range, ":bother_with_less_trivia_period", 5, ":player_level"),
-                (val_add, ":quest_dont_give_again_period", ":bother_with_less_trivia_period"),
-              (try_end),
+              (call_script, "script_calculate_bother_with_less_trivia_period", 1),
+              (val_add, ":quest_dont_give_again_period", reg0),
               (try_begin),
               #don't give full quest reward if outside the normal level range
                  (ge, ":player_level", 15),
@@ -20357,12 +20387,8 @@ scripts = [
               (assign, ":quest_target_center", ":giver_center_no"),
               (assign, ":quest_expiration_days", 4),
               (assign, ":quest_dont_give_again_period", 15),
-              (try_begin),
-                (this_or_next|troop_slot_ge, "trp_player", slot_troop_renown, 125),
-                (ge, ":player_level", 10),
-                (store_random_in_range, ":bother_with_less_trivia_period", 5, ":player_level"),
-                (val_add, ":quest_dont_give_again_period", ":bother_with_less_trivia_period"),
-              (try_end),
+              (call_script, "script_calculate_bother_with_less_trivia_period", 2),
+              (val_add, ":quest_dont_give_again_period", reg0),
               (assign, ":result", ":quest_no"),
             (else_try),
               # Lady quests
@@ -20627,15 +20653,10 @@ scripts = [
 	            (assign, ":quest_xp_reward", 100),
 	            (assign, ":quest_gold_reward", 40),
 
-              (store_random_in_range, ":random_period", 5, 15),
+              (store_random_in_range, ":random_period", 3, 8),
 	            (assign, ":quest_dont_give_again_period", ":random_period"),
-
-				(try_begin),
-					(this_or_next|troop_slot_ge, "trp_player", slot_troop_renown, 125),
-                (ge, ":player_level", 10),
-                (store_random_in_range, ":bother_with_less_trivia_period", 5, ":player_level"),
-                (val_add, ":quest_dont_give_again_period", ":bother_with_less_trivia_period"),
-				(try_end),
+              (call_script, "script_calculate_bother_with_less_trivia_period", 2),
+              (val_add, ":quest_dont_give_again_period", reg0),
 
 	            (assign, ":result", ":quest_no"),
 
@@ -20833,14 +20854,11 @@ scripts = [
 					      (val_max, ":quest_xp_reward", 50),#minus 10 xp for every level above 25, to a minimum of 50 XP at level 40
 				      (try_end),
 				      (assign, ":quest_gold_reward", 0),
-              (store_random_in_range, ":random_period", 5, 15),
+              (store_random_in_range, ":random_period", 3, 15),
 	            (assign, ":quest_dont_give_again_period", ":random_period"),
-      				(try_begin),
-			      		(this_or_next|troop_slot_ge, "trp_player", slot_troop_renown, 125),
-                (ge, ":player_level", 10),
-                (store_random_in_range, ":bother_with_less_trivia_period", 5, ":player_level"),
-                (val_add, ":quest_dont_give_again_period", ":bother_with_less_trivia_period"),
-      				(try_end),
+              (call_script, "script_calculate_bother_with_less_trivia_period", 1),
+              (val_add, ":quest_dont_give_again_period", reg0),
+
 	            (assign, ":result", ":quest_no"),
 	            (assign, ":quest_expiration_days", 40),
 	          (try_end),

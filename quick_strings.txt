@@ -1,4 +1,4 @@
-6303
+6304
 qstr_Breaking_camp... Breaking_camp...
 qstr_{!}{s3}_commander_of {!}{s3}_commander_of_party_#{reg4}_which_is_not_his_troop_leaded_party_{reg5}
 qstr_{!}_Commanded_party_ {!}_Commanded_party_#{reg4}_is_{s3},_troop_leaded_party_#{reg5}_is_{s65}
@@ -6302,3 +6302,4 @@ qstr_Your_party_is_running Your_party_is_running_low_on_food.
 qstr_{!}Failed_to_feed_ev {!}Failed_to_feed_everyone,_food_units_needed_{reg10}
 qstr_{!}DEBUG:_selected_f {!}DEBUG:_selected_food_{s20}_({reg20})_attempted_quantity_{reg21}
 qstr_{!}DEBUG:_consumed_a {!}DEBUG:_consumed_amount_{reg0}_(out_of_{reg1})
+qstr_{!}DEBUG:_Add_{reg0} {!}DEBUG:_Add_{reg0}_days_(lvl:_{reg20}_renown:_{reg21})_for_trivial_quest_(triviality:_{reg22})
