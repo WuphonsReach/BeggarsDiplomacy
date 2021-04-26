@@ -19883,43 +19883,7 @@ scripts = [
       (try_end),
   ]),
 
-  # script_calculate_bother_with_less_trivia_period
-  # Input: 
-  #   arg1: triviality of quest (1..5), lower is more trivial
-  # Output:
-  #   reg0: additional days to tack onto the "don't give again period"
-  ("calculate_bother_with_less_trivia_period",
-   [
-      (store_script_param, ":triviality", 1),
-      (val_clamp, ":triviality", 1, 6),
-      (assign, reg0, 0),
-
-      (store_character_level, ":player_level", "trp_player"),
-      (val_sub, ":player_level", 10),
-      (val_max, ":player_level", 0),
-      (val_div, ":player_level", ":triviality"),
-      (store_random_in_range, ":add_days", 0, ":player_level"),
-      (val_add, reg0, ":add_days"),
-
-      (troop_get_slot, ":player_renown", "trp_player", slot_troop_renown),
-      (val_sub, ":player_renown", 100),
-      (val_max, ":player_renown", 0),
-      (val_div, ":player_renown", 50),
-      (val_div, ":player_renown", ":triviality"),
-      (store_random_in_range, ":add_days", 0, ":player_renown"),
-      (val_add, reg0, ":add_days"),
-
-      (try_begin),
-        (eq, "$cheat_mode", DPLMC_DEBUG_EXPERIMENTAL),
-        (assign, reg20, ":player_level"),
-        (assign, reg21, ":player_renown"),
-        (assign, reg22, ":triviality"),
-        (display_message, "@{!}DEBUG: Add {reg0} days (lvl: {reg20} renown: {reg21}) for trivial quest (triviality: {reg22})"),
-      (try_end),
-    ]),
-
   # script_get_quest - combines old get_random_quest with new get_dynamic_quest
-
   # Input: arg1 = troop_no (of the troop in conversation), arg2 = min_importance (of the quest)
   # Output: reg0 = quest_no (the slots of the quest will be filled after calling this script)
   ("get_quest",
@@ -73735,6 +73699,42 @@ Born at {s43}^Contact in {s44} of the {s45}.^\
     (faction_set_slot, "fac_outlaws", slot_faction_gender_ratio, 10),
     ]
   ),
+
+  # script_calculate_bother_with_less_trivia_period
+  # Input: 
+  #   arg1: triviality of quest (1..5), lower is more trivial
+  # Output:
+  #   reg0: additional days to tack onto the "don't give again period"
+  ("calculate_bother_with_less_trivia_period",
+   [
+      (store_script_param, ":triviality", 1),
+      (val_clamp, ":triviality", 1, 6),
+      (assign, reg0, 0),
+
+      (store_character_level, ":player_level", "trp_player"),
+      (val_sub, ":player_level", 10),
+      (val_max, ":player_level", 0),
+      (val_div, ":player_level", ":triviality"),
+      (store_random_in_range, ":add_days", 0, ":player_level"),
+      (val_add, reg0, ":add_days"),
+
+      (troop_get_slot, ":player_renown", "trp_player", slot_troop_renown),
+      (val_sub, ":player_renown", 100),
+      (val_max, ":player_renown", 0),
+      (val_div, ":player_renown", 50),
+      (val_div, ":player_renown", ":triviality"),
+      (store_random_in_range, ":add_days", 0, ":player_renown"),
+      (val_add, reg0, ":add_days"),
+
+      (try_begin),
+        (eq, "$cheat_mode", DPLMC_DEBUG_EXPERIMENTAL),
+        (assign, reg20, ":player_level"),
+        (assign, reg21, ":player_renown"),
+        (assign, reg22, ":triviality"),
+        (display_message, "@{!}DEBUG: Add {reg0} days (lvl: {reg20} renown: {reg21}) for trivial quest (triviality: {reg22})"),
+      (try_end),
+    ]),
+
     # #script_cf_dplmc_disguise_evaluate_contraband
     # #input : party_no, troop_no
     # #output : reg0 (total risk), reg1 (number of contraband, marked by temp slot?)
