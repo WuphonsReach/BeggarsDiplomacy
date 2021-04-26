@@ -28857,15 +28857,15 @@ scripts = [
           (ge, "$g_dplmc_ai_changes", DPLMC_AI_CHANGES_HIGH),
           (try_begin),
             (eq,  ":reputation", lrep_quarrelsome),
-            (val_add, ":effective_relation", -6), # ends up as -9, as it's on top of what happens above
+            (val_add, ":effective_relation", -2), # ends up as -5, as it's on top of what happens above
           (try_end),
           (try_begin),
             (eq,  ":reputation", lrep_debauched),
-            (val_add, ":effective_relation", -6),
+            (val_add, ":effective_relation", -3),
           (try_end),
           (try_begin),
             (eq,  ":reputation", lrep_cunning),
-            (val_add, ":effective_relation", -3),
+            (val_add, ":effective_relation", -1),
           (try_end),
         (try_end),
         (try_begin),

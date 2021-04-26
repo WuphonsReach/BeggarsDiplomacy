@@ -14,6 +14,7 @@ The goal of BeggarsDiplomacy is to take the improvements from [Diplado develop](
     - [Using the mod](#using-the-mod)
   - [Changes](#changes)
     - [DPLMC_AI_CHANGES_HIGH](#dplmc_ai_changes_high)
+    - [DPLMC_GOLD_CHANGES_LOW](#dplmc_gold_changes_low)
     - [DPLMC_GOLD_CHANGES_MEDIUM](#dplmc_gold_changes_medium)
     - [DPLMC_GOLD_CHANGES_HIGH](#dplmc_gold_changes_high)
     - [Miscellaneous](#miscellaneous)
@@ -55,16 +56,22 @@ Only changes made on top of [Diplado develop](https://github.com/diegoami/Diplad
 
 ### DPLMC_AI_CHANGES_HIGH
 
-- Player has a -9 penalty in relations with quarrelsome lords, -6 for debauched and -3 for cunning.
+- Player has a -5 penalty in relations with quarrelsome lords, -3 for debauched and -1 for cunning.
+
+### DPLMC_GOLD_CHANGES_LOW
+
+- Player must have +1 relations with the king of the realm before purchasing any business.
 
 ### DPLMC_GOLD_CHANGES_MEDIUM
 
 - Player must have +2 relations with the town's liege before purchasing land for a business.
+- Player must have +3 relations with the king of the realm before purchasing any business.
 
 ### DPLMC_GOLD_CHANGES_HIGH
 
-- Player must have higher relations with the town's liege before purchasing land for a business.  Good-natured lords require +3, upstanding lords require +6, all other lords require +10.  This was done because the enterprises now reward more gold per week, so there needs to be a bit more work before you can purchase a business.
-- Player must have +15 reputation with the town before purchasing a business.  This is reduced by 1/2 of the party's trade skill value.  Again, businesses are more profitable, so you must do more work.
+- Player must have higher relations with the town's liege before purchasing land for a business.  Good-natured lords require +1, upstanding lords require +3, all other lords require +6.  This was done because the enterprises now reward more gold per week, so there needs to be a bit more work before you can purchase a business.
+- Player must have +11 reputation with the town before purchasing a business.  This is reduced by 1/2 of the party's trade skill value (down to about +4).  Again, businesses are more profitable, so you must do more work.
+- Player must have +5 relations with the king of the realm before purchasing any business.
 
 ### Miscellaneous
 
