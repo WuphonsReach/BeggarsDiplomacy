@@ -20225,7 +20225,7 @@ scripts = [
             (val_clamp, ":quest_gold_reward", 10, 30),
             (store_random_in_range, ":random_add", 30, 50),
             (val_add, ":quest_gold_reward", ":random_add"), # 40-80
-	          (val_mul, ":quest_gold_reward", 30),
+	          (val_mul, ":quest_gold_reward", 3),
 	          (val_add, ":quest_gold_reward", 300), # total = 300 + 40-80 x 30 = 420-540
 	          (val_div, ":quest_gold_reward", 25), # round to N
             (val_mul, ":quest_gold_reward", 25),
