@@ -40461,6 +40461,7 @@ I suppose there are plenty of bounty hunters around to get the job done . . .", 
 
   [anyone,"mayor_investment_possible",[
   (assign, ":required_relation", 0),#need 0+ normally
+  (party_get_skill_level, ":trade_skill", "p_main_party", skl_trade),
   (try_begin),
 	  (ge, "$g_dplmc_gold_changes", DPLMC_GOLD_CHANGES_MEDIUM),
 	  (neq, "$g_encountered_party", "$g_starting_town"),
@@ -40470,9 +40471,7 @@ I suppose there are plenty of bounty hunters around to get the job done . . .", 
 	  (ge, "$g_dplmc_gold_changes", DPLMC_GOLD_CHANGES_HIGH), # Require higher relation with the center, party trade skill reduces it
 	  (neq, "$g_encountered_party", "$g_starting_town"),
 	  (assign, ":required_relation", 11),
-    (call_script, "script_get_max_skill_of_player_party", "skl_trade"),
-    (assign, ":trade_skill", reg0),
-    (assign, ":relation_adjustment", reg0), # could be 0..14
+    (assign, ":relation_adjustment", ":trade_skill"), # could be 0..14
     (val_div, ":relation_adjustment", 2),
     (val_sub, ":required_relation", ":relation_adjustment"), # end result is 4..11 needed
   (try_end),
