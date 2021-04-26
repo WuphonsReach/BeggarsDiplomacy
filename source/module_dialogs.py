@@ -40368,7 +40368,7 @@ I suppose there are plenty of bounty hunters around to get the job done . . .", 
   ]],
 
   [anyone,"mayor_investment_possible",[
-  (ge, "$cheat_mode", DPLMC_CHEAT_YES)
+  (eq, "$cheat_mode", DPLMC_CHEAT_YES)
   ], "{!}CHEAT: Yes, we're playtesting this feature, and you're in cheat mode. Go right ahead.", "mayor_investment_advice",[
   ]],
   #SB : disguise conditional
