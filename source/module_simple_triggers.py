@@ -2631,7 +2631,8 @@ simple_triggers = [
    [
       (neg|is_currently_night), # only spawn farmers during the day
       (try_for_range, ":village_no", villages_begin, villages_end),
-        (party_slot_eq, ":village_no", slot_village_state, svs_normal),
+        (party_slot_eq, ":village_no", slot_village_state, svs_normal), # must not be looted, being raided, etc.
+        (party_slot_eq, ":village_no", slot_center_has_bandits, 0), # must not be infested
         (party_get_slot, ":farmer_party", ":village_no", slot_village_farmer_party),
         (this_or_next|eq, ":farmer_party", 0),
         (neg|party_is_active, ":farmer_party"),
