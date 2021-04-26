@@ -10753,11 +10753,12 @@ TOTAL:  {reg5}"),
       (else_try),
         (str_store_string, s5, "@Luckily some passing townspeople find you lying by the side of the road, and recognise you as something other than a simple beggar. They carry you to the nearest inn and dress your wounds."),
       (try_end),
+      (call_script, "script_change_player_relation_with_center", "$current_town", -1),
     ],
     [
       ("continue",[],"Continue...",[(change_screen_return),
       #SB : lose renown for easy encounters
-      (call_script, "script_change_troop_renown", "trp_player", -2),
+      (call_script, "script_change_troop_renown", "trp_player", -5),
       ]),
     ],
   ),
@@ -10793,6 +10794,7 @@ TOTAL:  {reg5}"),
       #SB : string setup
       (str_store_troop_name_by_count,s4, ":bandit_troop", "$num_center_bandits"),
       (store_sub, reg4, "$num_center_bandits", 1),
+      (call_script, "script_change_player_relation_with_center", "$current_town", 1),
     ],
     [
       ("continue",[],"Continue...",[
