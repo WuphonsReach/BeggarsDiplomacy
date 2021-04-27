@@ -2958,7 +2958,7 @@ We apologize sincerely if you contributed your suggestions and feedback but were
   ("s40_s39_s2_reg0", "{!}{s40}, {s39} ({s2}, {reg0})"),
   ("other_relations_s40_", "Other relations: {s40}^"),
   ("relation_with_liege_reg0_", "Relation with liege: {reg0}^"),
-  ("sense_of_security_military_reg1_court_position_reg3_", "Sense of security: military {reg1}, court position {reg3}^"),
+  ("sense_of_security_military_reg1_court_position_reg3_", "^Sense of security: military {reg1}, court position {reg3}^"),
   ("s46s45s44s48", "{!}{s46}{s45}{s44}{s48}"),
   ("political_details_s47_", "Political details:^{s47}^"),
   ("checking_volunteer_availability_script", "{!}Checking volunteer availability script"),

@@ -2075,7 +2075,7 @@ str_betrothed betrothed
 str_s40_s39_s2_reg0 {!}{s40},_{s39}_({s2},_{reg0})
 str_other_relations_s40_ Other_relations:_{s40}^
 str_relation_with_liege_reg0_ Relation_with_liege:_{reg0}^
-str_sense_of_security_military_reg1_court_position_reg3_ Sense_of_security:_military_{reg1},_court_position_{reg3}^
+str_sense_of_security_military_reg1_court_position_reg3_ ^Sense_of_security:_military_{reg1},_court_position_{reg3}^
 str_s46s45s44s48 {!}{s46}{s45}{s44}{s48}
 str_political_details_s47_ Political_details:^{s47}^
 str_checking_volunteer_availability_script {!}Checking_volunteer_availability_script
