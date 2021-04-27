@@ -23495,7 +23495,7 @@ scripts = [
 
 
 		(try_begin),
-			(ge, "$cheat_mode", DPLMC_DEBUG_MIN),
+			(eq, "$cheat_mode", DPLMC_DEBUG_POLITICS),
 			(str_store_troop_name, s4, ":troop_no"),
 			(display_message, "@{!}DEBUG - {s4} faction changed in normal faction change"),
 		(try_end),
@@ -23583,7 +23583,7 @@ scripts = [
 		(eq, ":closest_male_relative", ":troop_no"),
 
 		(try_begin),
-			(ge, "$cheat_mode", DPLMC_DEBUG_MIN),
+			(eq, "$cheat_mode", DPLMC_DEBUG_POLITICS),
 			(str_store_troop_name, s4, ":kingdom_lady"),
 			(display_message, "@{!}DEBUG - {s4} faction changed by guardian moving"),
 		(try_end),
