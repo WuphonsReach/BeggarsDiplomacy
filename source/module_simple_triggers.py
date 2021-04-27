@@ -4855,7 +4855,7 @@ simple_triggers = [
       (eq, ":continue", 1),
 
 		(try_begin),
-			(ge, "$cheat_mode", DPLMC_DEBUG_MIN),
+			(eq, "$cheat_mode", DPLMC_DEBUG_POLITICS),
 			(str_store_troop_name, s4, ":troop_no"),
 			(display_message, "@{!}DEBUG - {s4} faction changed from slot_troop_change_to_faction"),
 		(try_end),
