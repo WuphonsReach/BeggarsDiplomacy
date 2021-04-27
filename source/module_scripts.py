@@ -34036,8 +34036,7 @@ scripts = [
 		 (call_script, "script_dplmc_party_calculate_strength_in_terrain", "p_main_party", ":terrain_code", 0, 1),
 		 (assign, "$g_starting_strength_main_party", reg0),
 		 (try_begin),
-			#Print debug Message
-		    (ge, "$cheat_mode", DPLMC_DEBUG_MIN),
+		    (eq, "$cheat_mode", DPLMC_DEBUG_MILITARY),
 		    (assign, reg2, ":terrain_code"),
 			(display_message, "@{!}DEBUG - Main party raw strength {reg1}, terrain code {reg2}, modified strength {reg0}"),
 		 (try_end),
@@ -34047,7 +34046,7 @@ scripts = [
 		 (assign, "$g_starting_strength_enemy_party", reg0),
 		 (assign, "$g_strength_contribution_of_player", 100),
 		 (try_begin),
-		    (ge, "$cheat_mode", DPLMC_DEBUG_MIN),#debug
+		    (eq, "$cheat_mode", DPLMC_DEBUG_MILITARY),
 		    (assign, reg2, ":terrain_code"),
 			(display_message, "@{!} DEBUG - Enemy party raw strength {reg1}, terrain code {reg2}, modified strength {reg0}"),
 		 (try_end),
