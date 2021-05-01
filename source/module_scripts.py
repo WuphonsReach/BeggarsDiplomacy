@@ -8184,9 +8184,7 @@ scripts = [
     (display_message, "@{!}SCRIPT: initialize_economic_information."),
   (try_end),
 
-  #All towns produce tools, pottery, and wool cloth for sale in countryside (maybe outdated comment)
   (try_for_range, ":town_no", towns_begin, towns_end),
-
     (party_set_slot, ":town_no", slot_center_head_cattle, 0),
     (party_set_slot, ":town_no", slot_center_head_sheep, 0),
     (party_set_slot, ":town_no", slot_center_head_horses, 0),
@@ -8218,19 +8216,20 @@ scripts = [
     (party_set_slot, ":town_no", slot_center_household_gardens, 0),
     (party_set_slot, ":town_no", slot_center_acres_fruit_trees, 0),
 
-    (call_script, "script_dplmc_set_random_production", ":town_no", slot_center_acres_grain, 500, 4000, -1),
-    (call_script, "script_dplmc_set_random_production", ":town_no", slot_center_household_gardens, 4, 8, -1),
+    (call_script, "script_dplmc_set_random_production", ":town_no", slot_center_acres_grain, 1000, 4000, -1),
+    (call_script, "script_dplmc_set_random_production", ":town_no", slot_center_household_gardens, 3, 8, -1),
     (call_script, "script_dplmc_set_random_production", ":town_no", slot_center_acres_fruit_trees, 100, 600, -1),
+    (call_script, "script_dplmc_set_random_production", ":town_no", slot_center_apiaries, 0, 2, -1),
 
-    (call_script, "script_dplmc_set_random_production", ":town_no", slot_center_wool_looms, 0, 2, -1),
-    (call_script, "script_dplmc_set_random_production", ":town_no", slot_center_breweries, 0, 2, -1),
     (call_script, "script_dplmc_set_random_production", ":town_no", slot_center_pottery_kilns, 0, 2, -1),
-    (call_script, "script_dplmc_set_random_production", ":town_no", slot_center_smithies, 0, 8, -1),
-    (call_script, "script_dplmc_set_random_production", ":town_no", slot_center_mills, 0, 8, -1),
-    (call_script, "script_dplmc_set_random_production", ":town_no", slot_center_tanneries, 0, 3, -1),
+    (call_script, "script_dplmc_set_random_production", ":town_no", slot_center_smithies, 0, 4, -1),
+    (call_script, "script_dplmc_set_random_production", ":town_no", slot_center_mills, 0, 4, -1),
+    (call_script, "script_dplmc_set_random_production", ":town_no", slot_center_tanneries, 0, 2, -1),
     (call_script, "script_dplmc_set_random_production", ":town_no", slot_center_wine_presses, 0, 2, -1),
     (call_script, "script_dplmc_set_random_production", ":town_no", slot_center_olive_presses, 0, 2, -1),
-
+    (call_script, "script_dplmc_set_random_production", ":town_no", slot_center_linen_looms, 0, 2, -1),
+    (call_script, "script_dplmc_set_random_production", ":town_no", slot_center_silk_looms, 0, 2, -1),
+    (call_script, "script_dplmc_set_random_production", ":town_no", slot_center_wool_looms, 0, 2, -1),
   (try_end),
 
   #Sargoth (linen, wine)
@@ -8346,6 +8345,7 @@ scripts = [
   (party_set_slot, "p_town_22", slot_center_wine_presses, 0), 	#no alcohol (wine) in arabic region
   (call_script, "script_dplmc_add_random_production", "p_town_22", slot_center_pottery_kilns, 10, 20, -1),
   (call_script, "script_dplmc_add_random_production", "p_town_22", slot_center_salt_pans, 1, 4, 1),
+  (call_script, "script_dplmc_add_random_production", "p_town_22", slot_center_acres_fruit_trees, 200, 500, -1),
   #also produces 50 spice
 
   (try_for_range, ":village_no", villages_begin, villages_end),
@@ -8426,7 +8426,7 @@ scripts = [
     (call_script, "script_dplmc_set_random_production", ":village_no", slot_center_head_cattle, 20, 100, -1),
     (try_begin),
       (eq, ":village_is_at_desert", 1),
-      (call_script, "script_dplmc_divide_production_by", ":village_no", slot_center_head_cattle, 7),
+      (call_script, "script_dplmc_divide_production_by", ":village_no", slot_center_head_cattle, 8),
     (try_end),
 
     #sheep production - 40..180 but bias towards 75 average, lower in desert
@@ -8472,7 +8472,7 @@ scripts = [
     (try_end),
 
     #cabbage and fruit production - except for desert (minimal production)
-    (call_script, "script_dplmc_set_random_production", ":village_no", slot_center_household_gardens, 0, 6, 0),
+    (call_script, "script_dplmc_set_random_production", ":village_no", slot_center_household_gardens, 1, 5, 0),
     (call_script, "script_dplmc_set_random_production", ":village_no", slot_center_acres_fruit_trees, 0, 400, -1),
     (try_begin),
       (eq, ":village_is_at_desert", 1),
@@ -8625,7 +8625,7 @@ scripts = [
     #Shariz (village productions : Ayn Assuadi, Dhibbain, Qalyut, Tilimsal and Rushdigh)
     (else_try),
       (party_slot_eq, ":village_no", slot_village_market_town, "p_town_19"),
-      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_acres_grain, 4000, 7000, -1),
+      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_acres_grain, 3000, 6000, -1),
       (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_acres_flax, 500, 2500, -1),
       (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_acres_olives, 1000, 5000, 1),
       (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_acres_dates, 2000, 5000, -1),
