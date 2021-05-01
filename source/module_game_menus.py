@@ -14263,20 +14263,34 @@ TOTAL:  {reg5}"),
 
   (
     "center_reports",0,
-    "Town Name: {s1}^Rent Income: {reg1} denars^Tariff Income: {reg2} denars^Food Stock: for {reg3} days",
+    "Center Name: {s1}^Prosperity: {reg4}^Status: {reg5}^Production: {reg7}/{reg6}^Rent Income: {reg1} denars^Tariff Income: {reg2} denars^Food Stock: for {reg3} days",
     "none",
     [(party_get_slot, ":town_food_store", "$g_encountered_party", slot_party_food_store),
      (call_script, "script_center_get_food_consumption", "$g_encountered_party"),
      (assign, ":food_consumption", reg0),
      (try_begin),
        (gt, ":food_consumption", 0),
-       (store_div, reg3, ":town_food_store", ":food_consumption"),
+       (store_div, ":days_of_food", ":town_food_store", ":food_consumption"),
      (else_try),
-       (assign, reg3, 9999),
+       (assign, ":days_of_food", 9999),
      (try_end),
+
+     (assign, ":total_base_production", 0),
+     (assign, ":total_modified_production", 0),
+     (try_for_range, ":cur_good", trade_goods_begin, trade_goods_end),
+        (call_script, "script_center_get_production", "$g_encountered_party", ":cur_good"),
+        (val_add, ":total_modified_production", reg0),
+        (val_add, ":total_base_production", reg2),
+     (try_end),
+
      (str_store_party_name, s1, "$g_encountered_party"),
      (party_get_slot, reg1, "$g_encountered_party", slot_center_accumulated_rents),
      (party_get_slot, reg2, "$g_encountered_party", slot_center_accumulated_tariffs),
+     (assign, reg3, ":days_of_food"),
+     (party_get_slot, reg4, "$g_encountered_party", slot_town_prosperity),
+     (party_get_slot, reg5, "$g_encountered_party", slot_village_state),
+     (assign, reg6, ":total_base_production"),
+     (assign, reg7, ":total_modified_production"),
      ],
     [
       ("to_price_and_productions", [], "Show prices and productions.",
@@ -20608,6 +20622,13 @@ goods, and books will never be sold. ^^You can change some settings here freely.
       [
         (jump_to_menu, "mnu_town_cheats_2"),
       ]),
+
+      ("center_reports",
+      [],
+      "Show reports.",
+      [
+        (jump_to_menu,"mnu_center_reports"),
+      ]),
       
       ("debug",
       [],
@@ -21008,13 +21029,6 @@ goods, and books will never be sold. ^^You can change some settings here freely.
           [
             (assign,"$g_player_besiege_town","$g_encountered_party"),
             (jump_to_menu, "mnu_castle_besiege"),
-          ]),
-
-          ("center_reports",
-          [],
-          "Show reports.",
-          [
-            (jump_to_menu,"mnu_center_reports"),
           ]),
 
           ("sail_from_port",
