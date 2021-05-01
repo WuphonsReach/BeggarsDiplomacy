@@ -16597,16 +16597,12 @@ scripts = [
 		(try_begin), #Reduce consumption of raw materials if their cost is high
 			(gt, ":raw_material_consumption", 0),
 			(store_sub, ":item_to_price_slot", slot_town_trade_good_prices_begin, trade_goods_begin),
-	        (store_add, ":cur_good_price_slot", ":cur_good", ":item_to_price_slot"),
-	        (party_get_slot, ":cur_center_price", ":center_no", ":cur_good_price_slot"),
-			##diplomacy start+
+      (store_add, ":cur_good_price_slot", ":cur_good", ":item_to_price_slot"),
+      (party_get_slot, ":cur_center_price", ":center_no", ":cur_good_price_slot"),
 			(gt, ":cur_center_price", average_price_factor),#replace the hardcoded constant 1000 with average_price_factor
 			(val_mul, ":raw_material_consumption", average_price_factor),#again replace the hardcoded constant 1000 with average_price_factor
-			##diplomacy end+
 			(val_div, ":raw_material_consumption", ":cur_center_price"),
 		(try_end),
-
-
 
 		(store_add, ":modified_consumption", ":consumer_consumption", ":raw_material_consumption"),
 		(try_begin),
@@ -16674,10 +16670,10 @@ scripts = [
 	  (party_get_slot, ":origin", ":party_no", slot_party_last_traded_center),
 
 	  (try_begin),
-		(eq, "$cheat_mode", DPLMC_DEBUG_ECONOMY),
-		(str_store_party_name, s4, ":center_no"),
-		(str_store_party_name, s5, ":origin"),
-		(display_message, "@{!}DEBUG -- Caravan trades in {s4}, originally from {s5}"),
+      (eq, "$cheat_mode", DPLMC_DEBUG_ECONOMY),
+      (str_store_party_name, s4, ":center_no"),
+      (str_store_party_name, s5, ":origin"),
+      (display_message, "@{!}DEBUG -- Caravan trades in {s4}, originally from {s5}"),
 	  (try_end),
 
 	  (call_script, "script_add_log_entry", logent_party_traded, ":party_no", ":origin", ":center_no", -1),
@@ -43281,35 +43277,32 @@ scripts = [
      (troop_set_slot, "trp_log_array_faction_object",        "$num_log_entries", ":faction_object"),
 
      (try_begin),
-       (eq, "$cheat_mode", 1),
+       (ge, "$cheat_mode", DPLMC_DEBUG_MIN),
        (assign, reg3, "$num_log_entries"),
        (assign, reg4, ":entry_type"),
        #(display_message, "@{!}Log entry {reg3}: type {reg4}"),
        (try_begin),
           (gt, ":center_object", 0),
-		  (neq, ":entry_type", logent_traveller_attacked),
-		  (neq, ":entry_type", logent_party_traded),
-		  (party_is_active, ":center_object"), #sometimes is a troop
-
+          (neq, ":entry_type", logent_traveller_attacked),
+          (neq, ":entry_type", logent_party_traded),
+          (party_is_active, ":center_object"), #sometimes is a troop
           (str_store_party_name, s4, ":center_object"),
           (display_message, "@{!}Center: {s4}"),
        (try_end),
        (try_begin),
           (gt, ":troop_object", 0),
-		  (neq, ":entry_type", logent_traveller_attacked),
-		  (neq, ":entry_type", logent_party_traded),
-
-		  (str_store_troop_name, s4, ":troop_object"),
-		  (display_message, "@{!}Troop: {s4}"),
+          (neq, ":entry_type", logent_traveller_attacked),
+          (neq, ":entry_type", logent_party_traded),
+         (str_store_troop_name, s4, ":troop_object"),
+          (display_message, "@{!}Troop: {s4}"),
        (try_end),
        (try_begin),
           (gt, ":center_object_lord", 0),
-		  (neq, ":entry_type", logent_traveller_attacked),
-		  (neq, ":entry_type", logent_party_traded),
-
-		  (str_store_troop_name, s4, ":center_object_lord"),
+          (neq, ":entry_type", logent_traveller_attacked),
+          (neq, ":entry_type", logent_party_traded),
+          (str_store_troop_name, s4, ":center_object_lord"),
           (display_message, "@{!}Lord: {s4}"),
-       (try_end),
+        (try_end),
      (try_end),
 
 
