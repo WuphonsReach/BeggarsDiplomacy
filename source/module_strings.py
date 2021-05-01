@@ -481,7 +481,7 @@ strings = [
 
 
   ("acres_grain",       "acres of grainfields"),
-  ("acres_orchard",     "acres of orchards and vineyards"),
+  ("acres_vineyard",     "acres of vineyards"),
   ("acres_oasis",       "acres of irrigated oasis gardens"),
 
 
@@ -5160,6 +5160,9 @@ Only you know exactly what caused you to give up your old life and become an adv
   ("dplmc_cheat_setting_debug_military", "Debug Military"),
   ("dplmc_cheat_setting_debug_politics", "Debug Politics"),
   ("dplmc_cheat_setting_debug_experimental", "Debug Experiments"),
+
+  ("acres_fruit_trees",     "acres of fruit trees"),
+  ("head_pigs",     "pigs"),
 
 #utility for skill names
 ]+[

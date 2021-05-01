@@ -16184,6 +16184,15 @@ scripts = [
       (try_end),
   ]),
 
+  # script_center_get_production -- Returns the production amount for various things
+  # It is important that all equally produced items return roughly equal quantities.
+  # Input: 
+  #   arg1 = center_no (party ID)
+  #   arg2 = cur_good (item ID)
+  # Output: 
+  #   reg0 = modified_production
+  #   reg1 = base_production_modded_by_raw_materials
+  #   reg2 = base_production
   ("center_get_production",
     [
 	#Actually, this could be reset somewhat to yield supply and demand as raw numbers
@@ -16246,10 +16255,13 @@ scripts = [
 		(else_try),
 			(eq, ":cur_good", "itm_raw_leather"), 	 #Demand = ??
 			(party_get_slot, ":base_production", ":center_no", slot_center_head_cattle),
-			(val_div, ":base_production", 6),
+			(val_div, ":base_production", 5),
 			(party_get_slot, ":sheep_addition", ":center_no", slot_center_head_sheep),
 			(val_div, ":sheep_addition", 12),
 			(val_add, ":base_production", ":sheep_addition"),
+			(party_get_slot, ":pigs_addition", ":center_no", slot_center_head_pigs),
+			(val_div, ":pigs_addition", 9),
+      (val_add, ":base_production", ":pigs_addition"),
 
 		(else_try),
 			(eq, ":cur_good", "itm_leatherwork"), 	 #Demand = ??
@@ -16263,17 +16275,21 @@ scripts = [
 		(else_try),
 			(eq, ":cur_good", "itm_cabbages"), 	 #Demand = 7
 			(party_get_slot, ":base_production", ":center_no", slot_center_household_gardens),
-			(val_mul, ":base_production", 10),
+			(val_mul, ":base_production", 9),
 		(else_try),
-			(eq, ":cur_good", "itm_apples"), 	 #Demand = 7
-			(party_get_slot, ":base_production", ":center_no", slot_center_household_gardens),
-			(val_mul, ":base_production", 10),
+			(eq, ":cur_good", "itm_apples"),
+			(party_get_slot, ":base_production", ":center_no", slot_center_acres_fruit_trees),
+			(val_div, ":base_production", 120),
 
 		#Sheep products
 		(else_try),
 			(eq, ":cur_good", "itm_sausages"), 	 #Demand = 5
 			(party_get_slot, ":base_production", ":center_no", slot_center_head_sheep), #average of 90 sheep
-			(val_div, ":base_production", 15),
+			(val_div, ":base_production", 20),
+      (party_get_slot, ":pigs_addition", ":center_no", slot_center_head_pigs),
+			(val_div, ":pigs_addition", 40),
+      (val_add, ":base_production", ":pigs_addition"),
+
 		(else_try),
 			(eq, ":cur_good", "itm_wool"), 	 #(Demand = 0, but 15 averaged out perhaps)
 			(party_get_slot, ":base_production", ":center_no", slot_center_head_sheep), #average of 90 sheep
@@ -16284,11 +16300,15 @@ scripts = [
 			(val_mul, ":base_production", 5), #300 across Calradia
 
 		(else_try),
-			(this_or_next|eq, ":cur_good", "itm_pork"),
+			(eq, ":cur_good", "itm_pork"), 
+			(party_get_slot, ":base_production", ":center_no", slot_center_head_pigs),
+			(val_div, ":base_production", 25),
+
+		(else_try),
 			(eq, ":cur_good", "itm_chicken"),
 			(try_begin),
 			  (is_between, ":center_no", villages_begin, villages_end),
-			  (assign, ":base_production", 30),
+			  (assign, ":base_production", 12),
 			(else_try),
 			  (assign, ":base_production", 0),
 			(try_end),
@@ -16354,6 +16374,7 @@ scripts = [
 			(eq, ":cur_good", "itm_furs"), 	 #Demand = 90 across Calradia
 			(party_get_slot, ":base_production", ":center_no", slot_center_fur_traps),
 			(val_mul, ":base_production", 25),
+
 		(else_try),
 			(eq, ":cur_good", "itm_spice"),
 			(try_begin),
@@ -16432,10 +16453,9 @@ scripts = [
 			(assign, ":modified_production", reg0),
 		(try_end),
 
-
 		(assign, ":base_production_modded_by_raw_materials", ":modified_production"), #this is just logged for the report screen
 
-	    #Increase both positive and negative production by the center's prosperity
+    #Increase both positive and negative production by the center's prosperity
 		#Richer towns have more people and consume more, but also produce more
 		(try_begin),
 			(party_get_slot, ":prosperity_plus_75", ":center_no", slot_town_prosperity),
@@ -16444,23 +16464,34 @@ scripts = [
 			(val_div, ":modified_production", 125),
 		(try_end),
 
-		(try_begin), #SB : TODO scale down instead of set to 0
-			# (store_script_param, ":ignore_state", 3),
-			(party_get_slot, ":svs", ":center_no", slot_village_state),
-			(try_begin), #SB : fix butter bug
-				(eq, ":center_no", "$g_player_raiding_village"),
-				(eq, "$g_player_raid_complete", 1),
-				(assign, ":svs", -1),
-			(try_end),
-			(this_or_next|eq, ":svs", svs_being_raided),
-			(this_or_next|eq, ":svs", svs_deserted),
-			(eq, ":svs", svs_looted),
-		    # (this_or_next|party_slot_ge, ":center_no", slot_center_has_bandits, 0),
-		    # (this_or_next|party_slot_ge, ":center_no", slot_center_is_besieged_by, 0),
-			# (assign, ":modified_production", 0),
-		(try_end),
+    # cut production if the center is being looted, etc.
+    (party_get_slot, ":svs", ":center_no", slot_village_state),
+    (try_begin), #SB : fix butter bug
+      (eq, ":center_no", "$g_player_raiding_village"),
+      (eq, "$g_player_raid_complete", 1),
+      (assign, ":svs", -1),
+    (try_end),
+    (assign, ":status_percent", 100), # output at 100% by default
+    (try_begin),
+      (this_or_next|party_slot_ge, ":center_no", slot_center_is_besieged_by, 0),
+      (this_or_next|eq, ":svs", svs_being_raided),
+      (eq, ":svs", svs_under_siege),
+      (assign, ":status_percent", 25),
+    (else_try),
+      (party_slot_ge, ":center_no", slot_center_has_bandits, 0),
+      (assign, ":status_percent", 40),
+    (else_try),
+      (eq, ":svs", svs_recovering),
+      (assign, ":status_percent", 60),
+    (else_try),
+      (this_or_next|eq, ":svs", svs_deserted),
+      (eq, ":svs", svs_looted),
+      (assign, ":status_percent", 0),
+    (try_end),
+    (val_mul, ":modified_production", ":status_percent"),
+    (val_div, ":modified_production", 100),
 
-		(assign, reg0, ":modified_production"), #modded by prosperity
+		(assign, reg0, ":modified_production"), #modded by prosperity/status
 		(assign, reg1, ":base_production_modded_by_raw_materials"),
 		(assign, reg2, ":base_production"),
 
@@ -39835,7 +39866,7 @@ scripts = [
       (set_spawn_radius,1),
 
       (try_begin),
-        (ge, "$cheat_mode", DPLMC_DEBUG_MIN),
+        (eq, "$cheat_mode", DPLMC_DEBUG_MILITARY),
         (display_message, "@{!}DEBUG : Doing spawn bandit script"),
       (try_end),
 
@@ -60926,7 +60957,7 @@ scripts = [
 
 
     (try_begin), #debug
-      (ge, "$cheat_mode", DPLMC_DEBUG_MIN),
+      (eq, "$cheat_mode", DPLMC_DEBUG_MILITARY),
       (str_store_party_name, s13, ":target_party"),
       (str_store_faction_name, s14, ":template_faction"),
       (str_store_party_name, s15, ":start_party"),

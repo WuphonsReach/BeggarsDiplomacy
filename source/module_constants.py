@@ -538,7 +538,9 @@ slot_center_head_sheep			= 206 #sausages, wool
 slot_center_head_horses		 	= 207 #horses can be a trade item used in tracking but which are never offered for sale
 
 slot_center_acres_pasture       = 208 #pasture area for grazing of cattles and sheeps, if this value is high then number of cattles and sheeps increase faster
-slot_production_sources_begin = 209
+
+slot_production_sources_begin = 209 # START OF PRODUCTION SOURCES
+
 slot_center_acres_grain			= 209 #grain
 slot_center_acres_olives        = 210 #olives
 slot_center_acres_vineyard		= 211 #fruit
@@ -569,8 +571,12 @@ slot_center_smithies			= 229 #tools
 slot_center_tanneries			= 230 #leatherwork
 slot_center_shipyards			= 231 #naval stores - uses timber, pitch, and linen
 
-slot_center_household_gardens   = 232 #cabbages
-slot_production_sources_end = 233
+slot_center_household_gardens       = 232 #cabbages
+slot_center_acres_fruit_trees   = 233 #fruit
+
+slot_production_sources_end = 235 # one more then the last production source
+
+slot_center_head_pigs               = 239 #drives pork production
 
 #all spice comes overland to Tulga
 #all dyes come by sea to Jelkala
