@@ -16598,6 +16598,11 @@ scripts = [
 
 		(assign, ":consumer_consumption", 0),
 		(try_begin),
+
+      (store_sub, ":item_to_price_slot", slot_town_trade_good_prices_begin, trade_goods_begin),
+      (store_add, ":cur_good_price_slot", ":cur_good", ":item_to_price_slot"),
+      (party_get_slot, ":cur_center_price", ":center_no", ":cur_good_price_slot"),
+
 ##diplomacy start+ To determine if a center should be counted as a desert center or not,
 #instead of using a fixed range (which is brittle to map changes) check if the terrain
 #at the center is rt_desert or rt_desert_forest.
@@ -16624,6 +16629,14 @@ scripts = [
 			(item_get_slot, ":consumer_consumption", ":cur_good", slot_item_urban_demand),
 		(try_end),
 
+    (assign, ":base_consumer_consumption", ":consumer_consumption"),
+
+		(try_begin), #Reduce consumer consumption if cost is high
+			(gt, ":consumer_consumption", 0),
+			(gt, ":cur_center_price", average_price_factor),
+			(val_mul, ":consumer_consumption", average_price_factor),
+			(val_div, ":consumer_consumption", ":cur_center_price"),
+		(try_end),
 
 		(assign, ":raw_material_consumption", 0),
 		(try_begin),
@@ -16688,28 +16701,36 @@ scripts = [
 			(store_add, ":raw_material_consumption", ":salt_for_beef", ":salt_for_fish"),
 		(try_end),
 
+    (assign, ":base_raw_material_consumption", ":raw_material_consumption"),
+
 		(try_begin), #Reduce consumption of raw materials if their cost is high
 			(gt, ":raw_material_consumption", 0),
-			(store_sub, ":item_to_price_slot", slot_town_trade_good_prices_begin, trade_goods_begin),
-      (store_add, ":cur_good_price_slot", ":cur_good", ":item_to_price_slot"),
-      (party_get_slot, ":cur_center_price", ":center_no", ":cur_good_price_slot"),
-			(gt, ":cur_center_price", average_price_factor),#replace the hardcoded constant 1000 with average_price_factor
-			(val_mul, ":raw_material_consumption", average_price_factor),#again replace the hardcoded constant 1000 with average_price_factor
+			(gt, ":cur_center_price", average_price_factor),
+			(val_mul, ":raw_material_consumption", average_price_factor),
 			(val_div, ":raw_material_consumption", ":cur_center_price"),
 		(try_end),
 
-		(store_add, ":modified_consumption", ":consumer_consumption", ":raw_material_consumption"),
-		(try_begin),
-			(party_get_slot, ":prosperity_plus_75", ":center_no", slot_town_prosperity),
-			(val_add, ":prosperity_plus_75", 75),
-			(val_mul, ":modified_consumption", ":prosperity_plus_75"),
-			(val_div, ":modified_consumption", 125),
-		(try_end),
+      # modify all consumption by prosperity
+      (try_begin),
+        (party_get_slot, ":prosperity_plus_75", ":center_no", slot_town_prosperity),
+        (val_add, ":prosperity_plus_75", 75),
 
+        (val_mul, ":consumer_consumption", ":prosperity_plus_75"),
+        (val_div, ":consumer_consumption", 125),
+        
+        (val_mul, ":raw_material_consumption", ":prosperity_plus_75"),
+        (val_div, ":raw_material_consumption", 125),
+      (try_end),
 
-	    (assign, reg0, ":modified_consumption"), #modded by prosperity
+  		(store_add, ":modified_consumption", ":consumer_consumption", ":raw_material_consumption"),
+      (store_add, ":base_consumption", ":base_consumer_consumption", ":base_raw_material_consumption"),
+
+	    (assign, reg0, ":modified_consumption"),
 	    (assign, reg1, ":raw_material_consumption"),
 	    (assign, reg2, ":consumer_consumption"),
+      (assign, reg3, ":base_consumption"),
+      (assign, reg4, ":base_raw_material_consumption"),
+      (assign, reg5, ":base_consumer_consumption"),
 	]),
 
   #script_get_enterprise_name
@@ -25633,6 +25654,7 @@ scripts = [
       (party_get_slot, ":bound_center", ":cur_center", slot_village_bound_center),
       (party_get_slot, ":merchant_troop", ":cur_center", slot_town_elder),
       (troop_clear_inventory, ":merchant_troop"),
+      (assign, ":town_production_weight_divisor", 8), # the related town only adds 1/N production amount
 
       (assign, ":total_production", 0),
       (assign, ":total_base_production", 0),
@@ -25642,18 +25664,22 @@ scripts = [
         (call_script, "script_center_get_production", ":cur_center", ":cur_good"),
 		    (assign, ":cur_production", reg0),
         (assign, ":base_production", reg2),
-        # add town production weighted at 1/8
+        # add town production (weighted)
         (call_script, "script_center_get_production", ":bound_center", ":cur_good"),
-        (val_div, reg0, 8),
-        (val_div, reg2, 8),
+        (val_div, reg0, ":town_production_weight_divisor"),
+        (val_div, reg2, ":town_production_weight_divisor"),
         (val_add, ":cur_production", reg0),
         (val_add, ":base_production", reg2),
+        # get village consumption of the item
+        (call_script, "script_center_get_consumption", ":cur_center", ":cur_good"),
+		    (assign, ":cur_consumption", reg0),
+        (val_sub, ":cur_production", ":cur_consumption"),
         (try_begin), # track the number of types of goods
           (gt, ":cur_production", 0),
           (val_add, ":types_of_good_produced_qty", 1),
+          (val_add, ":total_production", ":cur_production"),
+          (val_add, ":total_base_production", ":base_production"),
         (try_end),
-        (val_add, ":total_production", ":cur_production"),
-        (val_add, ":total_base_production", ":base_production"),
       (try_end),
       (gt, ":total_production", 0), # no sense continuing to populate merchant inventory
 
@@ -25661,7 +25687,7 @@ scripts = [
       (party_get_slot, ":center_prosperity", ":cur_center", slot_town_prosperity),
       (assign, ":number_of_slots_to_stock", ":types_of_good_produced_qty"),
       (val_div, ":number_of_slots_to_stock", 3),
-      (val_add, ":number_of_slots_to_stock", 10),
+      (val_add, ":number_of_slots_to_stock", 12),
       (val_mul, ":number_of_slots_to_stock", ":center_prosperity"),
       (val_div, ":number_of_slots_to_stock", 100),
       (val_add, ":number_of_slots_to_stock", 1),
@@ -25672,7 +25698,6 @@ scripts = [
       (val_div, ":possible_production_factor", ":total_base_production"), # divide by the 300 base prod -> 1166
       (val_mul, ":number_of_slots_to_stock", ":possible_production_factor"),
       (val_div, ":number_of_slots_to_stock", 1000),
-      (val_max, ":number_of_slots_to_stock", 1),
 
       # hard clamp of the number of slots to stock with goods
       (val_clamp, ":number_of_slots_to_stock", 0, 22),
@@ -25689,6 +25714,8 @@ scripts = [
         (assign, reg24, ":center_prosperity"),
         (display_message, "@{!}REFRESH: {s21} ({s20}) ({reg20}/{reg22}) prod, {reg23} goods, {reg21} slots ({reg24} prosp)"),
       (try_end),
+
+      (gt, ":number_of_slots_to_stock", 0), # no sense continuing to populate merchant inventory
 
       # the default for goods not produced here (0 = lowest possible probability)
       (reset_item_probabilities, 0),
@@ -25709,10 +25736,14 @@ scripts = [
           # get village production of the item
           (call_script, "script_center_get_production", ":cur_center", ":cur_good"),
           (assign, ":cur_production", reg0),
-          # add town production weighted at 1/5
+          # add town production (weighted)
           (call_script, "script_center_get_production", ":bound_center", ":cur_good"),
-          (val_div, reg0, 5),
+          (val_div, reg0, ":town_production_weight_divisor"),
           (val_add, ":cur_production", reg0),
+          # get village consumption of the item
+          (call_script, "script_center_get_consumption", ":cur_center", ":cur_good"),
+	  	    (assign, ":cur_consumption", reg0),
+          (val_sub, ":cur_production", ":cur_consumption"),
         (try_end),
         (gt, ":cur_production", 0), # stop if the good is not produced locally
 
@@ -25726,7 +25757,7 @@ scripts = [
         (val_mul, ":probability", ":inverse_base_price"),
         (val_max, ":probability", 1),
 
-        # price factor is a small positive to probability (centers want to offer)
+        # being close to the average price factor increases probability
         (store_sqrt, ":sqrt_price_factor", ":cur_center_price_factor"), # turn 100..1000..10000 -> 10..31..100
         (store_sqrt, ":price_factor_delta", ":sqrt_price_factor"), # turn 10..31..100 -> 1..5..10
         (assign, ":price_closeness_to_average", 0), # closeness to the average, 1=far away, 5=close
@@ -25763,7 +25794,7 @@ scripts = [
       (try_end),
 
       (troop_add_merchandise, ":merchant_troop", itp_type_goods, ":number_of_slots_to_stock"),
-      (troop_ensure_inventory_space, ":merchant_troop", 80),
+      (troop_ensure_inventory_space, ":merchant_troop", 85),
       (troop_sort_inventory, ":merchant_troop"),
 
       # Add prosperity to the village while reducing gold from the elder
