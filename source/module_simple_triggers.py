@@ -5219,7 +5219,7 @@ simple_triggers = [
       (party_get_slot, ":cur_wealth", ":center_no", slot_town_wealth),
       (lt, ":cur_wealth", reinforcement_cost_easy),
       (party_get_slot, ":center_strength", ":center_no", slot_party_cached_strength),
-      (lt, ":center_strength", 500), # roughly, strength = 10x the number of troops (give or take 30-50%)
+      (lt, ":center_strength", 400), # roughly, strength = 10x the number of troops (give or take 30-50%)
       (try_begin),
         (store_random_in_range, ":random", 0, 100),
         (lt, ":random", 20), # percent chance        
@@ -5239,8 +5239,21 @@ simple_triggers = [
     (try_end),
    ]),
 
-  (24,
-   []),
+  # DEBUG -- refresh some of the initialization things
+  (24 * 30,
+   [
+    (try_begin),
+      (this_or_next|eq, "$cheat_mode", DPLMC_DEBUG_EXPERIMENTAL),
+      (eq, "$g_infinite_camping", 1),
+      (call_script, "script_initialize_item_info"),
+    (try_end),
+    (try_begin),
+      (this_or_next|eq, "$cheat_mode", DPLMC_DEBUG_EXPERIMENTAL),
+      (eq, "$g_infinite_camping", 1),
+      (call_script, "script_initialize_economic_information"),
+    (try_end),
+   ]),
+
   (24,
    []),
   (24,

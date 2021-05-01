@@ -25627,60 +25627,160 @@ scripts = [
   # Output: none
   ("refresh_village_merchant_inventory",
     [
-      (store_script_param_1, ":village_no"),
-      (party_get_slot, ":merchant_troop", ":village_no", slot_town_elder),
-      (reset_item_probabilities,0),
+      (store_script_param_1, ":cur_center"),
 
-	  (party_get_slot, ":bound_center", ":village_no", slot_village_bound_center),
-
-	  (assign, ":total_probability", 0),
-      (try_for_range, ":cur_good", trade_goods_begin, trade_goods_end),
-	    (call_script, "script_center_get_production", ":village_no", ":cur_good"),
-		(assign, ":cur_probability", reg0),
-
-        (call_script, "script_center_get_production", ":bound_center", ":cur_good"),
-		(val_div, reg0, 5), #also add 1/5 of bound center production to village's inventory.
-		(val_add, ":cur_probability", reg0),
-
-		(val_max, ":cur_probability", 5),
-		(val_add, ":total_probability", ":cur_probability"),
-      (try_end),
-
-	  (try_begin),
-		(party_get_slot, ":prosperity", ":village_no", slot_town_prosperity),
-		(val_div, ":prosperity", 15), #up to 6
-		(store_add, ":number_of_items_in_village", ":prosperity", 1),
-	  (try_end),
-
-      (try_for_range, ":cur_good", trade_goods_begin, trade_goods_end),
-	    (call_script, "script_center_get_production", ":village_no", ":cur_good"),
-		(assign, ":cur_probability", reg0),
-
-        (call_script, "script_center_get_production", ":bound_center", ":cur_good"),
-		(val_div, reg0, 5), #also add 1/5 of bound center production to village's inventory.
-		(val_add, ":cur_probability", reg0),
-
-		(val_max, ":cur_probability", 5),
-        (val_mul, ":cur_probability", ":number_of_items_in_village"),
-		(val_mul, ":cur_probability", 100),
-		(val_div, ":cur_probability", ":total_probability"),
-
-        (set_item_probability_in_merchandise, ":cur_good", ":cur_probability"),
-      (try_end),
-
-      #SB : probably do something like trash item at base values
+      (store_distance_to_party_from_party, ":dist_to_main_party", "p_main_party", ":cur_center"),
+      (party_get_slot, ":bound_center", ":cur_center", slot_village_bound_center),
+      (party_get_slot, ":merchant_troop", ":cur_center", slot_town_elder),
       (troop_clear_inventory, ":merchant_troop"),
-      (troop_add_merchandise, ":merchant_troop", itp_type_goods, ":number_of_items_in_village"),
+
+      (assign, ":total_production", 0),
+      (assign, ":total_base_production", 0),
+      (assign, ":types_of_good_produced_qty", 0),
+      (try_for_range, ":cur_good", trade_goods_begin, trade_goods_end),
+        # get village production of the item
+        (call_script, "script_center_get_production", ":cur_center", ":cur_good"),
+		    (assign, ":cur_production", reg0),
+        (assign, ":base_production", reg2),
+        # add town production weighted at 1/8
+        (call_script, "script_center_get_production", ":bound_center", ":cur_good"),
+        (val_div, reg0, 8),
+        (val_div, reg2, 8),
+        (val_add, ":cur_production", reg0),
+        (val_add, ":base_production", reg2),
+        (try_begin), # track the number of types of goods
+          (gt, ":cur_production", 0),
+          (val_add, ":types_of_good_produced_qty", 1),
+        (try_end),
+        (val_add, ":total_production", ":cur_production"),
+        (val_add, ":total_base_production", ":base_production"),
+      (try_end),
+      (gt, ":total_production", 0), # no sense continuing to populate merchant inventory
+
+      # calculate the merchant's total inventory slots to stock
+      (party_get_slot, ":center_prosperity", ":cur_center", slot_town_prosperity),
+      (assign, ":number_of_slots_to_stock", ":types_of_good_produced_qty"),
+      (val_div, ":number_of_slots_to_stock", 3),
+      (val_add, ":number_of_slots_to_stock", 10),
+      (val_mul, ":number_of_slots_to_stock", ":center_prosperity"),
+      (val_div, ":number_of_slots_to_stock", 100),
+      (val_add, ":number_of_slots_to_stock", 1),
+
+      # adjust slots to stock by current vs base production (curr prod is usually 20-50% of base prod value)
+      (assign, ":possible_production_factor", ":total_production"),
+      (val_mul, ":possible_production_factor", 1000), # 350 total -> 350000
+      (val_div, ":possible_production_factor", ":total_base_production"), # divide by the 300 base prod -> 1166
+      (val_mul, ":number_of_slots_to_stock", ":possible_production_factor"),
+      (val_div, ":number_of_slots_to_stock", 1000),
+      (val_max, ":number_of_slots_to_stock", 1),
+
+      # hard clamp of the number of slots to stock with goods
+      (val_clamp, ":number_of_slots_to_stock", 0, 22),
+
+      (try_begin),
+        (ge, "$cheat_mode", DPLMC_DEBUG_MIN),
+        (le, ":dist_to_main_party", 10), # limit debug output to centers within range of the player (otherwise too chatty)
+        (str_store_party_name, s20, ":bound_center"),
+        (str_store_party_name, s21, ":cur_center"),
+        (assign, reg20, ":total_production"),
+        (assign, reg21, ":number_of_slots_to_stock"),
+        (assign, reg22, ":total_base_production"),
+        (assign, reg23, ":types_of_good_produced_qty"),
+        (assign, reg24, ":center_prosperity"),
+        (display_message, "@{!}REFRESH: {s21} ({s20}) ({reg20}/{reg22}) prod, {reg23} goods, {reg21} slots ({reg24} prosp)"),
+      (try_end),
+
+      # the default for goods not produced here (0 = lowest possible probability)
+      (reset_item_probabilities, 0),
+
+      # calculate item probabilities (higher = more common)
+      (try_for_range, ":cur_good", trade_goods_begin, trade_goods_end),
+
+        # get the price factor for this good
+        (store_sub, ":item_to_price_slot", slot_town_trade_good_prices_begin, trade_goods_begin),
+        (store_add, ":cur_good_price_slot", ":cur_good", ":item_to_price_slot"),
+        (party_get_slot, ":cur_center_price_factor", ":cur_center", ":cur_good_price_slot"),
+        (item_get_slot, ":cur_good_base_price", ":cur_good", slot_item_base_price),
+
+        # calculate production for the good (town + villages)
+        (call_script, "script_center_get_production", ":cur_center", ":cur_good"),
+        (assign, ":cur_production", reg0),
+        (try_for_range, ":cur_village", villages_begin, villages_end),
+          # get village production of the item
+          (call_script, "script_center_get_production", ":cur_center", ":cur_good"),
+          (assign, ":cur_production", reg0),
+          # add town production weighted at 1/5
+          (call_script, "script_center_get_production", ":bound_center", ":cur_good"),
+          (val_div, reg0, 5),
+          (val_add, ":cur_production", reg0),
+        (try_end),
+        (gt, ":cur_production", 0), # stop if the good is not produced locally
+
+        # base probability is current-production amount
+        (assign, ":probability", ":cur_production"), # could be as much as 500 units, but probably 1..250
+
+        # price (above a certain price value) is a negative to probability
+        (val_max, ":cur_good_base_price", 200), # treat everything under this as equal probability
+        (store_div, ":inverse_base_price", 10000, ":cur_good_base_price"),
+        (val_max, ":inverse_base_price", 1), 
+        (val_mul, ":probability", ":inverse_base_price"),
+        (val_max, ":probability", 1),
+
+        # price factor is a small positive to probability (centers want to offer)
+        (store_sqrt, ":sqrt_price_factor", ":cur_center_price_factor"), # turn 100..1000..10000 -> 10..31..100
+        (store_sqrt, ":price_factor_delta", ":sqrt_price_factor"), # turn 10..31..100 -> 1..5..10
+        (assign, ":price_closeness_to_average", 0), # closeness to the average, 1=far away, 5=close
+        (try_begin),
+          (gt, ":price_factor_delta", 5),
+          (store_sub, ":price_closeness_to_average", 10, ":price_factor_delta"), # 5..1
+        (else_try),
+          (assign, ":price_closeness_to_average", ":price_factor_delta"), # 1..5
+        (try_end),
+        (val_clamp, ":price_closeness_to_average", 1, 6),
+        (val_mul, ":probability", ":price_closeness_to_average"),
+        (val_max, ":probability", 1),
+
+        (try_begin),
+          (is_between, ":cur_good", food_begin, food_end), # food gets a bonus to probabilities
+          (store_add, ":prosperity_food_adjustment", ":center_prosperity", 50), # 50..150
+          (val_mul, ":prosperity_food_adjustment", 5), # 250..750
+          (val_div, ":prosperity_food_adjustment", 150), # 1..5
+          (val_mul, ":probability", ":prosperity_food_adjustment"),
+        (try_end),
+
+        (set_item_probability_in_merchandise, ":cur_good", ":probability"),
+
+        (try_begin),
+          (ge, "$cheat_mode", DPLMC_DEBUG_MIN),
+          (le, ":dist_to_main_party", 10), # limit debug output to towns within range of the player (otherwise too chatty)
+          (str_store_item_name, s20, ":cur_good"),
+          (assign, reg20, ":total_production"),
+          (assign, reg21, ":cur_production"),
+          (assign, reg22, ":probability"),
+          (assign, reg23, ":cur_center_price_factor"),
+          (display_message, "@{!}{s20} ({reg21}/{reg20} prod, {reg23} price-factor) {reg22} probability"),
+        (try_end),
+      (try_end),
+
+      (troop_add_merchandise, ":merchant_troop", itp_type_goods, ":number_of_slots_to_stock"),
       (troop_ensure_inventory_space, ":merchant_troop", 80),
+      (troop_sort_inventory, ":merchant_troop"),
 
       # Add prosperity to the village while reducing gold from the elder
       (store_troop_gold, ":gold",":merchant_troop"),
       (try_begin),
-        (gt, ":gold", 1500),
-        (store_div, ":prosperity_added", ":gold", 1000),
-        (store_mul, ":gold_removed", ":prosperity_added", 1000),
+        (gt, ":gold", 600),
+        (store_div, ":prosperity_added", ":gold", 400),
+        (store_mul, ":gold_removed", ":prosperity_added", 400),
         (troop_remove_gold, ":merchant_troop", ":gold_removed"),
-        (call_script, "script_change_center_prosperity", ":village_no", ":prosperity_added"),
+        (call_script, "script_change_center_prosperity", ":cur_center", ":prosperity_added"),
+        (try_begin),
+          (ge, "$cheat_mode", DPLMC_DEBUG_MIN),
+          (le, ":dist_to_main_party", 10), # limit debug output to towns within range of the player (otherwise too chatty)
+          (assign, reg20, ":gold_removed"),
+          (assign, reg21, ":prosperity_added"),
+          (display_message, "@{!}Converted {reg20} gold into +{reg20} prosperity."),
+        (try_end),
       (try_end),
   ]),
 
@@ -57644,107 +57744,10 @@ scripts = [
   # script_refresh_center_inventories
   ("refresh_center_inventories",
   [
-  (set_merchandise_modifier_quality,150),
-  (reset_item_probabilities,100),
-
-  # Add trade goods to merchant inventories
-  (try_for_range,":cur_center",towns_begin,towns_end),
-    (party_get_slot,":cur_merchant",":cur_center",slot_town_merchant),
-    (reset_item_probabilities,100),
-      (assign, ":total_production", 0),
-    (try_for_range, ":cur_goods", trade_goods_begin, trade_goods_end),
-        (call_script, "script_center_get_production", ":cur_center", ":cur_goods"),
-		(assign, ":cur_production", reg0),
-
-        (try_for_range, ":cur_village", villages_begin, villages_end),
-		  (party_slot_eq, ":cur_village", slot_village_bound_center, ":cur_center"),
-          (call_script, "script_center_get_production", ":cur_village", ":cur_goods"),
-		  (val_div, reg0, 3),
-		  (val_add, ":cur_production", reg0),
-		(try_end),
-
-		(val_max, ":cur_production", 1),
-		(val_mul, ":cur_production", 4),
-
-		(val_add, ":total_production", ":cur_production"),
-      (try_end),
-
-	  (party_get_slot, ":town_prosperity", ":cur_center", slot_town_prosperity),
-	  (assign, ":number_of_items_in_town", 25),
-
-	  (try_begin), #1.0x - 2.0x (50 - 100 prosperity)
-	    (ge, ":town_prosperity", 50),
-		(store_sub, ":ratio", ":town_prosperity", 50),
-		(val_mul, ":ratio", 2),
-		(val_add, ":ratio", 100),
-		(val_mul, ":number_of_items_in_town", ":ratio"),
-		(val_div, ":number_of_items_in_town", 100),
-	  (else_try), #0.5x - 1.0x (0 - 50 prosperity)
-		(store_sub, ":ratio", ":town_prosperity", 50),
-		(val_add, ":ratio", 100),
-		(val_mul, ":number_of_items_in_town", ":ratio"),
-		(val_div, ":number_of_items_in_town", 100),
-	  (try_end),
-
-	  (val_clamp, ":number_of_items_in_town", 10, 40),
-
-	  (try_begin),
-	    (is_between, ":cur_center", castles_begin, castles_end),
-	    (val_div, ":number_of_items_in_town", 2),
-      (try_end),
-
-      (try_for_range, ":cur_goods", trade_goods_begin, trade_goods_end),
-	  (call_script, "script_center_get_production", ":cur_center", ":cur_goods"),
-		(assign, ":cur_production", reg0),
-
-        (try_for_range, ":cur_village", villages_begin, villages_end),
-		  (party_slot_eq, ":cur_village", slot_village_bound_center, ":cur_center"),
-          (call_script, "script_center_get_production", ":cur_village", ":cur_goods"),
-		  (val_div, reg0, 3),
-		  (val_add, ":cur_production", reg0),
-		(try_end),
-
-		(val_max, ":cur_production", 1),
-		(val_mul, ":cur_production", 4),
-
-        (val_mul, ":cur_production", ":number_of_items_in_town"),
-		(val_mul, ":cur_production", 100),
-		(val_div, ":cur_production", ":total_production"),
-        (set_item_probability_in_merchandise, ":cur_goods", ":cur_production"),
+    # Add trade goods to merchant inventories
+    (try_for_range,":cur_center",towns_begin,towns_end),
+      (call_script, "script_refresh_town_goods_merchant_inventory", ":cur_center"),
     (try_end),
-
-	  (troop_clear_inventory, ":cur_merchant"),
-      (troop_add_merchandise, ":cur_merchant", itp_type_goods, ":number_of_items_in_town"),
-
-      (troop_ensure_inventory_space, ":cur_merchant", 20),
-    (troop_sort_inventory, ":cur_merchant"),
-    (store_troop_gold, ":cur_gold",":cur_merchant"),
-    ##diplomacy start+
-	#Option: scaling gold additions by the prosperity of the town.
-	(try_begin),
-		(ge, "$g_dplmc_gold_changes", DPLMC_GOLD_CHANGES_LOW),#this must be explicitly enabled
-	    (party_get_slot, ":prosperity_75", ":cur_center", slot_town_prosperity),
-		(val_add, ":prosperity_75", 75),
-		(store_mul, ":target_gold", ":prosperity_75", 1500),
-		(val_add, ":target_gold", 62),
-		(val_div, ":target_gold", 125),#average 1500
-		(lt, ":cur_gold", ":target_gold"),
-		(store_random_in_range,":new_gold",500,1000),
-		(val_mul, ":new_gold", ":prosperity_75"),
-		(val_add, ":new_gold", 62),
-		(val_div, ":new_gold", 125),
-		(call_script, "script_troop_add_gold", ":cur_merchant", ":new_gold"),
-	(else_try),
-		(lt, "$g_dplmc_gold_changes", DPLMC_GOLD_CHANGES_LOW),
-	    #fall through to default behavior
-	    ##diplomacy end+
-    (lt,":cur_gold",1500),
-    (store_random_in_range,":new_gold",500,1000),
-    (call_script, "script_troop_add_gold", ":cur_merchant", ":new_gold"),
-    ##diplomacy start+
-    (try_end),
-	##diplomacy end+
-  (try_end),
   ]),
 
   # script_refresh_center_armories
@@ -74017,6 +74020,166 @@ Born at {s43}^Contact in {s44} of the {s45}.^\
       (set_merchandise_modifier_quality,150),
       (party_get_slot,":cur_merchant",":cur_center",slot_town_merchant),
       (troop_clear_inventory, ":cur_merchant"),
+
+      # calculate total production of all trade goods (town + bound villages)
+      (assign, ":total_production", 0),
+      (assign, ":total_base_production", 0),
+      (assign, ":types_of_good_produced_qty", 0),
+      (try_for_range, ":cur_good", trade_goods_begin, trade_goods_end),
+        # get total production for town + villages
+        (call_script, "script_center_get_production", ":cur_center", ":cur_good"),
+        (assign, ":cur_production", reg0),
+        (assign, ":base_production", reg2),
+        (try_for_range, ":cur_village", villages_begin, villages_end),
+          (party_slot_eq, ":cur_village", slot_village_bound_center, ":cur_center"),
+          (call_script, "script_center_get_production", ":cur_village", ":cur_good"),
+          # add village production weighted at 1/2
+          (val_div, reg0, 2),
+          (val_div, reg2, 2),
+          (val_add, ":cur_production", reg0),
+          (val_add, ":base_production", reg2),
+        (try_end),
+        (try_begin), # track the number of types of goods
+          (gt, ":cur_production", 0),
+          (val_add, ":types_of_good_produced_qty", 1),
+          (val_add, ":total_production", ":cur_production"),
+          (val_add, ":total_base_production", ":base_production"),
+        (try_end),
+      (try_end),
+      (gt, ":total_production", 0), # no sense continuing to populate merchant inventory
+
+      # calculate the merchant's total inventory space based on prosperity
+      (party_get_slot, ":center_prosperity", ":cur_center", slot_town_prosperity),
+      (assign, ":number_of_slots_to_stock", ":types_of_good_produced_qty"),
+      (val_div, ":number_of_slots_to_stock", 2),
+      (val_add, ":number_of_slots_to_stock", 90),
+      (val_mul, ":number_of_slots_to_stock", ":center_prosperity"),
+      (val_div, ":number_of_slots_to_stock", 100),
+      (val_add, ":number_of_slots_to_stock", 9),
+      (try_begin),
+        (is_between, ":cur_center", castles_begin, castles_end),
+        (val_div, ":number_of_slots_to_stock", 2),
+      (try_end),
+
+      # adjust slots to stock by current vs base production (curr prod is usually 20-50% of base prod value)
+      (assign, ":possible_production_factor", ":total_production"),
+      (val_mul, ":possible_production_factor", 1000), # 350 total -> 350000
+      (val_div, ":possible_production_factor", ":total_base_production"), # divide by the 300 base prod -> 1166
+      (val_mul, ":number_of_slots_to_stock", ":possible_production_factor"),
+      (val_div, ":number_of_slots_to_stock", 1000),
+      (val_max, ":number_of_slots_to_stock", 1),
+
+      # hard clamp of the number of slots to stock with goods
+      (val_clamp, ":number_of_slots_to_stock", 1, 82),
+
+      (try_begin),
+        (ge, "$cheat_mode", DPLMC_DEBUG_MIN),
+        (le, ":dist_to_main_party", 15), # limit debug output to towns within range of the player (otherwise too chatty)
+        (str_store_party_name, s20, ":cur_center"),
+        (assign, reg20, ":total_production"),
+        (assign, reg21, ":number_of_slots_to_stock"),
+        (assign, reg22, ":total_base_production"),
+        (assign, reg23, ":types_of_good_produced_qty"),
+        (assign, reg24, ":center_prosperity"),
+        (display_message, "@{!}REFRESH: {s20} ({reg20}/{reg22}) prod, {reg23} goods, {reg21} slots ({reg24} prosp)"),
+      (try_end),
+
+      # the default for goods not produced here (0 = lowest possible probability)
+      (reset_item_probabilities, 1),
+
+      # calculate item probabilities (higher = more common)
+      (try_for_range, ":cur_good", trade_goods_begin, trade_goods_end),
+
+        # get the price factor for this good
+        (store_sub, ":item_to_price_slot", slot_town_trade_good_prices_begin, trade_goods_begin),
+        (store_add, ":cur_good_price_slot", ":cur_good", ":item_to_price_slot"),
+        (party_get_slot, ":cur_center_price_factor", ":cur_center", ":cur_good_price_slot"),
+        (item_get_slot, ":cur_good_base_price", ":cur_good", slot_item_base_price),
+
+        # calculate production for the good (town + villages)
+        (call_script, "script_center_get_production", ":cur_center", ":cur_good"),
+        (assign, ":cur_production", reg0),
+        (call_script, "script_center_get_consumption", ":cur_center", ":cur_good"),
+        (assign, ":cur_consumption", reg0),
+        (try_for_range, ":cur_village", villages_begin, villages_end),
+          (party_slot_eq, ":cur_village", slot_village_bound_center, ":cur_center"),
+          (call_script, "script_center_get_production", ":cur_village", ":cur_good"),
+          # village production is weighted at 1/2
+          (val_div, reg0, 2),
+          (val_add, ":cur_production", reg0),
+        (try_end),
+        (val_sub, ":cur_production", ":cur_consumption"),
+        (gt, ":cur_production", 0), # stop if the good is not produced locally
+
+        # base probability is current-production amount
+        (assign, ":probability", ":cur_production"), # could be as much as 500 units, but probably 1..250
+
+        # price (above a certain price value) is a negative to probability
+        (val_max, ":cur_good_base_price", 350), # treat everything under this as equal probability
+        (store_div, ":inverse_base_price", 10000, ":cur_good_base_price"),
+        (val_div, ":inverse_base_price", 5), # keep numbers from getting too large
+        (val_max, ":inverse_base_price", 1), 
+        (val_mul, ":probability", ":inverse_base_price"),
+        (val_max, ":probability", 1),
+
+        # price factor is a small positive to probability (centers want to offer)
+        (store_sqrt, ":sqrt_price_factor", ":cur_center_price_factor"), # turn 100..1000..10000 -> 10..31..100
+        (store_sqrt, ":price_factor_delta", ":sqrt_price_factor"), # turn 10..31..100 -> 1..5..10
+        (assign, ":price_closeness_to_average", 0), # closeness to the average, 1=far away, 5=close
+        (try_begin),
+          (gt, ":price_factor_delta", 5),
+          (store_sub, ":price_closeness_to_average", 10, ":price_factor_delta"), # 5..1
+        (else_try),
+          (assign, ":price_closeness_to_average", ":price_factor_delta"), # 1..5
+        (try_end),
+        (val_clamp, ":price_closeness_to_average", 1, 6),
+        (val_mul, ":probability", ":price_closeness_to_average"),
+        (val_max, ":probability", 1),
+
+        (try_begin),
+          (is_between, ":cur_good", food_begin, food_end), # food gets a bonus to probability
+          (val_mul, ":probability", 2),
+        (try_end),
+
+        (set_item_probability_in_merchandise, ":cur_good", ":probability"),
+
+        (try_begin),
+          (ge, "$cheat_mode", DPLMC_DEBUG_MIN),
+          (le, ":dist_to_main_party", 15), # limit debug output to towns within range of the player (otherwise too chatty)
+          (str_store_item_name, s20, ":cur_good"),
+          (assign, reg20, ":total_production"),
+          (assign, reg21, ":cur_production"),
+          (assign, reg22, ":probability"),
+          (assign, reg23, ":cur_center_price_factor"),
+          (display_message, "@{!}{s20} ({reg21}/{reg20} prod, {reg23} price-factor) {reg22} probability"),
+        (try_end),
+      (try_end),
+
+      (troop_add_merchandise, ":cur_merchant", itp_type_goods, ":number_of_slots_to_stock"),
+      (troop_ensure_inventory_space, ":cur_merchant", 20),
+      (troop_sort_inventory, ":cur_merchant"),
+      (store_troop_gold, ":cur_gold",":cur_merchant"),
+      
+      #Option: scaling gold additions by the prosperity of the town.
+      (try_begin),
+        (ge, "$g_dplmc_gold_changes", DPLMC_GOLD_CHANGES_LOW),#this must be explicitly enabled
+        (party_get_slot, ":prosperity_75", ":cur_center", slot_town_prosperity),
+        (val_add, ":prosperity_75", 75),
+        (store_mul, ":target_gold", ":prosperity_75", 1500),
+        (val_add, ":target_gold", 62),
+        (val_div, ":target_gold", 125),#average 1500
+        (lt, ":cur_gold", ":target_gold"),
+        (store_random_in_range,":new_gold",500,1000),
+        (val_mul, ":new_gold", ":prosperity_75"),
+        (val_add, ":new_gold", 62),
+        (val_div, ":new_gold", 125),
+        (call_script, "script_troop_add_gold", ":cur_merchant", ":new_gold"),
+      (else_try), #fall through to default behavior
+        (lt, "$g_dplmc_gold_changes", DPLMC_GOLD_CHANGES_LOW),
+        (lt,":cur_gold",1500),
+        (store_random_in_range,":new_gold",500,1000),
+        (call_script, "script_troop_add_gold", ":cur_merchant", ":new_gold"),
+      (try_end),
     ]),
 
     # #script_cf_dplmc_disguise_evaluate_contraband
