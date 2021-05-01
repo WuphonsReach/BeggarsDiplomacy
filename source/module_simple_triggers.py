@@ -5240,8 +5240,11 @@ simple_triggers = [
    ]),
 
   # DEBUG -- refresh some of the initialization things
-  (24 * 30,
+  (24,
    [
+     # only fire when player is close to village_66 (Fisdnar)
+    (store_distance_to_party_from_party, ":dist_to_main_party", "p_main_party", "p_village_66"),
+    (le, ":dist_to_main_party", 15),
     (try_begin),
       (this_or_next|eq, "$cheat_mode", DPLMC_DEBUG_EXPERIMENTAL),
       (eq, "$g_infinite_camping", 1),
