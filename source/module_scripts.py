@@ -7527,8 +7527,13 @@ scripts = [
       (try_end),
 	]),
 
-    ("initialize_item_info",
-    [
+  ("initialize_item_info",
+  [
+    (try_begin),
+      (ge, "$cheat_mode", DPLMC_DEBUG_MIN),
+      (display_message, "@{!}SCRIPT: initialize_item_info."),
+    (try_end),
+
 	  # Setting food bonuses - these have been changed to incentivize using historical rations. Bread is the most cost-efficient
 	  #Staples
       (item_set_slot, "itm_bread", slot_item_food_bonus, 8), #brought up from 4
@@ -7561,15 +7566,15 @@ scripts = [
 
 	  #Item economic settings
 	  (item_set_slot, "itm_grain", slot_item_urban_demand, 20),
-      (item_set_slot, "itm_grain", slot_item_rural_demand, 20),
+      (item_set_slot, "itm_grain", slot_item_rural_demand, 30),
       (item_set_slot, "itm_grain", slot_item_desert_demand, 20),
       (item_set_slot, "itm_grain", slot_item_production_slot, slot_center_acres_grain),
       (item_set_slot, "itm_grain", slot_item_production_string, "str_acres_grain"),
       (item_set_slot, "itm_grain", slot_item_base_price, 30),
 
-      (item_set_slot, "itm_bread", slot_item_urban_demand, 30),
+      (item_set_slot, "itm_bread", slot_item_urban_demand, 40),
       (item_set_slot, "itm_bread", slot_item_rural_demand, 30),
-      (item_set_slot, "itm_bread", slot_item_desert_demand, 30),
+      (item_set_slot, "itm_bread", slot_item_desert_demand, 40),
       (item_set_slot, "itm_bread", slot_item_production_slot, slot_center_mills),
       (item_set_slot, "itm_bread", slot_item_production_string, "str_mills"),
       (item_set_slot, "itm_bread", slot_item_primary_raw_material, "itm_grain"),
@@ -7580,7 +7585,7 @@ scripts = [
       (item_set_slot, "itm_bread", slot_item_enterprise_building_cost, 1500),
 
 	  (item_set_slot, "itm_ale", slot_item_urban_demand, 10),
-	  (item_set_slot, "itm_ale", slot_item_rural_demand, 15),
+	  (item_set_slot, "itm_ale", slot_item_rural_demand, 16),
       (item_set_slot, "itm_ale", slot_item_desert_demand, 0),
       (item_set_slot, "itm_ale", slot_item_production_slot, slot_center_breweries),
       (item_set_slot, "itm_ale", slot_item_production_string, "str_breweries"),
@@ -7591,9 +7596,9 @@ scripts = [
       (item_set_slot, "itm_ale", slot_item_base_price, 180),
       (item_set_slot, "itm_ale", slot_item_enterprise_building_cost, 2500),
 
-	  (item_set_slot, "itm_wine", slot_item_urban_demand, 15),
+	  (item_set_slot, "itm_wine", slot_item_urban_demand, 18),
 	  (item_set_slot, "itm_wine", slot_item_rural_demand, 10),
-      (item_set_slot, "itm_wine", slot_item_desert_demand, 25),
+      (item_set_slot, "itm_wine", slot_item_desert_demand, 5),
       (item_set_slot, "itm_wine", slot_item_production_slot, slot_center_wine_presses),
       (item_set_slot, "itm_wine", slot_item_production_string, "str_presses"),
       (item_set_slot, "itm_wine", slot_item_primary_raw_material, "itm_raw_grapes"),
@@ -7603,35 +7608,35 @@ scripts = [
       (item_set_slot, "itm_wine", slot_item_base_price, 380),
       (item_set_slot, "itm_wine", slot_item_enterprise_building_cost, 5000),
 
-	  (item_set_slot, "itm_raw_grapes", slot_item_urban_demand, 0),
+	  (item_set_slot, "itm_raw_grapes", slot_item_urban_demand, 5),
 	  (item_set_slot, "itm_raw_grapes", slot_item_rural_demand, 0),
       (item_set_slot, "itm_raw_grapes", slot_item_desert_demand, 0),
       (item_set_slot, "itm_raw_grapes", slot_item_production_slot, slot_center_acres_vineyard),
-      (item_set_slot, "itm_raw_grapes", slot_item_production_string, "str_acres_orchard"),
+      (item_set_slot, "itm_raw_grapes", slot_item_production_string, "str_acres_vineyard"),
       (item_set_slot, "itm_raw_grapes", slot_item_is_raw_material_only_for, "itm_wine"),
       (item_set_slot, "itm_raw_grapes", slot_item_base_price, 75),
 
 	  (item_set_slot, "itm_apples", slot_item_urban_demand, 4),
 	  (item_set_slot, "itm_apples", slot_item_rural_demand, 4),
 	  (item_set_slot, "itm_apples", slot_item_desert_demand, 0),
-      (item_set_slot, "itm_apples", slot_item_production_slot, slot_center_acres_vineyard),
-      (item_set_slot, "itm_apples", slot_item_production_string, "str_acres_orchard"),
+      (item_set_slot, "itm_apples", slot_item_production_slot, slot_center_acres_fruit_trees),
+      (item_set_slot, "itm_apples", slot_item_production_string, "str_acres_fruit_trees"),
       (item_set_slot, "itm_apples", slot_item_base_price, 44),
 
       (item_set_slot, "itm_smoked_fish", slot_item_urban_demand, 16),
-      (item_set_slot, "itm_smoked_fish", slot_item_rural_demand, 16),
+      (item_set_slot, "itm_smoked_fish", slot_item_rural_demand, 25),
       (item_set_slot, "itm_smoked_fish", slot_item_desert_demand, 16),
       (item_set_slot, "itm_smoked_fish", slot_item_production_slot, slot_center_fishing_fleet),
       (item_set_slot, "itm_smoked_fish", slot_item_production_string, "str_boats"),
 
-      (item_set_slot, "itm_salt", slot_item_urban_demand, 5),
+      (item_set_slot, "itm_salt", slot_item_urban_demand, 6),
       (item_set_slot, "itm_salt", slot_item_rural_demand, 3),
       (item_set_slot, "itm_salt", slot_item_desert_demand, -1),
       (item_set_slot, "itm_salt", slot_item_production_slot, slot_center_salt_pans),
       (item_set_slot, "itm_salt", slot_item_production_string, "str_pans"),
 
       (item_set_slot, "itm_dried_meat", slot_item_urban_demand, 20),
-      (item_set_slot, "itm_dried_meat", slot_item_rural_demand, 5),
+      (item_set_slot, "itm_dried_meat", slot_item_rural_demand, 10),
       (item_set_slot, "itm_dried_meat", slot_item_desert_demand, -1),
       (item_set_slot, "itm_dried_meat", slot_item_production_slot, slot_center_head_cattle),
       (item_set_slot, "itm_dried_meat", slot_item_production_string, "str_head_cattle"),
@@ -7642,19 +7647,21 @@ scripts = [
       (item_set_slot, "itm_cattle_meat", slot_item_production_slot, slot_center_head_cattle),
       (item_set_slot, "itm_cattle_meat", slot_item_production_string, "str_head_cattle"),
 
-      (item_set_slot, "itm_cheese", slot_item_urban_demand, 10),
-      (item_set_slot, "itm_cheese", slot_item_rural_demand, 10),
-      (item_set_slot, "itm_cheese", slot_item_desert_demand, 10),
+      (item_set_slot, "itm_cheese", slot_item_urban_demand, 20),
+      (item_set_slot, "itm_cheese", slot_item_rural_demand, 12),
+      (item_set_slot, "itm_cheese", slot_item_desert_demand, 12),
+      # comes from a mix of sheep+cattle, so the following is unused/incorrect
       (item_set_slot, "itm_cheese", slot_item_production_slot, slot_center_head_cattle),
       (item_set_slot, "itm_cheese", slot_item_production_string, "str_head_cattle"),
 
-      (item_set_slot, "itm_butter", slot_item_urban_demand, 2),
+      (item_set_slot, "itm_butter", slot_item_urban_demand, 3),
       (item_set_slot, "itm_butter", slot_item_rural_demand, 2),
-      (item_set_slot, "itm_butter", slot_item_desert_demand, 2),
+      (item_set_slot, "itm_butter", slot_item_desert_demand, 3),
+      # comes from a mix of sheep+cattle, so the following is unused/incorrect
       (item_set_slot, "itm_butter", slot_item_production_slot, slot_center_head_cattle),
       (item_set_slot, "itm_butter", slot_item_production_string, "str_head_cattle"),
 
-      (item_set_slot, "itm_leatherwork", slot_item_urban_demand, 10),
+      (item_set_slot, "itm_leatherwork", slot_item_urban_demand, 15),
       (item_set_slot, "itm_leatherwork", slot_item_rural_demand, 10),
       (item_set_slot, "itm_leatherwork", slot_item_desert_demand, 10),
       (item_set_slot, "itm_leatherwork", slot_item_production_slot, slot_center_tanneries),
@@ -7669,13 +7676,14 @@ scripts = [
       (item_set_slot, "itm_raw_leather", slot_item_urban_demand, 0),
       (item_set_slot, "itm_raw_leather", slot_item_rural_demand, 0),
       (item_set_slot, "itm_raw_leather", slot_item_desert_demand, 0),
+      # comes from a mix of sheep+cattle, so the following is unused/incorrect
       (item_set_slot, "itm_raw_leather", slot_item_production_slot, slot_center_head_cattle),
       (item_set_slot, "itm_raw_leather", slot_item_production_string, "str_head_cattle"),
       (item_set_slot, "itm_raw_leather", slot_item_is_raw_material_only_for, "itm_leatherwork"),
 	  (item_set_slot, "itm_raw_leather", slot_item_base_price, 220),
 
   	  (item_set_slot, "itm_sausages", slot_item_urban_demand, 12),
-	  (item_set_slot, "itm_sausages", slot_item_rural_demand, 3),
+	  (item_set_slot, "itm_sausages", slot_item_rural_demand, 4),
 	  (item_set_slot, "itm_sausages", slot_item_desert_demand, -1),
       (item_set_slot, "itm_sausages", slot_item_production_slot, slot_center_head_sheep),
       (item_set_slot, "itm_sausages", slot_item_production_string, "str_head_sheep"),
@@ -7708,9 +7716,9 @@ scripts = [
       (item_set_slot, "itm_raw_flax", slot_item_is_raw_material_only_for, "itm_linen"),
 	  (item_set_slot, "itm_raw_flax", slot_item_base_price, 210),
 
-	  (item_set_slot, "itm_linen", slot_item_urban_demand, 7),
-	  (item_set_slot, "itm_linen", slot_item_rural_demand, 3),
-	  (item_set_slot, "itm_linen", slot_item_desert_demand, 15),
+	  (item_set_slot, "itm_linen", slot_item_urban_demand, 10),
+	  (item_set_slot, "itm_linen", slot_item_rural_demand, 5),
+	  (item_set_slot, "itm_linen", slot_item_desert_demand, 20),
       (item_set_slot, "itm_linen", slot_item_production_slot, slot_center_linen_looms),
       (item_set_slot, "itm_linen", slot_item_production_string, "str_looms"),
       (item_set_slot, "itm_linen", slot_item_primary_raw_material, "itm_raw_flax"),
@@ -7728,9 +7736,9 @@ scripts = [
       (item_set_slot, "itm_iron", slot_item_is_raw_material_only_for, "itm_tools"),
 	  (item_set_slot, "itm_iron", slot_item_base_price, 275),
 
-	  (item_set_slot, "itm_tools", slot_item_urban_demand, 7),
-	  (item_set_slot, "itm_tools", slot_item_rural_demand, 7),
-	  (item_set_slot, "itm_tools", slot_item_desert_demand, 7),
+	  (item_set_slot, "itm_tools", slot_item_urban_demand, 12),
+	  (item_set_slot, "itm_tools", slot_item_rural_demand, 8),
+	  (item_set_slot, "itm_tools", slot_item_desert_demand, 8),
       (item_set_slot, "itm_tools", slot_item_production_slot, slot_center_smithies),
       (item_set_slot, "itm_tools", slot_item_production_string, "str_smithies"),
       (item_set_slot, "itm_tools", slot_item_primary_raw_material, "itm_iron"),
@@ -7746,7 +7754,7 @@ scripts = [
       (item_set_slot, "itm_pottery", slot_item_production_slot, slot_center_pottery_kilns),
       (item_set_slot, "itm_pottery", slot_item_production_string, "str_kilns"),
 
-	  (item_set_slot, "itm_oil", slot_item_urban_demand, 10),
+	  (item_set_slot, "itm_oil", slot_item_urban_demand, 15),
 	  (item_set_slot, "itm_oil", slot_item_rural_demand, 5),
 	  (item_set_slot, "itm_oil", slot_item_desert_demand, -1),
       (item_set_slot, "itm_oil", slot_item_production_slot, slot_center_olive_presses),
@@ -7758,15 +7766,15 @@ scripts = [
 	  (item_set_slot, "itm_oil", slot_item_base_price, 475),
 	  (item_set_slot, "itm_oil", slot_item_enterprise_building_cost, 4500),
 
-	  (item_set_slot, "itm_raw_olives", slot_item_urban_demand, 0),
+	  (item_set_slot, "itm_raw_olives", slot_item_urban_demand, 6),
 	  (item_set_slot, "itm_raw_olives", slot_item_rural_demand, 0),
-	  (item_set_slot, "itm_raw_olives", slot_item_desert_demand, 0),
+	  (item_set_slot, "itm_raw_olives", slot_item_desert_demand, 2),
       (item_set_slot, "itm_raw_olives", slot_item_production_slot, slot_center_acres_olives),
       (item_set_slot, "itm_raw_olives", slot_item_production_string, "str_olive_groves"),
       (item_set_slot, "itm_raw_olives", slot_item_is_raw_material_only_for, "itm_oil"),
 	  (item_set_slot, "itm_raw_olives", slot_item_base_price, 100),
 
-	  (item_set_slot, "itm_velvet", slot_item_urban_demand, 5),
+	  (item_set_slot, "itm_velvet", slot_item_urban_demand, 8),
 	  (item_set_slot, "itm_velvet", slot_item_rural_demand, 0),
 	  (item_set_slot, "itm_velvet", slot_item_desert_demand, -1),
       (item_set_slot, "itm_velvet", slot_item_production_slot, slot_center_silk_looms),
@@ -7779,7 +7787,7 @@ scripts = [
 	  (item_set_slot, "itm_velvet", slot_item_secondary_raw_material, "itm_raw_dyes"),
 	  (item_set_slot, "itm_velvet", slot_item_enterprise_building_cost, 10000),
 
-	  (item_set_slot, "itm_raw_silk", slot_item_urban_demand, 0),
+	  (item_set_slot, "itm_raw_silk", slot_item_urban_demand, 1),
 	  (item_set_slot, "itm_raw_silk", slot_item_rural_demand, 0),
       (item_set_slot, "itm_raw_silk", slot_item_production_slot, slot_center_silk_farms),
       (item_set_slot, "itm_raw_silk", slot_item_production_string, "str_mulberry_groves"),
@@ -7792,42 +7800,45 @@ scripts = [
 	  (item_set_slot, "itm_raw_dyes", slot_item_production_string, "str_caravans"),
 	  (item_set_slot, "itm_raw_dyes", slot_item_base_price, 320),
 
-	  (item_set_slot, "itm_spice", slot_item_urban_demand, 5),
-	  (item_set_slot, "itm_spice", slot_item_rural_demand, 0),
-	  (item_set_slot, "itm_spice", slot_item_desert_demand, 5),
+	  (item_set_slot, "itm_spice", slot_item_urban_demand, 6),
+	  (item_set_slot, "itm_spice", slot_item_rural_demand, 1),
+	  (item_set_slot, "itm_spice", slot_item_desert_demand, 6),
 	  (item_set_slot, "itm_spice", slot_item_production_string, "str_caravans"),
 
-	  (item_set_slot, "itm_furs", slot_item_urban_demand, 5),
-	  (item_set_slot, "itm_furs", slot_item_rural_demand, 0),
+	  (item_set_slot, "itm_furs", slot_item_urban_demand, 8),
+	  (item_set_slot, "itm_furs", slot_item_rural_demand, 3),
 	  (item_set_slot, "itm_furs", slot_item_desert_demand, -1),
 	  (item_set_slot, "itm_furs", slot_item_production_slot, slot_center_fur_traps),
 	  (item_set_slot, "itm_furs", slot_item_production_string, "str_traps"),
 
-      (item_set_slot, "itm_honey", slot_item_urban_demand, 12),
-      (item_set_slot, "itm_honey", slot_item_rural_demand, 3),
-      (item_set_slot, "itm_honey", slot_item_desert_demand, -1),
+      (item_set_slot, "itm_honey", slot_item_urban_demand, 15),
+      (item_set_slot, "itm_honey", slot_item_rural_demand, 4),
+      (item_set_slot, "itm_honey", slot_item_desert_demand, 3),
       (item_set_slot, "itm_honey", slot_item_production_slot, slot_center_apiaries),
       (item_set_slot, "itm_honey", slot_item_production_string, "str_hives"),
 
-      (item_set_slot, "itm_cabbages", slot_item_urban_demand, 7),
-      (item_set_slot, "itm_cabbages", slot_item_rural_demand, 7),
-      (item_set_slot, "itm_cabbages", slot_item_desert_demand, 7),
+      (item_set_slot, "itm_cabbages", slot_item_urban_demand, 16),
+      (item_set_slot, "itm_cabbages", slot_item_rural_demand, 24),
+      (item_set_slot, "itm_cabbages", slot_item_desert_demand, 15),
       (item_set_slot, "itm_cabbages", slot_item_production_slot, slot_center_household_gardens),
       (item_set_slot, "itm_cabbages", slot_item_production_string, "str_gardens"),
 
-      (item_set_slot, "itm_raw_date_fruit", slot_item_urban_demand, 7),
+      (item_set_slot, "itm_raw_date_fruit", slot_item_urban_demand, 12),
       (item_set_slot, "itm_raw_date_fruit", slot_item_rural_demand, 7),
       (item_set_slot, "itm_raw_date_fruit", slot_item_desert_demand, 7),
-      (item_set_slot, "itm_raw_date_fruit", slot_item_production_slot, slot_center_household_gardens),
+      (item_set_slot, "itm_raw_date_fruit", slot_item_production_slot, slot_center_acres_dates),
       (item_set_slot, "itm_raw_date_fruit", slot_item_production_string, "str_acres_oasis"),
 
       (item_set_slot, "itm_chicken", slot_item_urban_demand, 40),
-      (item_set_slot, "itm_chicken", slot_item_rural_demand, 10),
-      (item_set_slot, "itm_chicken", slot_item_desert_demand, -1),
+      (item_set_slot, "itm_chicken", slot_item_rural_demand, 15),
+      (item_set_slot, "itm_chicken", slot_item_desert_demand, 25),
 
-      (item_set_slot, "itm_pork", slot_item_urban_demand, 40),
-      (item_set_slot, "itm_pork", slot_item_rural_demand, 10),
+      (item_set_slot, "itm_pork", slot_item_urban_demand, 45),
+      (item_set_slot, "itm_pork", slot_item_rural_demand, 15),
       (item_set_slot, "itm_pork", slot_item_desert_demand, -1),
+      (item_set_slot, "itm_pork", slot_item_production_slot, slot_center_head_pigs),
+      (item_set_slot, "itm_pork", slot_item_production_string, "str_head_pigs"),
+
 
       # Setting book intelligence requirements
       (item_set_slot, "itm_book_tactics", slot_item_intelligence_requirement, 9),
@@ -8168,149 +8179,209 @@ scripts = [
 
 ("initialize_economic_information",
 [
-  #All towns produce tools, pottery, and wool cloth for sale in countryside
+  (try_begin),
+    (ge, "$cheat_mode", DPLMC_DEBUG_MIN),
+    (display_message, "@{!}SCRIPT: initialize_economic_information."),
+  (try_end),
+
+  #All towns produce tools, pottery, and wool cloth for sale in countryside (maybe outdated comment)
   (try_for_range, ":town_no", towns_begin, towns_end),
-    (store_random_in_range, ":random_average_20_variation_10", 10, 31), #10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29 or 30
-    (party_set_slot, ":town_no", slot_center_wool_looms, ":random_average_20_variation_10"),
 
-    (store_random_in_range, ":random_average_2_variation_1", 1, 4), #1,2 or 3
-    (party_set_slot, ":town_no", slot_center_breweries, ":random_average_2_variation_1"),
+    (party_set_slot, ":town_no", slot_center_head_cattle, 0),
+    (party_set_slot, ":town_no", slot_center_head_sheep, 0),
+    (party_set_slot, ":town_no", slot_center_head_horses, 0),
+    (party_set_slot, ":town_no", slot_center_head_pigs, 0),
+    (party_set_slot, ":town_no", slot_center_acres_pasture, 0),
+    (party_set_slot, ":town_no", slot_center_acres_grain, 0),
+    (party_set_slot, ":town_no", slot_center_acres_olives, 0),
+    (party_set_slot, ":town_no", slot_center_acres_vineyard, 0),
+    (party_set_slot, ":town_no", slot_center_acres_flax, 0),
+    (party_set_slot, ":town_no", slot_center_acres_dates, 0),
+    (party_set_slot, ":town_no", slot_center_fishing_fleet, 0),
+    (party_set_slot, ":town_no", slot_center_salt_pans, 0),
+    (party_set_slot, ":town_no", slot_center_apiaries, 0),
+    (party_set_slot, ":town_no", slot_center_silk_farms, 0),
+    (party_set_slot, ":town_no", slot_center_kirmiz_farms, 0),
+    (party_set_slot, ":town_no", slot_center_iron_deposits, 0),
+    (party_set_slot, ":town_no", slot_center_fur_traps, 0),
+    (party_set_slot, ":town_no", slot_center_mills, 0),
+    (party_set_slot, ":town_no", slot_center_breweries, 0),
+    (party_set_slot, ":town_no", slot_center_wine_presses, 0),
+    (party_set_slot, ":town_no", slot_center_olive_presses, 0),
+    (party_set_slot, ":town_no", slot_center_linen_looms, 0),
+    (party_set_slot, ":town_no", slot_center_silk_looms, 0),
+    (party_set_slot, ":town_no", slot_center_wool_looms, 0),
+    (party_set_slot, ":town_no", slot_center_pottery_kilns, 0),
+    (party_set_slot, ":town_no", slot_center_smithies, 0),
+    (party_set_slot, ":town_no", slot_center_tanneries, 0),
+    (party_set_slot, ":town_no", slot_center_shipyards, 0),
+    (party_set_slot, ":town_no", slot_center_household_gardens, 0),
+    (party_set_slot, ":town_no", slot_center_acres_fruit_trees, 0),
 
-    (store_random_in_range, ":random_average_5_variation_3", 3, 9), #2,3,4,5,6,7 or 8
-    (party_set_slot, ":town_no", slot_center_pottery_kilns, ":random_average_5_variation_3"),
+    (call_script, "script_dplmc_set_random_production", ":town_no", slot_center_acres_grain, 500, 4000, -1),
+    (call_script, "script_dplmc_set_random_production", ":town_no", slot_center_household_gardens, 4, 8, -1),
+    (call_script, "script_dplmc_set_random_production", ":town_no", slot_center_acres_fruit_trees, 100, 600, -1),
 
-    (store_random_in_range, ":random_average_15_variation_9", 6, 25), #6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23 or 24
-    (party_set_slot, ":town_no", slot_center_smithies, ":random_average_15_variation_9"),
+    (call_script, "script_dplmc_set_random_production", ":town_no", slot_center_wool_looms, 0, 2, -1),
+    (call_script, "script_dplmc_set_random_production", ":town_no", slot_center_breweries, 0, 2, -1),
+    (call_script, "script_dplmc_set_random_production", ":town_no", slot_center_pottery_kilns, 0, 2, -1),
+    (call_script, "script_dplmc_set_random_production", ":town_no", slot_center_smithies, 0, 8, -1),
+    (call_script, "script_dplmc_set_random_production", ":town_no", slot_center_mills, 0, 8, -1),
+    (call_script, "script_dplmc_set_random_production", ":town_no", slot_center_tanneries, 0, 3, -1),
+    (call_script, "script_dplmc_set_random_production", ":town_no", slot_center_wine_presses, 0, 2, -1),
+    (call_script, "script_dplmc_set_random_production", ":town_no", slot_center_olive_presses, 0, 2, -1),
 
-    (store_random_in_range, ":random_average_5_variation_3", 3, 9), #2,3,4,5,6,7 or 8
-    (party_set_slot, ":town_no", slot_center_mills, ":random_average_5_variation_3"),
-
-    (store_random_in_range, ":random_average_2_variation_1", 1, 4), #1,2 or 3
-    (party_set_slot, ":town_no", slot_center_tanneries, ":random_average_2_variation_1"),
-
-    (store_random_in_range, ":random_average_1_variation_1", 0, 3), #0,1 or 2
-    (party_set_slot, ":town_no", slot_center_wine_presses, ":random_average_1_variation_1"),
-
-    (store_random_in_range, ":random_average_2_variation_1", 1, 4), #1,2 or 3
-    (party_set_slot, ":town_no", slot_center_olive_presses, ":random_average_2_variation_1"),
-
-    (store_random_in_range, ":random_average_1000_variation_1000", 0, 2001), #0..2000
-    (party_set_slot, ":town_no", slot_center_acres_grain, ":random_average_1000_variation_1000"), #0..2000
-
-    (store_random_in_range, ":random_average_1000_variation_1000", 0, 2001), #0..2000
-    (party_set_slot, ":town_no", slot_center_acres_vineyard, ":random_average_1000_variation_1000"), #0..2000
   (try_end),
 
   #Sargoth (linen, wine)
-  (party_set_slot, "p_town_1", slot_center_linen_looms, 15),
-  (party_set_slot, "p_town_1", slot_center_wine_presses, 4),
+  (call_script, "script_dplmc_add_random_production", "p_town_1", slot_center_linen_looms, 10, 15, 1),
+  (call_script, "script_dplmc_add_random_production", "p_town_1", slot_center_wine_presses, 2, 5, -1),
 
   #Tihr (salt, smoked fish, linen)
-  (party_set_slot, "p_town_2", slot_center_salt_pans, 3),
-  (party_set_slot, "p_town_2", slot_center_fishing_fleet, 25),
-  (party_set_slot, "p_town_2", slot_center_linen_looms, 15),
+  (call_script, "script_dplmc_add_random_production", "p_town_2", slot_center_salt_pans, 1, 5, -1),
+  (call_script, "script_dplmc_add_random_production", "p_town_2", slot_center_fishing_fleet, 15, 30, 1),
+  (call_script, "script_dplmc_add_random_production", "p_town_2", slot_center_linen_looms, 12, 18, 0),
 
-  #Veluca	(wine, velvet)
-  (party_set_slot, "p_town_3", slot_center_wine_presses, 10),
-  (party_set_slot, "p_town_3", slot_center_silk_looms, 12),
+  #Veluca	(wine, silk)
+  (call_script, "script_dplmc_add_random_production", "p_town_3", slot_center_wine_presses, 8, 12, 1),
+  (call_script, "script_dplmc_add_random_production", "p_town_3", slot_center_silk_looms, 9, 15, -1),
 
-  #Suno (velvet, oil)
-  (party_set_slot, "p_town_4", slot_center_silk_looms, 12),
-  (party_set_slot, "p_town_4", slot_center_olive_presses, 15),
+  #Suno (silk, oil)
+  (call_script, "script_dplmc_add_random_production", "p_town_4", slot_center_silk_looms, 9, 15, 0),
+  (call_script, "script_dplmc_add_random_production", "p_town_4", slot_center_olive_presses, 12, 18, -1),
 
-  #Jelkala (velvet, smoked fish)
-  (party_set_slot, "p_town_5", slot_center_silk_looms, 24),
-  (party_set_slot, "p_town_5", slot_center_fishing_fleet, 30),
+  #Jelkala (silk, smoked fish)
+  (call_script, "script_dplmc_add_random_production", "p_town_5", slot_center_silk_looms, 18, 28, 1),
+  (call_script, "script_dplmc_add_random_production", "p_town_5", slot_center_fishing_fleet, 20, 35, 1),
 
   #Praven (ale, leatherwork, smoked fish)
-  (party_set_slot, "p_town_6", slot_center_breweries, 10),
-  (party_set_slot, "p_town_6", slot_center_tanneries, 4),
-  (party_set_slot, "p_town_6", slot_center_fishing_fleet, 10),
+  (call_script, "script_dplmc_add_random_production", "p_town_6", slot_center_breweries, 5, 10, 1),
+  (call_script, "script_dplmc_add_random_production", "p_town_6", slot_center_tanneries, 2, 5, 1),
+  (call_script, "script_dplmc_add_random_production", "p_town_6", slot_center_fishing_fleet, 6, 12, 1),
 
   #Uxkhal (bread, leatherwork, oil)
-  (party_set_slot, "p_town_7", slot_center_mills, 15),
-  (party_set_slot, "p_town_7", slot_center_tanneries, 4),
-  (party_set_slot, "p_town_7", slot_center_olive_presses, 5),
+  (call_script, "script_dplmc_add_random_production", "p_town_7", slot_center_mills, 10, 20, 0),
+  (call_script, "script_dplmc_add_random_production", "p_town_7", slot_center_tanneries, 3, 6, -1),
+  (call_script, "script_dplmc_add_random_production", "p_town_7", slot_center_olive_presses, 3, 6, 1),
 
   #Reyvadin (tools, wool cloth, wine)
-  (party_set_slot, "p_town_8", slot_center_smithies, 25),
-  (party_set_slot, "p_town_8", slot_center_wool_looms, 35),
-  (party_set_slot, "p_town_8", slot_center_wine_presses, 4),
+  (call_script, "script_dplmc_add_random_production", "p_town_8", slot_center_smithies, 10, 30, 1),
+  (call_script, "script_dplmc_add_random_production", "p_town_8", slot_center_wool_looms, 25, 40, 1),
+  (call_script, "script_dplmc_add_random_production", "p_town_8", slot_center_wine_presses, 2, 5, -1),
 
   #Khudan (tools, leatherwork, smoked fish)
-  (party_set_slot, "p_town_9", slot_center_smithies, 18),
-  (party_set_slot, "p_town_9", slot_center_tanneries, 3),
-  (party_set_slot, "p_town_9", slot_center_fishing_fleet, 5),
+  (call_script, "script_dplmc_add_random_production", "p_town_9", slot_center_smithies, 16, 22, 1),
+  (call_script, "script_dplmc_add_random_production", "p_town_9", slot_center_tanneries, 1, 5, 1),
+  (call_script, "script_dplmc_add_random_production", "p_town_9", slot_center_fishing_fleet, 1, 5, -1),
+  (call_script, "script_dplmc_add_random_production", "p_town_9", slot_center_iron_deposits, 0, 2, -1),
 
   #Tulga (salt, spice)
-  (party_set_slot, "p_town_10", slot_center_salt_pans, 2),
+  (call_script, "script_dplmc_add_random_production", "p_town_10", slot_center_salt_pans, 0, 3, 0),
+  (call_script, "script_dplmc_add_random_production", "p_town_10", slot_center_tanneries, 0, 2, -1),
+  (call_script, "script_dplmc_add_random_production", "p_town_10", slot_center_breweries, 0, 2, -1),
   #also produces 100 spice
 
   #Curaw (tools, iron, smoked fish)
-  (party_set_slot, "p_town_11", slot_center_smithies, 19),
-  (party_set_slot, "p_town_11", slot_center_iron_deposits, 10),
-  (party_set_slot, "p_town_11", slot_center_fishing_fleet, 10),
+  (call_script, "script_dplmc_add_random_production", "p_town_11", slot_center_smithies, 15, 20, 0),
+  (call_script, "script_dplmc_add_random_production", "p_town_11", slot_center_iron_deposits, 8, 15, 1),
+  (call_script, "script_dplmc_add_random_production", "p_town_11", slot_center_iron_deposits, 8, 10, -1),
+  (call_script, "script_dplmc_add_random_production", "p_town_11", slot_center_fishing_fleet, 1, 5, 0),
 
   #Wercheg (salt, smoked fish)
-    (party_set_slot, "p_town_12", slot_center_salt_pans, 3),
-  (party_set_slot, "p_town_12", slot_center_fishing_fleet, 25),
+  (call_script, "script_dplmc_add_random_production", "p_town_12", slot_center_salt_pans, 1, 3, 0),
+  (call_script, "script_dplmc_add_random_production", "p_town_12", slot_center_fishing_fleet, 15, 25, 1),
+  (call_script, "script_dplmc_add_random_production", "p_town_12", slot_center_iron_deposits, 0, 2, -1),
 
   #Rivacheg (wool cloth, leatherwork, smoked fish)
-  (party_set_slot, "p_town_13", slot_center_wool_looms, 30),
-  (party_set_slot, "p_town_13", slot_center_tanneries, 5),
-  (party_set_slot, "p_town_13", slot_center_fishing_fleet, 20),
+  (call_script, "script_dplmc_add_random_production", "p_town_13", slot_center_wool_looms, 15, 35, 1),
+  (call_script, "script_dplmc_add_random_production", "p_town_13", slot_center_tanneries, 2, 5, 1),
+  (call_script, "script_dplmc_add_random_production", "p_town_13", slot_center_fishing_fleet, 10, 20, 0),
 
   #Halmar (leatherwork, pottery)
-  (party_set_slot, "p_town_14", slot_center_tanneries, 3),
-  (party_set_slot, "p_town_14", slot_center_pottery_kilns, 18),
+  (call_script, "script_dplmc_add_random_production", "p_town_14", slot_center_tanneries, 0, 4, -1),
+  (call_script, "script_dplmc_add_random_production", "p_town_14", slot_center_pottery_kilns, 10, 20, 1),
 
   #Yalen (tools, wine, oil, smoked fish)
-  (party_set_slot, "p_town_15", slot_center_smithies, 20),
-  (party_set_slot, "p_town_15", slot_center_wine_presses, 6),
-  (party_set_slot, "p_town_15", slot_center_olive_presses, 5),
-  (party_set_slot, "p_town_15", slot_center_fishing_fleet, 25),
+  (call_script, "script_dplmc_add_random_production", "p_town_15", slot_center_smithies, 15, 25, 1),
+  (call_script, "script_dplmc_add_random_production", "p_town_15", slot_center_wine_presses, 4, 8, 0),
+  (call_script, "script_dplmc_add_random_production", "p_town_15", slot_center_olive_presses, 4, 8, 0),
+  (call_script, "script_dplmc_add_random_production", "p_town_15", slot_center_fishing_fleet, 15, 30, 1),
 
   #Dhirim (tools, leatherwork)
-  (party_set_slot, "p_town_16", slot_center_smithies, 30),
-  (party_set_slot, "p_town_16", slot_center_tanneries, 4),
+  (call_script, "script_dplmc_add_random_production", "p_town_16", slot_center_smithies, 25, 35, 1),
+  (call_script, "script_dplmc_add_random_production", "p_town_16", slot_center_tanneries, 3, 8, -1),
 
   #Ichamur (wool cloth, spice)
-  (party_set_slot, "p_town_17", slot_center_wool_looms, 40),
+  (call_script, "script_dplmc_add_random_production", "p_town_17", slot_center_wool_looms, 30, 50, 1),
   #also produces 50 spice
 
   #Narra (wool cloth, oil)
-  (party_set_slot, "p_town_18", slot_center_wool_looms, 35),
-  (party_set_slot, "p_town_18", slot_center_olive_presses, 10),
+  (call_script, "script_dplmc_add_random_production", "p_town_18", slot_center_wool_looms, 30, 50, -1),
+  (call_script, "script_dplmc_add_random_production", "p_town_18", slot_center_olive_presses, 8, 12, 0),
 
   #Shariz (leatherwork, smoked fish, oil)
-  (party_set_slot, "p_town_19", slot_center_tanneries, 5),
   (party_set_slot, "p_town_19", slot_center_breweries, 0), 	    #no alcohol (ale) in arabic region
   (party_set_slot, "p_town_19", slot_center_wine_presses, 0), 	#no alcohol (wine) in arabic region
-  (party_set_slot, "p_town_19", slot_center_fishing_fleet, 5),
-  (party_set_slot, "p_town_19", slot_center_olive_presses, 5),
+  (call_script, "script_dplmc_add_random_production", "p_town_19", slot_center_tanneries, 3, 10, -1),
+  (call_script, "script_dplmc_add_random_production", "p_town_19", slot_center_fishing_fleet, 5, 10, 0),
+  (call_script, "script_dplmc_add_random_production", "p_town_19", slot_center_olive_presses, 3, 9, 1),
   #also produces 50 spice
 
   #Darquba (linen, pottery, oil)
   (party_set_slot, "p_town_20", slot_center_breweries, 0), 	    #no alcohol (ale) in arabic region
   (party_set_slot, "p_town_20", slot_center_wine_presses, 0), 	#no alcohol (wine) in arabic region
-  (party_set_slot, "p_town_20", slot_center_linen_looms, 15),
-  (party_set_slot, "p_town_20", slot_center_pottery_kilns, 12),
-  (party_set_slot, "p_town_19", slot_center_olive_presses, 3),
+  (call_script, "script_dplmc_add_random_production", "p_town_20", slot_center_linen_looms, 8, 15, -1),
+  (call_script, "script_dplmc_add_random_production", "p_town_20", slot_center_pottery_kilns, 10, 15, 0),
+  (call_script, "script_dplmc_add_random_production", "p_town_20", slot_center_olive_presses, 2, 10, -1),
+  (call_script, "script_dplmc_add_random_production", "p_town_20", slot_center_acres_olives, 300, 900, -1),
 
   #Ahmerrad (pottery, salt)
   (party_set_slot, "p_town_21", slot_center_breweries, 0), 	    #no alcohol (ale) in arabic region
   (party_set_slot, "p_town_21", slot_center_wine_presses, 0), 	#no alcohol (wine) in arabic region
-  (party_set_slot, "p_town_21", slot_center_pottery_kilns, 24),
-  (party_set_slot, "p_town_21", slot_center_salt_pans, 1),
+  (call_script, "script_dplmc_add_random_production", "p_town_21", slot_center_pottery_kilns, 15, 30, 1),
+  (call_script, "script_dplmc_add_random_production", "p_town_21", slot_center_salt_pans, 1, 3, 0),
 
   #Bariyye (salt, pottery, spice)
   (party_set_slot, "p_town_22", slot_center_breweries, 0), 	    #no alcohol (ale) in arabic region
   (party_set_slot, "p_town_22", slot_center_wine_presses, 0), 	#no alcohol (wine) in arabic region
-  (party_set_slot, "p_town_22", slot_center_pottery_kilns, 12),
-  (party_set_slot, "p_town_22", slot_center_salt_pans, 2),
+  (call_script, "script_dplmc_add_random_production", "p_town_22", slot_center_pottery_kilns, 10, 20, -1),
+  (call_script, "script_dplmc_add_random_production", "p_town_22", slot_center_salt_pans, 1, 4, 1),
   #also produces 50 spice
 
   (try_for_range, ":village_no", villages_begin, villages_end),
+
+    # initialize all village production values to zero at the start
+    (party_set_slot, ":village_no", slot_center_head_cattle, 0),
+    (party_set_slot, ":village_no", slot_center_head_sheep, 0),
+    (party_set_slot, ":village_no", slot_center_head_horses, 0),
+    (party_set_slot, ":village_no", slot_center_head_pigs, 0),
+    (party_set_slot, ":village_no", slot_center_acres_pasture, 0),
+    (party_set_slot, ":village_no", slot_center_acres_grain, 0),
+    (party_set_slot, ":village_no", slot_center_acres_olives, 0),
+    (party_set_slot, ":village_no", slot_center_acres_vineyard, 0),
+    (party_set_slot, ":village_no", slot_center_acres_flax, 0),
+    (party_set_slot, ":village_no", slot_center_acres_dates, 0),
+    (party_set_slot, ":village_no", slot_center_fishing_fleet, 0),
+    (party_set_slot, ":village_no", slot_center_salt_pans, 0),
+    (party_set_slot, ":village_no", slot_center_apiaries, 0),
+    (party_set_slot, ":village_no", slot_center_silk_farms, 0),
+    (party_set_slot, ":village_no", slot_center_kirmiz_farms, 0),
+    (party_set_slot, ":village_no", slot_center_iron_deposits, 0),
+    (party_set_slot, ":village_no", slot_center_fur_traps, 0),
+    (party_set_slot, ":village_no", slot_center_mills, 0),
+    (party_set_slot, ":village_no", slot_center_breweries, 0),
+    (party_set_slot, ":village_no", slot_center_wine_presses, 0),
+    (party_set_slot, ":village_no", slot_center_olive_presses, 0),
+    (party_set_slot, ":village_no", slot_center_linen_looms, 0),
+    (party_set_slot, ":village_no", slot_center_silk_looms, 0),
+    (party_set_slot, ":village_no", slot_center_wool_looms, 0),
+    (party_set_slot, ":village_no", slot_center_pottery_kilns, 0),
+    (party_set_slot, ":village_no", slot_center_smithies, 0),
+    (party_set_slot, ":village_no", slot_center_tanneries, 0),
+    (party_set_slot, ":village_no", slot_center_shipyards, 0),
+    (party_set_slot, ":village_no", slot_center_household_gardens, 0),
+    (party_set_slot, ":village_no", slot_center_acres_fruit_trees, 0),
+
     (try_begin),
       ##Replace the explicit "is desert" list with a terrain check.
       ##This is less brittle to map changes.
@@ -8344,223 +8415,245 @@ scripts = [
       (assign, ":village_is_at_desert", 0),
     (try_end),
 
-    (store_random_in_range, ":random_cattle", 20, 100),
+    # EXPERIMENTAL
+
+    (try_begin),
+      (eq, "$cheat_mode", DPLMC_DEBUG_EXPERIMENTAL),
+    (else_try),
+    (try_end),
+
+    #cattle production - 20..100 but bias towards 40 average, lower in desert
+    (call_script, "script_dplmc_set_random_production", ":village_no", slot_center_head_cattle, 20, 100, -1),
     (try_begin),
       (eq, ":village_is_at_desert", 1),
-      (val_div, ":random_cattle", 5),
+      (call_script, "script_dplmc_divide_production_by", ":village_no", slot_center_head_cattle, 7),
     (try_end),
-    (party_set_slot, ":village_no", slot_center_head_cattle, ":random_cattle"), #average : 50, min : 25, max : 75
 
-    (store_random_in_range, ":random_sheep", 40, 200),
+    #sheep production - 40..180 but bias towards 75 average, lower in desert
+    (call_script, "script_dplmc_set_random_production", ":village_no", slot_center_head_sheep, 40, 180, -1),
     (try_begin),
       (eq, ":village_is_at_desert", 1),
-      (val_div, ":random_sheep", 5),
+      (call_script, "script_dplmc_divide_production_by", ":village_no", slot_center_head_sheep, 4),
     (try_end),
-    (party_set_slot, ":village_no", slot_center_head_sheep, ":random_sheep"), #average : 100, min : 50, max : 150
 
-    #grain production
-    (store_random_in_range, ":random_value_between_0_and_40000", 0, 40000),
-    (store_random_in_range, ":random_value_between_0_and_average_20000", 0, ":random_value_between_0_and_40000"),
+    #pigs production - 10..30 no bias, none in desert
+    (call_script, "script_dplmc_set_random_production", ":village_no", slot_center_head_pigs, 10, 30, 0),
     (try_begin),
       (eq, ":village_is_at_desert", 1),
-      (val_div, ":random_value_between_0_and_average_20000", 5),
+      (party_set_slot, ":village_no", slot_center_head_pigs, 0),
     (try_end),
-    (party_set_slot, ":village_no", slot_center_acres_grain, ":random_value_between_0_and_average_20000"), #average : 10000, min : 0, max : 40000
 
-    #grape production
-    (store_random_in_range, ":random_value_between_0_and_2000", 0, 2000),
-    (store_random_in_range, ":random_value_between_0_and_average_1000", 0, ":random_value_between_0_and_2000"),
+    #grain production - average : 7000, min : 0, max : 28000
+    (call_script, "script_dplmc_set_random_production", ":village_no", slot_center_acres_grain, 0, 28000, -1),
     (try_begin),
       (eq, ":village_is_at_desert", 1),
-      (val_div, ":random_value_between_0_and_average_1000", 5),
+      (call_script, "script_dplmc_divide_production_by", ":village_no", slot_center_acres_grain, 5),
     (try_end),
-    (party_set_slot, ":village_no", slot_center_acres_vineyard, ":random_value_between_0_and_average_1000"), #average : 500, min : 0, max : 2000
 
-    #olive production
-    (store_random_in_range, ":random_value_between_0_and_2000", 0, 2000),
-    (store_random_in_range, ":random_value_between_0_and_average_1000", 0, ":random_value_between_0_and_2000"),
+    #grape production - average : 400, min : 0, max : 1600
+    (call_script, "script_dplmc_set_random_production", ":village_no", slot_center_acres_vineyard, 0, 2600, -1),
     (try_begin),
       (eq, ":village_is_at_desert", 1),
-      (val_div, ":random_value_between_0_and_average_1000", 5),
+      (call_script, "script_dplmc_divide_production_by", ":village_no", slot_center_acres_vineyard, 6),
     (try_end),
-    (party_set_slot, ":village_no", slot_center_acres_olives, ":random_value_between_0_and_average_1000"), #average : 500, min : 0, max : 2000
 
-    #honey production
-    (store_random_in_range, ":random_value_between_0_and_3", 0, 3),
+    #olive production - average : 400, min : 0, max : 1600
+    (call_script, "script_dplmc_set_random_production", ":village_no", slot_center_acres_olives, 0, 1600, -1),
     (try_begin),
       (eq, ":village_is_at_desert", 1),
-      (assign, ":random_value_between_0_and_3", 0), #at desert regions no honey production
+      (call_script, "script_dplmc_divide_production_by", ":village_no", slot_center_acres_olives, 3),
     (try_end),
-    (party_set_slot, ":village_no", slot_center_apiaries, ":random_value_between_0_and_3"),
 
-    #cabbage and fruit production
-    (store_random_in_range, ":random_value_between_0_and_5", 0, 5),
+    #honey production - 0..2, except for desert (zero production)
+    (call_script, "script_dplmc_set_random_production", ":village_no", slot_center_apiaries, 0, 2, -1),
     (try_begin),
       (eq, ":village_is_at_desert", 1),
-      (assign, ":random_value_between_0_and_5", 0), #at desert regions no cabbage and fruit production
+      (party_set_slot, ":village_no", slot_center_apiaries, 0),
     (try_end),
-    (party_set_slot, ":village_no", slot_center_household_gardens, ":random_value_between_0_and_5"),
 
-    #bread production
-    (store_random_in_range, ":random_value_between_0_and_3", 0, 3),
-    (party_set_slot, ":village_no", slot_center_mills, ":random_value_between_0_and_3"),
-
-    #pottery production
-    (store_random_in_range, ":random_value_between_0_and_5", 0, 5),
+    #cabbage and fruit production - except for desert (minimal production)
+    (call_script, "script_dplmc_set_random_production", ":village_no", slot_center_household_gardens, 0, 6, 0),
+    (call_script, "script_dplmc_set_random_production", ":village_no", slot_center_acres_fruit_trees, 0, 400, -1),
     (try_begin),
       (eq, ":village_is_at_desert", 1),
-      (val_mul, ":random_value_between_0_and_5", 5), #at desert regions pottery production 4x more than normal (totally 5x)
+      (party_set_slot, ":village_no", slot_center_household_gardens, 1),
+      (party_set_slot, ":village_no", slot_center_acres_fruit_trees, 0),
     (try_end),
-    (party_set_slot, ":village_no", slot_center_pottery_kilns, ":random_value_between_0_and_5"),
+
+    #bread production - 0..2
+    (call_script, "script_dplmc_set_random_production", ":village_no", slot_center_mills, 0, 2, 0),
+
+    #pottery production - 1..4, except for desert which is x5
+    (call_script, "script_dplmc_set_random_production", ":village_no", slot_center_pottery_kilns, 1, 4, 0),
+    (try_begin),
+      (eq, ":village_is_at_desert", 1),
+      (call_script, "script_dplmc_multiply_production_by", ":village_no", slot_center_pottery_kilns, 5),
+    (try_end),
+
+    # Now we start boosting villages based on which town center they belong to
+    # This gives the regional variations to villages
 
     #Sargoth (village productions : Ambean, Fearichen and Fenada)
     (try_begin),
       (party_slot_eq, ":village_no", slot_village_market_town, "p_town_1"),
-      (party_set_slot, ":village_no", slot_center_acres_flax, 4000),
-      (party_set_slot, ":village_no", slot_center_acres_vineyard, 8000),
+      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_acres_flax, 2000, 6000, -1),
+      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_acres_vineyard, 7000, 9000, 0),
 
     #Tihr (village productions : Kulum, Haen and Aldelen)
     (else_try),
       (party_slot_eq, ":village_no", slot_village_market_town, "p_town_2"),
-      (party_set_slot, ":village_no", slot_center_acres_vineyard, 8000),
-      (party_set_slot, ":village_no", slot_center_household_gardens, 10),
+      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_acres_vineyard, 6000, 8000, 1),
+      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_household_gardens, 6, 9, -1),
+      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_salt_pans, 0, 2, -1),
 
     #Veluca (village productions : Emer, Fedner, Chaeza and Sarimish)
     (else_try),
       (party_slot_eq, ":village_no", slot_village_market_town, "p_town_3"),
-      (party_set_slot, ":village_no", slot_center_acres_vineyard, 6000),
-      (party_set_slot, ":village_no", slot_center_acres_olives, 6000),
+      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_acres_vineyard, 4000, 7000, 0),
+      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_acres_olives, 5000, 8000, 0),
 
     #Suno (village productions : Ruluns and Lyindah)
     (else_try),
       (party_slot_eq, ":village_no", slot_village_market_town, "p_town_4"),
-      (party_set_slot, ":village_no", slot_center_fur_traps, 2),
-      (party_set_slot, ":village_no", slot_center_acres_olives, 8000),
+      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_fur_traps, 1, 3, 0),
+      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_acres_olives, 5000, 8000, 0),
 
     #Jelkala (village productions : Buvran, Ruldi and Chelez)
     (else_try),
       (party_slot_eq, ":village_no", slot_village_market_town, "p_town_5"),
-      (party_set_slot, ":village_no", slot_center_silk_farms, 1500),
-      (party_set_slot, ":village_no", slot_center_kirmiz_farms, 1500),
+      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_silk_farms, 800, 2200, 0),
+      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_kirmiz_farms, 800, 2200, 0),
 
     #Praven (village productions : Azgad, Veidar, Elberl and Gisim)
     (else_try),
       (party_slot_eq, ":village_no", slot_village_market_town, "p_town_6"),
-      (party_set_slot, ":village_no", slot_center_acres_flax, 4000),
-      (party_set_slot, ":village_no", slot_center_breweries, 4),
+      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_acres_flax, 2500, 6500, 0),
+      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_breweries, 3, 6, 0),
 
     #Uxkhal (village productions : Nomar, Ibiran and Tahlberl)
     (else_try),
       (party_slot_eq, ":village_no", slot_village_market_town, "p_town_7"),
-      (party_set_slot, ":village_no", slot_center_fur_traps, 1),
-      (party_set_slot, ":village_no", slot_center_acres_olives, 8000),
-      (party_set_slot, ":village_no", slot_center_apiaries, 8),
+      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_fur_traps, 1, 2, 0),
+      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_acres_olives, 7000, 9000, -1),
+      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_apiaries, 5, 10, 1),
 
     #Reyvadin (village productions : Ulburban and Ayyike)
     (else_try),
       (party_slot_eq, ":village_no", slot_village_market_town, "p_town_8"),
-      (party_set_slot, ":village_no", slot_center_fur_traps, 2),
-      (party_set_slot, ":village_no", slot_center_head_cattle, 100),
-      (party_set_slot, ":village_no", slot_center_iron_deposits, 6),
+      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_fur_traps, 1, 2, 0),
+      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_head_cattle, 50, 150, -1),
+      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_iron_deposits, 1, 5, -1),
 
     #Khudan (village productions : Uslum, Shulus and Tismirr)
     (else_try),
       (party_slot_eq, ":village_no", slot_village_market_town, "p_town_9"),
-      (party_set_slot, ":village_no", slot_center_fur_traps, 2),
-      (party_set_slot, ":village_no", slot_center_acres_olives, 4000),
+      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_iron_deposits, 0, 1, -1),
+      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_fur_traps, 1, 4, 1),
 
     #Tulga (village productions : Dusturil and Dashbigha)
     (else_try),
       (party_slot_eq, ":village_no", slot_village_market_town, "p_town_10"),
-      (party_set_slot, ":village_no", slot_center_head_sheep, 150),
-      (party_set_slot, ":village_no", slot_center_salt_pans, 1),
-      (party_set_slot, ":village_no", slot_center_fur_traps, 1),
-      (party_set_slot, ":village_no", slot_center_apiaries, 8),
+      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_head_sheep, 50, 150, 1),
+      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_salt_pans, 0, 1, -1),
+      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_fur_traps, 1, 3, -1),
+      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_apiaries, 5, 10, 1),
+      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_acres_fruit_trees, 200, 400, 1),
 
     #Curaw (village productions : Bazeck and Rebache)
     (else_try),
       (party_slot_eq, ":village_no", slot_village_market_town, "p_town_11"),
-      (party_set_slot, ":village_no", slot_center_iron_deposits, 6),
-      (party_set_slot, ":village_no", slot_center_fur_traps, 2),
+      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_iron_deposits, 8, 12, 1),
+      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_fur_traps, 1, 2, 0),
+      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_silk_farms, 400, 800, -1),
 
     #Wercheg (village productions : Ruvar and Odasan)
     (else_try),
       (party_slot_eq, ":village_no", slot_village_market_town, "p_town_12"),
-      (party_set_slot, ":village_no", slot_center_acres_vineyard, 8000),
-      (party_set_slot, ":village_no", slot_center_household_gardens, 10),
-      (party_set_slot, ":village_no", slot_center_salt_pans, 1),
+      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_acres_vineyard, 6000, 10000, 1),
+      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_household_gardens, 3, 5, 0),
+      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_salt_pans, 1, 2, 1),
+      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_iron_deposits, 0, 2, -1),
+      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_silk_farms, 400, 800, -1),
 
     #Rivacheg (village productions : Shapeshte, Vezin and Fisdnar)
     (else_try),
       (party_slot_eq, ":village_no", slot_village_market_town, "p_town_13"),
-      (party_set_slot, ":village_no", slot_center_fur_traps, 2),
-      (party_set_slot, ":village_no", slot_center_head_cattle, 100),
-      (party_set_slot, ":village_no", slot_center_silk_farms, 1500),
+      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_fur_traps, 1, 3, 1),
+      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_head_cattle, 50, 100, 1),
+      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_iron_deposits, 0, 1, -1),
+      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_silk_farms, 1200, 3000, -1),
 
     #Halmar (village productions : Peshmi)
     (else_try),
       (party_slot_eq, ":village_no", slot_village_market_town, "p_town_14"),
-      (party_set_slot, ":village_no", slot_center_acres_grain, 40000),
-      (party_set_slot, ":village_no", slot_center_mills, 5),
+      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_acres_grain, 30000, 50000, -1),
+      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_mills, 3, 8, -1),
+      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_household_gardens, 1, 2, -1),
 
     #Yalen (village productions : Ilvia, Glunmar, Epeshe and Istiniar)
     (else_try),
       (party_slot_eq, ":village_no", slot_village_market_town, "p_town_15"),
-      (party_set_slot, ":village_no", slot_center_acres_vineyard, 8000),
-      (party_set_slot, ":village_no", slot_center_acres_olives, 8000),
-      (party_set_slot, ":village_no", slot_center_household_gardens, 10),
+      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_acres_vineyard, 7000, 9000, 1),
+      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_acres_olives, 7000, 9000, 1),
+      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_household_gardens, 3, 5, 1),
 
     #Dhirim (village productions : Burglen, Amere, Ushkuru, Tshibtin and Yalibe)
     (else_try),
       (party_slot_eq, ":village_no", slot_village_market_town, "p_town_16"),
-      (party_set_slot, ":village_no", slot_center_acres_grain, 40000),
-      (party_set_slot, ":village_no", slot_center_iron_deposits, 3),
-      (party_set_slot, ":village_no", slot_center_mills, 5),
+      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_acres_grain, 35000, 45000, 0),
+      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_iron_deposits, 1, 3, 0),
+      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_mills, 4, 8, 0),
+      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_household_gardens, 1, 2, -1),
 
     #Ichamur (village productions : Ada Kulun and Drigh Aban)
     (else_try),
       (party_slot_eq, ":village_no", slot_village_market_town, "p_town_17"),
-      (party_set_slot, ":village_no", slot_center_acres_grain, 20000),
-      (party_set_slot, ":village_no", slot_center_fur_traps, 1),
+      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_acres_grain, 15000, 20000, -1),
+      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_fur_traps, 1, 2, -1),
+      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_apiaries, 5, 10, 1),
+      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_acres_fruit_trees, 700, 1200, 1),
 
     #Narra (village productions : Zagush and Kedelke)
     (else_try),
       (party_slot_eq, ":village_no", slot_village_market_town, "p_town_18"),
-      (party_set_slot, ":village_no", slot_center_acres_grain, 20000),
-      (party_set_slot, ":village_no", slot_center_iron_deposits, 3),
-      (party_set_slot, ":village_no", slot_center_apiaries, 8),
-      (party_set_slot, ":village_no", slot_center_acres_flax, 4000),
+      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_acres_grain, 12000, 18000, -1),
+      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_iron_deposits, 1, 3, 0),
+      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_apiaries, 5, 10, 1),
+      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_acres_flax, 2000, 4000, 1),
+      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_acres_fruit_trees, 300, 600, 1),
 
     #Shariz (village productions : Ayn Assuadi, Dhibbain, Qalyut, Tilimsal and Rushdigh)
     (else_try),
       (party_slot_eq, ":village_no", slot_village_market_town, "p_town_19"),
-      (party_set_slot, ":village_no", slot_center_acres_grain, 6000), #low grain (partially desert)
-      (party_set_slot, ":village_no", slot_center_acres_flax, 2000),
-      (party_set_slot, ":village_no", slot_center_acres_olives, 3000),
-      (party_set_slot, ":village_no", slot_center_acres_dates, 5000),
+      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_acres_grain, 4000, 7000, -1),
+      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_acres_flax, 500, 2500, -1),
+      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_acres_olives, 1000, 5000, 1),
+      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_acres_dates, 2000, 5000, -1),
+      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_salt_pans, 1, 2, -1),
 
     #Durquba (village productions : Tamnuh and Sekhtem)
     (else_try),
       (party_slot_eq, ":village_no", slot_village_market_town, "p_town_20"),
-      (party_set_slot, ":village_no", slot_center_acres_grain, 3000), #low grain (heavy desert)
-      (party_set_slot, ":village_no", slot_center_acres_dates, 10000),
-      (party_set_slot, ":village_no", slot_center_salt_pans, 1),
+      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_acres_grain, 1500, 3000, -1),
+      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_acres_dates, 4000, 8000, 1),
+      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_salt_pans, 0, 2, -1),
+      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_acres_olives, 500, 3000, -1),
 
     #Ahmerrad (village productions : Mawiti, Uzgha and Mijayet)
     (else_try),
       (party_slot_eq, ":village_no", slot_village_market_town, "p_town_21"),
-      (party_set_slot, ":village_no", slot_center_acres_grain, 3000), #low grain (heavy desert)
-      (party_set_slot, ":village_no", slot_center_acres_dates, 5000),
-      (party_set_slot, ":village_no", slot_center_kirmiz_farms, 1500),
+      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_acres_grain, 1500, 3000, -1),
+      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_acres_dates, 2000, 4000, 0),
+      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_kirmiz_farms, 800, 3000, -1),
 
     #Bariyye (village productions : Fishara and Iqbayl)
     (else_try),
       (party_slot_eq, ":village_no", slot_village_market_town, "p_town_22"),
-      (party_set_slot, ":village_no", slot_center_acres_grain, 2000), #low grain (heavy desert)
-      (party_set_slot, ":village_no", slot_center_acres_flax, 2000),
-      (party_set_slot, ":village_no", slot_center_acres_dates, 10000),
-      (party_set_slot, ":village_no", slot_center_salt_pans, 1),
-      (party_set_slot, ":village_no", slot_center_kirmiz_farms, 1500),
+      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_acres_grain, 1000, 3000, -1),
+      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_acres_flax, 500, 2500, -1),
+      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_acres_dates, 1500, 3500, 1),
+      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_salt_pans, 0, 3, -1),
+      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_kirmiz_farms, 2000, 3500, -1),
 
     (try_end),
   (try_end),
@@ -8593,40 +8686,41 @@ scripts = [
   (try_end),
 
   #Ocean and river villages, new map
-  (party_set_slot, "p_village_1", slot_center_fishing_fleet, 15), #Yaragar
-  (party_set_slot, "p_village_3", slot_center_fishing_fleet, 15), #Azgad
-  (party_set_slot, "p_village_5", slot_center_fishing_fleet, 15), #Kulum
+  (call_script, "script_dplmc_add_random_production", "p_village_1", slot_center_fishing_fleet, 8, 15, 0), #Yaragar
+  (call_script, "script_dplmc_add_random_production", "p_village_3", slot_center_fishing_fleet, 8, 18, 1), #Azgad
+  (call_script, "script_dplmc_add_random_production", "p_village_5", slot_center_fishing_fleet, 10, 20, 1), #Kulum
 
-  (party_set_slot, "p_village_8", slot_center_fishing_fleet, 15), #Haen
-  (party_set_slot, "p_village_9", slot_center_fishing_fleet, 15), #Buvran
+  (call_script, "script_dplmc_add_random_production", "p_village_8", slot_center_fishing_fleet, 10, 20, -1), #Haen
+  (call_script, "script_dplmc_add_random_production", "p_village_9", slot_center_fishing_fleet, 10, 15, 0), #Buvran
 
-  (party_set_slot, "p_village_20", slot_center_fishing_fleet, 15), #Uslum
-  (party_set_slot, "p_village_21", slot_center_fishing_fleet, 15), #Bazeck
-  (party_set_slot, "p_village_23", slot_center_fishing_fleet, 15), #Ilvia
-  (party_set_slot, "p_village_27", slot_center_fishing_fleet, 15), #Glunmar
+  (call_script, "script_dplmc_add_random_production", "p_village_9", slot_center_fishing_fleet, 10, 18, 0), #Uslum
+  (call_script, "script_dplmc_add_random_production", "p_village_9", slot_center_fishing_fleet, 8, 15, -1), #Bazeck
+  (call_script, "script_dplmc_add_random_production", "p_village_9", slot_center_fishing_fleet, 8, 15, -1), #Ilvia
+  (call_script, "script_dplmc_add_random_production", "p_village_9", slot_center_fishing_fleet, 8, 15, -1), #Glunmar
 
-  (party_set_slot, "p_village_30", slot_center_fishing_fleet, 20), #Ruvar
-  (party_set_slot, "p_village_31", slot_center_fishing_fleet, 15), #Ambean
-  (party_set_slot, "p_village_35", slot_center_fishing_fleet, 15), #Feacharin
+  (call_script, "script_dplmc_add_random_production", "p_village_30", slot_center_fishing_fleet, 10, 20, 1), #Ruvar
+  (call_script, "script_dplmc_add_random_production", "p_village_31", slot_center_fishing_fleet, 8, 16, 0), #Ambean
+  (call_script, "script_dplmc_add_random_production", "p_village_35", slot_center_fishing_fleet, 8, 16, 0), #Feacharin
 
-  (party_set_slot, "p_village_47", slot_center_fishing_fleet, 15), #Epeshe
-  (party_set_slot, "p_village_49", slot_center_fishing_fleet, 15), #Tismirr
+  (call_script, "script_dplmc_add_random_production", "p_village_47", slot_center_fishing_fleet, 8, 16, 0), #Epeshe
+  (call_script, "script_dplmc_add_random_production", "p_village_49", slot_center_fishing_fleet, 8, 16, 0), #Tismirr
 
-  (party_set_slot, "p_village_51", slot_center_fishing_fleet, 15), #Jelbegi
-  (party_set_slot, "p_village_56", slot_center_fishing_fleet, 15), #Fenada
+  (call_script, "script_dplmc_add_random_production", "p_village_51", slot_center_fishing_fleet, 8, 16, 0), #Jelbegi
+  (call_script, "script_dplmc_add_random_production", "p_village_53", slot_center_fishing_fleet, 10, 25, 1), #Balanli
+  (call_script, "script_dplmc_add_random_production", "p_village_56", slot_center_fishing_fleet, 10, 16, 0), #Fenada
 
-  (party_set_slot, "p_village_66", slot_center_fishing_fleet, 15), #Fisdnar
-  (party_set_slot, "p_village_68", slot_center_fishing_fleet, 15), #Ibdeles
-  (party_set_slot, "p_village_69", slot_center_fishing_fleet, 15), #Kwynn
+  (call_script, "script_dplmc_add_random_production", "p_village_66", slot_center_fishing_fleet, 8, 20, 1), #Fisdnar
+  (call_script, "script_dplmc_add_random_production", "p_village_68", slot_center_fishing_fleet, 8, 16, 0), #Ibdeles
+  (call_script, "script_dplmc_add_random_production", "p_village_69", slot_center_fishing_fleet, 10, 25, 1), #Kwynn (estuary)
 
-  (party_set_slot, "p_village_77", slot_center_fishing_fleet, 25), #Rizi - Estuary
-  (party_set_slot, "p_village_79", slot_center_fishing_fleet, 15), #Istiniar
+  (call_script, "script_dplmc_add_random_production", "p_village_77", slot_center_fishing_fleet, 15, 30, 1), #Rizi - Estuary
+  (call_script, "script_dplmc_add_random_production", "p_village_79", slot_center_fishing_fleet, 8, 16, -1), #Istiniar
 
-  (party_set_slot, "p_village_81", slot_center_fishing_fleet, 15), #Odasan
-  (party_set_slot, "p_village_85", slot_center_fishing_fleet, 15), #Ismirala
-  (party_set_slot, "p_village_87", slot_center_fishing_fleet, 15), #Udiniad
+  (call_script, "script_dplmc_add_random_production", "p_village_81", slot_center_fishing_fleet, 10, 25, 1), #Odasan
+  (call_script, "script_dplmc_add_random_production", "p_village_85", slot_center_fishing_fleet, 10, 16, 0), #Ismirala
+  (call_script, "script_dplmc_add_random_production", "p_village_87", slot_center_fishing_fleet, 10, 16, 0), #Udiniad
 
-  (party_set_slot, "p_village_90", slot_center_fishing_fleet, 15), #Jamiche
+  (call_script, "script_dplmc_add_random_production", "p_village_90", slot_center_fishing_fleet, 15, 25, 1), #Jamiche
 
   #Initialize pastureland
   (try_for_range, ":center", centers_begin, centers_end),
@@ -8646,7 +8740,7 @@ scripts = [
   (try_end),
 
   #Initialize prices based on production, etc
-  (try_for_range, ":unused", 0, 3), #15 cycles = 45 days. For a village with -20 production, this should lead to approximate +1000, modified
+  (try_for_range, ":unused", 10, 20), #15 cycles = 45 days. For a village with -20 production, this should lead to approximate +1000, modified
     (call_script, "script_update_trade_good_prices"), #changes prices based on production
   (try_end),
 
@@ -73752,6 +73846,163 @@ Born at {s43}^Contact in {s44} of the {s45}.^\
         (assign, reg21, ":player_renown"),
         (assign, reg22, ":triviality"),
         (display_message, "@{!}DEBUG: Add {reg0} days (lvl: {reg20} renown: {reg21}) for trivial quest (triviality: {reg22})"),
+      (try_end),
+    ]),
+
+  # script_dplmc_set_random_production 
+  # Example: (call_script, "script_dplmc_set_random_production", ":village_no", slot_center_acres_flax, 5000, 7000, 0),
+  # Input: 
+  #   arg1: center number
+  #   arg2: item slot
+  #   arg3: minimum
+  #   arg4: maximum (inclusive)
+  #   arg5: bias (-1=push lower, 0=none, 1=push higher)
+  # Output: (none)
+  ("dplmc_set_random_production",
+   [
+      (store_script_param, ":production_center", 1),
+      (store_script_param, ":production_item_slot", 2),
+      (store_script_param, ":set_minimum", 3),
+      (store_script_param, ":set_maximum", 4),
+      (val_add, ":set_maximum", 1),
+      (store_script_param, ":set_bias", 5),
+
+      (try_begin),
+        (ge, ":set_minimum", 0),
+        (gt, ":set_maximum", ":set_minimum"),
+        (store_add, ":set_min_plus_max", ":set_minimum", ":set_maximum"),
+        (store_div, ":set_midpoint", ":set_min_plus_max", 2), # calculate midpoint 0..1=0, 10..20=15
+
+        (store_random_in_range, ":current_production", ":set_minimum", ":set_maximum"),
+        (try_begin), # bias lower, roll again from minimum up to result of the first roll
+          (lt, ":set_bias", 0),
+          (assign, ":first_roll", ":current_production"),
+          (store_random_in_range, ":current_production", ":set_minimum", ":first_roll"),
+        (else_try), # bias higher
+          (gt, ":set_bias", 0),
+          (assign, ":first_roll", ":current_production"),
+          (store_random_in_range, ":current_production", ":first_roll", ":set_maximum"),
+        (try_end),
+
+        (party_set_slot, ":production_center", ":production_item_slot", ":current_production"),
+
+        (try_begin),
+          (eq, "$cheat_mode", DPLMC_DEBUG_NEVER),
+          (str_store_party_name, s20, ":production_center"),
+          (assign, reg20, ":production_item_slot"),
+          (assign, reg21, ":current_production"),
+          (assign, reg22, ":set_minimum"),
+          (assign, reg23, ":set_maximum"),
+          (display_message, "@{!}DEBUG: {s20} (slot {reg20}): set to production value of {reg21} ({reg22}-{reg23})."),
+        (try_end),
+      (try_end),
+    ]),
+
+  # script_dplmc_divide_production_by
+  # Example: (call_script, "script_dplmc_divide_production_by", ":village_no", slot_center_acres_flax, 5),
+  # Input: 
+  #   arg1: center number
+  #   arg2: item slot
+  #   arg3: divisor
+  # Output: (none)
+  ("dplmc_divide_production_by",
+   [
+      (store_script_param, ":production_center", 1),
+      (store_script_param, ":production_item_slot", 2),
+      (store_script_param, ":divisor", 3),
+
+      (try_begin),
+        (gt, ":divisor", 0),
+        (party_get_slot, ":current_production", ":production_center", ":production_item_slot"),
+        (val_div, ":current_production", ":divisor"),
+        (party_set_slot, ":production_center", ":production_item_slot", ":current_production"),
+
+        (try_begin),
+          (eq, "$cheat_mode", DPLMC_DEBUG_NEVER),
+          (str_store_party_name, s20, ":production_center"),
+          (assign, reg20, ":production_item_slot"),
+          (assign, reg21, ":current_production"),
+          (assign, reg22, ":divisor"),
+          (display_message, "@{!}DEBUG: {s20} (slot {reg20}): divided by {reg22} to production value of {reg21}."),
+        (try_end),
+      (try_end),
+    ]),
+
+  # script_dplmc_multiply_production_by
+  # Example: (call_script, "script_dplmc_multiply_production_by", ":village_no", slot_center_acres_flax, 5),
+  # Input: 
+  #   arg1: center number
+  #   arg2: item slot
+  #   arg3: divisor
+  # Output: (none)
+  ("dplmc_multiply_production_by",
+   [
+      (store_script_param, ":production_center", 1),
+      (store_script_param, ":production_item_slot", 2),
+      (store_script_param, ":multiplier", 3),
+
+      (try_begin),
+        (gt, ":multiplier", 0),
+        (party_get_slot, ":current_production", ":production_center", ":production_item_slot"),
+        (val_mul, ":current_production", ":multiplier"),
+        (party_set_slot, ":production_center", ":production_item_slot", ":current_production"),
+
+        (try_begin),
+          (eq, "$cheat_mode", DPLMC_DEBUG_NEVER),
+          (str_store_party_name, s20, ":production_center"),
+          (assign, reg20, ":production_item_slot"),
+          (assign, reg21, ":current_production"),
+          (assign, reg22, ":multiplier"),
+          (display_message, "@{!}DEBUG: {s20} (slot {reg20}): multiplied by {reg22} to production value of {reg21}."),
+        (try_end),
+      (try_end),
+    ]),
+
+  # script_dplmc_add_random_production 
+  # Example: (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_acres_flax, 5000, 7000, -1),
+  # Input: 
+  #   arg1: center number
+  #   arg2: item slot
+  #   arg3: minimum to add
+  #   arg4: maximum to add (inclusive)
+  #   arg5: bias (-1=push lower, 0=none, 1=push higher)
+  # Output: (none)
+  ("dplmc_add_random_production",
+   [
+      (store_script_param, ":production_center", 1),
+      (store_script_param, ":production_item_slot", 2),
+      (store_script_param, ":add_minimum", 3),
+      (store_script_param, ":add_maximum", 4),
+      (val_add, ":add_maximum", 1),
+      (store_script_param, ":set_bias", 5),
+
+      (try_begin),
+        (gt, ":add_maximum", ":add_minimum"),
+
+        (store_random_in_range, ":add_production", ":add_minimum", ":add_maximum"),
+        (try_begin), # bias lower, roll again from minimum up to result of the first roll
+          (lt, ":set_bias", 0),
+          (assign, ":first_roll", ":add_production"),
+          (store_random_in_range, ":add_production", ":add_minimum", ":first_roll"),
+        (else_try), # bias higher
+          (gt, ":set_bias", 0),
+          (assign, ":first_roll", ":add_production"),
+          (store_random_in_range, ":add_production", ":first_roll", ":add_maximum"),
+        (try_end),
+
+        (party_get_slot, ":current_production", ":production_center", ":production_item_slot"),
+        (val_add, ":current_production", ":add_production"),
+        (party_set_slot, ":production_center", ":production_item_slot", ":current_production"),
+
+        (try_begin),
+          (eq, "$cheat_mode", DPLMC_DEBUG_NEVER),
+          (str_store_party_name, s20, ":production_center"),
+          (assign, reg20, ":production_item_slot"),
+          (assign, reg21, ":current_production"),
+          (assign, reg22, ":add_minimum"),
+          (assign, reg23, ":add_maximum"),
+          (display_message, "@{!}DEBUG: {s20} (slot {reg20}): change by {reg22}-{reg23} for resulting production value of {reg21}."),
+        (try_end),
       (try_end),
     ]),
 
