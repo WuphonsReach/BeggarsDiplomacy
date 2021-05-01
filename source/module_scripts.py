@@ -74006,6 +74006,19 @@ Born at {s43}^Contact in {s44} of the {s45}.^\
       (try_end),
     ]),
 
+  # script_refresh_town_goods_merchant_inventory
+  # Input: arg1 = cur_center
+  # Output: none
+  ("refresh_town_goods_merchant_inventory",
+    [
+      (store_script_param_1, ":cur_center"),
+
+      (store_distance_to_party_from_party, ":dist_to_main_party", "p_main_party", ":cur_center"),
+      (set_merchandise_modifier_quality,150),
+      (party_get_slot,":cur_merchant",":cur_center",slot_town_merchant),
+      (troop_clear_inventory, ":cur_merchant"),
+    ]),
+
     # #script_cf_dplmc_disguise_evaluate_contraband
     # #input : party_no, troop_no
     # #output : reg0 (total risk), reg1 (number of contraband, marked by temp slot?)
