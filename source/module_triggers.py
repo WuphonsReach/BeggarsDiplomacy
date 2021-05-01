@@ -35,9 +35,7 @@ triggers = [
 
 # Refresh Merchants
   (0.0, 0, 168.0, [],
-  [
-    (call_script, "script_refresh_center_inventories"),
-                     ]),
+  []),
 
 # Refresh Armor sellers
   (0.0, 0, 168.0, [],
