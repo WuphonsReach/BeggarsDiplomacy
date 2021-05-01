@@ -3133,6 +3133,7 @@ simple_triggers = [
   (12,
    [
     (eq, "$g_player_is_captive", 0), # no food consumption while player is captive
+    (eq, "$g_infinite_camping", 0), # not infinite camping
 
     (party_get_num_companion_stacks, ":num_stacks","p_main_party"),
     (assign, ":num_men", 0),
