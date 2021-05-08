@@ -2717,23 +2717,6 @@ simple_triggers = [
              (eq, ":merchant_faction", "$players_kingdom"),
              (val_add, ":tariff_succeed_limit", ":reduce_campaign_ai"),
            (try_end),
-           # (try_begin),
-             # (party_slot_eq, ":cur_center", slot_town_lord, "trp_player"),
-
-             # # (game_get_reduce_campaign_ai, ":reduce_campaign_ai"),
-             # (try_begin),
-               # (eq, ":reduce_campaign_ai", 0), #hard (less money from tariffs)
-               # (assign, ":tariff_succeed_limit", 35),
-             # (else_try),
-               # (eq, ":reduce_campaign_ai", 1), #medium (normal money from tariffs)
-               # (assign, ":tariff_succeed_limit", 45),
-             # (else_try),
-               # (eq, ":reduce_campaign_ai", 2), #easy (more money from tariffs)
-               # (assign, ":tariff_succeed_limit", 60),
-             # (try_end),
-           # (else_try),
-             # (assign, ":tariff_succeed_limit", 45),
-           # (try_end),
 
            (lt, ":random_no", ":tariff_succeed_limit"),
 
