@@ -787,3 +787,4 @@ script_get_village_status = 785
 script_initialize_prosperity_information = 786
 script_dplmc_center_get_total_village_production = 787
 script_dplmc_center_get_market_town_production = 788
+script_initialize_town_village_goods_merchant_inventories = 789

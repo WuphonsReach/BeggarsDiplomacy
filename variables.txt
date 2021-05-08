@@ -1369,3 +1369,4 @@ g_dplmc_group_for_lords
 g_dplmc_hold
 g_show_minimap
 presentation_combat_ui
+ransom_broker_talk_troop_met
