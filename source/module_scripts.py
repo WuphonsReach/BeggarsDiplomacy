@@ -17316,7 +17316,11 @@ scripts = [
             (val_div, ":cur_price", 3),
           (try_end),
           (val_max, ":cur_price", 1),
-          (store_sqrt, ":cur_price", ":cur_price"), # a 1:100 item now has a 1:10 chance, 1:10000 -> 1:100 chance
+
+          (convert_to_fixed_point, ":cur_price"),
+          (store_sqrt, ":cur_price", ":cur_price"),
+          (convert_from_fixed_point, ":cur_price"),
+
           (assign, ":cur_probability", 100),
           (val_mul, ":cur_probability", average_price_factor),
           (val_div, ":cur_probability", ":cur_price"),
@@ -74157,9 +74161,15 @@ Born at {s43}^Contact in {s44} of the {s45}.^\
         (val_mul, ":probability", ":inverse_base_price"),
         (val_max, ":probability", 1),
 
-        # price factor is a small positive to probability (centers want to offer)
-        (store_sqrt, ":sqrt_price_factor", ":cur_center_price_factor"), # turn 100..1000..10000 -> 10..31..100
-        (store_sqrt, ":price_factor_delta", ":sqrt_price_factor"), # turn 10..31..100 -> 1..5..10
+        # being close to the average price factor increases probability
+        (assign, ":sqrt_price_factor", ":cur_center_price_factor"), # turn 100..1000..10000 -> 10..31..100
+        (convert_to_fixed_point, ":sqrt_price_factor"),
+        (store_sqrt, ":sqrt_price_factor", ":sqrt_price_factor"),
+        (convert_from_fixed_point, ":sqrt_price_factor"),
+        (assign, ":price_factor_delta", ":sqrt_price_factor"), # turn 10..31..100 -> 1..5..10
+        (convert_to_fixed_point, ":price_factor_delta"),
+        (store_sqrt, ":price_factor_delta", ":price_factor_delta"),
+        (convert_from_fixed_point, ":price_factor_delta"),
         (assign, ":price_closeness_to_average", 0), # closeness to the average, 1=far away, 5=close
         (try_begin),
           (gt, ":price_factor_delta", 5),
