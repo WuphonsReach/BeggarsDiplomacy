@@ -808,10 +808,7 @@ scripts = [
 	  #This needs to be after market towns
 	  (call_script, "script_initialize_economic_information"),
     (call_script, "script_initialize_prosperity_information"),
-
-	  (try_for_range, ":village_no", villages_begin, villages_end),
-        (call_script, "script_refresh_village_merchant_inventory", ":village_no"),
-      (try_end),
+    (call_script, "script_initialize_town_village_goods_merchant_inventories"),
 
       (try_for_range, ":troop_id", original_kingdom_heroes_begin, active_npcs_end),
         (try_begin),
@@ -74784,6 +74781,17 @@ Born at {s43}^Contact in {s44} of the {s45}.^\
     (assign, reg3, ":markettown_prod_modified_original"),
 		(assign, reg4, ":markettown_prod_modified"),
     (assign, reg5, ":markettown_prod_final"),
+  ]),
+
+  ("initialize_town_village_goods_merchant_inventories",
+  [
+    (try_for_range, ":village_no", villages_begin, villages_end),
+      (call_script, "script_refresh_village_merchant_inventory", ":village_no"),
+    (try_end),
+
+    (try_for_range,":cur_center", towns_begin, towns_end),
+      (call_script, "script_refresh_town_goods_merchant_inventory", ":cur_center"),
+    (try_end),
   ]),
 
     # #script_cf_dplmc_disguise_evaluate_contraband
