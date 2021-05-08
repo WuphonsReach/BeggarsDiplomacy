@@ -37222,7 +37222,7 @@ I suppose there are plenty of bounty hunters around to get the job done . . .", 
 
 
   [anyone,"start", [(is_between, "$g_talk_troop", ransom_brokers_begin, ransom_brokers_end),
-                    (eq, "$g_talk_troop_met", 0),
+                    (eq, "$ransom_broker_talk_troop_met", 0),
 					##diplomacy start+
 					#Use proper style of address in lieu of sir/madam if necessary (althoguh since these first-time
 					#meetings are likely to occur near the game's start, this will usually not make a difference).
@@ -37256,7 +37256,7 @@ I suppose there are plenty of bounty hunters around to get the job done . . .", 
   [anyone, "ransom_broker_ransom_me", [], "Of course. I'm welcome in every court in Calradia.\
  There's not many who can say that! So always be sure to keep a pot of denars buried somewhere,\
  and a loyal servant who can find it in a hurry.", "ransom_broker_info_talk",[(assign, "$ransom_broker_ransom_me_told",1)]],
-  [anyone|plyr,"ransom_broker_info_talk",[], "That's all I need to know. Thank you.", "ransom_broker_pretalk",[]],
+  [anyone|plyr,"ransom_broker_info_talk",[], "That's all I need to know. Thank you.", "ransom_broker_pretalk",[(assign, "$ransom_broker_talk_troop_met",1)]],
 
   [anyone,"start", [(is_between, "$g_talk_troop", ransom_brokers_begin, ransom_brokers_end),
   ],
