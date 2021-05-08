@@ -8836,7 +8836,7 @@ scripts = [
   #Ocean and river villages, new map
   (call_script, "script_dplmc_add_random_production", "p_village_1", slot_center_fishing_fleet, 8, 15, 0), #Yaragar
   (call_script, "script_dplmc_add_random_production", "p_village_3", slot_center_fishing_fleet, 8, 18, 1), #Azgad
-  (call_script, "script_dplmc_add_random_production", "p_village_5", slot_center_fishing_fleet, 10, 20, 1), #Kulum
+  (call_script, "script_dplmc_add_random_production", "p_village_5", slot_center_fishing_fleet, 20, 30, 1), #Kulum (peninsula)
 
   (call_script, "script_dplmc_add_random_production", "p_village_8", slot_center_fishing_fleet, 10, 20, -1), #Haen
   (call_script, "script_dplmc_add_random_production", "p_village_9", slot_center_fishing_fleet, 10, 15, 0), #Buvran
@@ -8848,7 +8848,7 @@ scripts = [
 
   (call_script, "script_dplmc_add_random_production", "p_village_30", slot_center_fishing_fleet, 10, 20, 1), #Ruvar
   (call_script, "script_dplmc_add_random_production", "p_village_31", slot_center_fishing_fleet, 6, 12, 0), #Ambean
-  (call_script, "script_dplmc_add_random_production", "p_village_35", slot_center_fishing_fleet, 8, 16, 0), #Feacharin
+  (call_script, "script_dplmc_add_random_production", "p_village_35", slot_center_fishing_fleet, 15, 25, 0), #Feacharin
 
   (call_script, "script_dplmc_add_random_production", "p_village_47", slot_center_fishing_fleet, 8, 16, -1), #Epeshe
   (call_script, "script_dplmc_add_random_production", "p_village_49", slot_center_fishing_fleet, 8, 16, 0), #Tismirr
@@ -8859,12 +8859,12 @@ scripts = [
 
   (call_script, "script_dplmc_add_random_production", "p_village_66", slot_center_fishing_fleet, 8, 20, 1), #Fisdnar
   (call_script, "script_dplmc_add_random_production", "p_village_68", slot_center_fishing_fleet, 8, 16, -1), #Ibdeles
-  (call_script, "script_dplmc_add_random_production", "p_village_69", slot_center_fishing_fleet, 10, 25, 1), #Kwynn (estuary)
+  (call_script, "script_dplmc_add_random_production", "p_village_69", slot_center_fishing_fleet, 20, 30, 1), #Kwynn (estuary)
 
   (call_script, "script_dplmc_add_random_production", "p_village_77", slot_center_fishing_fleet, 15, 30, 1), #Rizi - Estuary
   (call_script, "script_dplmc_add_random_production", "p_village_79", slot_center_fishing_fleet, 8, 16, -1), #Istiniar
 
-  (call_script, "script_dplmc_add_random_production", "p_village_81", slot_center_fishing_fleet, 10, 25, 1), #Odasan
+  (call_script, "script_dplmc_add_random_production", "p_village_81", slot_center_fishing_fleet, 20, 30, 1), #Odasan (coastline)
   (call_script, "script_dplmc_add_random_production", "p_village_85", slot_center_fishing_fleet, 10, 16, 0), #Ismirala
   (call_script, "script_dplmc_add_random_production", "p_village_87", slot_center_fishing_fleet, 8, 16, -1), #Udiniad
 
@@ -8918,7 +8918,7 @@ scripts = [
   #Initialize prices based on production, etc
   (assign, ":cheat_mode_save", "$cheat_mode"),
   (assign, "$cheat_mode", DPLMC_CHEAT_DISABLED), # disable any debug output
-  (try_for_range, ":unused", 0, 90), #2 cycles = 1 day, but only 25% of goods get updated each day
+  (try_for_range, ":unused", 0, 60), #2 cycles = 1 day, but only 25% of goods get updated each day
     (call_script, "script_update_trade_good_prices"), #changes prices based on production
   (try_end),
   (assign, "$cheat_mode", ":cheat_mode_save"),
