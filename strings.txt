@@ -1,5 +1,5 @@
 stringsfile version 1
-3841
+3843
 str_no_string NO_STRING!
 str_empty_string _
 str_yes Yes.
@@ -2536,7 +2536,7 @@ str_roughlooking_character_not_found Rough-looking_character_not_found
 str__however_you_have_sufficiently_distinguished_yourself_to_be_invited_to_attend_the_ongoing_feast_in_the_lords_castle ._However,_you_have_sufficiently_distinguished_yourself_to_be_invited_to_attend_the_ongoing_feast_in_the_lord's_castle.
 str_s8_you_are_also_invited_to_attend_the_ongoing_feast_in_the_castle {s8}._You_are_also_invited_to_attend_the_ongoing_feast_in_the_castle.
 str___hardship_index_reg0_avg_towns_reg1_avg_villages_reg2__ {!}^^Hardship_index:_{reg0},_avg_towns:_{reg1},_avg_villages:_{reg2}^^
-str_dplmc_price_and_production {!}^^{s3}_({reg11}_{s4})^Price_=_{reg4}_(global_avg_{reg6})^Production:_{reg1}_->_{reg2}_->_{reg3}^(global_avg_prod,_base_{reg5}_->_{reg12})^Consumed:_({reg17}+{reg18}={reg19})_->_{reg7}+{reg8}={reg9}^(global_consumption:_avg_{reg10}_->_{reg13}){s1}^
+str_dplmc_price_and_production {!}^^{s3}_({reg11}_{s4})^Price_=_{reg4}_(global_avg_{reg6})^{s20}^{s21}^(global_avg_prod,_base_{reg5}_->_{reg12})^{s22}^(global_consumption:_avg_{reg10}_->_{reg13}){s1}^
 str_s11_unfortunately_s12_was_wounded_and_had_to_be_left_behind {s11}_Unfortunately,_{s12}_was_wounded_and_had_to_be_left_behind.
 str_s11_also_s12_was_wounded_and_had_to_be_left_behind {s11}_Also,_{s12}_was_wounded_and_had_to_be_left_behind.
 str_trial_influences_s17s_relation_with_s18_by_reg3 {!}Trial_influences_{s17}'s_relation_with_{s18}_by_{reg3}
@@ -3798,7 +3798,9 @@ str_dplmc_cheat_setting_debug_military Debug_Military
 str_dplmc_cheat_setting_debug_politics Debug_Politics
 str_dplmc_cheat_setting_debug_experimental Debug_Experiments
 str_acres_fruit_trees acres_of_fruit_trees
-str_head_pigs pigs
+str_kirmiz_farms acres_of_kirmiz_plots
+str_head_pigs pig_pens
+str_head_chicken chicken_coops
 str_skl_trade Trade
 str_skl_leadership Leadership
 str_skl_prisoner_management Prisoner_Management

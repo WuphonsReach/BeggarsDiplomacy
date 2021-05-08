@@ -1944,20 +1944,20 @@ simple_triggers = [
     ]),
 
   # Refresh merchant inventories (villages and goods merchants)
-   (12,
+   (8,
    [
       (try_for_range, ":village_no", villages_begin, villages_end),
-        # randomly update them about every 5 days on average (was exactly every 7 days)
+        # randomly update them about every 3 days on average (was exactly every 7 days)
         (store_random_in_range, ":random_percent", 0, 100),
         (try_begin),
-          (le, ":random_percent", 10),
+          (le, ":random_percent", 12),
           (call_script, "script_refresh_village_merchant_inventory", ":village_no"),
         (try_end),
       (try_end),
 
       (try_for_range,":cur_center", towns_begin, towns_end),
-        # randomly update them about every 2.5 days on average (was exactly every 7 days)
-        # this catches situations like being besieged
+        # randomly update them about every 2 days on average (was exactly every 7 days)
+        # this better catches situations like being besieged
         (store_random_in_range, ":random_percent", 0, 100),
         (try_begin),
           (le, ":random_percent", 20),
@@ -1978,25 +1978,31 @@ simple_triggers = [
 
   # Refresh number of cattle in villages
   (24 * 7,
-   [
-     (try_for_range, ":village_no", centers_begin, centers_end),
-	  (neg|is_between, ":village_no", castles_begin, castles_end),
+  [
+    (try_for_range, ":village_no", centers_begin, centers_end),
+      (neg|is_between, ":village_no", castles_begin, castles_end),
+
       (party_get_slot, ":num_cattle", ":village_no", slot_center_head_cattle),
       (party_get_slot, ":num_sheep", ":village_no", slot_center_head_sheep),
       (party_get_slot, ":num_acres", ":village_no", slot_center_acres_pasture),
-	  (val_max, ":num_acres", 1),
+	    (val_max, ":num_acres", 1),
 
-	  (store_mul, ":grazing_capacity", ":num_cattle", 400),
-	  (store_mul, ":sheep_addition", ":num_sheep", 200),
-	  (val_add, ":grazing_capacity", ":sheep_addition"),
-	  (val_div, ":grazing_capacity", ":num_acres"),
-	  (try_begin),
-		(eq, "$cheat_mode", DPLMC_DEBUG_ECONOMY),
-	    (assign, reg4, ":grazing_capacity"),
-		  (str_store_party_name, s4, ":village_no"),
-	    #(display_message, "@{!}DEBUG -- Herd adjustment: {s4} at {reg4}% of grazing capacity"),
-	  (try_end),
+	    (store_mul, ":grazing_capacity", ":num_cattle", 600), # 6 acres/cattle
+	    (store_mul, ":sheep_addition", ":num_sheep", 300), # 3 acres/sheep
+	    (val_add, ":grazing_capacity", ":sheep_addition"),
+	    (val_div, ":grazing_capacity", ":num_acres"), # result is % capacity (100 = at maximum sustainable capacity)
 
+      (try_begin),
+        (ge, "$cheat_mode", DPLMC_DEBUG_NEVER),
+        (store_distance_to_party_from_party, ":dist_to_main_party", "p_main_party", ":village_no"),
+        (le, ":dist_to_main_party", 8), # limit debug output to towns within range of the player (otherwise too chatty)
+        (str_store_party_name, s20, ":village_no"),
+        (assign, reg20, ":num_acres"),
+        (assign, reg21, ":num_cattle"),
+        (assign, reg22, ":num_sheep"),
+        (assign, reg23, ":grazing_capacity"),
+        (display_message, "@{!}Grazing: {s20}: {reg21} cattle {reg22} sheep on {reg20} acres at {reg23} capacity"),
+      (end_try),
 
       (store_random_in_range, ":random_no", 0, 100),
       (try_begin), #Disaster
@@ -2652,20 +2658,19 @@ simple_triggers = [
         (this_or_next|eq, ":farmer_party", 0),
         (neg|party_is_active, ":farmer_party"),
         (store_random_in_range, ":random_no", 0, 100),
-        (lt, ":random_no", 25),
+        (lt, ":random_no", 25), # spread out spawns across the day
         (call_script, "script_create_village_farmer_party", ":village_no"),
         (party_set_slot, ":village_no", slot_village_farmer_party, reg0),
-#       (str_store_party_name, s1, ":village_no"),
-#       (display_message, "@Village farmers created at {s1}."),
       (try_end),
     ]),
 
 
-   (72,
+   (12,
    [
-  # Updating trade good prices according to the productions
-       (call_script, "script_update_trade_good_prices"),
- # Updating player odds
+      # Updating trade good prices according to the productions
+      (call_script, "script_update_trade_good_prices"),
+ 
+      # Updating player odds
        (try_for_range, ":cur_center", centers_begin, centers_end),
          (party_get_slot, ":player_odds", ":cur_center", slot_town_player_odds),
          (try_begin),
@@ -5182,9 +5187,11 @@ simple_triggers = [
       (item_set_slot, "itm_ale", slot_item_food_bonus, 4),
    ]),
   
-  # randomly give small amounts of gold to village elders with low prosperity, they eventually turn this into prosperity
-  # see: refresh_village_merchant_inventory
-  (12,
+  # CHARITY - randomly boost villages with low prosperity
+  # 10% chance every 9 hours to gain 0..5 points of prosperity = 4.7 pts/week
+  # this helps looted/pillaged villages get back up to ~30 prosperity faster
+  # yes, it's a bit of a hack, but makes villages more resilient
+  (9,
    [
     (ge, "$g_dplmc_gold_changes", DPLMC_GOLD_CHANGES_LOW),
     (try_for_range, ":center_no", villages_begin, villages_end),
@@ -5195,23 +5202,27 @@ simple_triggers = [
       (party_get_slot, ":elder", ":center_no", slot_town_elder),
       (try_begin),
         (store_random_in_range, ":random", 0, 100),
-        (lt, ":random", 5), # percent chance to add gold to village elder
-        (store_random_in_range, ":gold", 0, 80),
-        (val_add, ":gold", 20),
-        (troop_add_gold, ":elder", ":gold"),
+        (lt, ":random", 10), # percent chance to boost prosperity
+        (store_random_in_range, ":boost", 0, 6),
+        (call_script, "script_change_center_prosperity", ":center_no", ":boost"),
         (try_begin),
-          (eq, "$cheat_mode", DPLMC_DEBUG_ECONOMY),
-          (str_store_party_name, s11, ":center_no"),
-          (assign, reg4, ":gold"),
-          (display_message, "@{!}Elder in {s11} was given {reg4} denars."),
-        (try_end),
+          (ge, "$cheat_mode", DPLMC_DEBUG_MIN),
+          (store_distance_to_party_from_party, ":dist_to_main_party", "p_main_party", ":center_no"),
+          (le, ":dist_to_main_party", 12), # limit debug output to towns within range of the player (otherwise too chatty)
+          (str_store_party_name, s21, ":center_no"),
+          (assign, reg20, ":boost"),
+          (display_message, "@{!}CHARITY: Boost {s21} village prosperity by +{reg20} points."),
+        (end_try),
       (try_end),
     (try_end),
    ]),
 
   # walled centers get a bit of random wealth if they are under-strength so that they can hire reinforcements
   # goal is to not have zero-levels of troops for too long (maybe the king hired the reinforcements?)
+  # when the player is the one sieging, the walled center starts off with zero troops and the player constantly has
+  # to sacrifice their troops to not have the walled center sit empty for days and days
   # see: reinforcement_cost_easy
+  # TODO: Offer the player a chance to purchase reinforcements from nearby villages as an alternative approach?
   (6,
    [
     (ge, "$g_dplmc_gold_changes", DPLMC_GOLD_CHANGES_MEDIUM),
@@ -5245,16 +5256,12 @@ simple_triggers = [
      # only fire when player is close to village_66 (Fisdnar)
     (store_distance_to_party_from_party, ":dist_to_main_party", "p_main_party", "p_village_66"),
     (le, ":dist_to_main_party", 15),
-    (try_begin),
-      (this_or_next|eq, "$cheat_mode", DPLMC_DEBUG_EXPERIMENTAL),
-      (eq, "$g_infinite_camping", 1),
-      (call_script, "script_initialize_item_info"),
-    (try_end),
-    (try_begin),
-      (this_or_next|eq, "$cheat_mode", DPLMC_DEBUG_EXPERIMENTAL),
-      (eq, "$g_infinite_camping", 1),
-      (call_script, "script_initialize_economic_information"),
-    (try_end),
+
+    (this_or_next|eq, "$cheat_mode", DPLMC_DEBUG_EXPERIMENTAL),
+    (eq, "$g_infinite_camping", 1),
+
+    (call_script, "script_initialize_item_info"),
+    (call_script, "script_initialize_economic_information"),
    ]),
 
   (24,

@@ -576,6 +576,7 @@ slot_center_acres_fruit_trees   = 233 #fruit
 
 slot_production_sources_end = 235 # one more then the last production source
 
+slot_center_head_chicken            = 238 #drives chicken production
 slot_center_head_pigs               = 239 #drives pork production
 
 #all spice comes overland to Tulga

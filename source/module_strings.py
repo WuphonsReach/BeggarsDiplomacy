@@ -3476,7 +3476,7 @@ We apologize sincerely if you contributed your suggestions and feedback but were
   ("_however_you_have_sufficiently_distinguished_yourself_to_be_invited_to_attend_the_ongoing_feast_in_the_lords_castle", ". However, you have sufficiently distinguished yourself to be invited to attend the ongoing feast in the lord's castle."),
   ("s8_you_are_also_invited_to_attend_the_ongoing_feast_in_the_castle", "{s8}. You are also invited to attend the ongoing feast in the castle."),
   ("__hardship_index_reg0_avg_towns_reg1_avg_villages_reg2__", "{!}^^Hardship index: {reg0}, avg towns: {reg1}, avg villages: {reg2}^^"),
-  ("dplmc_price_and_production", "{!}^^{s3} ({reg11} {s4})^Price = {reg4} (global avg {reg6})^Production: {reg1} -> {reg2} -> {reg3}^(global avg prod, base {reg5} -> {reg12})^Consumed: ({reg17}+{reg18}={reg19}) -> {reg7}+{reg8}={reg9}^(global consumption: avg {reg10} -> {reg13}){s1}^"),
+  ("dplmc_price_and_production", "{!}^^{s3} ({reg11} {s4})^Price = {reg4} (global avg {reg6})^{s20}^{s21}^(global avg prod, base {reg5} -> {reg12})^{s22}^(global consumption: avg {reg10} -> {reg13}){s1}^"),
   ("s11_unfortunately_s12_was_wounded_and_had_to_be_left_behind", "{s11} Unfortunately, {s12} was wounded and had to be left behind."),
   ("s11_also_s12_was_wounded_and_had_to_be_left_behind", "{s11} Also, {s12} was wounded and had to be left behind."),
   ("trial_influences_s17s_relation_with_s18_by_reg3", "{!}Trial influences {s17}'s relation with {s18} by {reg3}"),
@@ -5161,8 +5161,10 @@ Only you know exactly what caused you to give up your old life and become an adv
   ("dplmc_cheat_setting_debug_politics", "Debug Politics"),
   ("dplmc_cheat_setting_debug_experimental", "Debug Experiments"),
 
-  ("acres_fruit_trees",     "acres of fruit trees"),
-  ("head_pigs",     "pigs"),
+  ("acres_fruit_trees",   "acres of fruit trees"),
+  ("kirmiz_farms",        "acres of kirmiz plots"),
+  ("head_pigs",           "pig pens"),
+  ("head_chicken",        "chicken coops"),
 
 #utility for skill names
 ]+[

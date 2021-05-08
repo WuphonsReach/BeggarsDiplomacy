@@ -1,4 +1,4 @@
-1285
+1309
 qstr_Breaking_camp... Breaking_camp...
 qstr_Removing_disguise... Removing_disguise...
 qstr_{s17}_has_{reg17}_de {s17}_has_{reg17}_denars
@@ -1284,3 +1284,27 @@ qstr_{!}REFRESH_TOWN:_{s20 {!}REFRESH_TOWN:_{s20}_({reg20}/{reg22})_production_o
 qstr_{!}REFRESH:_{s20}__{r {!}REFRESH:_{s20}_({reg20}/{reg22})_prod_{reg23}_goods,_fill_{reg21}_slots_({reg24}_prosp)
 qstr_{!}REFRESH:_{s21}__{ {!}REFRESH:_{s21}_({s20})_({reg20}/{reg22})_prod,_{reg23}_goods,_{reg21}_slots_({reg24}_prosp)
 qstr_{!}REFRESH:_{s20}__{re {!}REFRESH:_{s20}_({reg20}/{reg22})_prod,_{reg23}_goods,_{reg21}_slots_({reg24}_prosp)
+qstr_{!}Grazing:_{s20}:_{ {!}Grazing:_{s20}:_{reg21}_cattle_{reg22}_sheep_on_{reg20}_acres_at_{reg23}_capacity
+qstr_{!}CHARITY:_Boost_{s {!}CHARITY:_Boost_{s21}_village_prosperity_by_+{reg20}_points.
+qstr_{!}{s21}/{s20}:_pric {!}{s21}/{s20}:_price:_{reg93}_mkt:_{reg90}_mpap:_{reg91}_pd:_{reg92}_final:_{reg94}
+qstr_{!}{s21}/{s20}:_{reg {!}{s21}/{s20}:_{reg20}-{reg21}={reg22}_({reg23}_mag)_price:_{reg24}->{reg25}->{reg26}
+qstr_{!}REFRESH:_{s21}__{s {!}REFRESH:_{s21}_({s20}):_{reg24}_prosp_{reg23}_goods_-_{reg20}/{reg22}_prod
+qstr_{!}Populate_{reg21}_ {!}Populate_{reg21}_slots
+qstr_{!}Converted_{reg20}_ {!}Converted_{reg20}_gold_into_+{reg21}_prosperity.
+qstr_{!}DEBUG____Trade_of {!}DEBUG_--_Trade_of_{s5}_from_{s3}_to_{s4}_brings_price_from_{reg4}_to_{reg5}
+qstr_{!}REFRESH:_{s21}:_{ {!}REFRESH:_{s21}:_{reg24}_prosp_{reg23}_goods_-_{reg20}/{reg22}_prod
+qstr_UNKNOWN_STATUS! UNKNOWN_STATUS!
+qstr_Normal Normal
+qstr_Being_Raided Being_Raided
+qstr_Looted Looted
+qstr_Recovering Recovering
+qstr_Deserted Deserted
+qstr_Under_Siege Under_Siege
+qstr_{!}DCGTVP:_{s21}/{s2 {!}DCGTVP:_{s21}/{s20}_({reg20}/{reg21}/{reg22}_prod)
+qstr_{!}DCGMTP:_{s21}__{s {!}DCGMTP:_{s21}_({s23})_{s20}_({reg20}/{reg21}/{reg22}_prod)
+qstr_Production:_{reg2}__ Production:_{reg2}_->_{reg1}_->_{reg3}_->_{reg0}
+qstr__Villages:_{reg0}__> (Villages:_{reg0}_->_{reg1}_->_{reg2}_->_{reg3}_->_{reg4})
+qstr__Market:_{reg0}__>_{ (Market:_{reg0}_->_{reg1}_->_{reg2}_->_{reg3}_->_{reg4}_->_{reg5})
+qstr_Consumption:__{reg5} Consumption:_({reg5}+{reg4}={reg3})_->_{reg2}+{reg1}={reg0}
+qstr_^Market_Town:_{s50}^ ^Market_Town:_{s50}^Last_farmer_arrival:_{reg20}_hours^Last_farmer_returned:_{reg21}_hours^Last_attacked:_{reg22}_days
+qstr_^Villages__{reg20}_: ^Villages_({reg20}):_{s51}

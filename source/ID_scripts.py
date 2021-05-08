@@ -783,3 +783,7 @@ script_dplmc_divide_production_by = 781
 script_dplmc_multiply_production_by = 782
 script_dplmc_add_random_production = 783
 script_refresh_town_goods_merchant_inventory = 784
+script_get_village_status = 785
+script_initialize_prosperity_information = 786
+script_dplmc_center_get_total_village_production = 787
+script_dplmc_center_get_market_town_production = 788

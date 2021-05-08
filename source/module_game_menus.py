@@ -2980,6 +2980,7 @@ game_menus = [
       ("faction_orders_init_econ", [],"{!}Initialize economic stats.",
        [
          (call_script, "script_initialize_economic_information"),
+         (call_script, "script_initialize_prosperity_information"),
          (jump_to_menu, "mnu_faction_orders"),
         ]
        ),
@@ -14263,7 +14264,7 @@ TOTAL:  {reg5}"),
 
   (
     "center_reports",0,
-    "Center Name: {s1}^Prosperity: {reg4}^Status: {reg5}^Production: {reg7}/{reg6}^Rent Income: {reg1} denars^Tariff Income: {reg2} denars^Food Stock: for {reg3} days",
+    "Center Name: {s1}^Prosperity: {reg4}^Status: {reg5} ({s0})^Production: {reg7}/{reg6}^Rent Income: {reg1} denars^Tariff Income: {reg2} denars^Food Stock: for {reg3} days",
     "none",
     [(party_get_slot, ":town_food_store", "$g_encountered_party", slot_party_food_store),
      (call_script, "script_center_get_food_consumption", "$g_encountered_party"),
@@ -14283,12 +14284,16 @@ TOTAL:  {reg5}"),
         (val_add, ":total_base_production", reg2),
      (try_end),
 
+     (call_script, "script_get_village_status", "$g_encountered_party"),
+     (assign, ":village_status", reg0),
+     # status string is in s0
+
      (str_store_party_name, s1, "$g_encountered_party"),
      (party_get_slot, reg1, "$g_encountered_party", slot_center_accumulated_rents),
      (party_get_slot, reg2, "$g_encountered_party", slot_center_accumulated_tariffs),
      (assign, reg3, ":days_of_food"),
      (party_get_slot, reg4, "$g_encountered_party", slot_town_prosperity),
-     (party_get_slot, reg5, "$g_encountered_party", slot_village_state),
+     (assign, reg5, ":village_status"),
      (assign, reg6, ":total_base_production"),
      (assign, reg7, ":total_modified_production"),
      ],
@@ -14310,83 +14315,86 @@ TOTAL:  {reg5}"),
 
   (
     "price_and_production",0,
-    "Productions are:^(Note: base/modified by raw materials/modified by materials plus prosperity)^{s1}^^Price factors are:^{s2}",
+    "Price and Production:{s29}^{s1}",
     "none",
-    [
+  [
+    (assign, ":calradian_average_urban_hardship", 0),
+    (assign, ":calradian_average_rural_hardship", 0),
+    (store_current_hours, ":cur_hours"),
 
-	 (assign, ":calradian_average_urban_hardship", 0),
-	 (assign, ":calradian_average_rural_hardship", 0),
+    (try_for_range, ":center", towns_begin, towns_end),
+      (call_script, "script_center_get_goods_availability", ":center"),
+      (val_add, ":calradian_average_urban_hardship", reg0),
+    (try_end),
+    (try_for_range, ":center", villages_begin, villages_end),
+      (call_script, "script_center_get_goods_availability", ":center"),
+      (val_add, ":calradian_average_rural_hardship", reg0),
+    (try_end),
+	  (val_div, ":calradian_average_rural_hardship", 110),
+	  (val_div, ":calradian_average_urban_hardship", 22),
 
-	 (try_for_range, ":center", towns_begin, towns_end),
-		(call_script, "script_center_get_goods_availability", ":center"),
-		(val_add, ":calradian_average_urban_hardship", reg0),
-	 (try_end),
+    (call_script, "script_center_get_goods_availability", "$g_encountered_party"),
+    (assign, reg1, ":calradian_average_urban_hardship"),
+    (assign, reg2, ":calradian_average_rural_hardship"),
 
-	 (try_for_range, ":center", villages_begin, villages_end),
-		(call_script, "script_center_get_goods_availability", ":center"),
-		(val_add, ":calradian_average_rural_hardship", reg0),
-	 (try_end),
+    (try_begin),
+      (ge, "$cheat_mode", DPLMC_DEBUG_NEVER),
+      (str_store_string, s1, "str___hardship_index_reg0_avg_towns_reg1_avg_villages_reg2__"),
+      (display_message, "@{!}DEBUG - {s1}"),
+    (try_end),
 
-	 (val_div, ":calradian_average_rural_hardship", 110),
-	 (val_div, ":calradian_average_urban_hardship", 22),
+    (try_for_range, ":cur_good", trade_goods_begin, trade_goods_end),
 
+      (call_script, "script_center_get_production", "$g_encountered_party", ":cur_good"),
+      (str_store_string, s20, "@Production: {reg2} -> {reg1} -> {reg3} -> {reg0}"),
 
+      (try_begin),
+        # calculate villages production chain into s21
+        (is_between, "$g_encountered_party", towns_begin, towns_end),
+        (call_script, "script_dplmc_center_get_total_village_production", "$g_encountered_party", ":cur_good"),
+        (val_div, reg0, 2),
+        (val_div, reg1, 2),
+        (val_div, reg2, 2),
+        (val_div, reg3, 2),
+        (val_div, reg4, 2),
+        (str_store_string, s21, "@(Villages: {reg0} -> {reg1} -> {reg2} -> {reg3} -> {reg4})"),
+      (else_try),
+        (is_between, "$g_encountered_party", villages_begin, villages_end),
+        (call_script, "script_dplmc_center_get_market_town_production", "$g_encountered_party", ":cur_good"),
+        (val_div, reg0, 2),
+        (val_div, reg1, 2),
+        (val_div, reg2, 2),
+        (val_div, reg3, 2),
+        (val_div, reg4, 2),
+        (val_div, reg5, 2),
+        (str_store_string, s21, "@(Market: {reg0} -> {reg1} -> {reg2} -> {reg3} -> {reg4} -> {reg5})"),
+      (try_end),
 
-	 (call_script, "script_center_get_goods_availability", "$g_encountered_party"),
+      (call_script, "script_center_get_consumption", "$g_encountered_party", ":cur_good"),
+      (str_store_string, s22, "@Consumption: ({reg5}+{reg4}={reg3}) -> {reg2}+{reg1}={reg0}"),
 
-	 (assign, reg1, ":calradian_average_urban_hardship"),
-	 (assign, reg2, ":calradian_average_rural_hardship"),
+      (store_sub, ":cur_good_price_slot", ":cur_good", trade_goods_begin),
+      (val_add, ":cur_good_price_slot", slot_town_trade_good_prices_begin),
+      (party_get_slot, ":price", "$g_encountered_party", ":cur_good_price_slot"),
 
-	 (try_begin),
-		(ge, "$cheat_mode", DPLMC_DEBUG_MIN),
-		(str_store_string, s1, "str___hardship_index_reg0_avg_towns_reg1_avg_villages_reg2__"),
-		(display_message, "@{!}DEBUG - {s1}"),
-	 (try_end),
+      (assign, ":total_centers", 0),
+      (assign, ":calradian_average_price", 0),
+      (assign, ":calradian_average_production", 0),
+      (assign, ":calradian_average_consumption", 0),
 
-
-     (try_for_range, ":cur_good", trade_goods_begin, trade_goods_end),
-	   (neq, ":cur_good", "itm_pork"), #tied to price of grain
-	   (neq, ":cur_good", "itm_chicken"), #tied to price of grain
-	   (neq, ":cur_good", "itm_butter"), #tied to price of cheese
-	   (neq, ":cur_good", "itm_cattle_meat"),
-	   (neq, ":cur_good", "itm_cabbages"), #possibly include later
-
-	   (call_script, "script_center_get_production", "$g_encountered_party", ":cur_good"),
-	   (assign, ":production", reg0),
-	   (assign, ":base_production", reg2),
-	   (assign, ":base_production_modded_by_raw_materials", reg1),
-
-	   (call_script, "script_center_get_consumption", "$g_encountered_party", ":cur_good"),
-	   (assign, ":consumer_consumption", reg2),
-	   (assign, ":raw_material_consumption", reg1),
-	   (assign, ":consumption", reg0),
-
-      (assign, ":base_consumption", reg3),
-      (assign, ":base_raw_material_consumption", reg4),
-      (assign, ":base_consumer_consumption", reg5),
-
-       (store_sub, ":cur_good_price_slot", ":cur_good", trade_goods_begin),
-       (val_add, ":cur_good_price_slot", slot_town_trade_good_prices_begin),
-       (party_get_slot, ":price", "$g_encountered_party", ":cur_good_price_slot"),
-
-	   (assign, ":total_centers", 0),
-	   (assign, ":calradian_average_price", 0),
-	   (assign, ":calradian_average_production", 0),
-	   (assign, ":calradian_average_consumption", 0),
-
-	   (try_for_range, ":center", centers_begin, centers_end),
-		(neg|is_between, ":center", castles_begin, castles_end),
-	    (val_add, ":total_centers", 1),
+      (try_for_range, ":center", centers_begin, centers_end),
+        (neg|is_between, ":center", castles_begin, castles_end),
+        (val_add, ":total_centers", 1),
         (call_script, "script_center_get_production", ":center", ":cur_good"),
-		(assign, ":center_production", reg2),
+        (assign, ":center_production", reg2),
         (call_script, "script_center_get_consumption", ":center", ":cur_good"),
-		(store_add, ":center_consumption", reg1, reg2),
+        (store_add, ":center_consumption", reg1, reg2),
 
         (party_get_slot, ":center_price", ":center", ":cur_good_price_slot"),
-	    (val_add, ":calradian_average_price", ":center_price"),
-	    (val_add, ":calradian_average_production", ":center_production"),
-	    (val_add, ":calradian_average_consumption", ":center_consumption"),
-	   (try_end),
+        (val_add, ":calradian_average_price", ":center_price"),
+        (val_add, ":calradian_average_production", ":center_production"),
+        (val_add, ":calradian_average_consumption", ":center_consumption"),
+      (try_end),
 
       (assign, ":calradian_total_production", ":calradian_average_production"),
       (assign, ":calradian_total_consumption", ":calradian_average_consumption"),
@@ -14398,22 +14406,9 @@ TOTAL:  {reg5}"),
       # ---- build output variables ----
       (str_store_item_name, s3, ":cur_good"),
 
-      (assign, reg1, ":base_production"),
-      (assign, reg2, ":base_production_modded_by_raw_materials"),
-      (assign, reg3, ":production"),
       (assign, reg4, ":price"),
-
       (assign, reg5, ":calradian_average_production"),
       (assign, reg6, ":calradian_average_price"),
-
-      (assign, reg7, ":consumer_consumption"),
-      (assign, reg8, ":raw_material_consumption"),
-      (assign, reg9, ":consumption"),
-
-      (assign, reg17, ":base_consumer_consumption"),
-      (assign, reg18, ":base_raw_material_consumption"),
-      (assign, reg19, ":base_consumption"),
-
       (assign, reg10, ":calradian_average_consumption"),
 
       (item_get_slot, ":production_slot", ":cur_good", slot_item_production_slot),
@@ -14426,20 +14421,57 @@ TOTAL:  {reg5}"),
       (str_store_string, s4, ":production_string"),
 
       (str_store_string, s1, "str_dplmc_price_and_production"),
-    (try_end),
+    (try_end),  
 
+    # report header information (not per trade good)
+    (try_begin),
+      (is_between, "$g_encountered_party", villages_begin, villages_end),
+      (party_get_slot, ":last_returned", "$g_encountered_party", dplmc_slot_village_trade_last_returned_from_market),
+      (val_min,  ":last_returned", ":cur_hours"),
+      (store_sub, reg20, ":cur_hours", ":last_returned"),
 
-     ],
-    [
-      ("go_back_dot",[],"Go back.",
-       [(try_begin),
-          (party_slot_eq, "$g_encountered_party", slot_party_type, spt_village),
-          (jump_to_menu, "mnu_village"),
+      (party_get_slot, ":last_arrival", "$g_encountered_party", dplmc_slot_village_trade_last_arrived_to_market),
+      (val_min,  ":last_arrival", ":cur_hours"),
+      (store_sub, reg21, ":cur_hours", ":last_arrival"),
+
+      (party_get_slot, ":last_attacked_time", "$g_encountered_party", dplmc_slot_center_last_attacked_time),
+      (val_min,  ":last_attacked_time", ":cur_hours"),
+      (store_sub, reg22, ":cur_hours", ":last_attacked_time"),
+      (val_div, reg22, 24),
+
+      (party_get_slot, ":market_town_no", "$g_encountered_party", slot_village_market_town),
+      (str_store_party_name, s50, ":market_town_no"),
+      (str_store_string, s29, "@^Market Town: {s50}^Last farmer arrival: {reg20} hours^Last farmer returned: {reg21} hours^Last attacked: {reg22} days"),
+    (else_try),
+      (is_between, "$g_encountered_party", towns_begin, towns_end),
+      # build list of villages that use this town as their market
+      (assign, ":village_count", 0),
+      (try_for_range, ":village_no", villages_begin, villages_end),
+        (party_get_slot, ":market_town_no", ":village_no", slot_village_market_town),
+        (eq, "$g_encountered_party", ":market_town_no"),
+        (str_store_party_name, s50, ":village_no"),
+        (try_begin),
+          (eq, ":village_count", 0),
+          (str_store_string_reg, s51, s50),
         (else_try),
-          (jump_to_menu, "mnu_town"),
+          (str_store_string, s51, "str_s50_comma_s51"),
         (try_end),
-        ]),
-    ]
+        (val_add, ":village_count", 1),
+      (try_end),
+      (assign, reg20, ":village_count"),
+      (str_store_string, s29, "@^Villages ({reg20}): {s51}"),
+    (try_end),
+  ],
+  [
+    ("go_back_dot",[],"Go back.",
+      [(try_begin),
+        (party_slot_eq, "$g_encountered_party", slot_party_type, spt_village),
+        (jump_to_menu, "mnu_village"),
+      (else_try),
+        (jump_to_menu, "mnu_town"),
+      (try_end),
+      ]),
+  ]
   ),
 
   (

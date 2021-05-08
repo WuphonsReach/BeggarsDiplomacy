@@ -807,6 +807,7 @@ scripts = [
 
 	  #This needs to be after market towns
 	  (call_script, "script_initialize_economic_information"),
+    (call_script, "script_initialize_prosperity_information"),
 
 	  (try_for_range, ":village_no", villages_begin, villages_end),
         (call_script, "script_refresh_village_merchant_inventory", ":village_no"),
@@ -1158,6 +1159,19 @@ scripts = [
       (try_for_range, ":party_no", centers_begin, centers_end),
         (party_set_note_available, ":party_no", 1),
       (try_end),
+
+    # Setting book intelligence requirements
+    (item_set_slot, "itm_book_tactics", slot_item_intelligence_requirement, 9),
+    (item_set_slot, "itm_book_persuasion", slot_item_intelligence_requirement, 8),
+    (item_set_slot, "itm_book_leadership", slot_item_intelligence_requirement, 7),
+    (item_set_slot, "itm_book_intelligence", slot_item_intelligence_requirement, 10),
+    (item_set_slot, "itm_book_trade", slot_item_intelligence_requirement, 11),
+    (item_set_slot, "itm_book_weapon_mastery", slot_item_intelligence_requirement, 9),
+    (item_set_slot, "itm_book_engineering", slot_item_intelligence_requirement, 12),
+
+    (item_set_slot, "itm_book_wound_treatment_reference", slot_item_intelligence_requirement, 10),
+    (item_set_slot, "itm_book_training_reference", slot_item_intelligence_requirement, 10),
+    (item_set_slot, "itm_book_surgery_reference", slot_item_intelligence_requirement, 10),
 
 	##diplomacy start+
     #Perform initialization for autoloot / autosell.
@@ -7536,322 +7550,349 @@ scripts = [
 
 	  # Setting food bonuses - these have been changed to incentivize using historical rations. Bread is the most cost-efficient
 	  #Staples
-      (item_set_slot, "itm_bread", slot_item_food_bonus, 8), #brought up from 4
-      (item_set_slot, "itm_grain", slot_item_food_bonus, 2), #new - can be boiled as porridge
+    (item_set_slot, "itm_bread", slot_item_food_bonus, 8), #brought up from 4
+    (item_set_slot, "itm_grain", slot_item_food_bonus, 2), #new - can be boiled as porridge
 
 	  #Fat sources - preserved
-      (item_set_slot, "itm_smoked_fish", slot_item_food_bonus, 4),
-      (item_set_slot, "itm_dried_meat", slot_item_food_bonus, 5),
-      (item_set_slot, "itm_cheese", slot_item_food_bonus, 5),
-      (item_set_slot, "itm_sausages", slot_item_food_bonus, 5),
-      (item_set_slot, "itm_butter", slot_item_food_bonus, 5), #brought down from 8
+    (item_set_slot, "itm_smoked_fish", slot_item_food_bonus, 4),
+    (item_set_slot, "itm_dried_meat", slot_item_food_bonus, 5),
+    (item_set_slot, "itm_cheese", slot_item_food_bonus, 5),
+    (item_set_slot, "itm_sausages", slot_item_food_bonus, 5),
+    (item_set_slot, "itm_butter", slot_item_food_bonus, 5), #brought down from 8
 
 	  #Fat sources - perishable
-      (item_set_slot, "itm_chicken", slot_item_food_bonus, 8), #brought up from 7
-      (item_set_slot, "itm_cattle_meat", slot_item_food_bonus, 7),
-      (item_set_slot, "itm_pork", slot_item_food_bonus, 7),
+    (item_set_slot, "itm_chicken", slot_item_food_bonus, 8), #brought up from 7
+    (item_set_slot, "itm_cattle_meat", slot_item_food_bonus, 7),
+    (item_set_slot, "itm_pork", slot_item_food_bonus, 7),
 
 	  #Produce
-      (item_set_slot, "itm_raw_olives", slot_item_food_bonus, 3),
-      (item_set_slot, "itm_cabbages", slot_item_food_bonus, 2),
-      (item_set_slot, "itm_raw_grapes", slot_item_food_bonus, 4),
-      (item_set_slot, "itm_apples", slot_item_food_bonus, 4), #brought down from 5
+    (item_set_slot, "itm_raw_olives", slot_item_food_bonus, 3),
+    (item_set_slot, "itm_cabbages", slot_item_food_bonus, 2),
+    (item_set_slot, "itm_raw_grapes", slot_item_food_bonus, 4),
+    (item_set_slot, "itm_apples", slot_item_food_bonus, 4), #brought down from 5
 
 	  #Sweet items
-      (item_set_slot, "itm_raw_date_fruit", slot_item_food_bonus, 4), #brought down from 8
-      (item_set_slot, "itm_honey", slot_item_food_bonus, 6), #brought down from 12
+    (item_set_slot, "itm_raw_date_fruit", slot_item_food_bonus, 4), #brought down from 8
+    (item_set_slot, "itm_honey", slot_item_food_bonus, 6), #brought down from 12
 
-      (item_set_slot, "itm_wine", slot_item_food_bonus, 5),
-      (item_set_slot, "itm_ale", slot_item_food_bonus, 4),
+    (item_set_slot, "itm_wine", slot_item_food_bonus, 5),
+    (item_set_slot, "itm_ale", slot_item_food_bonus, 4),
 
-	  #Item economic settings
-	  (item_set_slot, "itm_grain", slot_item_urban_demand, 20),
-      (item_set_slot, "itm_grain", slot_item_rural_demand, 30),
-      (item_set_slot, "itm_grain", slot_item_desert_demand, 20),
-      (item_set_slot, "itm_grain", slot_item_production_slot, slot_center_acres_grain),
-      (item_set_slot, "itm_grain", slot_item_production_string, "str_acres_grain"),
-      (item_set_slot, "itm_grain", slot_item_base_price, 30),
+    ## ITEM DEMAND IN VILLAGES/TOWNS/DESERT
 
-      (item_set_slot, "itm_bread", slot_item_urban_demand, 40),
-      (item_set_slot, "itm_bread", slot_item_rural_demand, 30),
-      (item_set_slot, "itm_bread", slot_item_desert_demand, 40),
-      (item_set_slot, "itm_bread", slot_item_production_slot, slot_center_mills),
-      (item_set_slot, "itm_bread", slot_item_production_string, "str_mills"),
-      (item_set_slot, "itm_bread", slot_item_primary_raw_material, "itm_grain"),
-      (item_set_slot, "itm_bread", slot_item_input_number, 5),
-      (item_set_slot, "itm_bread", slot_item_output_per_run, 6),
-      (item_set_slot, "itm_bread", slot_item_overhead_per_run, 30),
-      (item_set_slot, "itm_bread", slot_item_base_price, 70),
-      (item_set_slot, "itm_bread", slot_item_enterprise_building_cost, 1500),
+	  (item_set_slot, "itm_grain", slot_item_urban_demand, 30),
+    (item_set_slot, "itm_grain", slot_item_rural_demand, 20),
+    (item_set_slot, "itm_grain", slot_item_desert_demand, 25),
 
-	  (item_set_slot, "itm_ale", slot_item_urban_demand, 10),
-	  (item_set_slot, "itm_ale", slot_item_rural_demand, 16),
-      (item_set_slot, "itm_ale", slot_item_desert_demand, 0),
-      (item_set_slot, "itm_ale", slot_item_production_slot, slot_center_breweries),
-      (item_set_slot, "itm_ale", slot_item_production_string, "str_breweries"),
-      (item_set_slot, "itm_ale", slot_item_primary_raw_material, "itm_grain"),
-	    (item_set_slot, "itm_ale", slot_item_input_number, 3),
-      (item_set_slot, "itm_ale", slot_item_output_per_run, 2),
-      (item_set_slot, "itm_ale", slot_item_overhead_per_run, 50),
-      (item_set_slot, "itm_ale", slot_item_base_price, 180),
-      (item_set_slot, "itm_ale", slot_item_enterprise_building_cost, 2500),
+    (item_set_slot, "itm_bread", slot_item_urban_demand, 50),
+    (item_set_slot, "itm_bread", slot_item_rural_demand, 25),
+    (item_set_slot, "itm_bread", slot_item_desert_demand, 45),
 
-	  (item_set_slot, "itm_wine", slot_item_urban_demand, 18),
-	  (item_set_slot, "itm_wine", slot_item_rural_demand, 10),
-      (item_set_slot, "itm_wine", slot_item_desert_demand, 5),
-      (item_set_slot, "itm_wine", slot_item_production_slot, slot_center_wine_presses),
-      (item_set_slot, "itm_wine", slot_item_production_string, "str_presses"),
-      (item_set_slot, "itm_wine", slot_item_primary_raw_material, "itm_raw_grapes"),
-      (item_set_slot, "itm_wine", slot_item_input_number, 5),
-      (item_set_slot, "itm_wine", slot_item_output_per_run, 2),
-	  (item_set_slot, "itm_wine", slot_item_overhead_per_run, 75),
-      (item_set_slot, "itm_wine", slot_item_base_price, 380),
-      (item_set_slot, "itm_wine", slot_item_enterprise_building_cost, 5000),
+	  (item_set_slot, "itm_ale", slot_item_urban_demand, 20),
+	  (item_set_slot, "itm_ale", slot_item_rural_demand, 15),
+    (item_set_slot, "itm_ale", slot_item_desert_demand, 0),
 
-	  (item_set_slot, "itm_raw_grapes", slot_item_urban_demand, 5),
-	  (item_set_slot, "itm_raw_grapes", slot_item_rural_demand, 0),
-      (item_set_slot, "itm_raw_grapes", slot_item_desert_demand, 0),
-      (item_set_slot, "itm_raw_grapes", slot_item_production_slot, slot_center_acres_vineyard),
-      (item_set_slot, "itm_raw_grapes", slot_item_production_string, "str_acres_vineyard"),
-      (item_set_slot, "itm_raw_grapes", slot_item_is_raw_material_only_for, "itm_wine"),
-      (item_set_slot, "itm_raw_grapes", slot_item_base_price, 75),
+    (item_set_slot, "itm_raw_olives", slot_item_urban_demand, 15),
+	  (item_set_slot, "itm_raw_olives", slot_item_rural_demand, 5),
+	  (item_set_slot, "itm_raw_olives", slot_item_desert_demand, 20),
 
-	  (item_set_slot, "itm_apples", slot_item_urban_demand, 4),
-	  (item_set_slot, "itm_apples", slot_item_rural_demand, 4),
-	  (item_set_slot, "itm_apples", slot_item_desert_demand, 0),
-      (item_set_slot, "itm_apples", slot_item_production_slot, slot_center_acres_fruit_trees),
-      (item_set_slot, "itm_apples", slot_item_production_string, "str_acres_fruit_trees"),
-      (item_set_slot, "itm_apples", slot_item_base_price, 44),
+	  (item_set_slot, "itm_oil", slot_item_urban_demand, 20),
+	  (item_set_slot, "itm_oil", slot_item_rural_demand, 6),
+	  (item_set_slot, "itm_oil", slot_item_desert_demand, 20),
 
-      (item_set_slot, "itm_smoked_fish", slot_item_urban_demand, 16),
-      (item_set_slot, "itm_smoked_fish", slot_item_rural_demand, 25),
-      (item_set_slot, "itm_smoked_fish", slot_item_desert_demand, 16),
-      (item_set_slot, "itm_smoked_fish", slot_item_production_slot, slot_center_fishing_fleet),
-      (item_set_slot, "itm_smoked_fish", slot_item_production_string, "str_boats"),
+	  (item_set_slot, "itm_raw_grapes", slot_item_urban_demand, 18),
+	  (item_set_slot, "itm_raw_grapes", slot_item_rural_demand, 5),
+    (item_set_slot, "itm_raw_grapes", slot_item_desert_demand, 12),
 
-      (item_set_slot, "itm_salt", slot_item_urban_demand, 6),
-      (item_set_slot, "itm_salt", slot_item_rural_demand, 3),
-      (item_set_slot, "itm_salt", slot_item_desert_demand, -1),
-      (item_set_slot, "itm_salt", slot_item_production_slot, slot_center_salt_pans),
-      (item_set_slot, "itm_salt", slot_item_production_string, "str_pans"),
+	  (item_set_slot, "itm_wine", slot_item_urban_demand, 20),
+	  (item_set_slot, "itm_wine", slot_item_rural_demand, 9),
+    (item_set_slot, "itm_wine", slot_item_desert_demand, 2),
 
-      (item_set_slot, "itm_dried_meat", slot_item_urban_demand, 20),
-      (item_set_slot, "itm_dried_meat", slot_item_rural_demand, 10),
-      (item_set_slot, "itm_dried_meat", slot_item_desert_demand, -1),
-      (item_set_slot, "itm_dried_meat", slot_item_production_slot, slot_center_head_cattle),
-      (item_set_slot, "itm_dried_meat", slot_item_production_string, "str_head_cattle"),
+	  (item_set_slot, "itm_apples", slot_item_urban_demand, 30),
+	  (item_set_slot, "itm_apples", slot_item_rural_demand, 15),
+	  (item_set_slot, "itm_apples", slot_item_desert_demand, 15),
 
-      (item_set_slot, "itm_cattle_meat", slot_item_urban_demand, 12),
-      (item_set_slot, "itm_cattle_meat", slot_item_rural_demand, 3),
-      (item_set_slot, "itm_cattle_meat", slot_item_desert_demand, -1),
-      (item_set_slot, "itm_cattle_meat", slot_item_production_slot, slot_center_head_cattle),
-      (item_set_slot, "itm_cattle_meat", slot_item_production_string, "str_head_cattle"),
+    (item_set_slot, "itm_smoked_fish", slot_item_urban_demand, 30),
+    (item_set_slot, "itm_smoked_fish", slot_item_rural_demand, 20),
+    (item_set_slot, "itm_smoked_fish", slot_item_desert_demand, 25),
 
-      (item_set_slot, "itm_cheese", slot_item_urban_demand, 20),
-      (item_set_slot, "itm_cheese", slot_item_rural_demand, 12),
-      (item_set_slot, "itm_cheese", slot_item_desert_demand, 12),
-      # comes from a mix of sheep+cattle, so the following is unused/incorrect
-      (item_set_slot, "itm_cheese", slot_item_production_slot, slot_center_head_cattle),
-      (item_set_slot, "itm_cheese", slot_item_production_string, "str_head_cattle"),
+    (item_set_slot, "itm_dried_meat", slot_item_urban_demand, 30),
+    (item_set_slot, "itm_dried_meat", slot_item_rural_demand, 20),
+    (item_set_slot, "itm_dried_meat", slot_item_desert_demand, 25),
 
-      (item_set_slot, "itm_butter", slot_item_urban_demand, 3),
-      (item_set_slot, "itm_butter", slot_item_rural_demand, 2),
-      (item_set_slot, "itm_butter", slot_item_desert_demand, 3),
-      # comes from a mix of sheep+cattle, so the following is unused/incorrect
-      (item_set_slot, "itm_butter", slot_item_production_slot, slot_center_head_cattle),
-      (item_set_slot, "itm_butter", slot_item_production_string, "str_head_cattle"),
+    (item_set_slot, "itm_pork", slot_item_urban_demand, 20),
+    (item_set_slot, "itm_pork", slot_item_rural_demand, 12),
+    (item_set_slot, "itm_pork", slot_item_desert_demand, 0),
 
-      (item_set_slot, "itm_leatherwork", slot_item_urban_demand, 15),
-      (item_set_slot, "itm_leatherwork", slot_item_rural_demand, 10),
-      (item_set_slot, "itm_leatherwork", slot_item_desert_demand, 10),
-      (item_set_slot, "itm_leatherwork", slot_item_production_slot, slot_center_tanneries),
-      (item_set_slot, "itm_leatherwork", slot_item_production_string, "str_tanneries"),
-      (item_set_slot, "itm_leatherwork", slot_item_primary_raw_material, "itm_raw_leather"),
-      (item_set_slot, "itm_leatherwork", slot_item_input_number, 3),
-      (item_set_slot, "itm_leatherwork", slot_item_output_per_run, 3),
-      (item_set_slot, "itm_leatherwork", slot_item_overhead_per_run, 80),
-	  (item_set_slot, "itm_leatherwork", slot_item_base_price, 350),
-	  (item_set_slot, "itm_leatherwork", slot_item_enterprise_building_cost, 8000),
+    (item_set_slot, "itm_chicken", slot_item_urban_demand, 35),
+    (item_set_slot, "itm_chicken", slot_item_rural_demand, 20),
+    (item_set_slot, "itm_chicken", slot_item_desert_demand, 25),
 
-      (item_set_slot, "itm_raw_leather", slot_item_urban_demand, 0),
-      (item_set_slot, "itm_raw_leather", slot_item_rural_demand, 0),
-      (item_set_slot, "itm_raw_leather", slot_item_desert_demand, 0),
-      # comes from a mix of sheep+cattle, so the following is unused/incorrect
-      (item_set_slot, "itm_raw_leather", slot_item_production_slot, slot_center_head_cattle),
-      (item_set_slot, "itm_raw_leather", slot_item_production_string, "str_head_cattle"),
-      (item_set_slot, "itm_raw_leather", slot_item_is_raw_material_only_for, "itm_leatherwork"),
-	  (item_set_slot, "itm_raw_leather", slot_item_base_price, 220),
+    (item_set_slot, "itm_cattle_meat", slot_item_urban_demand, 20),
+    (item_set_slot, "itm_cattle_meat", slot_item_rural_demand, 9),
+    (item_set_slot, "itm_cattle_meat", slot_item_desert_demand, 20),
 
-  	  (item_set_slot, "itm_sausages", slot_item_urban_demand, 12),
-	  (item_set_slot, "itm_sausages", slot_item_rural_demand, 4),
-	  (item_set_slot, "itm_sausages", slot_item_desert_demand, -1),
-      (item_set_slot, "itm_sausages", slot_item_production_slot, slot_center_head_sheep),
-      (item_set_slot, "itm_sausages", slot_item_production_string, "str_head_sheep"),
+    (item_set_slot, "itm_cheese", slot_item_urban_demand, 20),
+    (item_set_slot, "itm_cheese", slot_item_rural_demand, 10),
+    (item_set_slot, "itm_cheese", slot_item_desert_demand, 15),
 
-	  (item_set_slot, "itm_wool", slot_item_urban_demand, 0),
-	  (item_set_slot, "itm_wool", slot_item_rural_demand, 0),
-	  (item_set_slot, "itm_wool", slot_item_desert_demand, 0),
-      (item_set_slot, "itm_wool", slot_item_production_slot, slot_center_head_sheep),
-      (item_set_slot, "itm_wool", slot_item_production_string, "str_head_sheep"),
-	  (item_set_slot, "itm_wool", slot_item_is_raw_material_only_for, "itm_wool_cloth"),
-	  (item_set_slot, "itm_wool", slot_item_base_price, 180),
+    (item_set_slot, "itm_butter", slot_item_urban_demand, 16),
+    (item_set_slot, "itm_butter", slot_item_rural_demand, 8),
+    (item_set_slot, "itm_butter", slot_item_desert_demand, 12),
 
-	  (item_set_slot, "itm_wool_cloth", slot_item_urban_demand, 15),
-	  (item_set_slot, "itm_wool_cloth", slot_item_rural_demand, 20),
-	  (item_set_slot, "itm_wool_cloth", slot_item_desert_demand, 5),
-      (item_set_slot, "itm_wool_cloth", slot_item_production_slot, slot_center_wool_looms),
-      (item_set_slot, "itm_wool_cloth", slot_item_production_string, "str_looms"),
-	  (item_set_slot, "itm_wool_cloth", slot_item_primary_raw_material, "itm_wool"),
-      (item_set_slot, "itm_wool_cloth", slot_item_input_number, 2),
-      (item_set_slot, "itm_wool_cloth", slot_item_output_per_run, 2),
-      (item_set_slot, "itm_wool_cloth", slot_item_overhead_per_run, 100),
-	  (item_set_slot, "itm_wool_cloth", slot_item_base_price, 350),
-	  (item_set_slot, "itm_wool_cloth", slot_item_enterprise_building_cost, 6000),
+    (item_set_slot, "itm_sausages", slot_item_urban_demand, 20),
+	  (item_set_slot, "itm_sausages", slot_item_rural_demand, 10),
+	  (item_set_slot, "itm_sausages", slot_item_desert_demand, 5),
+
+    (item_set_slot, "itm_honey", slot_item_urban_demand, 15),
+    (item_set_slot, "itm_honey", slot_item_rural_demand, 4),
+    (item_set_slot, "itm_honey", slot_item_desert_demand, 10),
+
+    (item_set_slot, "itm_cabbages", slot_item_urban_demand, 25),
+    (item_set_slot, "itm_cabbages", slot_item_rural_demand, 15),
+    (item_set_slot, "itm_cabbages", slot_item_desert_demand, 25),
+
+    (item_set_slot, "itm_salt", slot_item_urban_demand, 8),
+    (item_set_slot, "itm_salt", slot_item_rural_demand, 3),
+    (item_set_slot, "itm_salt", slot_item_desert_demand, 8),
+
+	  (item_set_slot, "itm_spice", slot_item_urban_demand, 12),
+	  (item_set_slot, "itm_spice", slot_item_rural_demand, 3),
+	  (item_set_slot, "itm_spice", slot_item_desert_demand, 10),
+
+    (item_set_slot, "itm_raw_date_fruit", slot_item_urban_demand, 15),
+    (item_set_slot, "itm_raw_date_fruit", slot_item_rural_demand, 6),
+    (item_set_slot, "itm_raw_date_fruit", slot_item_desert_demand, 12),
+
+    (item_set_slot, "itm_wool", slot_item_urban_demand, 8),
+	  (item_set_slot, "itm_wool", slot_item_rural_demand, 5),
+	  (item_set_slot, "itm_wool", slot_item_desert_demand, 5),
+
+	  (item_set_slot, "itm_wool_cloth", slot_item_urban_demand, 18),
+	  (item_set_slot, "itm_wool_cloth", slot_item_rural_demand, 10),
+	  (item_set_slot, "itm_wool_cloth", slot_item_desert_demand, 8),
+
+    (item_set_slot, "itm_raw_leather", slot_item_urban_demand, 5),
+    (item_set_slot, "itm_raw_leather", slot_item_rural_demand, 3),
+    (item_set_slot, "itm_raw_leather", slot_item_desert_demand, 5),
+
+    (item_set_slot, "itm_leatherwork", slot_item_urban_demand, 20),
+    (item_set_slot, "itm_leatherwork", slot_item_rural_demand, 10),
+    (item_set_slot, "itm_leatherwork", slot_item_desert_demand, 12),
 
 	  (item_set_slot, "itm_raw_flax", slot_item_urban_demand, 0),
 	  (item_set_slot, "itm_raw_flax", slot_item_rural_demand, 0),
 	  (item_set_slot, "itm_raw_flax", slot_item_desert_demand, 0),
-      (item_set_slot, "itm_raw_flax", slot_item_production_slot, slot_center_acres_flax),
-      (item_set_slot, "itm_raw_flax", slot_item_production_string, "str_acres_flax"),
-      (item_set_slot, "itm_raw_flax", slot_item_is_raw_material_only_for, "itm_linen"),
+
+	  (item_set_slot, "itm_linen", slot_item_urban_demand, 24),
+	  (item_set_slot, "itm_linen", slot_item_rural_demand, 9),
+	  (item_set_slot, "itm_linen", slot_item_desert_demand, 30),
+
+	  (item_set_slot, "itm_iron", slot_item_urban_demand, 5),
+	  (item_set_slot, "itm_iron", slot_item_rural_demand, 3),
+	  (item_set_slot, "itm_iron", slot_item_desert_demand, 1),
+
+	  (item_set_slot, "itm_tools", slot_item_urban_demand, 15),
+	  (item_set_slot, "itm_tools", slot_item_rural_demand, 8),
+	  (item_set_slot, "itm_tools", slot_item_desert_demand, 12),
+
+	  (item_set_slot, "itm_pottery", slot_item_urban_demand, 15),
+	  (item_set_slot, "itm_pottery", slot_item_rural_demand, 10),
+	  (item_set_slot, "itm_pottery", slot_item_desert_demand, 18),
+
+    (item_set_slot, "itm_raw_silk", slot_item_urban_demand, 12),
+	  (item_set_slot, "itm_raw_silk", slot_item_rural_demand, 2),
+    (item_set_slot, "itm_raw_silk", slot_item_desert_demand, 15),
+
+	  (item_set_slot, "itm_raw_dyes", slot_item_urban_demand, 10),
+	  (item_set_slot, "itm_raw_dyes", slot_item_rural_demand, 2),
+	  (item_set_slot, "itm_raw_dyes", slot_item_desert_demand, 8),
+
+	  (item_set_slot, "itm_velvet", slot_item_urban_demand, 30),
+	  (item_set_slot, "itm_velvet", slot_item_rural_demand, 10),
+	  (item_set_slot, "itm_velvet", slot_item_desert_demand, 5),
+
+	  (item_set_slot, "itm_furs", slot_item_urban_demand, 15),
+	  (item_set_slot, "itm_furs", slot_item_rural_demand, 8),
+	  (item_set_slot, "itm_furs", slot_item_desert_demand, 0),
+
+	  #ITEM PRODUCTION
+
+    (item_set_slot, "itm_grain", slot_item_production_slot, slot_center_acres_grain),
+    (item_set_slot, "itm_grain", slot_item_production_string, "str_acres_grain"),
+    (item_set_slot, "itm_grain", slot_item_base_price, 30),
+
+    (item_set_slot, "itm_bread", slot_item_production_slot, slot_center_mills),
+    (item_set_slot, "itm_bread", slot_item_production_string, "str_mills"),
+    (item_set_slot, "itm_bread", slot_item_primary_raw_material, "itm_grain"),
+    (item_set_slot, "itm_bread", slot_item_input_number, 5),
+    (item_set_slot, "itm_bread", slot_item_output_per_run, 6),
+    (item_set_slot, "itm_bread", slot_item_overhead_per_run, 30),
+    (item_set_slot, "itm_bread", slot_item_base_price, 70),
+    (item_set_slot, "itm_bread", slot_item_enterprise_building_cost, 1500),
+
+    (item_set_slot, "itm_ale", slot_item_production_slot, slot_center_breweries),
+    (item_set_slot, "itm_ale", slot_item_production_string, "str_breweries"),
+    (item_set_slot, "itm_ale", slot_item_primary_raw_material, "itm_grain"),
+    (item_set_slot, "itm_ale", slot_item_input_number, 3),
+    (item_set_slot, "itm_ale", slot_item_output_per_run, 2),
+    (item_set_slot, "itm_ale", slot_item_overhead_per_run, 50),
+    (item_set_slot, "itm_ale", slot_item_base_price, 180),
+    (item_set_slot, "itm_ale", slot_item_enterprise_building_cost, 2500),
+
+    (item_set_slot, "itm_wine", slot_item_production_slot, slot_center_wine_presses),
+    (item_set_slot, "itm_wine", slot_item_production_string, "str_presses"),
+    (item_set_slot, "itm_wine", slot_item_primary_raw_material, "itm_raw_grapes"),
+    (item_set_slot, "itm_wine", slot_item_input_number, 5),
+    (item_set_slot, "itm_wine", slot_item_output_per_run, 2),
+    (item_set_slot, "itm_wine", slot_item_overhead_per_run, 75),
+    (item_set_slot, "itm_wine", slot_item_base_price, 380),
+    (item_set_slot, "itm_wine", slot_item_enterprise_building_cost, 5000),
+
+    (item_set_slot, "itm_raw_grapes", slot_item_production_slot, slot_center_acres_vineyard),
+    (item_set_slot, "itm_raw_grapes", slot_item_production_string, "str_acres_vineyard"),
+    (item_set_slot, "itm_raw_grapes", slot_item_is_raw_material_only_for, "itm_wine"),
+    (item_set_slot, "itm_raw_grapes", slot_item_base_price, 75),
+
+    (item_set_slot, "itm_apples", slot_item_production_slot, slot_center_acres_fruit_trees),
+    (item_set_slot, "itm_apples", slot_item_production_string, "str_acres_fruit_trees"),
+    (item_set_slot, "itm_apples", slot_item_base_price, 44),
+
+    (item_set_slot, "itm_smoked_fish", slot_item_production_slot, slot_center_fishing_fleet),
+    (item_set_slot, "itm_smoked_fish", slot_item_production_string, "str_boats"),
+
+    (item_set_slot, "itm_salt", slot_item_production_slot, slot_center_salt_pans),
+    (item_set_slot, "itm_salt", slot_item_production_string, "str_pans"),
+
+    (item_set_slot, "itm_dried_meat", slot_item_production_slot, slot_center_head_cattle),
+    (item_set_slot, "itm_dried_meat", slot_item_production_string, "str_head_cattle"),
+
+    (item_set_slot, "itm_cattle_meat", slot_item_production_slot, slot_center_head_cattle),
+    (item_set_slot, "itm_cattle_meat", slot_item_production_string, "str_head_cattle"),
+
+    (item_set_slot, "itm_cheese", slot_item_production_slot, slot_center_head_cattle),
+    (item_set_slot, "itm_cheese", slot_item_production_string, "str_head_cattle"),
+
+    (item_set_slot, "itm_butter", slot_item_production_slot, slot_center_head_cattle),
+    (item_set_slot, "itm_butter", slot_item_production_string, "str_head_cattle"),
+
+    (item_set_slot, "itm_leatherwork", slot_item_production_slot, slot_center_tanneries),
+    (item_set_slot, "itm_leatherwork", slot_item_production_string, "str_tanneries"),
+    (item_set_slot, "itm_leatherwork", slot_item_primary_raw_material, "itm_raw_leather"),
+    (item_set_slot, "itm_leatherwork", slot_item_input_number, 3),
+    (item_set_slot, "itm_leatherwork", slot_item_output_per_run, 3),
+    (item_set_slot, "itm_leatherwork", slot_item_overhead_per_run, 80),
+	  (item_set_slot, "itm_leatherwork", slot_item_base_price, 350),
+	  (item_set_slot, "itm_leatherwork", slot_item_enterprise_building_cost, 8000),
+
+    # comes from a mix of sheep+cattle+pigs, so the following is unused/incorrect
+    (item_set_slot, "itm_raw_leather", slot_item_production_slot, slot_center_head_cattle),
+    (item_set_slot, "itm_raw_leather", slot_item_secondary_raw_material, slot_center_head_sheep),
+    (item_set_slot, "itm_raw_leather", slot_item_production_string, "str_head_cattle"),
+    (item_set_slot, "itm_raw_leather", slot_item_is_raw_material_only_for, "itm_leatherwork"),
+	  (item_set_slot, "itm_raw_leather", slot_item_base_price, 220),
+
+    (item_set_slot, "itm_sausages", slot_item_production_slot, slot_center_head_sheep),
+    (item_set_slot, "itm_sausages", slot_item_production_string, "str_head_sheep"),
+
+    (item_set_slot, "itm_wool", slot_item_production_slot, slot_center_head_sheep),
+    (item_set_slot, "itm_wool", slot_item_production_string, "str_head_sheep"),
+	  (item_set_slot, "itm_wool", slot_item_is_raw_material_only_for, "itm_wool_cloth"),
+	  (item_set_slot, "itm_wool", slot_item_base_price, 180),
+
+    (item_set_slot, "itm_wool_cloth", slot_item_production_slot, slot_center_wool_looms),
+    (item_set_slot, "itm_wool_cloth", slot_item_production_string, "str_looms"),
+	  (item_set_slot, "itm_wool_cloth", slot_item_primary_raw_material, "itm_wool"),
+    (item_set_slot, "itm_wool_cloth", slot_item_input_number, 2),
+    (item_set_slot, "itm_wool_cloth", slot_item_output_per_run, 2),
+    (item_set_slot, "itm_wool_cloth", slot_item_overhead_per_run, 100),
+	  (item_set_slot, "itm_wool_cloth", slot_item_base_price, 350),
+	  (item_set_slot, "itm_wool_cloth", slot_item_enterprise_building_cost, 6000),
+
+    (item_set_slot, "itm_raw_flax", slot_item_production_slot, slot_center_acres_flax),
+    (item_set_slot, "itm_raw_flax", slot_item_production_string, "str_acres_flax"),
+    (item_set_slot, "itm_raw_flax", slot_item_is_raw_material_only_for, "itm_linen"),
 	  (item_set_slot, "itm_raw_flax", slot_item_base_price, 210),
 
-	  (item_set_slot, "itm_linen", slot_item_urban_demand, 10),
-	  (item_set_slot, "itm_linen", slot_item_rural_demand, 5),
-	  (item_set_slot, "itm_linen", slot_item_desert_demand, 20),
-      (item_set_slot, "itm_linen", slot_item_production_slot, slot_center_linen_looms),
-      (item_set_slot, "itm_linen", slot_item_production_string, "str_looms"),
-      (item_set_slot, "itm_linen", slot_item_primary_raw_material, "itm_raw_flax"),
-      (item_set_slot, "itm_linen", slot_item_input_number, 2),
-      (item_set_slot, "itm_linen", slot_item_output_per_run, 2),
-      (item_set_slot, "itm_linen", slot_item_overhead_per_run, 120),
+    (item_set_slot, "itm_linen", slot_item_production_slot, slot_center_linen_looms),
+    (item_set_slot, "itm_linen", slot_item_production_string, "str_looms"),
+    (item_set_slot, "itm_linen", slot_item_primary_raw_material, "itm_raw_flax"),
+    (item_set_slot, "itm_linen", slot_item_input_number, 2),
+    (item_set_slot, "itm_linen", slot_item_output_per_run, 2),
+    (item_set_slot, "itm_linen", slot_item_overhead_per_run, 120),
 	  (item_set_slot, "itm_linen", slot_item_base_price, 410),
 	  (item_set_slot, "itm_linen", slot_item_enterprise_building_cost, 6000),
 
-	  (item_set_slot, "itm_iron", slot_item_urban_demand, 0),
-	  (item_set_slot, "itm_iron", slot_item_rural_demand, 0),
-	  (item_set_slot, "itm_iron", slot_item_desert_demand, 0),
-      (item_set_slot, "itm_iron", slot_item_production_slot, slot_center_iron_deposits),
-      (item_set_slot, "itm_iron", slot_item_production_string, "str_deposits"),
-      (item_set_slot, "itm_iron", slot_item_is_raw_material_only_for, "itm_tools"),
+    (item_set_slot, "itm_iron", slot_item_production_slot, slot_center_iron_deposits),
+    (item_set_slot, "itm_iron", slot_item_production_string, "str_deposits"),
+    (item_set_slot, "itm_iron", slot_item_is_raw_material_only_for, "itm_tools"),
 	  (item_set_slot, "itm_iron", slot_item_base_price, 275),
 
-	  (item_set_slot, "itm_tools", slot_item_urban_demand, 12),
-	  (item_set_slot, "itm_tools", slot_item_rural_demand, 8),
-	  (item_set_slot, "itm_tools", slot_item_desert_demand, 8),
-      (item_set_slot, "itm_tools", slot_item_production_slot, slot_center_smithies),
-      (item_set_slot, "itm_tools", slot_item_production_string, "str_smithies"),
-      (item_set_slot, "itm_tools", slot_item_primary_raw_material, "itm_iron"),
-      (item_set_slot, "itm_tools", slot_item_input_number, 2),
-      (item_set_slot, "itm_tools", slot_item_output_per_run, 2),
-      (item_set_slot, "itm_tools", slot_item_overhead_per_run, 100),
+    (item_set_slot, "itm_tools", slot_item_production_slot, slot_center_smithies),
+    (item_set_slot, "itm_tools", slot_item_production_string, "str_smithies"),
+    (item_set_slot, "itm_tools", slot_item_primary_raw_material, "itm_iron"),
+    (item_set_slot, "itm_tools", slot_item_input_number, 2),
+    (item_set_slot, "itm_tools", slot_item_output_per_run, 2),
+    (item_set_slot, "itm_tools", slot_item_overhead_per_run, 100),
 	  (item_set_slot, "itm_tools", slot_item_base_price, 520),
 	  (item_set_slot, "itm_tools", slot_item_enterprise_building_cost, 3500),
 
-	  (item_set_slot, "itm_pottery", slot_item_urban_demand, 15),
-	  (item_set_slot, "itm_pottery", slot_item_rural_demand, 5),
-	  (item_set_slot, "itm_pottery", slot_item_desert_demand, -1),
-      (item_set_slot, "itm_pottery", slot_item_production_slot, slot_center_pottery_kilns),
-      (item_set_slot, "itm_pottery", slot_item_production_string, "str_kilns"),
+    (item_set_slot, "itm_pottery", slot_item_production_slot, slot_center_pottery_kilns),
+    (item_set_slot, "itm_pottery", slot_item_production_string, "str_kilns"),
 
-	  (item_set_slot, "itm_oil", slot_item_urban_demand, 15),
-	  (item_set_slot, "itm_oil", slot_item_rural_demand, 5),
-	  (item_set_slot, "itm_oil", slot_item_desert_demand, -1),
-      (item_set_slot, "itm_oil", slot_item_production_slot, slot_center_olive_presses),
-      (item_set_slot, "itm_oil", slot_item_production_string, "str_presses"),
-      (item_set_slot, "itm_oil", slot_item_primary_raw_material, "itm_raw_olives"),
-      (item_set_slot, "itm_oil", slot_item_input_number, 6),
-      (item_set_slot, "itm_oil", slot_item_output_per_run, 2),
-      (item_set_slot, "itm_oil", slot_item_overhead_per_run, 80),
+    (item_set_slot, "itm_oil", slot_item_production_slot, slot_center_olive_presses),
+    (item_set_slot, "itm_oil", slot_item_production_string, "str_presses"),
+    (item_set_slot, "itm_oil", slot_item_primary_raw_material, "itm_raw_olives"),
+    (item_set_slot, "itm_oil", slot_item_input_number, 6),
+    (item_set_slot, "itm_oil", slot_item_output_per_run, 2),
+    (item_set_slot, "itm_oil", slot_item_overhead_per_run, 80),
 	  (item_set_slot, "itm_oil", slot_item_base_price, 475),
 	  (item_set_slot, "itm_oil", slot_item_enterprise_building_cost, 4500),
 
-	  (item_set_slot, "itm_raw_olives", slot_item_urban_demand, 6),
-	  (item_set_slot, "itm_raw_olives", slot_item_rural_demand, 0),
-	  (item_set_slot, "itm_raw_olives", slot_item_desert_demand, 2),
-      (item_set_slot, "itm_raw_olives", slot_item_production_slot, slot_center_acres_olives),
-      (item_set_slot, "itm_raw_olives", slot_item_production_string, "str_olive_groves"),
-      (item_set_slot, "itm_raw_olives", slot_item_is_raw_material_only_for, "itm_oil"),
+    (item_set_slot, "itm_raw_olives", slot_item_production_slot, slot_center_acres_olives),
+    (item_set_slot, "itm_raw_olives", slot_item_production_string, "str_olive_groves"),
+    (item_set_slot, "itm_raw_olives", slot_item_is_raw_material_only_for, "itm_oil"),
 	  (item_set_slot, "itm_raw_olives", slot_item_base_price, 100),
 
-	  (item_set_slot, "itm_velvet", slot_item_urban_demand, 8),
-	  (item_set_slot, "itm_velvet", slot_item_rural_demand, 0),
-	  (item_set_slot, "itm_velvet", slot_item_desert_demand, -1),
-      (item_set_slot, "itm_velvet", slot_item_production_slot, slot_center_silk_looms),
-      (item_set_slot, "itm_velvet", slot_item_production_string, "str_looms"),
+    (item_set_slot, "itm_velvet", slot_item_production_slot, slot_center_silk_looms),
+    (item_set_slot, "itm_velvet", slot_item_production_string, "str_looms"),
 	  (item_set_slot, "itm_velvet", slot_item_primary_raw_material, "itm_raw_silk"),
-      (item_set_slot, "itm_velvet", slot_item_input_number, 2),
-      (item_set_slot, "itm_velvet", slot_item_output_per_run, 2),
-      (item_set_slot, "itm_velvet", slot_item_overhead_per_run, 200),
+    (item_set_slot, "itm_velvet", slot_item_input_number, 2),
+    (item_set_slot, "itm_velvet", slot_item_output_per_run, 2),
+    (item_set_slot, "itm_velvet", slot_item_overhead_per_run, 200),
 	  (item_set_slot, "itm_velvet", slot_item_base_price, 1250),
 	  (item_set_slot, "itm_velvet", slot_item_secondary_raw_material, "itm_raw_dyes"),
 	  (item_set_slot, "itm_velvet", slot_item_enterprise_building_cost, 10000),
 
-	  (item_set_slot, "itm_raw_silk", slot_item_urban_demand, 1),
-	  (item_set_slot, "itm_raw_silk", slot_item_rural_demand, 0),
-      (item_set_slot, "itm_raw_silk", slot_item_production_slot, slot_center_silk_farms),
-      (item_set_slot, "itm_raw_silk", slot_item_production_string, "str_mulberry_groves"),
-      (item_set_slot, "itm_raw_silk", slot_item_is_raw_material_only_for, "itm_velvet"),
-      (item_set_slot, "itm_raw_silk", slot_item_base_price, 675),
+    (item_set_slot, "itm_raw_silk", slot_item_production_slot, slot_center_silk_farms),
+    (item_set_slot, "itm_raw_silk", slot_item_production_string, "str_mulberry_groves"),
+    (item_set_slot, "itm_raw_silk", slot_item_is_raw_material_only_for, "itm_velvet"),
+    (item_set_slot, "itm_raw_silk", slot_item_base_price, 675),
 
-	  (item_set_slot, "itm_raw_dyes", slot_item_urban_demand, 3),
-	  (item_set_slot, "itm_raw_dyes", slot_item_rural_demand, 0),
-	  (item_set_slot, "itm_raw_dyes", slot_item_desert_demand, -1),
-	  (item_set_slot, "itm_raw_dyes", slot_item_production_string, "str_caravans"),
+    (item_set_slot, "itm_raw_silk", slot_item_production_slot, slot_center_kirmiz_farms),
+	  (item_set_slot, "itm_raw_dyes", slot_item_production_string, "str_kirmiz_farms"),
 	  (item_set_slot, "itm_raw_dyes", slot_item_base_price, 320),
 
-	  (item_set_slot, "itm_spice", slot_item_urban_demand, 6),
-	  (item_set_slot, "itm_spice", slot_item_rural_demand, 1),
-	  (item_set_slot, "itm_spice", slot_item_desert_demand, 6),
 	  (item_set_slot, "itm_spice", slot_item_production_string, "str_caravans"),
 
-	  (item_set_slot, "itm_furs", slot_item_urban_demand, 8),
-	  (item_set_slot, "itm_furs", slot_item_rural_demand, 3),
-	  (item_set_slot, "itm_furs", slot_item_desert_demand, -1),
 	  (item_set_slot, "itm_furs", slot_item_production_slot, slot_center_fur_traps),
 	  (item_set_slot, "itm_furs", slot_item_production_string, "str_traps"),
 
-      (item_set_slot, "itm_honey", slot_item_urban_demand, 15),
-      (item_set_slot, "itm_honey", slot_item_rural_demand, 4),
-      (item_set_slot, "itm_honey", slot_item_desert_demand, 3),
-      (item_set_slot, "itm_honey", slot_item_production_slot, slot_center_apiaries),
-      (item_set_slot, "itm_honey", slot_item_production_string, "str_hives"),
+    (item_set_slot, "itm_honey", slot_item_production_slot, slot_center_apiaries),
+    (item_set_slot, "itm_honey", slot_item_production_string, "str_hives"),
 
-      (item_set_slot, "itm_cabbages", slot_item_urban_demand, 16),
-      (item_set_slot, "itm_cabbages", slot_item_rural_demand, 24),
-      (item_set_slot, "itm_cabbages", slot_item_desert_demand, 15),
-      (item_set_slot, "itm_cabbages", slot_item_production_slot, slot_center_household_gardens),
-      (item_set_slot, "itm_cabbages", slot_item_production_string, "str_gardens"),
+    (item_set_slot, "itm_cabbages", slot_item_production_slot, slot_center_household_gardens),
+    (item_set_slot, "itm_cabbages", slot_item_production_string, "str_gardens"),
 
-      (item_set_slot, "itm_raw_date_fruit", slot_item_urban_demand, 12),
-      (item_set_slot, "itm_raw_date_fruit", slot_item_rural_demand, 7),
-      (item_set_slot, "itm_raw_date_fruit", slot_item_desert_demand, 7),
-      (item_set_slot, "itm_raw_date_fruit", slot_item_production_slot, slot_center_acres_dates),
-      (item_set_slot, "itm_raw_date_fruit", slot_item_production_string, "str_acres_oasis"),
+    (item_set_slot, "itm_raw_date_fruit", slot_item_production_slot, slot_center_acres_dates),
+    (item_set_slot, "itm_raw_date_fruit", slot_item_production_string, "str_acres_oasis"),
 
-      (item_set_slot, "itm_chicken", slot_item_urban_demand, 40),
-      (item_set_slot, "itm_chicken", slot_item_rural_demand, 15),
-      (item_set_slot, "itm_chicken", slot_item_desert_demand, 25),
+    (item_set_slot, "itm_pork", slot_item_production_slot, slot_center_head_pigs),
+    (item_set_slot, "itm_pork", slot_item_production_string, "str_head_pigs"),
 
-      (item_set_slot, "itm_pork", slot_item_urban_demand, 45),
-      (item_set_slot, "itm_pork", slot_item_rural_demand, 15),
-      (item_set_slot, "itm_pork", slot_item_desert_demand, -1),
-      (item_set_slot, "itm_pork", slot_item_production_slot, slot_center_head_pigs),
-      (item_set_slot, "itm_pork", slot_item_production_string, "str_head_pigs"),
+    (item_set_slot, "itm_chicken", slot_item_production_slot, slot_center_head_chicken),
+    (item_set_slot, "itm_chicken", slot_item_production_string, "str_head_chicken"),
 
-
-      # Setting book intelligence requirements
-      (item_set_slot, "itm_book_tactics", slot_item_intelligence_requirement, 9),
-      (item_set_slot, "itm_book_persuasion", slot_item_intelligence_requirement, 8),
-      (item_set_slot, "itm_book_leadership", slot_item_intelligence_requirement, 7),
-      (item_set_slot, "itm_book_intelligence", slot_item_intelligence_requirement, 10),
-      (item_set_slot, "itm_book_trade", slot_item_intelligence_requirement, 11),
-      (item_set_slot, "itm_book_weapon_mastery", slot_item_intelligence_requirement, 9),
-      (item_set_slot, "itm_book_engineering", slot_item_intelligence_requirement, 12),
-
-      (item_set_slot, "itm_book_wound_treatment_reference", slot_item_intelligence_requirement, 10),
-      (item_set_slot, "itm_book_training_reference", slot_item_intelligence_requirement, 10),
-      (item_set_slot, "itm_book_surgery_reference", slot_item_intelligence_requirement, 10),
 	 ]),
 
 
@@ -8189,6 +8230,7 @@ scripts = [
     (party_set_slot, ":town_no", slot_center_head_sheep, 0),
     (party_set_slot, ":town_no", slot_center_head_horses, 0),
     (party_set_slot, ":town_no", slot_center_head_pigs, 0),
+    (party_set_slot, ":town_no", slot_center_head_chicken, 0),
     (party_set_slot, ":town_no", slot_center_acres_pasture, 0),
     (party_set_slot, ":town_no", slot_center_acres_grain, 0),
     (party_set_slot, ":town_no", slot_center_acres_olives, 0),
@@ -8216,136 +8258,178 @@ scripts = [
     (party_set_slot, ":town_no", slot_center_household_gardens, 0),
     (party_set_slot, ":town_no", slot_center_acres_fruit_trees, 0),
 
-    (call_script, "script_dplmc_set_random_production", ":town_no", slot_center_acres_grain, 1000, 4000, -1),
-    (call_script, "script_dplmc_set_random_production", ":town_no", slot_center_household_gardens, 3, 8, -1),
-    (call_script, "script_dplmc_set_random_production", ":town_no", slot_center_acres_fruit_trees, 100, 600, -1),
-    (call_script, "script_dplmc_set_random_production", ":town_no", slot_center_apiaries, 0, 2, -1),
+    (call_script, "script_dplmc_set_random_production", ":town_no", slot_center_acres_grain, 800, 2800, -1),
+    (call_script, "script_dplmc_set_random_production", ":town_no", slot_center_household_gardens, 1, 6, -1),
+    (call_script, "script_dplmc_set_random_production", ":town_no", slot_center_acres_fruit_trees, 120, 600, -1),
+    (call_script, "script_dplmc_set_random_production", ":town_no", slot_center_apiaries, 0, 6, -1),
+    (call_script, "script_dplmc_set_random_production", ":town_no", slot_center_head_chicken, 8, 20, -1),
 
-    (call_script, "script_dplmc_set_random_production", ":town_no", slot_center_pottery_kilns, 0, 2, -1),
-    (call_script, "script_dplmc_set_random_production", ":town_no", slot_center_smithies, 0, 4, -1),
-    (call_script, "script_dplmc_set_random_production", ":town_no", slot_center_mills, 0, 4, -1),
-    (call_script, "script_dplmc_set_random_production", ":town_no", slot_center_tanneries, 0, 2, -1),
-    (call_script, "script_dplmc_set_random_production", ":town_no", slot_center_wine_presses, 0, 2, -1),
-    (call_script, "script_dplmc_set_random_production", ":town_no", slot_center_olive_presses, 0, 2, -1),
-    (call_script, "script_dplmc_set_random_production", ":town_no", slot_center_linen_looms, 0, 2, -1),
-    (call_script, "script_dplmc_set_random_production", ":town_no", slot_center_silk_looms, 0, 2, -1),
-    (call_script, "script_dplmc_set_random_production", ":town_no", slot_center_wool_looms, 0, 2, -1),
+    (call_script, "script_dplmc_set_random_production", ":town_no", slot_center_mills, 2, 6, -1),
+    (call_script, "script_dplmc_set_random_production", ":town_no", slot_center_pottery_kilns, 2, 6, -1),
+
+    (call_script, "script_dplmc_set_random_production", ":town_no", slot_center_smithies, 0, 2, -1),
+    (call_script, "script_dplmc_set_random_production", ":town_no", slot_center_tanneries, 0, 3, -1),
+    (call_script, "script_dplmc_set_random_production", ":town_no", slot_center_wine_presses, 0, 3, -1),
+    (call_script, "script_dplmc_set_random_production", ":town_no", slot_center_olive_presses, 0, 3, -1),
+    (call_script, "script_dplmc_set_random_production", ":town_no", slot_center_linen_looms, 0, 3, -1),
+    (call_script, "script_dplmc_set_random_production", ":town_no", slot_center_silk_looms, 0, 3, -1),
+    (call_script, "script_dplmc_set_random_production", ":town_no", slot_center_wool_looms, 0, 3, -1),
   (try_end),
 
   #Sargoth (linen, wine)
-  (call_script, "script_dplmc_add_random_production", "p_town_1", slot_center_linen_looms, 10, 15, 1),
+  (call_script, "script_dplmc_add_random_production", "p_town_1", slot_center_linen_looms, 5, 8, 1),
   (call_script, "script_dplmc_add_random_production", "p_town_1", slot_center_wine_presses, 2, 5, -1),
+  (call_script, "script_dplmc_add_random_production", "p_town_1", slot_center_head_chicken, 5, 11, -1),
+  (call_script, "script_dplmc_add_random_production", "p_town_1", slot_center_head_pigs, 8, 20, -1),
 
   #Tihr (salt, smoked fish, linen)
   (call_script, "script_dplmc_add_random_production", "p_town_2", slot_center_salt_pans, 1, 5, -1),
+  (call_script, "script_dplmc_add_random_production", "p_town_2", slot_center_head_chicken, 4, 12, -1),
   (call_script, "script_dplmc_add_random_production", "p_town_2", slot_center_fishing_fleet, 15, 30, 1),
-  (call_script, "script_dplmc_add_random_production", "p_town_2", slot_center_linen_looms, 12, 18, 0),
+  (call_script, "script_dplmc_add_random_production", "p_town_2", slot_center_linen_looms, 5, 8, 0),
 
-  #Veluca	(wine, silk)
+  #Veluca	(wine, silk, chicken, sheep)
   (call_script, "script_dplmc_add_random_production", "p_town_3", slot_center_wine_presses, 8, 12, 1),
   (call_script, "script_dplmc_add_random_production", "p_town_3", slot_center_silk_looms, 9, 15, -1),
+  (call_script, "script_dplmc_add_random_production", "p_town_3", slot_center_head_chicken, 3, 12, -1),
+  (call_script, "script_dplmc_add_random_production", "p_town_3", slot_center_head_sheep, 5, 11, -1),
+  (call_script, "script_dplmc_add_random_production", "p_town_3", slot_center_acres_fruit_trees, 50, 200, -1),
 
-  #Suno (silk, oil)
+  #Suno (silk, oil, chicken, pigs)
   (call_script, "script_dplmc_add_random_production", "p_town_4", slot_center_silk_looms, 9, 15, 0),
   (call_script, "script_dplmc_add_random_production", "p_town_4", slot_center_olive_presses, 12, 18, -1),
+  (call_script, "script_dplmc_add_random_production", "p_town_4", slot_center_head_chicken, 4, 12, -1),
+  (call_script, "script_dplmc_add_random_production", "p_town_4", slot_center_head_pigs, 8, 20, -1),
 
-  #Jelkala (silk, smoked fish)
+  #Jelkala (silk, smoked fish, chicken, pigs)
   (call_script, "script_dplmc_add_random_production", "p_town_5", slot_center_silk_looms, 18, 28, 1),
   (call_script, "script_dplmc_add_random_production", "p_town_5", slot_center_fishing_fleet, 20, 35, 1),
+  (call_script, "script_dplmc_add_random_production", "p_town_5", slot_center_head_chicken, 4, 12, -1),
+  (call_script, "script_dplmc_add_random_production", "p_town_5", slot_center_head_pigs, 8, 20, -1),
 
-  #Praven (ale, leatherwork, smoked fish)
+  #Praven (ale, leatherwork, smoked fish, chicken, sheep)
   (call_script, "script_dplmc_add_random_production", "p_town_6", slot_center_breweries, 5, 10, 1),
   (call_script, "script_dplmc_add_random_production", "p_town_6", slot_center_tanneries, 2, 5, 1),
   (call_script, "script_dplmc_add_random_production", "p_town_6", slot_center_fishing_fleet, 6, 12, 1),
+  (call_script, "script_dplmc_add_random_production", "p_town_6", slot_center_head_chicken, 5, 15, -1),
+  (call_script, "script_dplmc_add_random_production", "p_town_6", slot_center_head_sheep, 5, 11, -1),
 
   #Uxkhal (bread, leatherwork, oil)
   (call_script, "script_dplmc_add_random_production", "p_town_7", slot_center_mills, 10, 20, 0),
   (call_script, "script_dplmc_add_random_production", "p_town_7", slot_center_tanneries, 3, 6, -1),
   (call_script, "script_dplmc_add_random_production", "p_town_7", slot_center_olive_presses, 3, 6, 1),
+  (call_script, "script_dplmc_add_random_production", "p_town_7", slot_center_head_chicken, 3, 12, -1),
 
   #Reyvadin (tools, wool cloth, wine)
-  (call_script, "script_dplmc_add_random_production", "p_town_8", slot_center_smithies, 10, 30, 1),
-  (call_script, "script_dplmc_add_random_production", "p_town_8", slot_center_wool_looms, 25, 40, 1),
+  (call_script, "script_dplmc_add_random_production", "p_town_8", slot_center_smithies, 2, 5, 0),
+  (call_script, "script_dplmc_add_random_production", "p_town_8", slot_center_wool_looms, 15, 30, 1),
   (call_script, "script_dplmc_add_random_production", "p_town_8", slot_center_wine_presses, 2, 5, -1),
+  (call_script, "script_dplmc_add_random_production", "p_town_8", slot_center_head_chicken, 4, 8, -1),
 
   #Khudan (tools, leatherwork, smoked fish)
-  (call_script, "script_dplmc_add_random_production", "p_town_9", slot_center_smithies, 16, 22, 1),
+  (call_script, "script_dplmc_add_random_production", "p_town_9", slot_center_smithies, 2, 5, 0),
   (call_script, "script_dplmc_add_random_production", "p_town_9", slot_center_tanneries, 1, 5, 1),
-  (call_script, "script_dplmc_add_random_production", "p_town_9", slot_center_fishing_fleet, 1, 5, -1),
+  (call_script, "script_dplmc_add_random_production", "p_town_9", slot_center_fishing_fleet, 2, 7, -1),
   (call_script, "script_dplmc_add_random_production", "p_town_9", slot_center_iron_deposits, 0, 2, -1),
+  (call_script, "script_dplmc_add_random_production", "p_town_9", slot_center_fur_traps, 2, 6, -1),
+  (call_script, "script_dplmc_add_random_production", "p_town_9", slot_center_head_pigs, 6, 12, -1),
+  (call_script, "script_dplmc_add_random_production", "p_town_9", slot_center_head_chicken, 8, 15, -1),
 
   #Tulga (salt, spice)
   (call_script, "script_dplmc_add_random_production", "p_town_10", slot_center_salt_pans, 0, 3, 0),
   (call_script, "script_dplmc_add_random_production", "p_town_10", slot_center_tanneries, 0, 2, -1),
   (call_script, "script_dplmc_add_random_production", "p_town_10", slot_center_breweries, 0, 2, -1),
-  #also produces 100 spice
+  (call_script, "script_dplmc_add_random_production", "p_town_10", slot_center_head_chicken, 5, 20, -1),
+  (call_script, "script_dplmc_add_random_production", "p_town_10", slot_center_acres_fruit_trees, 50, 200, -1),
+  #also produces spice
 
   #Curaw (tools, iron, smoked fish)
-  (call_script, "script_dplmc_add_random_production", "p_town_11", slot_center_smithies, 15, 20, 0),
-  (call_script, "script_dplmc_add_random_production", "p_town_11", slot_center_iron_deposits, 8, 15, 1),
-  (call_script, "script_dplmc_add_random_production", "p_town_11", slot_center_iron_deposits, 8, 10, -1),
+  (call_script, "script_dplmc_add_random_production", "p_town_11", slot_center_smithies, 3, 6, 1),
+  (call_script, "script_dplmc_add_random_production", "p_town_11", slot_center_iron_deposits, 8, 15, -1),
   (call_script, "script_dplmc_add_random_production", "p_town_11", slot_center_fishing_fleet, 1, 5, 0),
+  (call_script, "script_dplmc_add_random_production", "p_town_11", slot_center_head_chicken, 63, 15, -1),
 
   #Wercheg (salt, smoked fish)
+  (call_script, "script_dplmc_add_random_production", "p_town_12", slot_center_acres_fruit_trees, 50, 200, -1),
   (call_script, "script_dplmc_add_random_production", "p_town_12", slot_center_salt_pans, 1, 3, 0),
   (call_script, "script_dplmc_add_random_production", "p_town_12", slot_center_fishing_fleet, 15, 25, 1),
   (call_script, "script_dplmc_add_random_production", "p_town_12", slot_center_iron_deposits, 0, 2, -1),
+  (call_script, "script_dplmc_add_random_production", "p_town_12", slot_center_head_chicken, 4, 11, -1),
+  (call_script, "script_dplmc_add_random_production", "p_town_12", slot_center_head_pigs, 6, 12, -1),
 
   #Rivacheg (wool cloth, leatherwork, smoked fish)
   (call_script, "script_dplmc_add_random_production", "p_town_13", slot_center_wool_looms, 15, 35, 1),
+  (call_script, "script_dplmc_add_random_production", "p_town_13", slot_center_silk_looms, 2, 6, -1),
   (call_script, "script_dplmc_add_random_production", "p_town_13", slot_center_tanneries, 2, 5, 1),
   (call_script, "script_dplmc_add_random_production", "p_town_13", slot_center_fishing_fleet, 10, 20, 0),
+  (call_script, "script_dplmc_add_random_production", "p_town_13", slot_center_head_chicken, 5, 15, -1),
+  (call_script, "script_dplmc_add_random_production", "p_town_13", slot_center_head_pigs, 9, 18, -1),
 
   #Halmar (leatherwork, pottery)
   (call_script, "script_dplmc_add_random_production", "p_town_14", slot_center_tanneries, 0, 4, -1),
   (call_script, "script_dplmc_add_random_production", "p_town_14", slot_center_pottery_kilns, 10, 20, 1),
+  (call_script, "script_dplmc_add_random_production", "p_town_14", slot_center_head_chicken, 7, 15, -1),
+  (call_script, "script_dplmc_add_random_production", "p_town_14", slot_center_head_sheep, 6, 12, -1),
+  (call_script, "script_dplmc_add_random_production", "p_town_14", slot_center_apiaries, 1, 3, -1),
 
   #Yalen (tools, wine, oil, smoked fish)
-  (call_script, "script_dplmc_add_random_production", "p_town_15", slot_center_smithies, 15, 25, 1),
+  (call_script, "script_dplmc_add_random_production", "p_town_15", slot_center_smithies, 2, 5, 1),
   (call_script, "script_dplmc_add_random_production", "p_town_15", slot_center_wine_presses, 4, 8, 0),
   (call_script, "script_dplmc_add_random_production", "p_town_15", slot_center_olive_presses, 4, 8, 0),
   (call_script, "script_dplmc_add_random_production", "p_town_15", slot_center_fishing_fleet, 15, 30, 1),
+  (call_script, "script_dplmc_add_random_production", "p_town_15", slot_center_head_chicken, 8, 20, -1),
 
-  #Dhirim (tools, leatherwork)
-  (call_script, "script_dplmc_add_random_production", "p_town_16", slot_center_smithies, 25, 35, 1),
+  #Dhirim (tools, leatherwork, bread)
+  (call_script, "script_dplmc_add_random_production", "p_town_16", slot_center_smithies, 2, 8, 0),
+  (call_script, "script_dplmc_add_random_production", "p_town_16", slot_center_mills, 4, 8, 0),
   (call_script, "script_dplmc_add_random_production", "p_town_16", slot_center_tanneries, 3, 8, -1),
+  (call_script, "script_dplmc_add_random_production", "p_town_16", slot_center_head_chicken, 4, 15, -1),
 
-  #Ichamur (wool cloth, spice)
+  #Ichamur (wool cloth, spice, chicken, sheep)
   (call_script, "script_dplmc_add_random_production", "p_town_17", slot_center_wool_looms, 30, 50, 1),
+  (call_script, "script_dplmc_add_random_production", "p_town_17", slot_center_head_chicken, 5, 15, -1),
+  (call_script, "script_dplmc_add_random_production", "p_town_17", slot_center_head_sheep, 9, 15, -1),
   #also produces 50 spice
 
   #Narra (wool cloth, oil)
   (call_script, "script_dplmc_add_random_production", "p_town_18", slot_center_wool_looms, 30, 50, -1),
   (call_script, "script_dplmc_add_random_production", "p_town_18", slot_center_olive_presses, 8, 12, 0),
+  (call_script, "script_dplmc_add_random_production", "p_town_18", slot_center_head_chicken, 2, 8, -1),
 
   #Shariz (leatherwork, smoked fish, oil)
   (party_set_slot, "p_town_19", slot_center_breweries, 0), 	    #no alcohol (ale) in arabic region
   (party_set_slot, "p_town_19", slot_center_wine_presses, 0), 	#no alcohol (wine) in arabic region
   (call_script, "script_dplmc_add_random_production", "p_town_19", slot_center_tanneries, 3, 10, -1),
+  (call_script, "script_dplmc_add_random_production", "p_town_19", slot_center_smithies, 2, 8, -1),
   (call_script, "script_dplmc_add_random_production", "p_town_19", slot_center_fishing_fleet, 5, 10, 0),
   (call_script, "script_dplmc_add_random_production", "p_town_19", slot_center_olive_presses, 3, 9, 1),
-  #also produces 50 spice
+  (call_script, "script_dplmc_add_random_production", "p_town_19", slot_center_head_chicken, 5, 15, -1),
+  #also produces spice
 
   #Darquba (linen, pottery, oil)
   (party_set_slot, "p_town_20", slot_center_breweries, 0), 	    #no alcohol (ale) in arabic region
   (party_set_slot, "p_town_20", slot_center_wine_presses, 0), 	#no alcohol (wine) in arabic region
-  (call_script, "script_dplmc_add_random_production", "p_town_20", slot_center_linen_looms, 8, 15, -1),
+  (call_script, "script_dplmc_add_random_production", "p_town_20", slot_center_linen_looms, 4, 10, -1),
   (call_script, "script_dplmc_add_random_production", "p_town_20", slot_center_pottery_kilns, 10, 15, 0),
   (call_script, "script_dplmc_add_random_production", "p_town_20", slot_center_olive_presses, 2, 10, -1),
-  (call_script, "script_dplmc_add_random_production", "p_town_20", slot_center_acres_olives, 300, 900, -1),
+  (call_script, "script_dplmc_add_random_production", "p_town_20", slot_center_acres_olives, 200, 800, -1),
+  (call_script, "script_dplmc_add_random_production", "p_town_20", slot_center_head_chicken, 10, 20, -1),
 
   #Ahmerrad (pottery, salt)
   (party_set_slot, "p_town_21", slot_center_breweries, 0), 	    #no alcohol (ale) in arabic region
   (party_set_slot, "p_town_21", slot_center_wine_presses, 0), 	#no alcohol (wine) in arabic region
   (call_script, "script_dplmc_add_random_production", "p_town_21", slot_center_pottery_kilns, 15, 30, 1),
   (call_script, "script_dplmc_add_random_production", "p_town_21", slot_center_salt_pans, 1, 3, 0),
+  (call_script, "script_dplmc_add_random_production", "p_town_21", slot_center_head_chicken, 8, 16, -1),
+  (call_script, "script_dplmc_add_random_production", "p_town_21", slot_center_head_sheep, 6, 18, -1),
 
   #Bariyye (salt, pottery, spice)
   (party_set_slot, "p_town_22", slot_center_breweries, 0), 	    #no alcohol (ale) in arabic region
   (party_set_slot, "p_town_22", slot_center_wine_presses, 0), 	#no alcohol (wine) in arabic region
   (call_script, "script_dplmc_add_random_production", "p_town_22", slot_center_pottery_kilns, 10, 20, -1),
   (call_script, "script_dplmc_add_random_production", "p_town_22", slot_center_salt_pans, 1, 4, 1),
-  (call_script, "script_dplmc_add_random_production", "p_town_22", slot_center_acres_fruit_trees, 200, 500, -1),
+  (call_script, "script_dplmc_add_random_production", "p_town_22", slot_center_acres_fruit_trees, 50, 200, -1),
+  (call_script, "script_dplmc_add_random_production", "p_town_22", slot_center_head_chicken, 10, 20, -1),
   #also produces 50 spice
 
   (try_for_range, ":village_no", villages_begin, villages_end),
@@ -8355,6 +8439,7 @@ scripts = [
     (party_set_slot, ":village_no", slot_center_head_sheep, 0),
     (party_set_slot, ":village_no", slot_center_head_horses, 0),
     (party_set_slot, ":village_no", slot_center_head_pigs, 0),
+    (party_set_slot, ":village_no", slot_center_head_chicken, 0),
     (party_set_slot, ":village_no", slot_center_acres_pasture, 0),
     (party_set_slot, ":village_no", slot_center_acres_grain, 0),
     (party_set_slot, ":village_no", slot_center_acres_olives, 0),
@@ -8415,248 +8500,378 @@ scripts = [
       (assign, ":village_is_at_desert", 0),
     (try_end),
 
-    # EXPERIMENTAL
-
-    (try_begin),
-      (eq, "$cheat_mode", DPLMC_DEBUG_EXPERIMENTAL),
-    (else_try),
-    (try_end),
-
-    #cattle production - 20..100 but bias towards 40 average, lower in desert
-    (call_script, "script_dplmc_set_random_production", ":village_no", slot_center_head_cattle, 20, 100, -1),
+    # cattle/sheep/pigs/chicken
+    (call_script, "script_dplmc_set_random_production", ":village_no", slot_center_head_cattle, 15, 45, -1),
+    (call_script, "script_dplmc_set_random_production", ":village_no", slot_center_head_sheep, 25, 65, -1),
+    (call_script, "script_dplmc_set_random_production", ":village_no", slot_center_head_pigs, 15, 45, -1),
+    (call_script, "script_dplmc_set_random_production", ":village_no", slot_center_head_chicken, 25, 65, -1),
     (try_begin),
       (eq, ":village_is_at_desert", 1),
+      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_head_chicken, 15, 40, -1),
       (call_script, "script_dplmc_divide_production_by", ":village_no", slot_center_head_cattle, 8),
-    (try_end),
-
-    #sheep production - 40..180 but bias towards 75 average, lower in desert
-    (call_script, "script_dplmc_set_random_production", ":village_no", slot_center_head_sheep, 40, 180, -1),
-    (try_begin),
-      (eq, ":village_is_at_desert", 1),
       (call_script, "script_dplmc_divide_production_by", ":village_no", slot_center_head_sheep, 4),
+      (party_set_slot, ":village_no", slot_center_head_pigs, 0), # no pigs in desert
     (try_end),
 
-    #pigs production - 10..30 no bias, none in desert
-    (call_script, "script_dplmc_set_random_production", ":village_no", slot_center_head_pigs, 10, 30, 0),
+    #grain production - bias towards lower end of range, lower in desert
+    (call_script, "script_dplmc_set_random_production", ":village_no", slot_center_acres_grain, 2000, 8000, -1),
     (try_begin),
       (eq, ":village_is_at_desert", 1),
-      (party_set_slot, ":village_no", slot_center_head_pigs, 0),
+      (call_script, "script_dplmc_divide_production_by", ":village_no", slot_center_acres_grain, 4),
     (try_end),
 
-    #grain production - average : 7000, min : 0, max : 28000
-    (call_script, "script_dplmc_set_random_production", ":village_no", slot_center_acres_grain, 0, 28000, -1),
-    (try_begin),
-      (eq, ":village_is_at_desert", 1),
-      (call_script, "script_dplmc_divide_production_by", ":village_no", slot_center_acres_grain, 5),
-    (try_end),
-
-    #grape production - average : 400, min : 0, max : 1600
-    (call_script, "script_dplmc_set_random_production", ":village_no", slot_center_acres_vineyard, 0, 2600, -1),
+    #grape production - bias towards lower end of range, lower in desert
+    (call_script, "script_dplmc_set_random_production", ":village_no", slot_center_acres_vineyard, 0, 80, -1),
     (try_begin),
       (eq, ":village_is_at_desert", 1),
       (call_script, "script_dplmc_divide_production_by", ":village_no", slot_center_acres_vineyard, 6),
     (try_end),
 
-    #olive production - average : 400, min : 0, max : 1600
-    (call_script, "script_dplmc_set_random_production", ":village_no", slot_center_acres_olives, 0, 1600, -1),
+    #olive production - bias towards lower end of range, lower in desert
+    (call_script, "script_dplmc_set_random_production", ":village_no", slot_center_acres_olives, 0, 100, -1),
     (try_begin),
       (eq, ":village_is_at_desert", 1),
       (call_script, "script_dplmc_divide_production_by", ":village_no", slot_center_acres_olives, 3),
     (try_end),
 
-    #honey production - 0..2, except for desert (zero production)
-    (call_script, "script_dplmc_set_random_production", ":village_no", slot_center_apiaries, 0, 2, -1),
+    #honey production - bias towards lower end of range, except for desert (minimal production)
+    (call_script, "script_dplmc_set_random_production", ":village_no", slot_center_apiaries, 2, 10, -1),
     (try_begin),
       (eq, ":village_is_at_desert", 1),
-      (party_set_slot, ":village_no", slot_center_apiaries, 0),
+      (call_script, "script_dplmc_set_random_production", ":village_no", slot_center_apiaries, 0, 4, -1),
     (try_end),
 
     #cabbage and fruit production - except for desert (minimal production)
-    (call_script, "script_dplmc_set_random_production", ":village_no", slot_center_household_gardens, 1, 5, 0),
-    (call_script, "script_dplmc_set_random_production", ":village_no", slot_center_acres_fruit_trees, 0, 400, -1),
+    (call_script, "script_dplmc_set_random_production", ":village_no", slot_center_household_gardens, 4, 12, 0),
+    (call_script, "script_dplmc_set_random_production", ":village_no", slot_center_acres_fruit_trees, 100, 400, -1),
     (try_begin),
       (eq, ":village_is_at_desert", 1),
-      (party_set_slot, ":village_no", slot_center_household_gardens, 1),
-      (party_set_slot, ":village_no", slot_center_acres_fruit_trees, 0),
+      (call_script, "script_dplmc_set_random_production", ":village_no", slot_center_household_gardens, 1, 5, -1),
+      (call_script, "script_dplmc_set_random_production", ":village_no", slot_center_acres_fruit_trees, 50, 250, -1),
     (try_end),
 
-    #bread production - 0..2
-    (call_script, "script_dplmc_set_random_production", ":village_no", slot_center_mills, 0, 2, 0),
+    #bread production
+    (call_script, "script_dplmc_set_random_production", ":village_no", slot_center_mills, 2, 6, -1),
 
-    #pottery production - 1..4, except for desert which is x5
-    (call_script, "script_dplmc_set_random_production", ":village_no", slot_center_pottery_kilns, 1, 4, 0),
+    #pottery production - desert gets a bonus
+    (call_script, "script_dplmc_set_random_production", ":village_no", slot_center_pottery_kilns, 1, 6, -1),
     (try_begin),
       (eq, ":village_is_at_desert", 1),
-      (call_script, "script_dplmc_multiply_production_by", ":village_no", slot_center_pottery_kilns, 5),
+      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_pottery_kilns, 1, 6, -1),
+      (call_script, "script_dplmc_multiply_production_by", ":village_no", slot_center_pottery_kilns, 2),
     (try_end),
 
-    # Now we start boosting villages based on which town center they belong to
+    # Now we start boosting villages based on the closest town center
     # This gives the regional variations to villages
 
-    #Sargoth (village productions : Ambean, Fearichen and Fenada)
+    (assign, ":min_dist", 999999),
+    (assign, ":min_dist_town", -1),
+    (try_for_range, ":cur_town", towns_begin, towns_end),
+      (store_distance_to_party_from_party, ":cur_dist", ":village_no", ":cur_town"),
+      (lt, ":cur_dist", ":min_dist"),
+      (assign, ":min_dist", ":cur_dist"),
+      (assign, ":min_dist_town", ":cur_town"),
+    (try_end),
+
+    #Sargoth
     (try_begin),
-      (party_slot_eq, ":village_no", slot_village_market_town, "p_town_1"),
-      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_acres_flax, 2000, 6000, -1),
-      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_acres_vineyard, 7000, 9000, 0),
+      (eq, "p_town_1", ":min_dist_town"),
+      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_acres_flax, 200, 600, -1),
+      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_linen_looms, 1, 4, -1),
+      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_acres_vineyard, 400, 800, 0),
+      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_mills, 2, 5, -1),
+      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_head_chicken, 8, 20, -1),
+      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_head_pigs, 8, 18, -1),
+      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_silk_farms, 200, 600, -1),
+      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_acres_grain, 800, 3000, -1),
 
-    #Tihr (village productions : Kulum, Haen and Aldelen)
+    #Tihr
     (else_try),
-      (party_slot_eq, ":village_no", slot_village_market_town, "p_town_2"),
-      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_acres_vineyard, 6000, 8000, 1),
-      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_household_gardens, 6, 9, -1),
-      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_salt_pans, 0, 2, -1),
+      (eq, "p_town_2", ":min_dist_town"),
+      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_acres_vineyard, 400, 700, 1),
+      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_household_gardens, 2, 6, -1),
+      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_salt_pans, 0, 3, -1),
+      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_mills, 0, 2, -1),
+      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_head_chicken, 7, 20, -1),
+      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_head_pigs, 3, 8, -1),
+      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_head_cattle, 10, 30, -1),
+      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_silk_farms, 300, 700, -1),
+      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_acres_grain, 900, 2000, -1),
 
-    #Veluca (village productions : Emer, Fedner, Chaeza and Sarimish)
+    #Veluca
     (else_try),
-      (party_slot_eq, ":village_no", slot_village_market_town, "p_town_3"),
-      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_acres_vineyard, 4000, 7000, 0),
-      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_acres_olives, 5000, 8000, 0),
+      (eq, "p_town_3", ":min_dist_town"),
+      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_acres_vineyard, 500, 700, 0),
+      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_acres_olives, 400, 600, 0),
+      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_head_chicken, 10, 28, -1),
+      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_head_sheep, 5, 15, -1),
+      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_mills, 1, 2, -1),
+      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_acres_grain, 300, 1200, 1),
+      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_acres_fruit_trees, 400, 800, -1),
 
-    #Suno (village productions : Ruluns and Lyindah)
+    #Suno
     (else_try),
-      (party_slot_eq, ":village_no", slot_village_market_town, "p_town_4"),
-      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_fur_traps, 1, 3, 0),
-      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_acres_olives, 5000, 8000, 0),
+      (eq, "p_town_4", ":min_dist_town"),
+      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_fur_traps, 1, 8, 0),
+      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_acres_olives, 200, 400, 0),
+      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_head_chicken, 9, 24, -1),
+      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_head_pigs, 4, 10, -1),
+      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_head_cattle, 8, 20, -1),
+      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_mills, 0, 1, -1),
+      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_acres_grain, 1400, 3200, -1),
 
-    #Jelkala (village productions : Buvran, Ruldi and Chelez)
+    #Jelkala
     (else_try),
-      (party_slot_eq, ":village_no", slot_village_market_town, "p_town_5"),
-      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_silk_farms, 800, 2200, 0),
-      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_kirmiz_farms, 800, 2200, 0),
+      (eq, "p_town_5", ":min_dist_town"),
+      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_silk_farms, 200, 600, 0),
+      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_kirmiz_farms, 200, 600, 0),
+      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_head_chicken, 9, 25, -1),
+      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_head_pigs, 3, 12, -1),
+      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_head_sheep, 5, 15, -1),
+      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_mills, 0, 2, -1),
+      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_acres_grain, 600, 1200, -1),
 
-    #Praven (village productions : Azgad, Veidar, Elberl and Gisim)
+    #Praven
     (else_try),
-      (party_slot_eq, ":village_no", slot_village_market_town, "p_town_6"),
-      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_acres_flax, 2500, 6500, 0),
+      (eq, "p_town_6", ":min_dist_town"),
+      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_acres_flax, 300, 650, 0),
+      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_linen_looms, 1, 3, -1),
       (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_breweries, 3, 6, 0),
+      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_mills, 1, 3, -1),
+      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_head_chicken, 6, 20, -1),
+      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_head_sheep, 5, 12, -1),
+      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_acres_grain, 1600, 3200, 0),
 
-    #Uxkhal (village productions : Nomar, Ibiran and Tahlberl)
+    #Uxkhal
     (else_try),
-      (party_slot_eq, ":village_no", slot_village_market_town, "p_town_7"),
-      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_fur_traps, 1, 2, 0),
-      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_acres_olives, 7000, 9000, -1),
-      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_apiaries, 5, 10, 1),
+      (eq, "p_town_7", ":min_dist_town"),
+      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_fur_traps, 1, 8, 1),
+      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_acres_olives, 500, 800, -1),
+      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_apiaries, 2, 8, 1),
+      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_head_chicken, 12, 25, -1),
+      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_head_sheep, 3, 12, -1),
+      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_mills, 0, 1, -1),
+      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_acres_grain, 1400, 2800, -1),
+      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_acres_fruit_trees, 100, 200, 0),
 
-    #Reyvadin (village productions : Ulburban and Ayyike)
+    #Reyvadin
     (else_try),
-      (party_slot_eq, ":village_no", slot_village_market_town, "p_town_8"),
-      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_fur_traps, 1, 2, 0),
+      (eq, "p_town_8", ":min_dist_town"),
+      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_fur_traps, 4, 8, 0),
       (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_head_cattle, 50, 150, -1),
-      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_iron_deposits, 1, 5, -1),
+      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_iron_deposits, 1, 4, -1),
+      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_head_chicken, 12, 30, -1),
+      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_head_pigs, 3, 8, -1),
+      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_head_sheep, 8, 15, -1),
+      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_head_cattle, 12, 25, -1),
+      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_acres_olives, 100, 300, 0),
+      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_acres_grain, 1800, 3600, -1),
+      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_household_gardens, 1, 3, -1),
 
-    #Khudan (village productions : Uslum, Shulus and Tismirr)
+    #Khudan
     (else_try),
-      (party_slot_eq, ":village_no", slot_village_market_town, "p_town_9"),
-      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_iron_deposits, 0, 1, -1),
-      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_fur_traps, 1, 4, 1),
+      (eq, "p_town_9", ":min_dist_town"),
+      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_iron_deposits, 0, 2, -1),
+      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_fur_traps, 6, 12, 1),
+      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_acres_grain, 800, 1500, -1),
+      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_mills, 2, 5, -1),
+      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_head_pigs, 4, 15, -1),
+      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_head_chicken, 15, 30, -1),
 
-    #Tulga (village productions : Dusturil and Dashbigha)
+    #Tulga
     (else_try),
-      (party_slot_eq, ":village_no", slot_village_market_town, "p_town_10"),
+      (eq, "p_town_10", ":min_dist_town"),
       (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_head_sheep, 50, 150, 1),
       (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_salt_pans, 0, 1, -1),
-      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_fur_traps, 1, 3, -1),
+      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_fur_traps, 1, 6, -1),
       (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_apiaries, 5, 10, 1),
+      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_household_gardens, 1, 3, -1),
       (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_acres_fruit_trees, 200, 400, 1),
+      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_acres_grain, 1400, 2600, -1),
+      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_mills, 2, 5, -1),
+      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_head_chicken, 8, 20, -1),
+      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_head_sheep, 4, 15, -1),
 
-    #Curaw (village productions : Bazeck and Rebache)
+    #Curaw
     (else_try),
-      (party_slot_eq, ":village_no", slot_village_market_town, "p_town_11"),
-      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_iron_deposits, 8, 12, 1),
-      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_fur_traps, 1, 2, 0),
-      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_silk_farms, 400, 800, -1),
+      (eq, "p_town_11", ":min_dist_town"),
+      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_iron_deposits, 6, 9, -1),
+      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_acres_grain, 800, 2600, -1),
+      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_mills, 1, 2, -1),
+      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_fur_traps, 1, 6, 0),
+      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_silk_farms, 300, 800, -1),
+      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_head_chicken, 9, 30, -1),
+      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_head_pigs, 4, 15, -1),
 
-    #Wercheg (village productions : Ruvar and Odasan)
+    #Wercheg
     (else_try),
-      (party_slot_eq, ":village_no", slot_village_market_town, "p_town_12"),
-      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_acres_vineyard, 6000, 10000, 1),
-      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_household_gardens, 3, 5, 0),
-      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_salt_pans, 1, 2, 1),
-      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_iron_deposits, 0, 2, -1),
-      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_silk_farms, 400, 800, -1),
+      (eq, "p_town_12", ":min_dist_town"),
+      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_acres_vineyard, 300, 750, -1),
+      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_acres_grain, 1600, 3600, 0),
+      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_mills, 1, 3, -1),
+      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_apiaries, 1, 5, -1),
+      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_household_gardens, 2, 5, 0),
+      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_salt_pans, 1, 4, -1),
+      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_iron_deposits, 0, 4, -1),
+      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_silk_farms, 200, 800, -1),
+      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_head_chicken, 6, 18, -1),
+      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_head_pigs, 3, 12, -1),
+      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_kirmiz_farms, 250, 800, -1),
+      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_acres_fruit_trees, 200, 600, 0),
 
-    #Rivacheg (village productions : Shapeshte, Vezin and Fisdnar)
+    #Rivacheg
     (else_try),
-      (party_slot_eq, ":village_no", slot_village_market_town, "p_town_13"),
-      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_fur_traps, 1, 3, 1),
-      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_head_cattle, 50, 100, 1),
+      (eq, "p_town_13", ":min_dist_town"),
+      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_fur_traps, 2, 6, 1),
+      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_head_cattle, 10, 30, 1),
+      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_head_chicken, 20, 45, -1),
+      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_head_pigs, 8, 18, -1),
+      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_head_sheep, 3, 12, -1),
       (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_iron_deposits, 0, 1, -1),
-      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_silk_farms, 1200, 3000, -1),
+      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_silk_farms, 200, 900, -1),
+      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_silk_looms, 0, 3, -1),
+      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_kirmiz_farms, 200, 800, -1),
+      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_mills, 2, 4, -1),
 
-    #Halmar (village productions : Peshmi)
+    #Halmar
     (else_try),
-      (party_slot_eq, ":village_no", slot_village_market_town, "p_town_14"),
-      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_acres_grain, 30000, 50000, -1),
-      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_mills, 3, 8, -1),
-      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_household_gardens, 1, 2, -1),
+      (eq, "p_town_14", ":min_dist_town"),
+      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_acres_grain, 1600, 4200, -1),
+      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_mills, 1, 4, -1),
+      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_household_gardens, 1, 3, -1),
+      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_head_sheep, 1, 8, -1),
+      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_head_chicken, 8, 16, -1),
+      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_acres_olives, 100, 300, 0),
+      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_apiaries, 1, 3, -1),
 
-    #Yalen (village productions : Ilvia, Glunmar, Epeshe and Istiniar)
+    #Yalen
     (else_try),
-      (party_slot_eq, ":village_no", slot_village_market_town, "p_town_15"),
-      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_acres_vineyard, 7000, 9000, 1),
-      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_acres_olives, 7000, 9000, 1),
+      (eq, "p_town_15", ":min_dist_town"),
+      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_acres_vineyard, 600, 900, 0),
+      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_acres_olives, 400, 700, 1),
+      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_apiaries, 1, 3, -1),
       (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_household_gardens, 3, 5, 1),
+      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_head_sheep, 1, 8, -1),
+      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_head_chicken, 10, 25, -1),
 
-    #Dhirim (village productions : Burglen, Amere, Ushkuru, Tshibtin and Yalibe)
+    #Dhirim
     (else_try),
-      (party_slot_eq, ":village_no", slot_village_market_town, "p_town_16"),
-      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_acres_grain, 35000, 45000, 0),
-      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_iron_deposits, 1, 3, 0),
-      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_mills, 4, 8, 0),
-      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_household_gardens, 1, 2, -1),
+      (eq, "p_town_16", ":min_dist_town"),
+      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_acres_grain, 4500, 9500, -1),
+      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_iron_deposits, 1, 3, -1),
+      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_mills, 3, 6, 0),
+      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_household_gardens, 1, 3, -1),
+      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_head_chicken, 7, 25, -1),
+      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_head_sheep, 3, 12, -1),
 
-    #Ichamur (village productions : Ada Kulun and Drigh Aban)
+    #Ichamur
     (else_try),
-      (party_slot_eq, ":village_no", slot_village_market_town, "p_town_17"),
-      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_acres_grain, 15000, 20000, -1),
-      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_fur_traps, 1, 2, -1),
+      (eq, "p_town_17", ":min_dist_town"),
+      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_acres_grain, 1800, 3800, -1),
+      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_mills, 1, 3, 0),
+      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_fur_traps, 1, 4, -1),
       (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_apiaries, 5, 10, 1),
       (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_acres_fruit_trees, 700, 1200, 1),
+      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_head_pigs, 5, 16, -1),
+      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_head_cattle, 6, 25, -1),
+      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_head_chicken, 8, 25, -1),
+      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_head_sheep, 3, 12, -1),
 
-    #Narra (village productions : Zagush and Kedelke)
+    #Narra
     (else_try),
-      (party_slot_eq, ":village_no", slot_village_market_town, "p_town_18"),
-      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_acres_grain, 12000, 18000, -1),
-      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_iron_deposits, 1, 3, 0),
-      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_apiaries, 5, 10, 1),
-      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_acres_flax, 2000, 4000, 1),
-      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_acres_fruit_trees, 300, 600, 1),
+      (eq, "p_town_18", ":min_dist_town"),
+      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_acres_grain, 2500, 4800, 0),
+      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_iron_deposits, 0, 2, -1),
+      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_apiaries, 3, 6, 1),
+      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_acres_flax, 800, 3000, 1),
+      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_acres_fruit_trees, 400, 800, 1),
+      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_mills, 2, 5, -1),
+      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_head_chicken, 8, 18, 0),
+      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_head_sheep, 4, 12, -1),
 
-    #Shariz (village productions : Ayn Assuadi, Dhibbain, Qalyut, Tilimsal and Rushdigh)
+    #Shariz
     (else_try),
-      (party_slot_eq, ":village_no", slot_village_market_town, "p_town_19"),
-      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_acres_grain, 3000, 6000, -1),
-      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_acres_flax, 500, 2500, -1),
-      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_acres_olives, 1000, 5000, 1),
-      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_acres_dates, 2000, 5000, -1),
+      (eq, "p_town_19", ":min_dist_town"),
+      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_acres_grain, 1600, 2800, -1),
+      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_acres_flax, 300, 1200, -1),
+      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_linen_looms, 0, 4, -1),
+      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_acres_olives, 100, 400, 1),
+      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_acres_dates, 200, 500, -1),
       (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_salt_pans, 1, 2, -1),
+      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_mills, 1, 3, -1),
+      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_head_chicken, 7, 20, 1),
+      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_apiaries, 1, 3, -1),
 
-    #Durquba (village productions : Tamnuh and Sekhtem)
+    #Durquba
     (else_try),
-      (party_slot_eq, ":village_no", slot_village_market_town, "p_town_20"),
-      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_acres_grain, 1500, 3000, -1),
-      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_acres_dates, 4000, 8000, 1),
+      (eq, "p_town_20", ":min_dist_town"),
+      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_acres_grain, 800, 1600, -1),
+      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_acres_dates, 400, 800, 1),
       (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_salt_pans, 0, 2, -1),
-      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_acres_olives, 500, 3000, -1),
+      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_acres_olives, 200, 500, -1),
+      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_head_chicken, 8, 15, -1),
+      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_head_sheep, 3, 12, -1),
+      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_mills, 1, 3, -1),
 
-    #Ahmerrad (village productions : Mawiti, Uzgha and Mijayet)
+    #Ahmerrad
     (else_try),
-      (party_slot_eq, ":village_no", slot_village_market_town, "p_town_21"),
-      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_acres_grain, 1500, 3000, -1),
-      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_acres_dates, 2000, 4000, 0),
-      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_kirmiz_farms, 800, 3000, -1),
+      (eq, "p_town_21", ":min_dist_town"),
+      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_acres_grain, 600, 1200, -1),
+      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_acres_dates, 100, 400, 0),
+      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_kirmiz_farms, 200, 400, -1),
+      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_head_chicken, 8, 15, -1),
+      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_head_sheep, 6, 15, -1),
 
-    #Bariyye (village productions : Fishara and Iqbayl)
+    #Bariyye
     (else_try),
-      (party_slot_eq, ":village_no", slot_village_market_town, "p_town_22"),
-      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_acres_grain, 1000, 3000, -1),
-      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_acres_flax, 500, 2500, -1),
-      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_acres_dates, 1500, 3500, 1),
-      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_salt_pans, 0, 3, -1),
-      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_kirmiz_farms, 2000, 3500, -1),
+      (eq, "p_town_22", ":min_dist_town"),
+      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_acres_grain, 500, 800, -1),
+      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_acres_flax, 200, 500, -1),
+      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_acres_dates, 200, 450, 1),
+      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_salt_pans, 0, 5, -1),
+      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_kirmiz_farms, 300, 600, -1),
+      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_head_chicken, 9, 15, 1),
+      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_head_sheep, 5, 18, -1),
 
     (try_end),
   (try_end),
+
+  #Ocean and river villages, new map
+  (call_script, "script_dplmc_add_random_production", "p_village_1", slot_center_fishing_fleet, 8, 15, 0), #Yaragar
+  (call_script, "script_dplmc_add_random_production", "p_village_3", slot_center_fishing_fleet, 8, 18, 1), #Azgad
+  (call_script, "script_dplmc_add_random_production", "p_village_5", slot_center_fishing_fleet, 10, 20, 1), #Kulum
+
+  (call_script, "script_dplmc_add_random_production", "p_village_8", slot_center_fishing_fleet, 10, 20, -1), #Haen
+  (call_script, "script_dplmc_add_random_production", "p_village_9", slot_center_fishing_fleet, 10, 15, 0), #Buvran
+
+  (call_script, "script_dplmc_add_random_production", "p_village_9", slot_center_fishing_fleet, 10, 18, 0), #Uslum
+  (call_script, "script_dplmc_add_random_production", "p_village_9", slot_center_fishing_fleet, 8, 15, -1), #Bazeck
+  (call_script, "script_dplmc_add_random_production", "p_village_9", slot_center_fishing_fleet, 8, 15, -1), #Ilvia
+  (call_script, "script_dplmc_add_random_production", "p_village_9", slot_center_fishing_fleet, 8, 15, -1), #Glunmar
+
+  (call_script, "script_dplmc_add_random_production", "p_village_30", slot_center_fishing_fleet, 10, 20, 1), #Ruvar
+  (call_script, "script_dplmc_add_random_production", "p_village_31", slot_center_fishing_fleet, 6, 12, 0), #Ambean
+  (call_script, "script_dplmc_add_random_production", "p_village_35", slot_center_fishing_fleet, 8, 16, 0), #Feacharin
+
+  (call_script, "script_dplmc_add_random_production", "p_village_47", slot_center_fishing_fleet, 8, 16, -1), #Epeshe
+  (call_script, "script_dplmc_add_random_production", "p_village_49", slot_center_fishing_fleet, 8, 16, 0), #Tismirr
+
+  (call_script, "script_dplmc_add_random_production", "p_village_51", slot_center_fishing_fleet, 8, 16, 0), #Jelbegi
+  (call_script, "script_dplmc_add_random_production", "p_village_53", slot_center_fishing_fleet, 10, 25, 1), #Balanli
+  (call_script, "script_dplmc_add_random_production", "p_village_56", slot_center_fishing_fleet, 10, 16, 0), #Fenada
+
+  (call_script, "script_dplmc_add_random_production", "p_village_66", slot_center_fishing_fleet, 8, 20, 1), #Fisdnar
+  (call_script, "script_dplmc_add_random_production", "p_village_68", slot_center_fishing_fleet, 8, 16, -1), #Ibdeles
+  (call_script, "script_dplmc_add_random_production", "p_village_69", slot_center_fishing_fleet, 10, 25, 1), #Kwynn (estuary)
+
+  (call_script, "script_dplmc_add_random_production", "p_village_77", slot_center_fishing_fleet, 15, 30, 1), #Rizi - Estuary
+  (call_script, "script_dplmc_add_random_production", "p_village_79", slot_center_fishing_fleet, 8, 16, -1), #Istiniar
+
+  (call_script, "script_dplmc_add_random_production", "p_village_81", slot_center_fishing_fleet, 10, 25, 1), #Odasan
+  (call_script, "script_dplmc_add_random_production", "p_village_85", slot_center_fishing_fleet, 10, 16, 0), #Ismirala
+  (call_script, "script_dplmc_add_random_production", "p_village_87", slot_center_fishing_fleet, 8, 16, -1), #Udiniad
+
+  (call_script, "script_dplmc_add_random_production", "p_village_90", slot_center_fishing_fleet, 15, 25, 1), #Jamiche
 
   #determining village productions which are bounded by castle by nearby village productions which are bounded by a town.
   (try_for_range, ":village_no", villages_begin, villages_end),
@@ -8685,54 +8900,18 @@ scripts = [
     (try_end),
   (try_end),
 
-  #Ocean and river villages, new map
-  (call_script, "script_dplmc_add_random_production", "p_village_1", slot_center_fishing_fleet, 8, 15, 0), #Yaragar
-  (call_script, "script_dplmc_add_random_production", "p_village_3", slot_center_fishing_fleet, 8, 18, 1), #Azgad
-  (call_script, "script_dplmc_add_random_production", "p_village_5", slot_center_fishing_fleet, 10, 20, 1), #Kulum
-
-  (call_script, "script_dplmc_add_random_production", "p_village_8", slot_center_fishing_fleet, 10, 20, -1), #Haen
-  (call_script, "script_dplmc_add_random_production", "p_village_9", slot_center_fishing_fleet, 10, 15, 0), #Buvran
-
-  (call_script, "script_dplmc_add_random_production", "p_village_9", slot_center_fishing_fleet, 10, 18, 0), #Uslum
-  (call_script, "script_dplmc_add_random_production", "p_village_9", slot_center_fishing_fleet, 8, 15, -1), #Bazeck
-  (call_script, "script_dplmc_add_random_production", "p_village_9", slot_center_fishing_fleet, 8, 15, -1), #Ilvia
-  (call_script, "script_dplmc_add_random_production", "p_village_9", slot_center_fishing_fleet, 8, 15, -1), #Glunmar
-
-  (call_script, "script_dplmc_add_random_production", "p_village_30", slot_center_fishing_fleet, 10, 20, 1), #Ruvar
-  (call_script, "script_dplmc_add_random_production", "p_village_31", slot_center_fishing_fleet, 8, 16, 0), #Ambean
-  (call_script, "script_dplmc_add_random_production", "p_village_35", slot_center_fishing_fleet, 8, 16, 0), #Feacharin
-
-  (call_script, "script_dplmc_add_random_production", "p_village_47", slot_center_fishing_fleet, 8, 16, 0), #Epeshe
-  (call_script, "script_dplmc_add_random_production", "p_village_49", slot_center_fishing_fleet, 8, 16, 0), #Tismirr
-
-  (call_script, "script_dplmc_add_random_production", "p_village_51", slot_center_fishing_fleet, 8, 16, 0), #Jelbegi
-  (call_script, "script_dplmc_add_random_production", "p_village_53", slot_center_fishing_fleet, 10, 25, 1), #Balanli
-  (call_script, "script_dplmc_add_random_production", "p_village_56", slot_center_fishing_fleet, 10, 16, 0), #Fenada
-
-  (call_script, "script_dplmc_add_random_production", "p_village_66", slot_center_fishing_fleet, 8, 20, 1), #Fisdnar
-  (call_script, "script_dplmc_add_random_production", "p_village_68", slot_center_fishing_fleet, 8, 16, 0), #Ibdeles
-  (call_script, "script_dplmc_add_random_production", "p_village_69", slot_center_fishing_fleet, 10, 25, 1), #Kwynn (estuary)
-
-  (call_script, "script_dplmc_add_random_production", "p_village_77", slot_center_fishing_fleet, 15, 30, 1), #Rizi - Estuary
-  (call_script, "script_dplmc_add_random_production", "p_village_79", slot_center_fishing_fleet, 8, 16, -1), #Istiniar
-
-  (call_script, "script_dplmc_add_random_production", "p_village_81", slot_center_fishing_fleet, 10, 25, 1), #Odasan
-  (call_script, "script_dplmc_add_random_production", "p_village_85", slot_center_fishing_fleet, 10, 16, 0), #Ismirala
-  (call_script, "script_dplmc_add_random_production", "p_village_87", slot_center_fishing_fleet, 10, 16, 0), #Udiniad
-
-  (call_script, "script_dplmc_add_random_production", "p_village_90", slot_center_fishing_fleet, 15, 25, 1), #Jamiche
-
   #Initialize pastureland
   (try_for_range, ":center", centers_begin, centers_end),
     (party_get_slot, ":head_cattle", ":center", slot_center_head_cattle),
+    (store_mul, ":cattle_acres", ":head_cattle", 4),
     (party_get_slot, ":head_sheep", ":center", slot_center_head_sheep),
-    (store_mul, ":num_acres", ":head_cattle", 4),
-    (val_add, ":num_acres", ":head_sheep"),
-    (val_add, ":num_acres", ":head_sheep"),
+    (store_mul, ":sheep_acres", ":head_sheep", 2),
+
+    (store_add, ":num_acres", ":cattle_acres", ":sheep_acres"),
     (val_mul, ":num_acres", 6),
     (val_div, ":num_acres", 5),
 
-    (store_random_in_range, ":random", 60, 150),
+    (store_random_in_range, ":random", 70, 160), # percentage of original
     (val_mul, ":num_acres", ":random"),
     (val_div, ":num_acres", 100),
 
@@ -8740,22 +8919,12 @@ scripts = [
   (try_end),
 
   #Initialize prices based on production, etc
-  (try_for_range, ":unused", 10, 20), #15 cycles = 45 days. For a village with -20 production, this should lead to approximate +1000, modified
+  (assign, ":cheat_mode_save", "$cheat_mode"),
+  (assign, "$cheat_mode", DPLMC_CHEAT_DISABLED), # disable any debug output
+  (try_for_range, ":unused", 0, 90), #2 cycles = 1 day, but only 25% of goods get updated each day
     (call_script, "script_update_trade_good_prices"), #changes prices based on production
   (try_end),
-
-  #Initialize prosperity based on final prices
-  (try_for_range, ":center_no", centers_begin, centers_end),
-    (neg|is_between, ":center_no", castles_begin, castles_end),
-    (store_random_in_range, ":random_prosperity_adder", -10, 10),
-    (call_script, "script_get_center_ideal_prosperity", ":center_no"),
-    (assign, ":prosperity", reg0),
-    (val_add, ":prosperity", ":random_prosperity_adder"),
-    (val_clamp, ":prosperity", 0, 100),
-    (party_set_slot, ":center_no", slot_town_prosperity, ":prosperity"),
-  (try_end),
-
-  (call_script, "script_calculate_castle_prosperities_by_using_its_villages"),
+  (assign, "$cheat_mode", ":cheat_mode_save"),
 ]),
 
   #script_initialize_all_scene_prop_slots
@@ -16125,161 +16294,253 @@ scripts = [
   #script_update_trade_good_prices
   # INPUT: none
   ("update_trade_good_prices",
-    [
-      (try_for_range, ":center_no", centers_begin, centers_end),
-        (this_or_next|is_between, ":center_no", towns_begin, towns_end),
-        (is_between, ":center_no", villages_begin, villages_end),
-        (call_script, "script_update_trade_good_price_for_party", ":center_no"),
-      (try_end),
+  [
+    (try_for_range, ":center_no", centers_begin, centers_end),
+      (this_or_next|is_between, ":center_no", towns_begin, towns_end),
+      (is_between, ":center_no", villages_begin, villages_end),
+      (call_script, "script_update_trade_good_price_for_party", ":center_no"),
+    (try_end),
 
-      (try_for_range, ":cur_good", trade_goods_begin, trade_goods_end),
+    (try_for_range, ":cur_good", trade_goods_begin, trade_goods_end),
 	    (assign, ":total_price", 0),
-		(assign, ":total_constants", 0),
+		  (assign, ":total_constants", 0),
 
 	    (try_for_range, ":center_no", centers_begin, centers_end),
-          (this_or_next|is_between, ":center_no", towns_begin, towns_end),
-          (is_between, ":center_no", villages_begin, villages_end),
+        (this_or_next|is_between, ":center_no", towns_begin, towns_end),
+        (is_between, ":center_no", villages_begin, villages_end),
 
-          (store_sub, ":cur_good_price_slot", ":cur_good", trade_goods_begin),
-          (val_add, ":cur_good_price_slot", slot_town_trade_good_prices_begin),
-          (party_get_slot, ":cur_price", ":center_no", ":cur_good_price_slot"),
+        (store_sub, ":cur_good_price_slot", ":cur_good", trade_goods_begin),
+        (val_add, ":cur_good_price_slot", slot_town_trade_good_prices_begin),
+        (party_get_slot, ":cur_price", ":center_no", ":cur_good_price_slot"),
 
-		  (try_begin),
-		    (is_between, ":center_no", towns_begin, towns_end),
-			(assign, ":constant", 5),
-          (else_try),
-		    (assign, ":constant", 1),
+		    (try_begin),
+		      (is_between, ":center_no", towns_begin, towns_end),
+			    (assign, ":constant", 5),
+        (else_try),
+		      (assign, ":constant", 1),
+		    (try_end),
+
+        (val_mul, ":cur_price", ":constant"),
+
+        (val_add, ":total_price", ":cur_price"),
+        (val_add, ":total_constants", ":constant"),
 		  (try_end),
 
-		  (val_mul, ":cur_price", ":constant"),
+		  (try_for_range, ":center_no", centers_begin, centers_end),
+        (this_or_next|is_between, ":center_no", towns_begin, towns_end),
+        (is_between, ":center_no", villages_begin, villages_end),
 
-		  (val_add, ":total_price", ":cur_price"),
-		  (val_add, ":total_constants", ":constant"),
-		(try_end),
+        (store_sub, ":cur_good_price_slot", ":cur_good", trade_goods_begin),
+        (val_add, ":cur_good_price_slot", slot_town_trade_good_prices_begin),
+        (party_get_slot, ":cur_price", ":center_no", ":cur_good_price_slot"),
 
-		(try_for_range, ":center_no", centers_begin, centers_end),
-          (this_or_next|is_between, ":center_no", towns_begin, towns_end),
-          (is_between, ":center_no", villages_begin, villages_end),
+        (val_mul, ":cur_price", 1000),
+        (val_mul, ":cur_price", ":total_constants"),
+        (val_div, ":cur_price", ":total_price"),
 
-          (store_sub, ":cur_good_price_slot", ":cur_good", trade_goods_begin),
-          (val_add, ":cur_good_price_slot", slot_town_trade_good_prices_begin),
-          (party_get_slot, ":cur_price", ":center_no", ":cur_good_price_slot"),
-
-		  (val_mul, ":cur_price", 1000),
-		  (val_mul, ":cur_price", ":total_constants"),
-		  (val_div, ":cur_price", ":total_price"),
-
-		  (val_clamp, ":cur_price", minimum_price_factor, maximum_price_factor),
-		  (party_set_slot, ":center_no", ":cur_good_price_slot", ":cur_price"),
-		(try_end),
-      (try_end),
+		    (val_clamp, ":cur_price", minimum_price_factor, maximum_price_factor),
+		    (party_set_slot, ":center_no", ":cur_good_price_slot", ":cur_price"),
+		  (try_end),
+    (try_end),
   ]),
 
   #script_update_trade_good_price_for_party
+  # updates 1/4 of trade goods at a center per pass
   # INPUT: arg1 = party_no
-  #Called once every 72 hours
   ("update_trade_good_price_for_party",
-    [
-      (store_script_param, ":center_no", 1),
-      (try_for_range, ":cur_good", trade_goods_begin, trade_goods_end),
-        (store_sub, ":cur_good_price_slot", ":cur_good", trade_goods_begin),
-        (val_add, ":cur_good_price_slot", slot_town_trade_good_prices_begin),
-		(party_get_slot, ":cur_price", ":center_no", ":cur_good_price_slot"),
+  [
+    (store_script_param, ":center_no", 1),
 
-        (call_script, "script_center_get_production", ":center_no", ":cur_good"),
-		(assign, ":production", reg0),
+    (try_for_range, ":cur_good", trade_goods_begin, trade_goods_end),
+      (store_random_in_range, ":chance_of_adjustment", 0, 100),
+      (lt, ":chance_of_adjustment", 25), # 25% of goods per center get adjusted each pass
 
-        (call_script, "script_center_get_consumption", ":center_no", ":cur_good"),
-		(assign, ":consumption", reg0),
+      (store_sub, ":cur_good_price_slot", ":cur_good", trade_goods_begin),
+      (val_add, ":cur_good_price_slot", slot_town_trade_good_prices_begin),
+      (party_get_slot, ":cur_price", ":center_no", ":cur_good_price_slot"),
+      (assign, ":market_price", ":cur_price"),
 
-		#OZANDEBUG
-		#(assign, reg1, ":production"),
-		#(assign, reg2, ":consumption"),
-		#(str_store_party_name, s1, ":center_no"),
-		#(str_store_item_name, s2, ":cur_good"),
+      (call_script, "script_center_get_production", ":center_no", ":cur_good"),
+      (assign, ":production", reg0),
+      (try_begin),
+        (is_between, ":center_no", towns_begin, towns_end),
+        (call_script, "script_dplmc_center_get_total_village_production", ":center_no", ":cur_good"),
+        (assign, ":village_production", reg4),
+        (val_div, ":village_production", 2), # plus 1/2 all village production that made it to town
+        (val_add, ":production", ":village_production"),
+      (else_try),
+        (is_between, ":center_no", villages_begin, villages_end),
+        (party_get_slot, ":market_town", ":center_no", slot_village_market_town),
+        (party_get_slot, ":market_price", ":market_town", ":cur_good_price_slot"),
+        (call_script, "script_dplmc_center_get_market_town_production", ":market_town", ":cur_good"),
+        (assign, ":market_production", reg5),
+        (val_div, ":market_production", 2), # plus 1/2 local market production
+        (val_add, ":production", ":market_production"),
+      (try_end),
 
-		(val_sub, ":production", ":consumption"),
+      (call_script, "script_center_get_consumption", ":center_no", ":cur_good"),
+      (assign, ":consumption", reg0),
+      (val_max, ":consumption", 0),
 
-		#Change average production x 2(1+random(2)) (was average 4, random(8)) for excess demand
-        (try_begin),
-		  #supply is greater than demand
-          (gt, ":production", 0),
-		  (store_mul, ":change_factor", ":production", 1), #price will be decreased by his factor
-		  (store_random_in_range, ":random_change", 0, ":change_factor"),
-		  (val_add, ":random_change", ":change_factor"),
-		  (val_add, ":random_change", ":change_factor"),
+      # calculate shortfall/windfall as a percentage of consumption
+      # the old code assumed the raw magnitude of the difference mattered
+      # but if a center needs n=100 and gets n=90 (-10), that differs from
+      # a center that needs n=500 and gets n=490 (still -10)
+  		(store_sub, ":net_production", ":production", ":consumption"),
+      (assign, ":magnitude_of_change", 3),
+      (try_begin),
+        (gt, ":consumption", 0),
+        (assign, ":magnitude_limit", ":net_production"),
+        (val_abs, ":magnitude_limit"),
+        (val_min, ":magnitude_limit", 11),
+        (store_mul, ":net_production_x100", ":net_production", 100),
+        (val_abs, ":net_production_x100"),
+        (val_div, ":net_production_x100", ":consumption"), # percentage (like 57)
+        (assign, ":magnitude_of_change", ":net_production_x100"), 
+        (convert_to_fixed_point, ":magnitude_of_change"),
+        (store_sqrt, ":magnitude_of_change", ":magnitude_of_change"),
+        (convert_from_fixed_point, ":magnitude_of_change"),
+        (val_clamp, ":magnitude_of_change", 0, ":magnitude_limit"),
+      (try_end),
+      (assign, ":net_production_magnitude_boost", 0),
+      (try_begin),
+        (ge, ":consumption", 25), # huge demand (TODO: tie to caladria average?)
+        (lt, ":net_production", 0), # allow more inflation for unmet demand
+        (assign, ":net_production_magnitude_boost", ":net_production"),
+        (val_abs, ":net_production_magnitude_boost"),
+        (convert_to_fixed_point, ":net_production_magnitude_boost"),
+        (store_sqrt, ":net_production_magnitude_boost", ":net_production_magnitude_boost"),
+        (convert_from_fixed_point, ":net_production_magnitude_boost"),
+        (val_clamp, ":net_production_magnitude_boost", 0, 11),
+      (try_end),
+      (val_add, ":magnitude_of_change", ":net_production_magnitude_boost"),
 
-		  #simulation starts
-          (store_sub, ":final_price", ":cur_price", ":random_change"),
-		  (val_clamp, ":final_price", minimum_price_factor, maximum_price_factor),
-		  (try_begin), #Excess of supply decelerates over time, as low price reduces output
-		    #if expected final price is 100 then it will multiply random_change by 0.308x ((100+300)/(1300) = 400/1300).
-			(lt, ":final_price", 1000),
-			(store_add, ":final_price_plus_300", ":final_price", 300),
-			(val_mul, ":random_change", ":final_price_plus_300"),
-			(val_div, ":random_change", 1300),
-		  (try_end),
-          (val_sub, ":cur_price", ":random_change"),
-        (else_try),
-          (lt, ":production", 0),
-		  (store_sub, ":change_factor", 0, ":production"), #price will be increased by his factor
-		  (val_mul, ":change_factor", 1),
-		  (store_random_in_range, ":random_change", 0, ":change_factor"),
-		  (val_add, ":random_change", ":change_factor"),
-		  (val_add, ":random_change", ":change_factor"),
-          (val_add, ":cur_price", ":random_change"),
+      # change price factor based on production vs consumption
+      (assign, ":starting_price", ":cur_price"),
+      (try_begin),
+        (gt, ":net_production", 0), # excess, decrease the price-factor
+        (store_mul, ":change_factor", ":magnitude_of_change", 4), # up to a -40 point swing in factor
+        (store_random_in_range, ":random_change", 0, ":change_factor"),
+        # calculate final price factor
+        (try_begin), # price already below avg, reduce the impact
+          (lt, ":cur_price", average_price_factor),
+          (store_sub, ":amount_below_average", average_price_factor, ":cur_price"),
+          (val_div, ":amount_below_average", 30), # kicks in below 940
+          (gt, ":amount_below_average", 0),
+          (val_div, ":random_change", ":amount_below_average"),
+        (try_end),
+        (val_sub, ":cur_price", ":random_change"),
+        (val_clamp, ":cur_price", minimum_price_factor, maximum_price_factor),
+      (else_try),
+        (lt, ":net_production", 0), # shortfall, increase the price-factor
+        (store_mul, ":change_factor", ":magnitude_of_change", 25), # up to a +250 point swing in factor
+        (store_random_in_range, ":random_change", 0, ":change_factor"),
+        # calculate final price factor
+        (try_begin), # price already above avg, reduce the impact
+          (gt, ":cur_price", average_price_factor),
+          (store_sub, ":amount_above_average", ":cur_price", average_price_factor),
+          (val_div, ":amount_above_average", 200), # kicks in above 1400
+          (gt, ":amount_above_average", 0),
+          (val_div, ":random_change", ":amount_above_average"),
+        (try_end),
+        (val_add, ":cur_price", ":random_change"),
+        (val_clamp, ":cur_price", minimum_price_factor, maximum_price_factor),
+      (try_end),
+
+		  #Price of manufactured goods drift towards primary raw material
+      (try_begin),
+        (item_get_slot, ":raw_material", ":cur_good", slot_item_primary_raw_material),
+        (neq, ":raw_material", 0),
+        (store_sub, ":raw_material_price_slot", ":raw_material", trade_goods_begin),
+        (val_add, ":raw_material_price_slot", slot_town_trade_good_prices_begin),
+
+        (party_get_slot, ":total_raw_material_price", ":center_no", ":raw_material_price_slot"),
+        (val_mul, ":total_raw_material_price", 3),
+        (assign, ":number_of_centers", 3),
+
+        (try_for_range, ":village_no", villages_begin, villages_end),
+          (party_slot_eq, ":village_no", slot_village_market_town, ":center_no"),
+          (party_get_slot, ":raw_material_price", ":village_no", ":raw_material_price_slot"),
+          (val_add, ":total_raw_material_price", ":raw_material_price"),
+          (val_add, ":number_of_centers", 1),
         (try_end),
 
-        #Move price towards average by 3%...
-		#Equilibrium is 33 cycles, or 100 days
-		#Change per cycle is Production x 4
-		#Thus, max differential = -5 x 4 x 33 = -660 for -5
-		(try_begin),
-		  (is_between, ":center_no", villages_begin, villages_end),
+        (store_div, ":average_raw_material_price", ":total_raw_material_price", ":number_of_centers"),
+
+        (gt, ":average_raw_material_price", ":cur_price"),
+        (store_sub, ":raw_material_boost", ":average_raw_material_price", ":cur_price"),
+        (val_div, ":raw_material_boost", 10),
+        (val_add, ":cur_price", ":raw_material_boost"),
+      (try_end),
+
+      #Move price by % of the offset from the "average"...
+		  (try_begin),
+        # villages drift towards the town market price (tilted towards the average_price_factor)
+		    (is_between, ":center_no", villages_begin, villages_end),
+        (store_add, ":market_price_average_price", ":market_price", average_price_factor),
+        (val_add,  ":market_price_average_price", average_price_factor),
+        (val_div, ":market_price_average_price", 3),
+        (store_sub, ":price_difference", ":cur_price", ":market_price_average_price"),
+        (try_begin),
+          # faster drift if cur_price < mkt-avg-price
+          # (800-1000)*80/100 = -160 + 1000 = 840
+          (lt, ":cur_price", ":market_price_average_price"),
+          (val_mul, ":price_difference", 75),
+        (else_try),
+          # (1250-1000)*90/100 = +225 + 1000 = 1225
+          (val_mul, ":price_difference", 90),
+        (try_end),
+        (val_div, ":price_difference", 100),
+        (store_add, ":new_price", ":market_price_average_price", ":price_difference"),
+        (try_begin),
+          (ge, "$cheat_mode", DPLMC_DEBUG_NEVER),
+          (store_distance_to_party_from_party, ":dist_to_main_party", "p_main_party", ":center_no"),
+          (le, ":dist_to_main_party", 8), # limit debug output to towns within range of the player (otherwise too chatty)
+          (str_store_item_name, s20, ":cur_good"),
+          (str_store_party_name, s21, ":center_no"),
+          (assign, reg90, ":market_price"),
+          (assign, reg91, ":market_price_average_price"),
+          (assign, reg92, ":price_difference"),
+          (assign, reg93, ":cur_price"),
+          (assign, reg94, ":new_price"),
+          (display_message, "@{!}{s21}/{s20}: price: {reg93} mkt: {reg90} mpap: {reg91} pd: {reg92} final: {reg94}"),
+        (try_end),
+      (else_try),
+        # towns drift towards the average price factor
         (store_sub, ":price_difference", ":cur_price", average_price_factor),
-          (val_mul, ":price_difference", 96),
+        (try_begin),
+          # faster drift if cur_price < mkt-avg-price
+          # (800-1000)*90/100 = -180 + 1000 = 820
+          (lt, ":cur_price", average_price_factor),
+          (val_mul, ":price_difference", 90),
+        (else_try),
+          # (1800-1000)*95/100 = 760 + 1000 = 1760
+          (val_mul, ":price_difference", 95),
+        (try_end),
         (val_div, ":price_difference", 100),
         (store_add, ":new_price", average_price_factor, ":price_difference"),
-        (else_try),
-          (store_sub, ":price_difference", ":cur_price", average_price_factor),
-          (val_mul, ":price_difference", 96),
-          (val_div, ":price_difference", 100),
-          (store_add, ":new_price", average_price_factor, ":price_difference"),
-        (try_end),
-
-		#Price of manufactured goods drift towards primary raw material
-		(try_begin),
-			(item_get_slot, ":raw_material", ":cur_good", slot_item_primary_raw_material),
-            (neq, ":raw_material", 0),
-	        (store_sub, ":raw_material_price_slot", ":raw_material", trade_goods_begin),
-	        (val_add, ":raw_material_price_slot", slot_town_trade_good_prices_begin),
-
-			(party_get_slot, ":total_raw_material_price", ":center_no", ":raw_material_price_slot"),
-			(val_mul, ":total_raw_material_price", 3),
-            (assign, ":number_of_centers", 3),
-
-			(try_for_range, ":village_no", villages_begin, villages_end),
-			  (party_slot_eq, ":village_no", slot_village_bound_center, ":center_no"),
-			  (party_get_slot, ":raw_material_price", ":village_no", ":raw_material_price_slot"),
-			  (val_add, ":total_raw_material_price", ":raw_material_price"),
-			  (val_add, ":number_of_centers", 1),
-            (try_end),
-
-			(store_div, ":average_raw_material_price", ":total_raw_material_price", ":number_of_centers"),
-
-			(gt, ":average_raw_material_price", ":new_price"),
-			(store_sub, ":raw_material_boost", ":average_raw_material_price", ":new_price"),
-			(val_div, ":raw_material_boost", 10),
-			(val_add, ":new_price", ":raw_material_boost"),
-		(try_end),
-
-        (val_clamp, ":new_price", minimum_price_factor, maximum_price_factor),
-        (party_set_slot, ":center_no", ":cur_good_price_slot", ":new_price"),
-
-		#(assign, reg3, ":new_price"),
-		#(str_store_item_name, s2, ":cur_good"),
-		#(display_log_message, "@DEBUG : {s1}-{s2}, prod:{reg1}, cons:{reg2}, price:{reg3}"),
       (try_end),
+
+      (val_clamp, ":new_price", minimum_price_factor, maximum_price_factor),
+      (party_set_slot, ":center_no", ":cur_good_price_slot", ":new_price"),
+
+      (try_begin),
+        (ge, "$cheat_mode", DPLMC_DEBUG_MIN),
+        (store_distance_to_party_from_party, ":dist_to_main_party", "p_main_party", ":center_no"),
+        (le, ":dist_to_main_party", 8), # limit debug output to towns within range of the player (otherwise too chatty)
+        (str_store_item_name, s20, ":cur_good"),
+        (str_store_party_name, s21, ":center_no"),
+        (assign, reg20, ":production"),
+        (assign, reg21, ":consumption"),
+        (assign, reg22, ":net_production"),
+        (assign, reg23, ":magnitude_of_change"),
+        (assign, reg24, ":starting_price"),
+        (assign, reg25, ":cur_price"),
+        (assign, reg26, ":new_price"),
+        (display_message, "@{!}{s21}/{s20}: {reg20}-{reg21}={reg22} ({reg23} mag) price: {reg24}->{reg25}->{reg26}"),
+      (try_end),
+
+    (try_end),
   ]),
 
   # script_center_get_production -- Returns the production amount for various things
@@ -16287,280 +16548,284 @@ scripts = [
   # Input: 
   #   arg1 = center_no (party ID)
   #   arg2 = cur_good (item ID)
-  # Output: 
-  #   reg0 = modified_production
-  #   reg1 = base_production_modded_by_raw_materials
-  #   reg2 = base_production
+  # Output: (flow: base -> raw mats -> prosperity -> village status -> result)
+  #   reg0 = modified_production (final production value)
+  #   reg1 = production after raw material prices are looked at
+  #   reg2 = base_production (original production value)
+  #   reg3 = production after prosperity check
   ("center_get_production",
-    [
-	#Actually, this could be reset somewhat to yield supply and demand as raw numbers
-	#Demand could be set values for rural and urban
-	#Supply could be based on capital goods -- head of cattle, head of sheep, fish ponds, fishing fleets, acres of grain fields, olive orchards, olive presses, wine presses, mills, smithies, salt pans, potters' kilns, etc
-	#Prosperity would increase both demand and supply
+  [
 		(store_script_param_1, ":center_no"),
 		(store_script_param_2, ":cur_good"),
 
-		(assign, ":base_production", 0),
+		(assign, ":base_cg_prod", 0),
 
 		#Grain products
 		(try_begin),
-			(eq, ":cur_good", "itm_bread"), #Demand = 3000 across Calradia
-			(party_get_slot, ":base_production", ":center_no", slot_center_mills),
-			(val_mul, ":base_production", 20), #one mills per village, five mills per town = 160 mills
+			(eq, ":cur_good", "itm_bread"),
+			(party_get_slot, ":base_cg_prod", ":center_no", slot_center_mills),
+			(val_mul, ":base_cg_prod", 4),
 		(else_try),
-			(eq, ":cur_good", "itm_grain"), #Demand =  3200+, 1600 to mills, 1500 on its own, extra to breweries
-			(party_get_slot, ":base_production", ":center_no", slot_center_acres_grain),
-			(val_div, ":base_production", 125), #10000 acres is the average across Calradia, extra in Swadia, less in snows and steppes, a bit from towns
+			(eq, ":cur_good", "itm_grain"),
+			(party_get_slot, ":base_cg_prod", ":center_no", slot_center_acres_grain),
+			(val_div, ":base_cg_prod", 80),
 		(else_try),
-			(eq, ":cur_good", "itm_ale"), #
-			(party_get_slot, ":base_production", ":center_no", slot_center_breweries),
-			(val_mul, ":base_production", 25),
+			(eq, ":cur_good", "itm_ale"),
+			(party_get_slot, ":base_cg_prod", ":center_no", slot_center_breweries),
+			(val_mul, ":base_cg_prod", 4),
 
 		(else_try),
-			(eq, ":cur_good", "itm_smoked_fish"), #Demand = 20
-			(party_get_slot, ":base_production", ":center_no", slot_center_fishing_fleet),
-			(val_mul, ":base_production", 4), #was originally 5
+			(eq, ":cur_good", "itm_smoked_fish"),
+			(party_get_slot, ":base_cg_prod", ":center_no", slot_center_fishing_fleet),
+			(val_mul, ":base_cg_prod", 2),
 		(else_try),
 			(eq, ":cur_good", "itm_salt"),
-			(party_get_slot, ":base_production", ":center_no", slot_center_salt_pans),
-			(val_mul, ":base_production", 35),
+			(party_get_slot, ":base_cg_prod", ":center_no", slot_center_salt_pans),
+			(val_mul, ":base_cg_prod", 5),
 
 		#Cattle products
 		(else_try),
-			(eq, ":cur_good", "itm_cattle_meat"), #Demand = 5
-			(party_get_slot, ":base_production", ":center_no", slot_center_head_cattle),
-			(val_div, ":base_production", 4), #was 9
+			(eq, ":cur_good", "itm_cattle_meat"),
+			(party_get_slot, ":base_cg_prod", ":center_no", slot_center_head_cattle),
+			(val_div, ":base_cg_prod", 3),
 		(else_try),
-			(eq, ":cur_good", "itm_dried_meat"), #Demand = 15
-			(party_get_slot, ":base_production", ":center_no", slot_center_head_cattle),
-			(val_div, ":base_production", 2), #was 3
-		(else_try),
-			(eq, ":cur_good", "itm_cheese"), 	 #Demand = 10
-			(party_get_slot, ":base_production", ":center_no", slot_center_head_cattle),
+			(eq, ":cur_good", "itm_dried_meat"),
+			(party_get_slot, ":base_cg_prod", ":center_no", slot_center_head_cattle),
+			(val_div, ":base_cg_prod", 3),
 			(party_get_slot, ":sheep_addition", ":center_no", slot_center_head_sheep),
-			(val_div, ":sheep_addition", 2),
-			(val_add, ":base_production", ":sheep_addition"),
-			(party_get_slot, ":gardens", ":center_no", slot_center_household_gardens),
-			(val_mul, ":base_production", ":gardens"),
-			(val_div, ":base_production", 10),
+			(val_div, ":sheep_addition", 4),
+			(val_add, ":base_cg_prod", ":sheep_addition"),
 		(else_try),
-			(eq, ":cur_good", "itm_butter"), 	 #Demand = 2
-			(party_get_slot, ":base_production", ":center_no", slot_center_head_cattle),
-			(party_get_slot, ":gardens", ":center_no", slot_center_household_gardens),
-			(val_mul, ":base_production", ":gardens"),
-			(val_div, ":base_production", 15),
+			(eq, ":cur_good", "itm_cheese"),
+			(party_get_slot, ":base_cg_prod", ":center_no", slot_center_head_cattle),
+			(val_div, ":base_cg_prod", 3),
+			(party_get_slot, ":sheep_addition", ":center_no", slot_center_head_sheep),
+			(val_div, ":sheep_addition", 3),
+			(val_add, ":base_cg_prod", ":sheep_addition"),
+		(else_try),
+			(eq, ":cur_good", "itm_butter"),
+			(party_get_slot, ":base_cg_prod", ":center_no", slot_center_head_cattle),
+			(val_div, ":base_cg_prod", 3),
 
 		(else_try),
-			(eq, ":cur_good", "itm_raw_leather"), 	 #Demand = ??
-			(party_get_slot, ":base_production", ":center_no", slot_center_head_cattle),
-			(val_div, ":base_production", 5),
+			(eq, ":cur_good", "itm_raw_leather"),
+			(party_get_slot, ":base_cg_prod", ":center_no", slot_center_head_cattle),
+			(val_div, ":base_cg_prod", 3),
 			(party_get_slot, ":sheep_addition", ":center_no", slot_center_head_sheep),
-			(val_div, ":sheep_addition", 12),
-			(val_add, ":base_production", ":sheep_addition"),
+			(val_div, ":sheep_addition", 8),
+			(val_add, ":base_cg_prod", ":sheep_addition"),
 			(party_get_slot, ":pigs_addition", ":center_no", slot_center_head_pigs),
-			(val_div, ":pigs_addition", 9),
-      (val_add, ":base_production", ":pigs_addition"),
+			(val_div, ":pigs_addition", 5),
+      (val_add, ":base_cg_prod", ":pigs_addition"),
+			(party_get_slot, ":traps_addition", ":center_no", slot_center_fur_traps),
+			(val_mul, ":traps_addition", 2),
+      (val_add, ":base_cg_prod", ":traps_addition"),
 
 		(else_try),
-			(eq, ":cur_good", "itm_leatherwork"), 	 #Demand = ??
-			(party_get_slot, ":base_production", ":center_no", slot_center_tanneries),
-			(val_mul, ":base_production", 20),
+			(eq, ":cur_good", "itm_leatherwork"),
+			(party_get_slot, ":base_cg_prod", ":center_no", slot_center_tanneries),
+			(val_mul, ":base_cg_prod", 5),
 
 		(else_try),
-			(eq, ":cur_good", "itm_honey"), 	 #Demand = 5
-			(party_get_slot, ":base_production", ":center_no", slot_center_apiaries),
-			(val_mul, ":base_production", 6),
+			(eq, ":cur_good", "itm_honey"),
+			(party_get_slot, ":base_cg_prod", ":center_no", slot_center_apiaries),
+			(val_mul, ":base_cg_prod", 3),
 		(else_try),
-			(eq, ":cur_good", "itm_cabbages"), 	 #Demand = 7
-			(party_get_slot, ":base_production", ":center_no", slot_center_household_gardens),
-			(val_mul, ":base_production", 9),
+			(eq, ":cur_good", "itm_cabbages"),
+			(party_get_slot, ":base_cg_prod", ":center_no", slot_center_household_gardens),
+			(val_mul, ":base_cg_prod", 5),
 		(else_try),
 			(eq, ":cur_good", "itm_apples"),
-			(party_get_slot, ":base_production", ":center_no", slot_center_acres_fruit_trees),
-			(val_div, ":base_production", 120),
+			(party_get_slot, ":base_cg_prod", ":center_no", slot_center_acres_fruit_trees),
+			(val_div, ":base_cg_prod", 15),
 
 		#Sheep products
 		(else_try),
-			(eq, ":cur_good", "itm_sausages"), 	 #Demand = 5
-			(party_get_slot, ":base_production", ":center_no", slot_center_head_sheep), #average of 90 sheep
-			(val_div, ":base_production", 20),
+			(eq, ":cur_good", "itm_sausages"),
+			(party_get_slot, ":base_cg_prod", ":center_no", slot_center_head_sheep),
+			(val_div, ":base_cg_prod", 4),
       (party_get_slot, ":pigs_addition", ":center_no", slot_center_head_pigs),
-			(val_div, ":pigs_addition", 40),
-      (val_add, ":base_production", ":pigs_addition"),
+			(val_div, ":pigs_addition", 2),
+      (val_add, ":base_cg_prod", ":pigs_addition"),
 
 		(else_try),
-			(eq, ":cur_good", "itm_wool"), 	 #(Demand = 0, but 15 averaged out perhaps)
-			(party_get_slot, ":base_production", ":center_no", slot_center_head_sheep), #average of 90 sheep
-			(val_div, ":base_production", 5),
+			(eq, ":cur_good", "itm_wool"),
+			(party_get_slot, ":base_cg_prod", ":center_no", slot_center_head_sheep),
+			(val_div, ":base_cg_prod", 5),
 		(else_try),
-			(eq, ":cur_good", "itm_wool_cloth"), 	 #(Demand = 1500 across Calradia)
-			(party_get_slot, ":base_production", ":center_no", slot_center_wool_looms),
-			(val_mul, ":base_production", 5), #300 across Calradia
+			(eq, ":cur_good", "itm_wool_cloth"),
+			(party_get_slot, ":base_cg_prod", ":center_no", slot_center_wool_looms),
+			(val_mul, ":base_cg_prod", 3),
 
 		(else_try),
 			(eq, ":cur_good", "itm_pork"), 
-			(party_get_slot, ":base_production", ":center_no", slot_center_head_pigs),
-			(val_div, ":base_production", 25),
+			(party_get_slot, ":base_cg_prod", ":center_no", slot_center_head_pigs),
+			(val_div, ":base_cg_prod", 2),
 
 		(else_try),
-			(eq, ":cur_good", "itm_chicken"),
-			(try_begin),
-			  (is_between, ":center_no", villages_begin, villages_end),
-			  (assign, ":base_production", 12),
-			(else_try),
-			  (assign, ":base_production", 0),
-			(try_end),
+			(eq, ":cur_good", "itm_chicken"), 
+			(party_get_slot, ":base_cg_prod", ":center_no", slot_center_head_chicken),
+			(val_div, ":base_cg_prod", 2),
 
 		(else_try),
-			(eq, ":cur_good", "itm_iron"), 	 #Demand = 5, one supplies three smithies
-			(party_get_slot, ":base_production", ":center_no", slot_center_iron_deposits),
-			(val_mul, ":base_production", 10),
+			(eq, ":cur_good", "itm_iron"), 
+			(party_get_slot, ":base_cg_prod", ":center_no", slot_center_iron_deposits),
+			(val_mul, ":base_cg_prod", 5),
 		(else_try),
-			(eq, ":cur_good", "itm_tools"), 	 #Demand = 560 across Calradia
-			(party_get_slot, ":base_production", ":center_no", slot_center_smithies),
-			(val_mul, ":base_production", 3),
+			(eq, ":cur_good", "itm_tools"),
+			(party_get_slot, ":base_cg_prod", ":center_no", slot_center_smithies),
+			(val_mul, ":base_cg_prod", 3),
 
 		#Other artisanal goods
 		(else_try),
-			(eq, ":cur_good", "itm_pottery"), #560 is total demand
-			(party_get_slot, ":base_production", ":center_no", slot_center_pottery_kilns),
-			(val_mul, ":base_production", 5),
+			(eq, ":cur_good", "itm_pottery"),
+			(party_get_slot, ":base_cg_prod", ":center_no", slot_center_pottery_kilns),
+			(val_mul, ":base_cg_prod", 4),
 
 		(else_try),
 			(eq, ":cur_good", "itm_raw_grapes"),
-			(party_get_slot, ":base_production", ":center_no", slot_center_acres_vineyard),
-			(val_div, ":base_production", 100),
+			(party_get_slot, ":base_cg_prod", ":center_no", slot_center_acres_vineyard),
+			(val_div, ":base_cg_prod", 70),
 		(else_try),
 			(eq, ":cur_good", "itm_wine"),
-			(party_get_slot, ":base_production", ":center_no", slot_center_wine_presses),
-			(val_mul, ":base_production", 25),
+			(party_get_slot, ":base_cg_prod", ":center_no", slot_center_wine_presses),
+			(val_mul, ":base_cg_prod", 7),
 		(else_try),
 			(eq, ":cur_good", "itm_raw_olives"),
-			(party_get_slot, ":base_production", ":center_no", slot_center_acres_olives),
-			(val_div, ":base_production", 150),
+			(party_get_slot, ":base_cg_prod", ":center_no", slot_center_acres_olives),
+			(val_div, ":base_cg_prod", 90),
 		(else_try),
 			(eq, ":cur_good", "itm_oil"),
-			(party_get_slot, ":base_production", ":center_no", slot_center_olive_presses),
-			(val_mul, ":base_production", 12),
+			(party_get_slot, ":base_cg_prod", ":center_no", slot_center_olive_presses),
+			(val_mul, ":base_cg_prod", 5),
 
 		#Flax and linen
 		(else_try),
 			(eq, ":cur_good", "itm_linen"),
-			(party_get_slot, ":base_production", ":center_no", slot_center_linen_looms),
-			(val_mul, ":base_production", 5),
+			(party_get_slot, ":base_cg_prod", ":center_no", slot_center_linen_looms),
+			(val_mul, ":base_cg_prod", 5),
 		(else_try),
 			(eq, ":cur_good", "itm_raw_flax"),
-			(party_get_slot, ":base_production", ":center_no", slot_center_acres_flax),
-			(val_div, ":base_production", 80),
+			(party_get_slot, ":base_cg_prod", ":center_no", slot_center_acres_flax),
+			(val_div, ":base_cg_prod", 90),
 		(else_try),
 			(eq, ":cur_good", "itm_velvet"),
-			(party_get_slot, ":base_production", ":center_no", slot_center_silk_looms),
-			(val_mul, ":base_production", 5),
+			(party_get_slot, ":base_cg_prod", ":center_no", slot_center_silk_looms),
+			(val_mul, ":base_cg_prod", 5),
 		(else_try),
 			(eq, ":cur_good", "itm_raw_silk"),
-			(party_get_slot, ":base_production", ":center_no", slot_center_silk_farms),
-			(val_div, ":base_production", 20),
+			(party_get_slot, ":base_cg_prod", ":center_no", slot_center_silk_farms),
+			(val_div, ":base_cg_prod", 15),
 		(else_try),
 			(eq, ":cur_good", "itm_raw_dyes"),
-			(party_get_slot, ":base_production", ":center_no", slot_center_kirmiz_farms),
-			(val_div, ":base_production", 20),
+			(party_get_slot, ":base_cg_prod", ":center_no", slot_center_kirmiz_farms),
+			(val_div, ":base_cg_prod", 15),
 		(else_try),
 			(eq, ":cur_good", "itm_raw_date_fruit"),
-			(party_get_slot, ":base_production", ":center_no", slot_center_acres_dates),
-			(val_div, ":base_production", 120),
+			(party_get_slot, ":base_cg_prod", ":center_no", slot_center_acres_dates),
+			(val_div, ":base_cg_prod", 100),
 		(else_try),
-			(eq, ":cur_good", "itm_furs"), 	 #Demand = 90 across Calradia
-			(party_get_slot, ":base_production", ":center_no", slot_center_fur_traps),
-			(val_mul, ":base_production", 25),
+			(eq, ":cur_good", "itm_furs"),
+			(party_get_slot, ":base_cg_prod", ":center_no", slot_center_fur_traps),
+			(val_mul, ":base_cg_prod", 2),
 
 		(else_try),
 			(eq, ":cur_good", "itm_spice"),
 			(try_begin),
 				(eq, ":center_no", "p_town_10"), #Tulga
-				(assign, ":base_production", 100),
+				(assign, ":base_cg_prod", 20),
 			(else_try),
 				(eq, ":center_no", "p_town_17"), #Ichamur
-				(assign, ":base_production", 50),
+				(assign, ":base_cg_prod", 15),
 			(else_try),
 				(eq, ":center_no", "p_town_19"), #Shariz
-				(assign, ":base_production", 50),
+				(assign, ":base_cg_prod", 30),
 			(else_try),
 				(eq, ":center_no", "p_town_22"), #Bariyye
-				(assign, ":base_production", 50),
+				(assign, ":base_cg_prod", 40),
 			(else_try),
 				(this_or_next|eq, ":center_no", "p_village_11"), #Dusturil (village of Tulga)
 				(eq, ":center_no", "p_village_25"), #Dashbigha (village of Tulga)
-				(assign, ":base_production", 50),
+				(assign, ":base_cg_prod", 25),
 			(else_try),
 				(this_or_next|eq, ":center_no", "p_village_37"), #Ada Kulun (village of Ichlamur)
 				(this_or_next|eq, ":center_no", "p_village_42"), #Dirigh Aban (village of Ichlamur)
 				(this_or_next|eq, ":center_no", "p_village_99"), #Fishara (village of Bariyye)
 				(eq, ":center_no", "p_village_100"), #Iqbayl (village of Bariyye)
-				(assign, ":base_production", 25),
+				(assign, ":base_cg_prod", 15),
 			(try_end),
 		(try_end),
 
-		#Modify production by other goods
-		(assign, ":modified_production", ":base_production"),
+		#Modify production by other goods, higher impact_divisors make things less volatile
+		(assign, ":modified_center_good_production", ":base_cg_prod"),
 		(try_begin),
 			(eq, ":cur_good", "itm_bread"),
-			(call_script, "script_good_price_affects_good_production", ":center_no", "itm_grain", ":base_production", 1),
-			(assign, ":modified_production", reg0),
+			(call_script, "script_good_price_affects_good_production", ":center_no", "itm_grain", ":base_cg_prod", 3),
+			(assign, ":modified_center_good_production", reg0),
 		(else_try),
 			(eq, ":cur_good", "itm_ale"),
-			(call_script, "script_good_price_affects_good_production", ":center_no", "itm_grain", ":base_production", 2),
-			(assign, ":modified_production", reg0),
+			(call_script, "script_good_price_affects_good_production", ":center_no", "itm_grain", ":base_cg_prod", 2),
+			(assign, ":modified_center_good_production", reg0),
 		(else_try),
 			(eq, ":cur_good", "itm_dried_meat"),
-			(call_script, "script_good_price_affects_good_production", ":center_no", "itm_salt", ":base_production", 2),
-			(assign, ":modified_production", reg0),
+			(call_script, "script_good_price_affects_good_production", ":center_no", "itm_salt", ":base_cg_prod", 2),
+			(assign, ":modified_center_good_production", reg0),
 		(else_try),
 			(eq, ":cur_good", "itm_smoked_fish"),
-			(call_script, "script_good_price_affects_good_production", ":center_no", "itm_salt", ":base_production", 2),
-			(assign, ":modified_production", reg0),
+			(call_script, "script_good_price_affects_good_production", ":center_no", "itm_salt", ":base_cg_prod", 3),
+			(assign, ":modified_center_good_production", reg0),
 		(else_try),
 			(eq, ":cur_good", "itm_tools"),
-			(call_script, "script_good_price_affects_good_production", ":center_no", "itm_iron", ":base_production", 1),
-			(assign, ":modified_production", reg0),
+			(call_script, "script_good_price_affects_good_production", ":center_no", "itm_iron", ":base_cg_prod", 1),
+			(assign, ":modified_center_good_production", reg0),
 		(else_try),
 			(eq, ":cur_good", "itm_wool_cloth"),
-			(call_script, "script_good_price_affects_good_production", ":center_no", "itm_wool", ":base_production", 1),
-			(assign, ":modified_production", reg0),
+			(call_script, "script_good_price_affects_good_production", ":center_no", "itm_wool", ":base_cg_prod", 2),
+			(assign, ":modified_center_good_production", reg0),
 		(else_try),
 			(eq, ":cur_good", "itm_wine"),
-			(call_script, "script_good_price_affects_good_production", ":center_no", "itm_raw_grapes", ":base_production", 1),
-			(assign, ":modified_production", reg0),
+			(call_script, "script_good_price_affects_good_production", ":center_no", "itm_raw_grapes", ":base_cg_prod", 1),
+			(assign, ":modified_center_good_production", reg0),
 		(else_try),
 			(eq, ":cur_good", "itm_oil"),
-			(call_script, "script_good_price_affects_good_production", ":center_no", "itm_raw_olives", ":base_production", 1),
-			(assign, ":modified_production", reg0),
+			(call_script, "script_good_price_affects_good_production", ":center_no", "itm_raw_olives", ":base_cg_prod", 1),
+			(assign, ":modified_center_good_production", reg0),
 		(else_try),
 			(eq, ":cur_good", "itm_velvet"),
-			(call_script, "script_good_price_affects_good_production", ":center_no", "itm_raw_silk", ":base_production", 1),
+			(call_script, "script_good_price_affects_good_production", ":center_no", "itm_raw_silk", ":base_cg_prod", 2),
 			(assign, ":initially_modified_production", reg0),
 
 			(call_script, "script_good_price_affects_good_production", ":center_no", "itm_raw_dyes", ":initially_modified_production", 2),
-			(assign, ":modified_production", reg0),
+			(assign, ":modified_center_good_production", reg0),
 		(else_try),
 			(eq, ":cur_good", "itm_leatherwork"),
-			(call_script, "script_good_price_affects_good_production", ":center_no", "itm_raw_leather", ":base_production", 1),
-			(assign, ":modified_production", reg0),
+			(call_script, "script_good_price_affects_good_production", ":center_no", "itm_raw_leather", ":base_cg_prod", 1),
+			(assign, ":modified_center_good_production", reg0),
 		(else_try),
 			(eq, ":cur_good", "itm_linen"),
-			(call_script, "script_good_price_affects_good_production", ":center_no", "itm_raw_flax", ":base_production", 1),
-			(assign, ":modified_production", reg0),
+			(call_script, "script_good_price_affects_good_production", ":center_no", "itm_raw_flax", ":base_cg_prod", 1),
+			(assign, ":modified_center_good_production", reg0),
 		(try_end),
 
-		(assign, ":base_production_modded_by_raw_materials", ":modified_production"), #this is just logged for the report screen
+    #this is just logged for the report screen
+		(assign, ":production_modded_by_raw_materials", ":modified_center_good_production"), 
 
     #Increase both positive and negative production by the center's prosperity
-		#Richer towns have more people and consume more, but also produce more
+		#Richer centers have more people and consume more, but also produce more
+    # 150 prod 10 prosp => ((50 + 10) * 150) / 125 = 72 prod
+    # 150 prod 25 prosp => ((50 + 25) * 150) / 125 = 90 prod
+    # 150 prod 50 prosp => ((50 + 50) * 150) / 125 = 120 prod
+    # 150 prod 75 prosp => ((50 + 75) * 150) / 125 = 150 prod
+    # 150 prod 99 prosp => ((50 + 99) * 150) / 125 = 178 prod
 		(try_begin),
 			(party_get_slot, ":prosperity_plus_75", ":center_no", slot_town_prosperity),
 			(val_add, ":prosperity_plus_75", 75),
-			(val_mul, ":modified_production", ":prosperity_plus_75"),
-			(val_div, ":modified_production", 125),
+			(val_mul, ":modified_center_good_production", ":prosperity_plus_75"),
+			(val_div, ":modified_center_good_production", 125),
 		(try_end),
+
+    #this is just logged for the report screen
+		(assign, ":production_modded_by_prosperity", ":modified_center_good_production"), 
 
     # cut production if the center is being looted, etc.
     (party_get_slot, ":svs", ":center_no", slot_village_state),
@@ -16570,29 +16835,33 @@ scripts = [
       (assign, ":svs", -1),
     (try_end),
     (assign, ":status_percent", 100), # output at 100% by default
-    (try_begin),
+    (try_begin), # do the worst things first because we want to be pessimistic
+      (this_or_next|eq, ":svs", svs_deserted),
+      (eq, ":svs", svs_looted),
+      (assign, ":status_percent", 10),
+    (else_try),
       (this_or_next|party_slot_ge, ":center_no", slot_center_is_besieged_by, 0),
       (this_or_next|eq, ":svs", svs_being_raided),
       (eq, ":svs", svs_under_siege),
-      (assign, ":status_percent", 25),
+      (assign, ":status_percent", 30),
     (else_try),
       (party_slot_ge, ":center_no", slot_center_has_bandits, 0),
-      (assign, ":status_percent", 40),
-    (else_try),
-      (eq, ":svs", svs_recovering),
       (assign, ":status_percent", 60),
     (else_try),
-      (this_or_next|eq, ":svs", svs_deserted),
-      (eq, ":svs", svs_looted),
-      (assign, ":status_percent", 0),
+      (eq, ":svs", svs_recovering),
+      (assign, ":status_percent", 80),
     (try_end),
-    (val_mul, ":modified_production", ":status_percent"),
-    (val_div, ":modified_production", 100),
+    # (25 pct * 150 prod) / 100 = 37
+    # (50 pct * 150 prod) / 100 = 75
+    # (75 pct * 150 prod) / 100 = 112
+    # (100 pct * 150 prod) / 100 = 150
+    (val_mul, ":modified_center_good_production", ":status_percent"),
+    (val_div, ":modified_center_good_production", 100),
 
-		(assign, reg0, ":modified_production"), #modded by prosperity/status
-		(assign, reg1, ":base_production_modded_by_raw_materials"),
-		(assign, reg2, ":base_production"),
-
+		(assign, reg0, ":modified_center_good_production"), #modded by prosperity/status
+		(assign, reg1, ":production_modded_by_raw_materials"),
+		(assign, reg2, ":base_cg_prod"),
+    (assign, reg3, ":production_modded_by_prosperity"),
 	]),
 
   ("center_get_consumption",
@@ -16646,7 +16915,7 @@ scripts = [
 		(try_begin),
 			(eq, ":cur_good", "itm_grain"),
 			(party_get_slot, ":grain_for_bread", ":center_no", slot_center_mills),
-			(val_mul, ":grain_for_bread", 20),
+			(val_mul, ":grain_for_bread", 10),
 
 			(party_get_slot, ":grain_for_ale", ":center_no", slot_center_breweries),
 			(val_mul, ":grain_for_ale", 5),
@@ -16671,17 +16940,17 @@ scripts = [
 		(else_try),
 			(eq, ":cur_good", "itm_raw_leather"),
 			(party_get_slot, ":raw_material_consumption", ":center_no", slot_center_tanneries),
-			(val_mul, ":raw_material_consumption", 20),
+			(val_mul, ":raw_material_consumption", 12),
 
 		(else_try),
 			(eq, ":cur_good", "itm_raw_grapes"),
 			(party_get_slot, ":raw_material_consumption", ":center_no", slot_center_wine_presses),
-			(val_mul, ":raw_material_consumption", 30),
+			(val_mul, ":raw_material_consumption", 15),
 
 		(else_try),
 			(eq, ":cur_good", "itm_raw_olives"),
 			(party_get_slot, ":raw_material_consumption", ":center_no", slot_center_olive_presses),
-			(val_mul, ":raw_material_consumption", 12),
+			(val_mul, ":raw_material_consumption", 10),
 
 
 		(else_try),
@@ -16697,10 +16966,10 @@ scripts = [
 		(else_try),
 			(eq, ":cur_good", "itm_salt"),
 			(party_get_slot, ":salt_for_beef", ":center_no", slot_center_head_cattle),
-			(val_div, ":salt_for_beef", 10),
+			(val_div, ":salt_for_beef", 8),
 
 			(party_get_slot, ":salt_for_fish", ":center_no", slot_center_fishing_fleet),
-			(val_div, ":salt_for_fish", 5),
+			(val_div, ":salt_for_fish", 4),
 
 			(store_add, ":raw_material_consumption", ":salt_for_beef", ":salt_for_fish"),
 		(try_end),
@@ -25658,52 +25927,81 @@ scripts = [
     [
       (store_script_param_1, ":cur_center"),
 
+      (set_merchandise_modifier_quality,80),
       (store_distance_to_party_from_party, ":dist_to_main_party", "p_main_party", ":cur_center"),
-      (party_get_slot, ":bound_center", ":cur_center", slot_village_bound_center),
+      (party_get_slot, ":market_town", ":cur_center", slot_village_market_town),
       (party_get_slot, ":merchant_troop", ":cur_center", slot_town_elder),
+      (party_get_slot, ":center_prosperity", ":cur_center", slot_town_prosperity),
       (troop_clear_inventory, ":merchant_troop"),
-      (assign, ":town_production_weight_divisor", 8), # the related town only adds 1/N production amount
 
-      (assign, ":total_production", 0),
-      (assign, ":total_base_production", 0),
+      # calculate total production of all trade goods (village + local market)
+      (assign, ":total_center_cur_production", 0),
+      (assign, ":total_center_base_production", 0),
       (assign, ":types_of_good_produced_qty", 0),
       (try_for_range, ":cur_good", trade_goods_begin, trade_goods_end),
         # get village production of the item
         (call_script, "script_center_get_production", ":cur_center", ":cur_good"),
-		    (assign, ":cur_production", reg0),
-        (assign, ":base_production", reg2),
-        # add town production (weighted)
-        (call_script, "script_center_get_production", ":bound_center", ":cur_good"),
-        (val_div, reg0, ":town_production_weight_divisor"),
-        (val_div, reg2, ":town_production_weight_divisor"),
-        (val_add, ":cur_production", reg0),
-        (val_add, ":base_production", reg2),
-        # get village consumption of the item
+		    (assign, ":cur_center_production", reg0),
+        (assign, ":base_center_production", reg2),
+        # add town production (weighted), including associated villages
+        (call_script, "script_dplmc_center_get_market_town_production", ":market_town", ":cur_good"),
+        (val_div, reg0, 2),
+        (val_div, reg5, 2),
+        (val_add, ":cur_center_production", reg5),
+        (val_add, ":base_center_production", reg0),
+        # get consumption of the item
         (call_script, "script_center_get_consumption", ":cur_center", ":cur_good"),
-		    (assign, ":cur_consumption", reg0),
-        (val_sub, ":cur_production", ":cur_consumption"),
+		    (assign, ":cur_center_consumption", reg0),
+        (val_sub, ":cur_center_consumption", 4), # TODO: Use global average village consumption for item
+        (val_max, ":cur_center_consumption", 0),
+        # calculate net production
+        (val_sub, ":cur_center_production", ":cur_center_consumption"),
+        (val_sub, ":base_center_production", ":cur_center_consumption"),
         (try_begin), # track the number of types of goods
-          (gt, ":cur_production", 0),
+          (gt, ":cur_center_production", 0),
+          (gt, ":base_center_production", 0),
           (val_add, ":types_of_good_produced_qty", 1),
-          (val_add, ":total_production", ":cur_production"),
-          (val_add, ":total_base_production", ":base_production"),
+          (val_add, ":total_center_cur_production", ":cur_center_production"),
+          (val_add, ":total_center_base_production", ":base_center_production"),
         (try_end),
       (try_end),
-      (gt, ":total_production", 0), # no sense continuing to populate merchant inventory
+
+      (try_begin),
+        (ge, "$cheat_mode", DPLMC_DEBUG_MIN),
+        (le, ":dist_to_main_party", 10), # limit debug output to centers within range of the player (otherwise too chatty)
+        (str_store_party_name, s20, ":market_town"),
+        (str_store_party_name, s21, ":cur_center"),
+        (assign, reg20, ":total_center_cur_production"),
+        (assign, reg22, ":total_center_base_production"),
+        (assign, reg23, ":types_of_good_produced_qty"),
+        (assign, reg24, ":center_prosperity"),
+        (display_message, "@{!}REFRESH: {s21} ({s20}): {reg24} prosp {reg23} goods - {reg20}/{reg22} prod"),
+      (try_end),
+
+      # no sense continuing to populate merchant inventory (if either are <= 0)
+      (gt, ":total_center_cur_production", 0), 
+      (gt, ":total_center_base_production", 0),
 
       # calculate the merchant's total inventory slots to stock
-      (party_get_slot, ":center_prosperity", ":cur_center", slot_town_prosperity),
       (assign, ":number_of_slots_to_stock", ":types_of_good_produced_qty"),
-      (val_div, ":number_of_slots_to_stock", 3),
-      (val_add, ":number_of_slots_to_stock", 12),
-      (val_mul, ":number_of_slots_to_stock", ":center_prosperity"),
-      (val_div, ":number_of_slots_to_stock", 100),
+      (val_mul, ":number_of_slots_to_stock", 2),
       (val_add, ":number_of_slots_to_stock", 1),
 
       # adjust slots to stock by current vs base production (curr prod is usually 20-50% of base prod value)
-      (assign, ":possible_production_factor", ":total_production"),
-      (val_mul, ":possible_production_factor", 1000), # 350 total -> 350000
-      (val_div, ":possible_production_factor", ":total_base_production"), # divide by the 300 base prod -> 1166
+      (assign, ":sqrt_total_center_cur_production", ":total_center_cur_production"),
+      (convert_to_fixed_point, ":sqrt_total_center_cur_production"),
+      (store_sqrt, ":sqrt_total_center_cur_production", ":sqrt_total_center_cur_production"),
+      (convert_from_fixed_point, ":sqrt_total_center_cur_production"),
+      (val_max, ":sqrt_total_center_cur_production", 1),
+      (assign, ":sqrt_total_center_base_production", ":total_center_base_production"),
+      (convert_to_fixed_point, ":sqrt_total_center_base_production"),
+      (store_sqrt, ":sqrt_total_center_base_production", ":sqrt_total_center_base_production"),
+      (convert_from_fixed_point, ":sqrt_total_center_base_production"),
+      (val_max, ":sqrt_total_center_base_production", 1),
+      # (sqrt(50 cur) x 1500) / sqrt(250 base) = 536
+      (assign, ":possible_production_factor", ":sqrt_total_center_base_production"),
+      (val_mul, ":possible_production_factor", 1000),
+      (val_div, ":possible_production_factor", ":sqrt_total_center_base_production"),
       (val_mul, ":number_of_slots_to_stock", ":possible_production_factor"),
       (val_div, ":number_of_slots_to_stock", 1000),
 
@@ -25713,14 +26011,8 @@ scripts = [
       (try_begin),
         (ge, "$cheat_mode", DPLMC_DEBUG_MIN),
         (le, ":dist_to_main_party", 10), # limit debug output to centers within range of the player (otherwise too chatty)
-        (str_store_party_name, s20, ":bound_center"),
-        (str_store_party_name, s21, ":cur_center"),
-        (assign, reg20, ":total_production"),
         (assign, reg21, ":number_of_slots_to_stock"),
-        (assign, reg22, ":total_base_production"),
-        (assign, reg23, ":types_of_good_produced_qty"),
-        (assign, reg24, ":center_prosperity"),
-        (display_message, "@{!}REFRESH: {s21} ({s20}) ({reg20}/{reg22}) prod, {reg23} goods, {reg21} slots ({reg24} prosp)"),
+        (display_message, "@{!}Populate {reg21} slots"),
       (try_end),
 
       (gt, ":number_of_slots_to_stock", 0), # no sense continuing to populate merchant inventory
@@ -25737,26 +26029,27 @@ scripts = [
         (party_get_slot, ":cur_center_price_factor", ":cur_center", ":cur_good_price_slot"),
         (item_get_slot, ":cur_good_base_price", ":cur_good", slot_item_base_price),
 
-        # calculate production for the good (town + villages)
+        # get village production of the item
         (call_script, "script_center_get_production", ":cur_center", ":cur_good"),
-        (assign, ":cur_production", reg0),
-        (try_for_range, ":cur_village", villages_begin, villages_end),
-          # get village production of the item
-          (call_script, "script_center_get_production", ":cur_center", ":cur_good"),
-          (assign, ":cur_production", reg0),
-          # add town production (weighted)
-          (call_script, "script_center_get_production", ":bound_center", ":cur_good"),
-          (val_div, reg0, ":town_production_weight_divisor"),
-          (val_add, ":cur_production", reg0),
-          # get village consumption of the item
-          (call_script, "script_center_get_consumption", ":cur_center", ":cur_good"),
-	  	    (assign, ":cur_consumption", reg0),
-          (val_sub, ":cur_production", ":cur_consumption"),
-        (try_end),
-        (gt, ":cur_production", 0), # stop if the good is not produced locally
+        (assign, ":cur_center_production", reg0),
+        # add town production (weighted), including associated villages
+        (call_script, "script_dplmc_center_get_market_town_production", ":market_town", ":cur_good"),
+        (val_div, reg5, 2),
+        (val_add, ":cur_center_production", reg5),
+        # get consumption of the item
+        (call_script, "script_center_get_consumption", ":cur_center", ":cur_good"),
+		    (assign, ":cur_center_consumption", reg0),
+        (val_sub, ":cur_center_consumption", 4), # TODO: Use global average village consumption for item
+        (val_max, ":cur_center_consumption", 0),
+        # calculate net production
+        (val_sub, ":cur_center_production", ":cur_center_consumption"),
+        (gt, ":cur_center_production", 0), # stop if the good is not available locally
 
         # base probability is current-production amount
-        (assign, ":probability", ":cur_production"), # could be as much as 500 units, but probably 1..250
+        (assign, ":probability", ":cur_center_production"), # could be as much as 100 units, but probably 1..25
+        (val_div, ":probability", 5),
+        (val_clamp, ":probability", 1, 6),
+        (val_mul, ":probability", 10),
 
         # price (above a certain price value) is a negative to probability
         (val_max, ":cur_good_base_price", 200), # treat everything under this as equal probability
@@ -25766,8 +26059,14 @@ scripts = [
         (val_max, ":probability", 1),
 
         # being close to the average price factor increases probability
-        (store_sqrt, ":sqrt_price_factor", ":cur_center_price_factor"), # turn 100..1000..10000 -> 10..31..100
-        (store_sqrt, ":price_factor_delta", ":sqrt_price_factor"), # turn 10..31..100 -> 1..5..10
+        (assign, ":sqrt_price_factor", ":cur_center_price_factor"), # turn 100..1000..10000 -> 10..31..100
+        (convert_to_fixed_point, ":sqrt_price_factor"),
+        (store_sqrt, ":sqrt_price_factor", ":sqrt_price_factor"),
+        (convert_from_fixed_point, ":sqrt_price_factor"),
+        (assign, ":price_factor_delta", ":sqrt_price_factor"), # turn 10..31..100 -> 1..5..10
+        (convert_to_fixed_point, ":price_factor_delta"),
+        (store_sqrt, ":price_factor_delta", ":price_factor_delta"),
+        (convert_from_fixed_point, ":price_factor_delta"),
         (assign, ":price_closeness_to_average", 0), # closeness to the average, 1=far away, 5=close
         (try_begin),
           (gt, ":price_factor_delta", 5),
@@ -25776,25 +26075,25 @@ scripts = [
           (assign, ":price_closeness_to_average", ":price_factor_delta"), # 1..5
         (try_end),
         (val_clamp, ":price_closeness_to_average", 1, 6),
+        (val_sub, ":price_closeness_to_average", 2), # cuts from 5..1 down to 3..1
+        (val_max, ":price_closeness_to_average", 1),
         (val_mul, ":probability", ":price_closeness_to_average"),
         (val_max, ":probability", 1),
 
         (try_begin),
-          (is_between, ":cur_good", food_begin, food_end), # food gets a bonus to probabilities
-          (store_add, ":prosperity_food_adjustment", ":center_prosperity", 50), # 50..150
-          (val_mul, ":prosperity_food_adjustment", 5), # 250..750
-          (val_div, ":prosperity_food_adjustment", 150), # 1..5
-          (val_mul, ":probability", ":prosperity_food_adjustment"),
+          (is_between, ":cur_good", food_begin, food_end), # food gets a bonus to probability
+          (val_mul, ":probability", 4),
         (try_end),
 
+        (val_max, ":probability", 1),
         (set_item_probability_in_merchandise, ":cur_good", ":probability"),
 
         (try_begin),
           (ge, "$cheat_mode", DPLMC_DEBUG_MIN),
           (le, ":dist_to_main_party", 10), # limit debug output to towns within range of the player (otherwise too chatty)
           (str_store_item_name, s20, ":cur_good"),
-          (assign, reg20, ":total_production"),
-          (assign, reg21, ":cur_production"),
+          (assign, reg20, ":total_center_cur_production"),
+          (assign, reg21, ":cur_center_production"),
           (assign, reg22, ":probability"),
           (assign, reg23, ":cur_center_price_factor"),
           (display_message, "@{!}{s20} ({reg21}/{reg20} prod, {reg23} price-factor) {reg22} probability"),
@@ -25802,7 +26101,7 @@ scripts = [
       (try_end),
 
       (troop_add_merchandise, ":merchant_troop", itp_type_goods, ":number_of_slots_to_stock"),
-      (troop_ensure_inventory_space, ":merchant_troop", 85),
+      (troop_ensure_inventory_space, ":merchant_troop", 80),
       (troop_sort_inventory, ":merchant_troop"),
 
       # Add prosperity to the village while reducing gold from the elder
@@ -25818,7 +26117,7 @@ scripts = [
           (le, ":dist_to_main_party", 10), # limit debug output to towns within range of the player (otherwise too chatty)
           (assign, reg20, ":gold_removed"),
           (assign, reg21, ":prosperity_added"),
-          (display_message, "@{!}Converted {reg20} gold into +{reg20} prosperity."),
+          (display_message, "@{!}Converted {reg20} gold into +{reg21} prosperity."),
         (try_end),
       (try_end),
   ]),
@@ -37209,186 +37508,196 @@ scripts = [
 
     ]),
 
-  #script_do_party_center_trade
-  # INPUT: arg1 = party_no, arg2 = center_no, arg3 = percentage_change_in_center
-  # OUTPUT: reg0 = total_change
-  ("do_party_center_trade",
-    [
-      (store_script_param, ":party_no", 1),
-      (store_script_param, ":center_no", 2),
-      (store_script_param, ":percentage_change", 3), #this should probably always be a constant. Currently it is 25
-	  (assign, ":percentage_change", 30),
-	  ##diplomacy start+
-	  (party_get_slot, ":origin", ":party_no", slot_party_last_traded_center),
-	  #If optional economic changes are enabled, reduce the percentage change in order
-	  #to make prices feel less static.
-	  (try_begin),
-		(ge, "$g_dplmc_gold_changes", DPLMC_GOLD_CHANGES_LOW),
-		#Only apply lessened price movements to towns.
-		(this_or_next|party_slot_eq, ":center_no", slot_party_type, spt_town),
-			(is_between, ":center_no", towns_begin, towns_end),
-		#This halves the average impact as well as making it more variable.
-		(val_add, ":percentage_change", 1),
-		(store_random_in_range, ":percentage_change", 0, ":percentage_change"),
-		#Display economics diagnostic
-		(eq, "$cheat_mode", DPLMC_DEBUG_ECONOMY),
-		(str_store_party_name, s3, ":origin"),
-		(str_store_party_name, s4, ":center_no"),
-		(assign, reg4, ":percentage_change"),
-		(display_message, "@{!}DEBUG -- Trade from {s3} to {s4}: rolled random impact of {reg4}"),
-	  (try_end),
-	  ##diplomacy end+
+#script_do_party_center_trade
+# INPUT: arg1 = party_no, arg2 = center_no, arg3 = percentage_change_in_center
+# OUTPUT: reg0 = total_change
+("do_party_center_trade",
+[
+  (store_script_param, ":party_no", 1),
+  (store_script_param, ":center_no", 2),
+  (store_script_param, ":percentage_change", 3), #this should probably always be a constant. Currently it is 25
+  (assign, ":percentage_change", 30),
+  ##diplomacy start+
+  (party_get_slot, ":origin", ":party_no", slot_party_last_traded_center),
+  #If optional economic changes are enabled, reduce the percentage change in order
+  #to make prices feel less static.
+  (try_begin),
+  (ge, "$g_dplmc_gold_changes", DPLMC_GOLD_CHANGES_LOW),
+  #Only apply lessened price movements to towns.
+  (this_or_next|party_slot_eq, ":center_no", slot_party_type, spt_town),
+    (is_between, ":center_no", towns_begin, towns_end),
+  #This halves the average impact as well as making it more variable.
+  (val_add, ":percentage_change", 1),
+  (store_random_in_range, ":percentage_change", 0, ":percentage_change"),
+  #Display economics diagnostic
+  (eq, "$cheat_mode", DPLMC_DEBUG_ECONOMY),
+  (str_store_party_name, s3, ":origin"),
+  (str_store_party_name, s4, ":center_no"),
+  (assign, reg4, ":percentage_change"),
+  (display_message, "@{!}DEBUG -- Trade from {s3} to {s4}: rolled random impact of {reg4}"),
+  (try_end),
+  ##diplomacy end+
 
-	  (party_get_slot, ":origin", ":party_no", slot_party_last_traded_center),
-	  (party_set_slot, ":party_no", slot_party_last_traded_center, ":center_no"),
-	  ##diplomacy start+
-	  #Update the record of trade route arrival times
-      (try_begin),
-         (ge, ":origin", centers_begin),
-    	 ##zerilius changes begin
-    	 # (this_or_next|party_slot_eq, ":origin", villages_begin, villages_end),
-    	 (this_or_next|party_slot_eq, ":origin", slot_party_type, spt_village),
-    	 ##zerilius changes end
-         (is_between, ":origin", villages_begin, villages_end),
-         (store_current_hours, ":cur_hours"),
-         (party_set_slot, ":origin", dplmc_slot_village_trade_last_arrived_to_market, ":cur_hours"),
-      (try_end),
-      (try_begin),
-	     (ge, ":origin", centers_begin),
-		 (this_or_next|party_slot_eq, ":center_no", slot_party_type, spt_town),
-			(is_between, ":center_no", towns_begin, towns_end),
-		 (store_current_hours, ":cur_hours"),
-		 (try_for_range, ":trade_route_slot", slot_town_trade_routes_begin, slot_town_trade_routes_end),
-            (party_slot_eq,  ":center_no", ":trade_route_slot", ":origin"),
-			(store_sub, ":trade_route_arrival_slot", ":trade_route_slot", slot_town_trade_routes_begin),
-			(val_add, ":trade_route_arrival_slot", dplmc_slot_town_trade_route_last_arrivals_begin),
-			(is_between, ":trade_route_arrival_slot", dplmc_slot_town_trade_route_last_arrivals_begin, dplmc_slot_town_trade_route_last_arrivals_end),#this will always be true unless a modder increased the number of trade route slots without increasing the number of last arrival slots
-			(party_set_slot, ":center_no", ":trade_route_arrival_slot", ":cur_hours"),
-         (try_end),
-         (else_try),
-            (this_or_next|party_slot_eq, ":center_no", slot_party_type, spt_village),
-               (is_between, ":center_no", villages_begin, villages_end),
-         (store_current_hours, ":cur_hours"),
-         (party_set_slot, ":center_no", dplmc_slot_village_trade_last_returned_from_market, ":cur_hours"),
-	  (try_end),
-      #SB : drop off prisoners
-      (try_begin),
-        (ge, "$g_dplmc_gold_changes", DPLMC_GOLD_CHANGES_HIGH),
-        (is_between, ":center_no", walled_centers_begin, walled_centers_end),
-        (store_faction_of_party, ":town_faction", ":center_no"),
-        (store_faction_of_party, ":party_faction", ":party_no"),
-        (eq, ":town_faction", ":party_faction"),
-        (call_script, "script_party_prisoners_add_party_prisoners", ":center_no", ":party_no"),
-        (call_script, "script_party_remove_all_prisoners", ":party_no"),
-      (else_try), #sell off looted items
-        (ge, "$g_dplmc_gold_changes", DPLMC_GOLD_CHANGES_MEDIUM),
-        (is_between, ":center_no", towns_begin, towns_end),
-        (party_get_slot, ":num_items", ":party_no", slot_party_next_looted_item_slot),
-        (is_between, ":num_items", 1, num_party_loot_slots + 1), #has any loot
-         # (this_or_next|eq, ":num_items", 0),
-        (party_get_slot, ":town_merchant", ":center_no", slot_town_merchant),
-        (party_get_slot, ":town_weapon", ":center_no", slot_town_weaponsmith),
-        (party_get_slot, ":town_armor", ":center_no", slot_town_armorer),
-        (party_get_slot, ":town_horse", ":center_no", slot_town_horse_merchant),
-
-        #apply penalty with 0 trade skill for farmer, 2 for caravan masters
-        (assign, ":seller_troop", -1), #0 skill
-        (try_begin),
-          (party_get_slot, ":spt", ":party_no", slot_party_type),
-          # (eq, ":spt", spt_village_farmer),
-          # (assign, ":seller_troop", -1), #0 skill
-        # (else_try),
-          (eq, ":spt", spt_kingdom_caravan),
-          (assign, ":seller_troop", "trp_caravan_master"), #knows_common, 2 skill
+  (party_get_slot, ":origin", ":party_no", slot_party_last_traded_center),
+  (party_set_slot, ":party_no", slot_party_last_traded_center, ":center_no"),
+  ##diplomacy start+
+  #Update the record of trade route arrival times
+    (try_begin),
+        (ge, ":origin", centers_begin),
+      ##zerilius changes begin
+      # (this_or_next|party_slot_eq, ":origin", villages_begin, villages_end),
+      (this_or_next|party_slot_eq, ":origin", slot_party_type, spt_village),
+      ##zerilius changes end
+        (is_between, ":origin", villages_begin, villages_end),
+        (store_current_hours, ":cur_hours"),
+        (party_set_slot, ":origin", dplmc_slot_village_trade_last_arrived_to_market, ":cur_hours"),
+    (try_end),
+    (try_begin),
+      (ge, ":origin", centers_begin),
+    (this_or_next|party_slot_eq, ":center_no", slot_party_type, spt_town),
+    (is_between, ":center_no", towns_begin, towns_end),
+    (store_current_hours, ":cur_hours"),
+    (try_for_range, ":trade_route_slot", slot_town_trade_routes_begin, slot_town_trade_routes_end),
+          (party_slot_eq,  ":center_no", ":trade_route_slot", ":origin"),
+    (store_sub, ":trade_route_arrival_slot", ":trade_route_slot", slot_town_trade_routes_begin),
+    (val_add, ":trade_route_arrival_slot", dplmc_slot_town_trade_route_last_arrivals_begin),
+    (is_between, ":trade_route_arrival_slot", dplmc_slot_town_trade_route_last_arrivals_begin, dplmc_slot_town_trade_route_last_arrivals_end),#this will always be true unless a modder increased the number of trade route slots without increasing the number of last arrival slots
+    (party_set_slot, ":center_no", ":trade_route_arrival_slot", ":cur_hours"),
+        (try_end),
         (else_try),
-          (eq, ":spt", spt_kingdom_hero_party),
-          (party_stack_get_troop_id, ":seller_troop", ":party_no", 0),
-        (try_end),
-        (val_add, ":num_items", slot_party_looted_item_1),
-        (try_for_range, ":slot_no", slot_party_looted_item_1, ":num_items"),
-          (party_get_slot, ":item_no", ":party_no", ":slot_no"),
-          (gt, ":item_no", 0),
-          (item_get_type, ":itp", ":item_no"),
-          (store_add, ":imod_slot", ":slot_no", num_party_loot_slots),
-          (party_get_slot, ":imod_no", ":party_no", ":imod_slot"),
-          (item_get_type, ":itp", ":item_no"),
-          (try_begin),
-            (this_or_next|is_between, ":itp", itp_type_one_handed_wpn, itp_type_goods),
-            (is_between, ":itp", itp_type_pistol, itp_type_animal),
-            (assign, ":merchant", ":town_weapon"),
-          (else_try),
-            (is_between, ":itp", itp_type_head_armor, itp_type_pistol),
-            (assign, ":merchant", ":town_armor"),
-          (else_try),
-            (eq, ":itp", itp_type_horse),
-            (assign, ":merchant", ":town_horse"),
-          (else_try),
-            (assign, ":merchant", ":town_merchant"),
-          (try_end),
-          (gt, ":merchant", 0),
-          (store_troop_gold, ":merchant_gold", ":merchant"),
-          (call_script, "script_dplmc_get_item_value_with_imod", ":item_no", ":imod_no"),
-          (store_div, ":price", reg0, 4), #or some other factor
+          (this_or_next|party_slot_eq, ":center_no", slot_party_type, spt_village),
+              (is_between, ":center_no", villages_begin, villages_end),
+        (store_current_hours, ":cur_hours"),
+        (party_set_slot, ":center_no", dplmc_slot_village_trade_last_returned_from_market, ":cur_hours"),
+  (try_end),
+    #SB : drop off prisoners
+    (try_begin),
+      (ge, "$g_dplmc_gold_changes", DPLMC_GOLD_CHANGES_HIGH),
+      (is_between, ":center_no", walled_centers_begin, walled_centers_end),
+      (store_faction_of_party, ":town_faction", ":center_no"),
+      (store_faction_of_party, ":party_faction", ":party_no"),
+      (eq, ":town_faction", ":party_faction"),
+      (call_script, "script_party_prisoners_add_party_prisoners", ":center_no", ":party_no"),
+      (call_script, "script_party_remove_all_prisoners", ":party_no"),
+    (else_try), #sell off looted items
+      (ge, "$g_dplmc_gold_changes", DPLMC_GOLD_CHANGES_MEDIUM),
+      (is_between, ":center_no", towns_begin, towns_end),
+      (party_get_slot, ":num_items", ":party_no", slot_party_next_looted_item_slot),
+      (is_between, ":num_items", 1, num_party_loot_slots + 1), #has any loot
+        # (this_or_next|eq, ":num_items", 0),
+      (party_get_slot, ":town_merchant", ":center_no", slot_town_merchant),
+      (party_get_slot, ":town_weapon", ":center_no", slot_town_weaponsmith),
+      (party_get_slot, ":town_armor", ":center_no", slot_town_armorer),
+      (party_get_slot, ":town_horse", ":center_no", slot_town_horse_merchant),
 
-          (call_script, "script_dplmc_get_trade_penalty", ":item_no", ":center_no", ":seller_troop", ":merchant"),
-          (val_mul, ":price", reg0),
-          (val_div, ":price", 100),
-          (val_max, ":price", 1),
-          (gt, ":merchant_gold", ":price"), #can afford
-          (troop_remove_gold, ":merchant", ":price"),
-          (troop_add_item, ":merchant", ":item_no", ":imod_no"),
-          # (party_set_slot, ":party_no", ":slot_no", -1), #clear off later
-          # (party_set_slot, ":party_no", ":imod_slot", -1),
-        (try_end),
-
-        #any unsold item at this point are cleared
-        (try_for_range, ":slot_no", slot_party_next_looted_item_slot, slot_party_looted_item_1_modifier + num_party_loot_slots),
-          (party_set_slot, ":party_no", ":slot_no", 0),
-        (try_end),
-
+      #apply penalty with 0 trade skill for farmer, 2 for caravan masters
+      (assign, ":seller_troop", -1), #0 skill
+      (try_begin),
+        (party_get_slot, ":spt", ":party_no", slot_party_type),
+        # (eq, ":spt", spt_village_farmer),
+        # (assign, ":seller_troop", -1), #0 skill
+      # (else_try),
+        (eq, ":spt", spt_kingdom_caravan),
+        (assign, ":seller_troop", "trp_caravan_master"), #knows_common, 2 skill
+      (else_try),
+        (eq, ":spt", spt_kingdom_hero_party),
+        (party_stack_get_troop_id, ":seller_troop", ":party_no", 0),
       (try_end),
-	  ##diplomacy end+
-
-      (assign, ":total_change", 0),
-      (store_sub, ":item_to_price_slot", slot_town_trade_good_prices_begin, trade_goods_begin),
-      (try_for_range, ":cur_good", trade_goods_begin, trade_goods_end),
-        (store_add, ":cur_good_price_slot", ":cur_good", ":item_to_price_slot"),
-        (party_get_slot, ":cur_merchant_price", ":party_no", ":cur_good_price_slot"),
-        (party_get_slot, ":cur_center_price", ":center_no", ":cur_good_price_slot"),
-        (store_sub, ":price_dif", ":cur_merchant_price", ":cur_center_price"),
-        (assign, ":cur_change", ":price_dif"),
-        (val_abs, ":cur_change"),
-        (val_add, ":total_change", ":cur_change"),
-        (val_mul, ":cur_change", ":percentage_change"),
-        (val_div, ":cur_change", 100),
-
-		#This is to reconvert from absolute value
+      (val_add, ":num_items", slot_party_looted_item_1),
+      (try_for_range, ":slot_no", slot_party_looted_item_1, ":num_items"),
+        (party_get_slot, ":item_no", ":party_no", ":slot_no"),
+        (gt, ":item_no", 0),
+        (item_get_type, ":itp", ":item_no"),
+        (store_add, ":imod_slot", ":slot_no", num_party_loot_slots),
+        (party_get_slot, ":imod_no", ":party_no", ":imod_slot"),
+        (item_get_type, ":itp", ":item_no"),
         (try_begin),
-          (lt, ":price_dif", 0),
-          (val_mul, ":cur_change", -1),
+          (this_or_next|is_between, ":itp", itp_type_one_handed_wpn, itp_type_goods),
+          (is_between, ":itp", itp_type_pistol, itp_type_animal),
+          (assign, ":merchant", ":town_weapon"),
+        (else_try),
+          (is_between, ":itp", itp_type_head_armor, itp_type_pistol),
+          (assign, ":merchant", ":town_armor"),
+        (else_try),
+          (eq, ":itp", itp_type_horse),
+          (assign, ":merchant", ":town_horse"),
+        (else_try),
+          (assign, ":merchant", ":town_merchant"),
         (try_end),
+        (gt, ":merchant", 0),
+        (store_troop_gold, ":merchant_gold", ":merchant"),
+        (call_script, "script_dplmc_get_item_value_with_imod", ":item_no", ":imod_no"),
+        (store_div, ":price", reg0, 4), #or some other factor
 
-		(assign, ":initial_price", ":cur_center_price"),
-
-		#The new price for the caravan or peasant is set before the change, so the prices in the trading town have full effect on the next center
-        (party_set_slot, ":party_no", ":cur_good_price_slot", ":cur_center_price"),
-
-        (val_add, ":cur_center_price", ":cur_change"),
-        (party_set_slot, ":center_no", ":cur_good_price_slot", ":cur_center_price"),
-
-		(try_begin),
-      (eq, -1, 1), # disabled this results in a lot of message spam
-			(eq, "$cheat_mode", DPLMC_DEBUG_ECONOMY),
-			(str_store_party_name, s3, ":origin"),
-			(str_store_party_name, s4, ":center_no"),
-			(str_store_item_name, s5, ":cur_good"),
-			(assign, reg4, ":initial_price"),
-			(assign, reg5, ":cur_center_price"),      
-			#(display_log_message, "@{!}DEBUG -- Trade of {s5} from {s3} to {s4} brings price from {reg4} to {reg5}"),
-		(try_end),
-
+        (call_script, "script_dplmc_get_trade_penalty", ":item_no", ":center_no", ":seller_troop", ":merchant"),
+        (val_mul, ":price", reg0),
+        (val_div, ":price", 100),
+        (val_max, ":price", 1),
+        (gt, ":merchant_gold", ":price"), #can afford
+        (troop_remove_gold, ":merchant", ":price"),
+        (troop_add_item, ":merchant", ":item_no", ":imod_no"),
+        # (party_set_slot, ":party_no", ":slot_no", -1), #clear off later
+        # (party_set_slot, ":party_no", ":imod_slot", -1),
       (try_end),
-      (assign, reg0, ":total_change"),
+
+      #any unsold item at this point are cleared
+      (try_for_range, ":slot_no", slot_party_next_looted_item_slot, slot_party_looted_item_1_modifier + num_party_loot_slots),
+        (party_set_slot, ":party_no", ":slot_no", 0),
+      (try_end),
+
+    (try_end),
+  ##diplomacy end+
+
+    (assign, ":total_change", 0),
+    (store_sub, ":item_to_price_slot", slot_town_trade_good_prices_begin, trade_goods_begin),
+    (try_for_range, ":cur_good", trade_goods_begin, trade_goods_end),
+      (store_random_in_range, ":random_no", 0, 100),
+      (lt, ":random_no", 25), # only do 1/4 of trade goods on each event
+
+      (store_add, ":cur_good_price_slot", ":cur_good", ":item_to_price_slot"),
+      (party_get_slot, ":cur_merchant_price", ":party_no", ":cur_good_price_slot"),
+      (party_get_slot, ":cur_center_price", ":center_no", ":cur_good_price_slot"),
+      (store_sub, ":price_dif", ":cur_merchant_price", ":cur_center_price"),
+      (assign, ":cur_change", ":price_dif"),
+      (val_abs, ":cur_change"),
+      (val_add, ":total_change", ":cur_change"),
+      (val_mul, ":cur_change", ":percentage_change"),
+      (val_div, ":cur_change", 100),
+
+      #This is to reconvert from absolute value
+      (try_begin),
+        (lt, ":price_dif", 0),
+        (val_mul, ":cur_change", -1),
+      (try_end),
+
+      (assign, ":initial_price", ":cur_center_price"),
+
+      #The new price for the caravan or peasant is set before the change, 
+      # so the prices in the trading town have full effect on the next center
+      (party_set_slot, ":party_no", ":cur_good_price_slot", ":cur_center_price"),
+
+      (val_add, ":cur_center_price", ":cur_change"),
+      (party_set_slot, ":center_no", ":cur_good_price_slot", ":cur_center_price"),
+
+      (try_begin),
+        # note: this is a very chatty debug due to looping through the entire list of trade goods
+        # see :percentage_change, :price_dif
+        # farmers/caravans usually push the price-factor by 10-20 points, but 80-90 pts has been seen
+        (ge, "$cheat_mode", DPLMC_DEBUG_NEVER),
+        (store_distance_to_party_from_party, ":dist_origin", "p_main_party", ":origin"),
+        (store_distance_to_party_from_party, ":dist_center", "p_main_party", ":center_no"),
+        (this_or_next|le, ":dist_origin", 10),
+        (le, ":dist_center", 10),
+        (str_store_party_name, s3, ":origin"),
+        (str_store_party_name, s4, ":center_no"),
+        (str_store_item_name, s5, ":cur_good"),
+        (assign, reg4, ":initial_price"),
+        (assign, reg5, ":cur_center_price"),      
+        (display_log_message, "@{!}DEBUG -- Trade of {s5} from {s3} to {s4} brings price from {reg4} to {reg5}"),
+      (try_end),
+
+    (try_end),
+    (assign, reg0, ":total_change"),
   ]),
 
   #script_player_join_faction
@@ -40732,24 +41041,23 @@ scripts = [
 	(store_script_param, ":center", 1),
 	(store_script_param, ":input_item_no", 2),
 	(store_script_param, ":production", 3),
-	(store_script_param, ":impact_divisor", 4),
-
-	(assign, reg4, ":production"),
+	(store_script_param, ":impact_divisor", 4), # higher = less production impact for higher prices
 
 	(try_begin),
-		(gt, ":production", 0), #let's take -20 as the zero production rate, although in actuality production can go lower, representing increased demand
+		(gt, ":production", 0), 
 
 		(store_sub, ":input_good_price_slot", ":input_item_no", trade_goods_begin),
 		(val_add, ":input_good_price_slot", slot_town_trade_good_prices_begin),
 		(party_get_slot, ":input_price", ":center", ":input_good_price_slot"),
 
 		(try_begin),
+      # towns weigh their price-factor at 4x, then add all the market villages at 1x before averaging
 		  (is_between, ":center", towns_begin, towns_end),
 
 		  (val_mul, ":input_price", 4),
 		  (assign, ":number_of_villages", 4),
 		  (try_for_range, ":village_no", villages_begin, villages_end),
-		    (party_slot_eq, ":village_no", slot_village_bound_center, ":center"),
+		    (party_slot_eq, ":village_no", slot_village_market_town, ":center"),
 		    (party_get_slot, ":input_price_at_village", ":village_no", ":input_good_price_slot"),
 			(val_add, ":input_price", ":input_price_at_village"),
 			(val_add, ":number_of_villages", 1),
@@ -40759,40 +41067,30 @@ scripts = [
 		(try_end),
 
 		(try_begin), #1/2 impact for low prices
-			##diplomacy start+
-			(lt, ":input_price", average_price_factor),#Replace 1000 with average_price_factor
-			##diplomacy end+
+			(lt, ":input_price", average_price_factor),
 			(val_mul, ":impact_divisor", 2),
 		(try_end),
 
+    # input=1150, iDiv=2 -- (1150-1000)/2 + 1000 = 1075
+    # input=1150, iDiv=5 -- (1150-1000)/5 + 1000 = 1025
+    # input=1150, iDiv=10 -- (1150-1000)/10 + 1000 = 1015
 		(try_begin),
 			(gt, ":impact_divisor", 1),
-			##diplomacy start+
-			(val_sub, ":input_price", average_price_factor),#Replace 1000 with average_price_factor
-			(val_div, ":input_price", ":impact_divisor"),#<- unchanged
-			(val_add, ":input_price", average_price_factor),#Replace 1000 with average_price_factor
-			##diplomacy end+
+			(val_sub, ":input_price", average_price_factor),
+			(val_div, ":input_price", ":impact_divisor"),
+			(val_add, ":input_price", average_price_factor),
 		(try_end),
 
-		##diplomacy start+
-		(val_mul, ":production", average_price_factor),#Replace 1000 with average_price_factor
-		##diplomacy end+
+    # (50 prod * 1000) / 1075 = 46
+    # (50 prod * 1000) / 1025 = 48
+    # (50 prod * 1000) / 1015 = 49
+		(val_mul, ":production", average_price_factor),
 		(val_div, ":production", ":input_price"),
-
-#		(assign, reg5, ":production"),
-		#(assign, reg3, ":input_price"),
-#		(str_store_item_name, s4, ":input_item_no"),
-#		(display_message, "@{s4} price of {reg3} reduces production from {reg4} to {reg5}"),
 
 	(try_end),
 
-
 	(assign, reg0, ":production"),
-
 	]),
-
-
-
 
   #script_get_poorest_village_of_faction
   # INPUT: arg1 = center_no
@@ -74058,73 +74356,97 @@ Born at {s43}^Contact in {s44} of the {s45}.^\
       (store_distance_to_party_from_party, ":dist_to_main_party", "p_main_party", ":cur_center"),
       (set_merchandise_modifier_quality,150),
       (party_get_slot,":cur_merchant",":cur_center",slot_town_merchant),
+      (party_get_slot, ":center_prosperity", ":cur_center", slot_town_prosperity),
       (troop_clear_inventory, ":cur_merchant"),
 
-      # calculate total production of all trade goods (town + bound villages)
-      (assign, ":total_production", 0),
-      (assign, ":total_base_production", 0),
+      # calculate total production of all trade goods (town + market villages)
+      (assign, ":total_center_cur_production", 0),
+      (assign, ":total_center_base_production", 0),
       (assign, ":types_of_good_produced_qty", 0),
       (try_for_range, ":cur_good", trade_goods_begin, trade_goods_end),
-        # get total production for town + villages
+        # calculate production for the good (town)
         (call_script, "script_center_get_production", ":cur_center", ":cur_good"),
-        (assign, ":cur_production", reg0),
-        (assign, ":base_production", reg2),
-        (try_for_range, ":cur_village", villages_begin, villages_end),
-          (party_slot_eq, ":cur_village", slot_village_bound_center, ":cur_center"),
-          (call_script, "script_center_get_production", ":cur_village", ":cur_good"),
-          # add village production weighted at 1/2
-          (val_div, reg0, 2),
-          (val_div, reg2, 2),
-          (val_add, ":cur_production", reg0),
-          (val_add, ":base_production", reg2),
-        (try_end),
+        (assign, ":cur_center_production", reg0),
+        (assign, ":base_center_production", reg2),
+        # plus 1/2 of village production that made it to market
+        (call_script, "script_dplmc_center_get_total_village_production", ":cur_center", ":cur_good"),
+        (val_div, reg4, 2),
+        (val_div, reg0, 2),
+        (val_add, ":cur_center_production", reg4),
+        (val_add, ":base_center_production", reg0),
+        # get consumption of the item
+        (call_script, "script_center_get_consumption", ":cur_center", ":cur_good"),
+		    (assign, ":cur_center_consumption", reg0),
+        (val_sub, ":cur_center_consumption", 8), # TODO: Use global average town consumption for item
+        (val_max, ":cur_center_consumption", 0),
+        # calculate net production
+        (val_sub, ":cur_center_production", ":cur_center_consumption"),
+        (val_sub, ":base_center_production", ":cur_center_consumption"),
         (try_begin), # track the number of types of goods
-          (gt, ":cur_production", 0),
+          (gt, ":cur_center_production", 0),
+          (gt, ":base_center_production", 0),
           (val_add, ":types_of_good_produced_qty", 1),
-          (val_add, ":total_production", ":cur_production"),
-          (val_add, ":total_base_production", ":base_production"),
+          (val_add, ":total_center_cur_production", ":cur_center_production"),
+          (val_add, ":total_center_base_production", ":base_center_production"),
         (try_end),
       (try_end),
-      (gt, ":total_production", 0), # no sense continuing to populate merchant inventory
 
-      # calculate the merchant's total inventory space based on prosperity
-      (party_get_slot, ":center_prosperity", ":cur_center", slot_town_prosperity),
+      (try_begin),
+        (ge, "$cheat_mode", DPLMC_DEBUG_MIN),
+        (le, ":dist_to_main_party", 10), # limit debug output to centers within range of the player (otherwise too chatty)
+        (str_store_party_name, s21, ":cur_center"),
+        (assign, reg20, ":total_center_cur_production"),
+        (assign, reg22, ":total_center_base_production"),
+        (assign, reg23, ":types_of_good_produced_qty"),
+        (assign, reg24, ":center_prosperity"),
+        (display_message, "@{!}REFRESH: {s21}: {reg24} prosp {reg23} goods - {reg20}/{reg22} prod"),
+      (try_end),
+
+      # no sense continuing to populate merchant inventory (if either are <= 0)
+      (gt, ":total_center_cur_production", 0), 
+      (gt, ":total_center_base_production", 0),
+
+      # calculate the merchant's total inventory slots to stock
       (assign, ":number_of_slots_to_stock", ":types_of_good_produced_qty"),
-      (val_div, ":number_of_slots_to_stock", 2),
-      (val_add, ":number_of_slots_to_stock", 90),
-      (val_mul, ":number_of_slots_to_stock", ":center_prosperity"),
-      (val_div, ":number_of_slots_to_stock", 100),
-      (val_add, ":number_of_slots_to_stock", 9),
+      (val_mul, ":number_of_slots_to_stock", 4),
+      (val_add, ":number_of_slots_to_stock", 3),
+
+      # adjust slots to stock by current vs base production (curr prod is usually 20-50% of base prod value)
+      (assign, ":sqrt_total_center_cur_production", ":total_center_cur_production"),
+      (convert_to_fixed_point, ":sqrt_total_center_cur_production"),
+      (store_sqrt, ":sqrt_total_center_cur_production", ":sqrt_total_center_cur_production"),
+      (convert_from_fixed_point, ":sqrt_total_center_cur_production"),
+      (val_max, ":sqrt_total_center_cur_production", 1),
+      (assign, ":sqrt_total_center_base_production", ":total_center_base_production"),
+      (convert_to_fixed_point, ":sqrt_total_center_base_production"),
+      (store_sqrt, ":sqrt_total_center_base_production", ":sqrt_total_center_base_production"),
+      (convert_from_fixed_point, ":sqrt_total_center_base_production"),
+      (val_max, ":sqrt_total_center_base_production", 1),
+      # (sqrt(50 cur) x 1500) / sqrt(250 base) = 536
+      (assign, ":possible_production_factor", ":sqrt_total_center_base_production"),
+      (val_mul, ":possible_production_factor", 1500),
+      (val_div, ":possible_production_factor", ":sqrt_total_center_base_production"),
+      (val_mul, ":number_of_slots_to_stock", ":possible_production_factor"),
+      (val_div, ":number_of_slots_to_stock", 1000),
+
       (try_begin),
         (is_between, ":cur_center", castles_begin, castles_end),
         (val_div, ":number_of_slots_to_stock", 2),
       (try_end),
 
-      # adjust slots to stock by current vs base production (curr prod is usually 20-50% of base prod value)
-      (assign, ":possible_production_factor", ":total_production"),
-      (val_mul, ":possible_production_factor", 1000), # 350 total -> 350000
-      (val_div, ":possible_production_factor", ":total_base_production"), # divide by the 300 base prod -> 1166
-      (val_mul, ":number_of_slots_to_stock", ":possible_production_factor"),
-      (val_div, ":number_of_slots_to_stock", 1000),
-      (val_max, ":number_of_slots_to_stock", 1),
-
       # hard clamp of the number of slots to stock with goods
-      (val_clamp, ":number_of_slots_to_stock", 1, 82),
+      (val_clamp, ":number_of_slots_to_stock", 0, 82),
 
       (try_begin),
         (ge, "$cheat_mode", DPLMC_DEBUG_MIN),
-        (le, ":dist_to_main_party", 15), # limit debug output to towns within range of the player (otherwise too chatty)
-        (str_store_party_name, s20, ":cur_center"),
-        (assign, reg20, ":total_production"),
+        (le, ":dist_to_main_party", 10), # limit debug output to centers within range of the player (otherwise too chatty)
         (assign, reg21, ":number_of_slots_to_stock"),
-        (assign, reg22, ":total_base_production"),
-        (assign, reg23, ":types_of_good_produced_qty"),
-        (assign, reg24, ":center_prosperity"),
-        (display_message, "@{!}REFRESH: {s20} ({reg20}/{reg22}) prod, {reg23} goods, {reg21} slots ({reg24} prosp)"),
+        (display_message, "@{!}Populate {reg21} slots"),
       (try_end),
 
       # the default for goods not produced here (0 = lowest possible probability)
-      (reset_item_probabilities, 1),
+      (assign, ":probability_floor", 250),
+      (reset_item_probabilities, ":probability_floor"),
 
       # calculate item probabilities (higher = more common)
       (try_for_range, ":cur_good", trade_goods_begin, trade_goods_end),
@@ -74135,28 +74457,32 @@ Born at {s43}^Contact in {s44} of the {s45}.^\
         (party_get_slot, ":cur_center_price_factor", ":cur_center", ":cur_good_price_slot"),
         (item_get_slot, ":cur_good_base_price", ":cur_good", slot_item_base_price),
 
-        # calculate production for the good (town + villages)
+        # calculate production for the good (town)
         (call_script, "script_center_get_production", ":cur_center", ":cur_good"),
-        (assign, ":cur_production", reg0),
+        (assign, ":cur_center_production", reg0),
+        # plus 1/2 of village production that made it to market
+        (call_script, "script_dplmc_center_get_total_village_production", ":cur_center", ":cur_good"),
+        (val_div, reg4, 2),
+        (val_add, ":cur_center_production", reg4),
+        # get consumption of the item
         (call_script, "script_center_get_consumption", ":cur_center", ":cur_good"),
-        (assign, ":cur_consumption", reg0),
-        (try_for_range, ":cur_village", villages_begin, villages_end),
-          (party_slot_eq, ":cur_village", slot_village_bound_center, ":cur_center"),
-          (call_script, "script_center_get_production", ":cur_village", ":cur_good"),
-          # village production is weighted at 1/2
-          (val_div, reg0, 2),
-          (val_add, ":cur_production", reg0),
-        (try_end),
-        (val_sub, ":cur_production", ":cur_consumption"),
-        (gt, ":cur_production", 0), # stop if the good is not produced locally
+		    (assign, ":cur_center_consumption", reg0),
+        (val_sub, ":cur_center_consumption", 8), # TODO: Use global average town consumption for item
+        (val_max, ":cur_center_consumption", 0),
+        # calculate net production
+        (val_sub, ":cur_center_production", ":cur_center_consumption"),
+
+        (gt, ":cur_center_production", 0), # stop if the good is not available
 
         # base probability is current-production amount
-        (assign, ":probability", ":cur_production"), # could be as much as 500 units, but probably 1..250
+        (assign, ":probability", ":cur_center_production"), # could be as much as 300 units, but probably 1..50
+        (val_div, ":probability", 10),
+        (val_clamp, ":probability", 1, 6),
+        (val_mul, ":probability", 10),
 
         # price (above a certain price value) is a negative to probability
         (val_max, ":cur_good_base_price", 350), # treat everything under this as equal probability
         (store_div, ":inverse_base_price", 10000, ":cur_good_base_price"),
-        (val_div, ":inverse_base_price", 5), # keep numbers from getting too large
         (val_max, ":inverse_base_price", 1), 
         (val_mul, ":probability", ":inverse_base_price"),
         (val_max, ":probability", 1),
@@ -74178,6 +74504,8 @@ Born at {s43}^Contact in {s44} of the {s45}.^\
           (assign, ":price_closeness_to_average", ":price_factor_delta"), # 1..5
         (try_end),
         (val_clamp, ":price_closeness_to_average", 1, 6),
+        (val_sub, ":price_closeness_to_average", 2), # cuts from 5..1 down to 3..1
+        (val_max, ":price_closeness_to_average", 1),
         (val_mul, ":probability", ":price_closeness_to_average"),
         (val_max, ":probability", 1),
 
@@ -74186,14 +74514,15 @@ Born at {s43}^Contact in {s44} of the {s45}.^\
           (val_mul, ":probability", 2),
         (try_end),
 
+        (val_max, ":probability", ":probability_floor"),
         (set_item_probability_in_merchandise, ":cur_good", ":probability"),
 
         (try_begin),
           (ge, "$cheat_mode", DPLMC_DEBUG_MIN),
-          (le, ":dist_to_main_party", 15), # limit debug output to towns within range of the player (otherwise too chatty)
+          (le, ":dist_to_main_party", 10), # limit debug output to towns within range of the player (otherwise too chatty)
           (str_store_item_name, s20, ":cur_good"),
-          (assign, reg20, ":total_production"),
-          (assign, reg21, ":cur_production"),
+          (assign, reg20, ":total_center_cur_production"),
+          (assign, reg21, ":cur_center_production"),
           (assign, reg22, ":probability"),
           (assign, reg23, ":cur_center_price_factor"),
           (display_message, "@{!}{s20} ({reg21}/{reg20} prod, {reg23} price-factor) {reg22} probability"),
@@ -74203,9 +74532,9 @@ Born at {s43}^Contact in {s44} of the {s45}.^\
       (troop_add_merchandise, ":cur_merchant", itp_type_goods, ":number_of_slots_to_stock"),
       (troop_ensure_inventory_space, ":cur_merchant", 20),
       (troop_sort_inventory, ":cur_merchant"),
-      (store_troop_gold, ":cur_gold",":cur_merchant"),
       
       #Option: scaling gold additions by the prosperity of the town.
+      (store_troop_gold, ":cur_gold",":cur_merchant"),
       (try_begin),
         (ge, "$g_dplmc_gold_changes", DPLMC_GOLD_CHANGES_LOW),#this must be explicitly enabled
         (party_get_slot, ":prosperity_75", ":cur_center", slot_town_prosperity),
@@ -74226,6 +74555,236 @@ Born at {s43}^Contact in {s44} of the {s45}.^\
         (call_script, "script_troop_add_gold", ":cur_merchant", ":new_gold"),
       (try_end),
     ]),
+
+  #script_get_village_status
+  # INPUT: arg1 = center_no
+  # OUTPUT: reg0 = status, s0 = status name
+  ("get_village_status",
+    [
+      (store_script_param, ":center_no", 1),
+      (party_get_slot, reg0, ":center_no", slot_village_state),
+      (str_store_string, s0, "@UNKNOWN STATUS!"),
+      (try_begin),
+        (eq, reg0, svs_normal),
+        (str_store_string, s0, "@Normal"),
+      (else_try),
+        (eq, reg0, svs_being_raided),
+        (str_store_string, s0, "@Being Raided"),
+      (else_try),
+        (eq, reg0, svs_looted),
+        (str_store_string, s0, "@Looted"),
+      (else_try),
+        (eq, reg0, svs_recovering),
+        (str_store_string, s0, "@Recovering"),
+      (else_try),
+        (eq, reg0, svs_deserted),
+        (str_store_string, s0, "@Deserted"),
+      (else_try),
+        (eq, reg0, svs_under_siege),
+        (str_store_string, s0, "@Under Siege"),
+      (try_end),
+     ]),
+
+  ("initialize_prosperity_information",
+  [
+    #Initialize prosperity based on final prices
+    (try_for_range, ":center_no", centers_begin, centers_end),
+      (neg|is_between, ":center_no", castles_begin, castles_end),
+      (store_random_in_range, ":random_prosperity_adder", -20, 20),
+      (call_script, "script_get_center_ideal_prosperity", ":center_no"),
+      (assign, ":prosperity", reg0),
+      (val_add, ":prosperity", ":random_prosperity_adder"),
+      (val_clamp, ":prosperity", 0, 100),
+      (party_set_slot, ":center_no", slot_town_prosperity, ":prosperity"),
+    (try_end),
+
+    (call_script, "script_calculate_castle_prosperities_by_using_its_villages"),
+  ]),
+
+  # script_dplmc_center_get_total_village_production
+  # - Towns look at their connected market villages
+  # - Towns only take 1/2 of the village production totals
+  # - Villages which have not had farmers reach market have less production
+  #   using dplmc_slot_village_trade_last_arrived_to_market
+  # Input: 
+  #   arg1 = center_no (party ID)
+  #   arg2 = cur_good (item ID)
+  # Output: (flow: base -> raw mats -> prosperity -> village status -> result)
+  #   reg0 = base_production (original production value)
+  #   reg1 = production after raw material prices are looked at
+  #   reg2 = production after prosperity check
+  #   reg3 = modified_production 
+  #   reg4 = final production (based on if farmers arrived timely to market)
+  # Notes:
+  # - similar to script_dplmc_good_produced_at_center_or_its_villages
+  # - similar to script_dplmc_assess_ability_to_purchase_good_from_center
+  ("dplmc_center_get_total_village_production",
+  [
+		(store_script_param_1, ":center_no"),
+		(store_script_param_2, ":cur_good"),
+
+    (store_current_hours, ":cur_hours"),
+
+    (assign, ":total_village_prod_base", 0),
+    (assign, ":total_village_prod_after_raw_materials", 0),
+    (assign, ":total_village_prod_after_prosperity_check", 0),
+    (assign, ":total_village_prod_modified_original", 0),
+    (assign, ":total_village_prod_modified", 0),
+
+    (try_begin),
+      (is_between, ":center_no", towns_begin, towns_end),
+      (try_for_range, ":village_no", villages_begin, villages_end),
+        (party_slot_eq, ":village_no", slot_village_market_town, ":center_no"),
+        (call_script, "script_center_get_production", ":village_no", ":cur_good"),
+        (val_add, ":total_village_prod_base", reg2), # potential prod
+        (val_add, ":total_village_prod_after_raw_materials", reg1),
+        (val_add, ":total_village_prod_after_prosperity_check", reg3),
+        (val_add, ":total_village_prod_modified_original", reg0),
+        (assign, ":this_village_production", reg0),
+
+        (party_get_slot, reg0, ":village_no", dplmc_slot_village_trade_last_arrived_to_market),
+        (assign, ":last_arrival", reg0),
+        (val_min,  ":last_arrival", ":cur_hours"),
+        (store_sub, ":hours_ago", ":cur_hours", ":last_arrival"),
+        (val_clamp, ":hours_ago", 0, 14 * 24),
+
+        # penalty starts after 2 * N hours
+        (store_div, ":time_penalty", ":hours_ago", 36),
+        (val_max, ":time_penalty", 1),
+
+        (val_div, ":this_village_production", ":time_penalty"),
+
+        (val_add, ":total_village_prod_modified", ":this_village_production"),
+      (try_end),
+    (try_end),
+
+    (val_div, ":total_village_prod_base", 2),
+    (val_div, ":total_village_prod_after_raw_materials", 2),
+    (val_div, ":total_village_prod_after_prosperity_check", 2),
+    (val_div, ":total_village_prod_modified_original", 2),
+    (val_div, ":total_village_prod_modified", 2),
+
+    (try_begin),
+      (ge, "$cheat_mode", DPLMC_DEBUG_NEVER),
+      (store_distance_to_party_from_party, ":dist_to_main_party", "p_main_party", ":center_no"),
+      (le, ":dist_to_main_party", 8), # limit debug output to towns within range of the player (otherwise too chatty)
+      (str_store_item_name, s20, ":cur_good"),
+      (str_store_party_name, s21, ":center_no"),
+      (assign, reg20, ":total_village_prod_base"),
+      (assign, reg21, ":total_village_prod_modified_original"),
+      (assign, reg22, ":total_village_prod_modified"),
+      (display_message, "@{!}DCGTVP: {s21}/{s20} ({reg20}/{reg21}/{reg22} prod)"),
+    (end_try),
+
+		(assign, reg0, ":total_village_prod_base"),
+		(assign, reg1, ":total_village_prod_after_raw_materials"),
+    (assign, reg2, ":total_village_prod_after_prosperity_check"),
+    (assign, reg3, ":total_village_prod_modified_original"),
+		(assign, reg4, ":total_village_prod_modified"),
+  ]),
+
+  # script_dplmc_center_get_market_town_production (calculate local market back to village)
+  #   1. Village looks at the connected market town.
+  #   2. Get the town production at 100%
+  #   3. Add 50% of production from associated villages that made it to market
+  #   4. Apply penalty based on dplmc_slot_village_trade_last_returned_from_market
+  #   5. Divide results by 2
+  # Input: 
+  #   arg1 = center_no (party ID)
+  #   arg2 = cur_good (item ID)
+  # Output:
+  #   reg0 = base_production (original production value)
+  #   reg1 = production after raw material prices are looked at
+  #   reg2 = production after prosperity check
+  #   reg3 = original modified production
+  #   reg4 = modified_production (after checking farmer arrivals to market)
+  #   reg5 = final production based on whether farmer returns from market in a timely fashion
+  # Notes:
+  # - similar to script_dplmc_good_produced_at_center_or_its_villages
+  # - similar to script_dplmc_assess_ability_to_purchase_good_from_center
+  ("dplmc_center_get_market_town_production",
+  [
+		(store_script_param_1, ":center_no"),
+		(store_script_param_2, ":cur_good"),
+
+    (store_current_hours, ":cur_hours"),
+
+    (assign, ":markettown_prod_base", 0),
+    (assign, ":markettown_prod_after_raw_materials", 0),
+    (assign, ":markettown_prod_after_prosperity_check", 0),
+    (assign, ":markettown_prod_modified_original", 0),
+    (assign, ":markettown_prod_modified", 0),
+    (assign, ":markettown_prod_final", 0),
+
+    (try_begin),
+      (is_between, ":center_no", villages_begin, villages_end),
+      (party_get_slot, ":market_town", ":center_no", slot_village_market_town),
+
+      # get the town's production
+      (call_script, "script_center_get_production", ":market_town", ":cur_good"),
+      (val_add, ":markettown_prod_base", reg2),
+      (val_add, ":markettown_prod_after_raw_materials", reg1),
+      (val_add, ":markettown_prod_after_prosperity_check", reg3),
+      (val_add, ":markettown_prod_modified_original", reg0),
+      (val_add, ":markettown_prod_modified", reg0),
+      
+      # get the town's associated villages production, divide these by 1/2
+      (call_script, "script_dplmc_center_get_total_village_production", ":market_town", ":cur_good"),
+      (val_div, reg0, 2),
+      (val_div, reg1, 2),
+      (val_div, reg2, 2),
+      (val_div, reg3, 2),
+      (val_div, reg4, 2),
+      (val_add, ":markettown_prod_base", reg0),
+      (val_add, ":markettown_prod_after_raw_materials", reg1),
+      (val_add, ":markettown_prod_after_prosperity_check", reg2),
+      (val_add, ":markettown_prod_modified_original", reg3),
+      (val_add, ":markettown_prod_modified", reg4),
+
+      (try_begin),
+        (ge, "$cheat_mode", DPLMC_DEBUG_NEVER),
+        (store_distance_to_party_from_party, ":dist_to_main_party", "p_main_party", ":center_no"),
+        (le, ":dist_to_main_party", 8), # limit debug output to towns within range of the player (otherwise too chatty)
+        (str_store_item_name, s20, ":cur_good"),
+        (str_store_party_name, s21, ":center_no"),
+        (str_store_party_name, s23, ":market_town"),
+        (assign, reg20, ":markettown_prod_base"),
+        (assign, reg21, ":markettown_prod_modified_original"),
+        (assign, reg22, ":markettown_prod_modified"),
+        (display_message, "@{!}DCGMTP: {s21} ({s23}) {s20} ({reg20}/{reg21}/{reg22} prod)"),
+      (end_try),
+
+      (assign, ":markettown_prod_final", ":markettown_prod_modified"),
+
+      # calculate last-returned penalty
+      (party_get_slot, reg0, ":center_no", dplmc_slot_village_trade_last_returned_from_market),
+      (assign, ":last_return", reg0),
+      (val_min,  ":last_return", ":cur_hours"),
+      (store_sub, ":hours_ago", ":cur_hours", ":last_return"),
+      (val_clamp, ":hours_ago", 0, 14 * 24),
+
+      # penalty starts after 2 * N hours
+      (store_div, ":time_penalty", ":hours_ago", 36),
+      (val_max, ":time_penalty", 1),
+
+      (val_div, ":markettown_prod_final", ":time_penalty"),
+    (try_end),
+
+    # then divide everything by 1/2
+    (val_div, ":markettown_prod_base", 2),
+    (val_div, ":markettown_prod_after_raw_materials", 2),
+    (val_div, ":markettown_prod_after_prosperity_check", 2),
+    (val_div, ":markettown_prod_modified_original", 2),
+    (val_div, ":markettown_prod_modified", 2),
+    (val_div, ":markettown_prod_final", 2),
+
+		(assign, reg0, ":markettown_prod_base"),
+		(assign, reg1, ":markettown_prod_after_raw_materials"),
+    (assign, reg2, ":markettown_prod_after_prosperity_check"),
+    (assign, reg3, ":markettown_prod_modified_original"),
+		(assign, reg4, ":markettown_prod_modified"),
+    (assign, reg5, ":markettown_prod_final"),
+  ]),
 
     # #script_cf_dplmc_disguise_evaluate_contraband
     # #input : party_no, troop_no
