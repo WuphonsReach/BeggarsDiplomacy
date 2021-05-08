@@ -2919,7 +2919,7 @@ simple_triggers = [
                (store_random_in_range, ":rand", 0, 100),
                (lt, ":rand", 5), #was 35
                (call_script, "script_change_center_prosperity", ":home_center", 1),
-			   (val_add, "$newglob_total_prosperity_from_village_trade", 1),
+			         (val_add, "$newglob_total_prosperity_from_village_trade", 1),
              (try_end),
            (try_end),
 
@@ -6358,7 +6358,7 @@ simple_triggers = [
 	 ##nested diplomacy end+
 
     (try_begin),
-      (ge, "$cheat_mode", DPLMC_DEBUG_MIN),
+      (eq, "$cheat_mode", DPLMC_DEBUG_POLITICS),
       (str_store_faction_name, s9, ":kingdom"),
       (assign, reg1, ":centralization"),
       (display_message, "@{!}DEBUG - centralization {reg1}"),
@@ -6393,7 +6393,7 @@ simple_triggers = [
         (store_random_in_range, ":change", -1, 2),
 
         (try_begin),
-          (ge, "$cheat_mode", DPLMC_DEBUG_MIN),
+          (eq, "$cheat_mode", DPLMC_DEBUG_POLITICS),
           (str_store_faction_name, s12, ":kingdom"),
           (assign, reg1, ":change"),
           (assign, reg2, ":random"),
@@ -6458,7 +6458,7 @@ simple_triggers = [
         (neq, ":relation_change", 0),
 
         (try_begin),
-          (ge, "$cheat_mode", DPLMC_DEBUG_MIN),
+          (eq, "$cheat_mode", DPLMC_DEBUG_POLITICS),
           (str_store_faction_name, s9, ":kingdom"),
           (assign, reg1, ":relation_change"),
           (display_message, "@{!}DEBUG - relation_change =  {reg1} for {s9}"),

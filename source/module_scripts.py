@@ -15955,6 +15955,7 @@ scripts = [
 
   ("average_trade_good_prices", #Called from start
     [
+      # DEPRECATED SCRIPT
 
 	#This should be done by route rather than distance
       (store_sub, ":item_to_slot", slot_town_trade_good_prices_begin, trade_goods_begin),
@@ -15994,6 +15995,7 @@ scripts = [
 
   ("average_trade_good_prices_2", #Called from start
     [
+      # DEPRECATED SCRIPT
 
 	#This should be done by route rather than distance
       (store_sub, ":item_to_slot", slot_town_trade_good_prices_begin, trade_goods_begin),
@@ -16054,6 +16056,7 @@ scripts = [
   #This is currently deprecated, as I was going to try to fine-tune production
   ("average_trade_good_productions",
     [
+      # DEPRECATED SCRIPT
       (store_sub, ":item_to_slot", slot_town_trade_good_productions_begin, trade_goods_begin),
       (try_for_range, ":center_no", towns_begin, towns_end),
         (this_or_next|is_between, ":center_no", towns_begin, towns_end),
@@ -16092,6 +16095,7 @@ scripts = [
   # This currently deprecated, as I was going to try to fine-tune productions
   ("normalize_trade_good_productions",
     [
+      # DEPRECATED SCRIPT
       (store_sub, ":item_to_slot", slot_town_trade_good_productions_begin, trade_goods_begin),
       (try_for_range, ":cur_good", trade_goods_begin, trade_goods_end),
         (assign, ":total_production", 0),
@@ -36859,7 +36863,7 @@ scripts = [
 
       (assign, reg0, 0),
       (troop_get_inventory_capacity, ":capacity", "trp_player"),
-      (try_for_range, ":slot_no", 0, ":capacity"),
+      (try_for_range, ":slot_no", 0, ":capacity"), #TODO: Use try_for_range_backwards
         (eq, reg0, 0), # nothing consumed yet
         (store_sub, ":cur_slot", ":capacity", ":slot_no"), # run backwards through slots
 
@@ -43502,7 +43506,7 @@ scripts = [
      (troop_set_slot, "trp_log_array_faction_object",        "$num_log_entries", ":faction_object"),
 
      (try_begin),
-       (ge, "$cheat_mode", DPLMC_DEBUG_MIN),
+       (ge, "$cheat_mode", DPLMC_DEBUG_NEVER),
        (assign, reg3, "$num_log_entries"),
        (assign, reg4, ":entry_type"),
        #(display_message, "@{!}Log entry {reg3}: type {reg4}"),
@@ -61810,7 +61814,7 @@ scripts = [
 
 				(call_script, "script_troop_change_relation_with_troop", ":faction_liege", ":active_npc", ":relation_change"),
 				(try_begin),
-					(ge, "$cheat_mode", DPLMC_DEBUG_MIN),
+					(eq, "$cheat_mode", DPLMC_DEBUG_POLITICS),
 					(str_store_troop_name, s17, ":active_npc"),
 					(str_store_troop_name, s18, ":faction_liege"),
 					(assign, reg3, ":relation_change"),

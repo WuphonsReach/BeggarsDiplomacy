@@ -13147,7 +13147,7 @@ presentations = [
 			(val_sub, ":current_index", ":impact_on_price"),
 			(party_set_slot, ":center_no", ":item_slot_no",":current_index"),
 
-			(gt, "$cheat_mode", 0),
+			(ge, "$cheat_mode", DPLMC_DEBUG_NEVER),
 			(str_store_troop_name, s3, ":craftsman_troop"),
 			(assign, reg3, ":outputs_added_to_warehouse"),
 			(display_message, "@{!}DEBUG -- Adding {reg3} items to {s3}"),
