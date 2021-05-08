@@ -829,6 +829,8 @@ simple_triggers = [
           (try_end),
           (try_begin),
             (eq, "$cheat_mode", DPLMC_DEBUG_EXPERIMENTAL),
+            (store_distance_to_party_from_party, ":dist_to_main_party", "p_main_party", ":center_no"),
+            (le, ":dist_to_main_party", 10),
             (str_store_party_name, s11, ":center_no"),
             (str_store_party_name, s12, ":village_reinforcements"),
             (assign, reg11, ":reinforcement_cost"),
