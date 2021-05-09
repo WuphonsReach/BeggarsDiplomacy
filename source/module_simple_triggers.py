@@ -5173,21 +5173,29 @@ simple_triggers = [
    ]),
   
   # CHARITY - randomly boost villages with low prosperity
-  # 10% chance every 9 hours to gain 0..5 points of prosperity = 4.7 pts/week
-  # this helps looted/pillaged villages get back up to ~30 prosperity faster
+  # a 50% chance every 12 hours to gain 0..5 points of prosperity, then
+  # a second roll against prosperity
+  #  0 prosp = 40% chance
+  # 10 prosp = 30% chance 
+  # 20 prosp = 20% chance (5 days per 2.5 pts)
+  # 30 prosp = 10% chance (10 days per 2.5 pts)
+  # 40 prosp = 0% chance
+  # this helps looted/pillaged villages get back up to ~35 prosperity faster
   # yes, it's a bit of a hack, but makes villages more resilient
-  (9,
+  (12,
    [
     (ge, "$g_dplmc_gold_changes", DPLMC_GOLD_CHANGES_LOW),
     (try_for_range, ":center_no", villages_begin, villages_end),
       (party_slot_eq, ":center_no", slot_village_state, svs_normal), # must not be looted, being raided, etc.
       (party_slot_eq, ":center_no", slot_center_has_bandits, 0), # must not be infested
       (party_get_slot, ":prosperity", ":center_no", slot_town_prosperity),
-      (lt, ":prosperity", 30), # only for low-prosperity villages
+      (lt, ":prosperity", 35), # only for low-prosperity villages
+      (store_random_in_range, ":chance", 0, 100),
+      (lt, ":chance", 50),
       (party_get_slot, ":elder", ":center_no", slot_town_elder),
       (try_begin),
-        (store_random_in_range, ":random", 0, 100),
-        (lt, ":random", 10), # percent chance to boost prosperity
+        (store_random_in_range, ":random", -60, 40),
+        (ge, ":random", ":prosperity"), # percent chance to boost prosperity
         (store_random_in_range, ":boost", 0, 6),
         (call_script, "script_change_center_prosperity", ":center_no", ":boost"),
         (try_begin),
