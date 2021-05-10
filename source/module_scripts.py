@@ -29931,7 +29931,9 @@ scripts = [
   ]),
 
   # script_get_player_party_morale_values
-  # Output: reg0 = player_party_morale_target
+  # Output: 
+  #   reg0 = player_party_morale_target
+  #   reg1 = base morale
   ("get_player_party_morale_values",
     [
       (party_get_num_companion_stacks, ":num_stacks","p_main_party"),
@@ -29949,6 +29951,7 @@ scripts = [
       (assign, "$g_player_party_morale_modifier_party_size", ":num_men"),
 
       (store_skill_level, ":player_leadership", "skl_leadership", "trp_player"),
+      (store_attribute_level, ":player_charisma", "trp_player", ca_charisma),
 
       (try_begin),
         (eq, "$players_kingdom", "fac_player_supporters_faction"),
@@ -29962,7 +29965,9 @@ scripts = [
       (assign, ":new_morale", "$g_player_party_morale_modifier_leadership"),
       (val_sub, ":new_morale", "$g_player_party_morale_modifier_party_size"),
 
-      (val_add, ":new_morale", 50), # the "base morale" value
+      (assign, ":base_morale", 40), # 40 + charisma
+      (val_add, ":base_morale",":player_charisma"),
+      (val_add, ":new_morale", ":base_morale"),
 
       (assign, "$g_player_party_morale_modifier_food", 0),
       (try_for_range, ":cur_edible", food_begin, food_end),
@@ -29998,6 +30003,7 @@ scripts = [
 
       (val_clamp, ":new_morale", 0, 100),
       (assign, reg0, ":new_morale"),
+      (assign, reg1, ":base_morale"),
       ]),
 
   # script_diplomacy_start_war_between_kingdoms

@@ -2197,8 +2197,9 @@ game_menus = [
    "none",
    [
      (call_script, "script_get_player_party_morale_values"),
-
      (assign, ":target_morale", reg0),
+     (assign, ":base_morale", reg1),
+
      (assign, reg1, "$g_player_party_morale_modifier_party_size"),
      (try_begin),
        (gt, reg1, 0),
@@ -2247,7 +2248,7 @@ game_menus = [
        (str_store_string, s7, "str_space"),
      (try_end),
 
-     (assign, reg6, 50), # base morale value
+     (assign, reg6, ":base_morale"), # base morale value
 
      (str_store_string, s1, "str_current_party_morale_is_reg5_current_party_morale_modifiers_are__base_morale__50_party_size_s2reg1_leadership_s3reg2_food_variety_s4reg3s5s6_recent_events_s7reg4_total__reg5___"),
 
