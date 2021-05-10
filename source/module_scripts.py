@@ -45729,6 +45729,9 @@ scripts = [
 
 		(lt, ":hours_ago", 672), #four weeks
 
+    #TODO: Clean this up to classify arrival of caravans by origin to shorten up the messages
+    # The existing UI is overflowing when there are >6 origins.
+
 		(try_begin),
 			(ge, "$cheat_mode", DPLMC_DEBUG_MIN),
 			(troop_slot_eq, "trp_log_array_entry_type", ":log_entry_no", logent_traveller_attacked),
