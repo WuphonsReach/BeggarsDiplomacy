@@ -25683,7 +25683,7 @@ scripts = [
         (else_try),
           (ge, ":num_towns", 1),
           (store_mul, ":party_count_limit", ":num_towns", 2),
-          (val_add, ":party_count_limit", 1),
+          (val_add, ":party_count_limit", 3),
           (store_div, ":moar_caravans", ":num_towns", 3),
           (val_add, ":party_count_limit", ":moar_caravans"),
         (try_end),
