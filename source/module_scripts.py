@@ -20039,8 +20039,8 @@ scripts = [
 	  ##diplomacy start+
 	  # If economics changes are enabled, the caravan may also take into account the distance
 	  # to the destination or bias towards towns of its town faction.
-	  (store_random_in_range, ":consider_distance", 0, 2),
-	  (store_random_in_range, ":faction_bias", 0, 2),
+	  (store_random_in_range, ":consider_distance", 0, 99),
+	  (store_random_in_range, ":faction_bias", 0, 99),
 	  (try_begin),
 		(lt, ":perspective_party", 0),
 		(assign, ":perspective_party", ":town_no"),
@@ -20057,12 +20057,12 @@ scripts = [
 
 		(assign, ":cur_town_score", 0),
 		(try_for_range, ":cur_goods", trade_goods_begin, trade_goods_end),
-			(neq, ":cur_goods", "itm_butter"), #Don't count perishables
+      #Don't count perishables
 			(neq, ":cur_goods", "itm_cattle_meat"),
 			(neq, ":cur_goods", "itm_chicken"),
 			(neq, ":cur_goods", "itm_pork"),
 
-            (store_add, ":cur_goods_price_slot", ":cur_goods", ":item_to_price_slot"),
+      (store_add, ":cur_goods_price_slot", ":cur_goods", ":item_to_price_slot"),
 			(party_get_slot, ":origin_price", ":town_no", ":cur_goods_price_slot"),
 			(party_get_slot, ":destination_price", ":cur_town", ":cur_goods_price_slot"),
 
@@ -20070,22 +20070,20 @@ scripts = [
 			(store_sub, ":price_dif", ":destination_price", ":origin_price"),
 
 			(try_begin), #weight luxury goods double
+        (this_or_next|eq, ":cur_goods", "itm_wine"),
+        (this_or_next|eq, ":cur_goods", "itm_oil"),
+        (this_or_next|eq, ":cur_goods", "itm_raw_silk"),
 				(this_or_next|eq, ":cur_goods", "itm_spice"),
-					(eq, ":cur_goods", "itm_velvet"),
+        (eq, ":cur_goods", "itm_velvet"),
 				(val_mul, ":price_dif", 2),
 			(try_end),
+      # fuzzy the price difference
+      (store_random_in_range, ":price_diff_fuzzing", 800, 1200),
+      (val_mul, ":price_dif", ":price_diff_fuzzing"),
+      (val_div, ":price_dif", 1000),
 			(val_add, ":cur_town_score", ":price_dif"),
 		(try_end),
 
-##		(try_begin),
-##			(eq, "$cheat_mode", 1),
-##			(str_store_party_name, s10, ":town_no"),
-##			(str_store_party_name, s11, ":cur_town"),
-##			(assign, reg3, ":cur_town_score"),
-##			(display_message, "str_caravan_in_s10_considers_s11_total_price_dif_=_reg3"),
-##		(try_end),
-
-        ##diplomacy start+
 		(try_begin),
 			#Economic changes must be enabled, or the player must have decided
 			#to use mercantilism settings (which expresses a desire to see changes
@@ -20095,7 +20093,7 @@ scripts = [
 			#Take into account distance, or treat factions preferentially
 			(try_begin),
 				#Bias towards own faction
-				(ge, ":faction_bias", 1),
+				(lt, ":faction_bias", 50), # percent of time to favor faction
 				(neq, ":faction_no", ":cur_faction"),
 
 				##The penalty is based on the source faction's mercantilism rating, as well as
@@ -20113,25 +20111,26 @@ scripts = [
 				(val_div, ":cur_town_score", 100),
 			(try_end),
 			(try_begin),
-				(ge, ":consider_distance", 1),#consider distance
+				(lt, ":consider_distance", 30), # percent of time to consider distance
 				(store_distance_to_party_from_party, ":dist", ":perspective_party",":cur_town"),
 				#Avoid asymptotic effects and undue weighting.
 				#Further explanation: What we really care about is time, not distance.
 				#It will take time to buy and sell once reaching our destination: halving
 				#the distance doesn't double the expected profit per month.
-				(val_max, ":dist", 0),
-				(val_add, ":dist", 12),
-				#Avoid possible problems trying to compare distant towns
-				(val_mul, ":cur_town_score", 100),
+				(val_clamp, ":dist", 35, 301), # treat nearby towns equivalent
+        (convert_to_fixed_point, ":dist"),
+        (store_sqrt, ":dist", ":dist"), # converts 35..100 -> 5..17
+        (convert_from_fixed_point, ":dist"),
+        (val_div, ":dist", 5), # convert 5..17 -> 1..3
+        (val_min, ":dist", 1),
 				(val_div, ":cur_town_score", ":dist"),
 			(try_end),
 		(try_end),
 		##diplomacy end+
 
-    (try_begin), # fuzz the results by up to 30% so that different caravans choose different destinations
+    (try_begin), # fuzz the results by up to 90%-150% so that different caravans choose different destinations
       (ge, "$g_dplmc_gold_changes", DPLMC_GOLD_CHANGES_MEDIUM),
-      (store_random_in_range, ":score_bonus_percent", 0, 300),
-      (val_add, ":score_bonus_percent", 1000),
+      (store_random_in_range, ":score_bonus_percent", 900, 1500),
       (val_mul, ":cur_town_score", ":score_bonus_percent"),
       (val_div, ":cur_town_score", 1000),
     (try_end),
