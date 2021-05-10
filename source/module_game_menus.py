@@ -14299,9 +14299,17 @@ TOTAL:  {reg5}"),
      (assign, reg7, ":total_modified_production"),
      ],
     [
-      ("to_price_and_productions", [], "Show prices and productions.",
-       [(jump_to_menu, "mnu_price_and_production"),
-        ]),
+      ("to_price_and_productions", [], "Show prices and productions.", [
+         (jump_to_menu, "mnu_price_and_production"),
+      ]),
+
+      ("to_price_and_productions_2", [], "Show prices and productions 2.", [
+         (jump_to_menu, "mnu_price_and_production_2"),
+      ]),
+
+      ("to_price_and_productions_3", [], "Show prices and productions 3.", [
+         (jump_to_menu, "mnu_price_and_production_3"),
+      ]),
 
       ("go_back_dot",[],"Go back.",
        [(try_begin),
@@ -14463,16 +14471,28 @@ TOTAL:  {reg5}"),
       (str_store_string, s29, "@^Villages ({reg20}): {s51}"),
     (try_end),
   ],
-  [
-    ("go_back_dot",[],"Go back.",
-      [(try_begin),
-        (party_slot_eq, "$g_encountered_party", slot_party_type, spt_village),
-        (jump_to_menu, "mnu_village"),
-      (else_try),
-        (jump_to_menu, "mnu_town"),
-      (try_end),
-      ]),
-  ]
+
+  [("go_back_dot",[],"Go back.",[(jump_to_menu, "mnu_center_reports")])]
+  ),
+
+  (
+    "price_and_production_2",0,
+    "Price and Production 2:",
+    "none",
+    [
+      # code
+    ],
+  [("go_back_dot",[],"Go back.",[(jump_to_menu, "mnu_center_reports")])]
+  ),
+
+  (
+    "price_and_production_3",0,
+    "Price and Production 3:",
+    "none",
+    [
+      # code
+    ],
+  [("go_back_dot",[],"Go back.",[(jump_to_menu, "mnu_center_reports")])]
   ),
 
   (
