@@ -2656,7 +2656,7 @@ simple_triggers = [
         (this_or_next|eq, ":farmer_party", 0),
         (neg|party_is_active, ":farmer_party"),
         (store_random_in_range, ":random_no", 0, 100),
-        (lt, ":random_no", 25), # spread out spawns across the day
+        (lt, ":random_no", 20), # spread out spawns across the day
         (call_script, "script_create_village_farmer_party", ":village_no"),
         (party_set_slot, ":village_no", slot_village_farmer_party, reg0),
       (try_end),
@@ -2805,7 +2805,7 @@ simple_triggers = [
         (try_end),
         (try_begin),
           (store_random_in_range, ":random_can_leave", 0, 100),
-          (ge, ":random_can_leave", 15), # chance that they will leave, reduce all leaving at same hour
+          (ge, ":random_can_leave", 20), # chance that they will leave, reduce all leaving at same hour
           (assign, ":can_leave", 0),
         (try_end), 
         (eq, ":can_leave", 1),
