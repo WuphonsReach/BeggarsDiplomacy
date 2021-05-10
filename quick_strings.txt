@@ -1,4 +1,4 @@
-1301
+1312
 qstr_Breaking_camp... Breaking_camp...
 qstr_Removing_disguise... Removing_disguise...
 qstr_{s17}_has_{reg17}_de {s17}_has_{reg17}_denars
@@ -1300,3 +1300,14 @@ qstr_As_a_hunter_provisi As_a_hunter,_provisions_and_raw_goods_are_expected_as_w
 qstr_As_a_caravan_guard_ As_a_caravan_guard,_you_will_be_able_to_bear_weapons_but_bring_only_a_few_personal_belongings.
 qstr_As_a_merchant_you_w As_a_merchant,_you_will_be_able_to_bring_any_assortment_of_goods.
 qstr_As_a_bard_you_will_ As_a_bard,_you_will_be_allowed_some_personal_possessions_and_your_instrument.
+qstr_villages_{reg90}/{re villages_{reg90}/{reg91}/{reg92}
+qstr_No_villages No_villages
+qstr_town_{reg90} town_{reg90}
+qstr_No_market No_market
+qstr_^{s3}:_{reg90}__{s90 ^{s3}:_{reg90}_({s90})
+qstr_{s3}:_{reg90}__{s90} {s3}:_{reg90}_({s90})
+qstr_{reg90}/{reg91}/{reg {reg90}/{reg91}/{reg92}
+qstr_{reg90} {reg90}
+qstr_^Market_Town:_{s50}^L ^Market_Town:_{s50}^Last_farmer_arrival:_{reg20}_hours^Last_farmer_returned:_{reg21}_hours^Last_attacked:_{reg22}_days^^Prices_at_village_(and_market_town):
+qstr_^Villages__{reg20}_:_ ^Villages_({reg20}):_{s51}^^Prices_at_town_(and_min/avg/max_for_villages):
+qstr_^Villages__{reg20}_:_{ ^Villages_({reg20}):_{s51}^^Prices_at_town_(min/avg/max_for_villages):

@@ -1,5 +1,5 @@
 stringsfile version 1
-3843
+3844
 str_no_string NO_STRING!
 str_empty_string _
 str_yes Yes.
@@ -3801,6 +3801,7 @@ str_acres_fruit_trees acres_of_fruit_trees
 str_kirmiz_farms acres_of_kirmiz_plots
 str_head_pigs pig_pens
 str_head_chicken chicken_coops
+str_dplmc_s50_newline_s51 {!}{s50}^{s51}
 str_skl_trade Trade
 str_skl_leadership Leadership
 str_skl_prisoner_management Prisoner_Management

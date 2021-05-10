@@ -14303,8 +14303,8 @@ TOTAL:  {reg5}"),
          (jump_to_menu, "mnu_price_and_production"),
       ]),
 
-      ("to_price_and_productions_2", [], "Show prices and productions 2.", [
-         (jump_to_menu, "mnu_price_and_production_2"),
+      ("to_center_reports_local_market", [], "Show local market prices.", [
+         (jump_to_menu, "mnu_center_reports_local_market"),
       ]),
 
       ("to_price_and_productions_3", [], "Show prices and productions 3.", [
@@ -14329,7 +14329,6 @@ TOTAL:  {reg5}"),
   [
     (assign, ":calradian_average_urban_hardship", 0),
     (assign, ":calradian_average_rural_hardship", 0),
-    (store_current_hours, ":cur_hours"),
 
     (try_for_range, ":center", towns_begin, towns_end),
       (call_script, "script_center_get_goods_availability", ":center"),
@@ -14432,7 +14431,8 @@ TOTAL:  {reg5}"),
       (str_store_string, s1, "str_dplmc_price_and_production"),
     (try_end),  
 
-    # report header information (not per trade good)
+    # report header information (not per trade good) into s29
+    (store_current_hours, ":cur_hours"),
     (try_begin),
       (is_between, "$g_encountered_party", villages_begin, villages_end),
       (party_get_slot, ":last_returned", "$g_encountered_party", dplmc_slot_village_trade_last_returned_from_market),
@@ -14476,12 +14476,118 @@ TOTAL:  {reg5}"),
   ),
 
   (
-    "price_and_production_2",0,
-    "Price and Production 2:",
+    "center_reports_local_market",0,
+    "Local Market Prices:^{s99}^{s90}",
     "none",
-    [
-      # code
-    ],
+  [
+      
+    (str_clear, s50),
+    (try_for_range, ":cur_good", trade_goods_begin, trade_goods_end),
+
+      (store_sub, ":cur_good_price_slot", ":cur_good", trade_goods_begin),
+      (val_add, ":cur_good_price_slot", slot_town_trade_good_prices_begin),
+
+      # price at this location
+      (party_get_slot, ":price", "$g_encountered_party", ":cur_good_price_slot"),
+
+      # calculate prices at associated villages or the market town
+      # s90 will be the result with min/avg/max, or market-town price, or "no data"
+      (try_begin), # towns
+        (is_between, "$g_encountered_party", towns_begin, towns_end),
+        (assign, ":village_count", 0),
+        (assign, ":village_price_min", maximum_price_factor),
+        (assign, ":village_price_avg", 0),
+        (assign, ":village_price_max", minimum_price_factor),
+        (try_for_range, ":village_no", villages_begin, villages_end),
+          (party_slot_eq, ":village_no", slot_village_market_town, "$g_encountered_party"),
+          (party_get_slot, ":price", ":village_no", ":cur_good_price_slot"),
+          (val_add, ":village_price_avg", ":price"),
+          (try_begin),
+            (lt, ":price", ":village_price_min"),
+            (assign, ":village_price_min", ":price"),
+          (try_end),
+          (try_begin),
+            (gt, ":price", ":village_price_max"),
+            (assign, ":village_price_max", ":price"),
+          (try_end),
+          (val_add, ":village_count", 1),
+        (try_end),
+        (try_begin),
+          (gt, ":village_count", 0),
+          (val_div, ":village_price_avg", ":village_count"),
+          (assign, reg90, ":village_price_min"),
+          (assign, reg91, ":village_price_avg"),
+          (assign, reg92, ":village_price_max"),
+          (str_store_string, s90, "@{reg90}/{reg91}/{reg92}"),
+        (else_try),
+          (str_store_string, s90, "@No villages"),
+        (try_end),
+      
+      (else_try), # villages
+        (party_get_slot, ":market_town",  "$g_encountered_party", slot_village_market_town),
+        (try_begin),
+          (is_between, ":market_town", towns_begin, towns_end),
+          (party_get_slot, ":market_price", ":market_town", ":cur_good_price_slot"),
+          (assign, reg90, ":market_price"),
+          (str_store_string, s90, "@{reg90}"),
+        (else_try),
+          (str_store_string, s90, "@No market"),
+        (try_end),
+
+      (try_end),
+
+      # ---- build output for good using str_dplmc_s50_newline_s51 ----
+      (str_store_item_name, s3, ":cur_good"),
+      (assign, reg90, ":price"),
+      (str_store_string, s51, "@{s3}: {reg90} ({s90})"),
+      (str_store_string, s50, "str_dplmc_s50_newline_s51"),
+    (try_end),
+
+    # prepare output
+    (str_store_string_reg, s90, s50),
+
+    # report header information (not per trade good) into s99
+    (store_current_hours, ":cur_hours"),
+    (try_begin),
+      (is_between, "$g_encountered_party", villages_begin, villages_end),
+      (party_get_slot, ":last_returned", "$g_encountered_party", dplmc_slot_village_trade_last_returned_from_market),
+      (val_min,  ":last_returned", ":cur_hours"),
+      (store_sub, reg20, ":cur_hours", ":last_returned"),
+
+      (party_get_slot, ":last_arrival", "$g_encountered_party", dplmc_slot_village_trade_last_arrived_to_market),
+      (val_min,  ":last_arrival", ":cur_hours"),
+      (store_sub, reg21, ":cur_hours", ":last_arrival"),
+
+      (party_get_slot, ":last_attacked_time", "$g_encountered_party", dplmc_slot_center_last_attacked_time),
+      (val_min,  ":last_attacked_time", ":cur_hours"),
+      (store_sub, reg22, ":cur_hours", ":last_attacked_time"),
+      (val_div, reg22, 24),
+
+      (party_get_slot, ":market_town_no", "$g_encountered_party", slot_village_market_town),
+      (str_store_party_name, s50, ":market_town_no"),
+      (str_store_string, s99, "@^Market Town: {s50}^Last farmer arrival: {reg20} hours^Last farmer returned: {reg21} hours^Last attacked: {reg22} days^^Prices at village (and market town):"),
+    (else_try),
+      (is_between, "$g_encountered_party", towns_begin, towns_end),
+      # build list of villages that use this town as their market
+      (assign, ":village_count", 0),
+      (try_for_range, ":village_no", villages_begin, villages_end),
+        (party_get_slot, ":market_town_no", ":village_no", slot_village_market_town),
+        (eq, "$g_encountered_party", ":market_town_no"),
+        (str_store_party_name, s50, ":village_no"),
+        (try_begin),
+          (eq, ":village_count", 0),
+          (str_store_string_reg, s51, s50),
+        (else_try),
+          (str_store_string, s51, "str_s50_comma_s51"),
+        (try_end),
+        (val_add, ":village_count", 1),
+      (try_end),
+      (assign, reg20, ":village_count"),
+      (str_store_string, s99, "@^Villages ({reg20}): {s51}^^Prices at town (min/avg/max for villages):"),
+    (try_end),
+
+
+  ],
   [("go_back_dot",[],"Go back.",[(jump_to_menu, "mnu_center_reports")])]
   ),
 

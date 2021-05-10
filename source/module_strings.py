@@ -5166,6 +5166,8 @@ Only you know exactly what caused you to give up your old life and become an adv
   ("head_pigs",           "pig pens"),
   ("head_chicken",        "chicken coops"),
 
+  ("dplmc_s50_newline_s51", "{!}{s50}^{s51}"),
+
 #utility for skill names
 ]+[
 ("skl_"+skills[x][0], skills[x][1]) for x in range(0, len(skills))]
