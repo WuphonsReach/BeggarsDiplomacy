@@ -29318,12 +29318,23 @@ Hand over my {reg19} denars, if you please, and end our business together.", "lo
 #Request Mission
 
   [anyone|auto_proceed,"lord_request_mission_ask",
-   [(eq, "$players_kingdom", 0),
-    (ge, "$g_talk_troop_faction_relation", 0),
-    (ge, "$g_talk_troop_relation", 0),
-    (troop_slot_ge, "trp_player", slot_troop_renown, 30),
-    (neg|faction_slot_eq, "$g_talk_troop_faction", slot_faction_leader, "$g_talk_troop"),
+  [
+    (eq, "$players_kingdom", 0),
+    (ge, "$g_talk_troop_faction_relation", 0), # must be 0+ with lord's faction
+    (ge, "$g_talk_troop_relation", 0), # must be 0+ with the lord
+    (troop_slot_ge, "trp_player", slot_troop_renown, 30), # last least 30 renown
+    (neg|faction_slot_eq, "$g_talk_troop_faction", slot_faction_leader, "$g_talk_troop"), # not the liege
+
     (faction_get_slot, ":last_offer_time", "$g_talk_troop_faction", slot_faction_last_mercenary_offer_time),
+    (store_current_hours, ":cur_hours"),
+
+    (try_begin),
+      (ge, "$cheat_mode", DPLMC_DEBUG_MIN),
+      (str_store_faction_name, s90, "$g_talk_troop_faction"),
+      (call_script, "script_game_get_date_text", 0, ":last_offer_time"),
+      (str_store_string_reg, s91, s1),
+      (display_message, "@{s90}: Last mercenary offer time was {s91}."),
+    (try_end),
 
     (assign, ":num_enemies", 0),
     (try_for_range, ":faction_no", kingdoms_begin, kingdoms_end),
@@ -29332,73 +29343,65 @@ Hand over my {reg19} denars, if you please, and end our business together.", "lo
       (lt, ":reln", 0),
       (val_add, ":num_enemies", 1),
     (try_end),
+
+    # faction has enemies, continue with merc offer
     (ge, ":num_enemies", 1),
-    (store_current_hours, ":cur_hours"),
     (store_add,  ":week_past_last_offer_time", ":last_offer_time", 7 * 24),
     (val_add,  ":last_offer_time", 24),
     (ge, ":cur_hours", ":last_offer_time"),
     (store_random_in_range, ":rand", 0, 100),
     (this_or_next|lt, ":rand", 20),
 		(ge, ":cur_hours", ":week_past_last_offer_time"),
-
-
-	##diplomacy start+
-	##OLD:
-	#(troop_get_type, ":type", "trp_player"),
-	#(this_or_next|eq, ":type", 0),
-	##NEW:
    	(assign, reg0, 0),
 	(try_begin),
 		(call_script, "script_cf_dplmc_faction_has_bias_against_gender", "$g_talk_troop_faction", "$character_gender"),
-       	(assign, reg0, 1),
+    (assign, reg0, 1),
 	(try_end),
+  (try_begin),
+    # above renown level, ignore gender bias
+    (troop_slot_ge, "trp_player", slot_troop_renown, 150),
+    (assign, reg0, 0),
+  (try_end),
 	(this_or_next|eq, reg0, 0),
 	(this_or_next|ge, "$g_disable_condescending_comments", 2),#<- OPTION: Disable prejudice
 	(this_or_next|troop_slot_ge, "$g_talk_troop", slot_lord_reputation_type, lrep_roguish),
-	##diplomacy end+ xxx TODO: Why exactly wouldn't this display...?
 	(this_or_next|troop_slot_eq, "$g_talk_troop", slot_lord_reputation_type, lrep_cunning),
-		(troop_slot_eq, "$g_talk_troop", slot_lord_reputation_type, lrep_goodnatured),
-    ],
-   "{!}Warning: This line should never display.", "lord_propose_mercenary",[(store_current_hours, ":cur_hours"),
-                                  (faction_set_slot, "$g_talk_troop_faction", slot_faction_last_mercenary_offer_time,  ":cur_hours")]],
+  (troop_slot_eq, "$g_talk_troop", slot_lord_reputation_type, lrep_goodnatured),
+  ],
+   "{!}Warning: This line should never display.", "lord_propose_mercenary",
+  [
+    (store_current_hours, ":cur_hours"),
+    (faction_set_slot, "$g_talk_troop_faction", slot_faction_last_mercenary_offer_time,  ":cur_hours")
+  ]],
 
+  [anyone,"lord_propose_mercenary", 
+  [
+    (call_script, "script_party_calculate_strength", "p_main_party", 0),
+    (assign, ":offer_value", reg0),
+    (val_add, ":offer_value", 600),
+    (troop_get_slot, ":offer_renown", "trp_player", slot_troop_renown),
+    (val_mul, ":offer_renown", 3),
+    (val_div, ":offer_renown", 2),
+    (val_add, ":offer_value", ":offer_renown"),
+    (call_script, "script_round_value", ":offer_value"),
+    (assign, ":offer_value", reg0),
+    (assign, "$temp", ":offer_value"),
+    (faction_get_slot, ":faction_leader", "$g_talk_troop_faction", slot_faction_leader),
+    (neq, ":faction_leader", "$g_talk_troop"),
+    (str_store_faction_name, s9, "$g_talk_troop_faction"),
+    (str_store_troop_name, s10, ":faction_leader"),
 
-
-
-
-  [anyone,"lord_propose_mercenary", [(call_script, "script_party_calculate_strength", "p_main_party", 0),
-                                     (assign, ":offer_value", reg0),
-                                     (val_add, ":offer_value", 600),
-                                     (troop_get_slot, ":offer_renown", "trp_player", slot_troop_renown),
-                                     (val_mul, ":offer_renown", 3),
-                                     (val_div, ":offer_renown", 2),
-                                     (val_add, ":offer_value", ":offer_renown"),
-                                     (call_script, "script_round_value", ":offer_value"),
-                                     (assign, ":offer_value", reg0),
-                                     (assign, "$temp", ":offer_value"),
-                                     (faction_get_slot, ":faction_leader", "$g_talk_troop_faction", slot_faction_leader),
-                                     (neq, ":faction_leader", "$g_talk_troop"),
-                                     (str_store_faction_name, s9, "$g_talk_troop_faction"),
-                                     (str_store_troop_name, s10, ":faction_leader"),
-
-									 ##diplomacy start+
-									 #(troop_get_type, ":is_female", "trp_player"),
-									 ##diplomacy end+
-									 (try_begin),
-										##diplomacy start+
-										#Enable if prejudice has been set to "high"
-										(lt, "$g_disable_condescending_comments", 0),
-										(neq, reg65, "$character_gender"),
-										(call_script, "script_cf_dplmc_faction_has_bias_against_gender", "$g_talk_troop_faction", "$character_gender"),
-										#(eq, ":is_female", 3), #disabled
-										##diplomacy end+
-										(troop_slot_eq, "$g_talk_troop", slot_lord_reputation_type, lrep_martial),
-									    (str_store_string, s11, "str_now_some_might_say_that_women_have_no_business_leading_mercenary_companies_but_i_suspect_that_you_would_prove_them_wrong_what_do_you_say"),
-									 (else_try),
-									    (str_store_string, s11, "@What do you say to entering the service of {s9} as a mercenary captain?\
- I have no doubt that you would be up to the task."),
-									 (try_end)
-									 ],
+    (try_begin),
+      #Enable if prejudice has been set to "high"
+      (lt, "$g_disable_condescending_comments", 0),
+      (neq, reg65, "$character_gender"),
+      (call_script, "script_cf_dplmc_faction_has_bias_against_gender", "$g_talk_troop_faction", "$character_gender"),
+      (troop_slot_eq, "$g_talk_troop", slot_lord_reputation_type, lrep_martial),
+      (str_store_string, s11, "str_now_some_might_say_that_women_have_no_business_leading_mercenary_companies_but_i_suspect_that_you_would_prove_them_wrong_what_do_you_say"),
+    (else_try),
+      (str_store_string, s11, "@What do you say to entering the service of {s9} as a mercenary captain? I have no doubt that you would be up to the task."),
+    (try_end)
+  ],
 
    "As it happens, {playername}, I promised {s10} that I would hire a company of mercenaries for an upcoming campaign.\
 ","lord_mercenary_service", []],
