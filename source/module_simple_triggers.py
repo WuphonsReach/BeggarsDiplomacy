@@ -2687,16 +2687,25 @@ simple_triggers = [
     ]),
 
 
-  #Troop AI: Merchants thinking
-  (4,
+  #Troop AI: Caravan Merchants thinking
+  (2,
    [
      (neg|is_currently_night), # only spawn during the day
        (game_get_reduce_campaign_ai, ":reduce_campaign_ai"), #SB : moved this up top
        (val_sub, ":reduce_campaign_ai", 1),
        (val_mul, ":reduce_campaign_ai", 10), #pre-calculate amount
+       
        (try_for_parties, ":party_no"),
          (party_slot_eq, ":party_no", slot_party_type, spt_kingdom_caravan),
          (party_is_in_any_town, ":party_no"),
+
+        (assign, ":continue_flag", 1),
+        (try_begin),
+          (store_random_in_range, ":random_continue", 0, 100),
+          (ge, ":random_continue", 15), # chance they leave, helps with blobbing 
+          (assign, ":continue_flag", 0),
+        (try_end),
+        (eq, ":continue_flag", 1),
 
          (store_faction_of_party, ":merchant_faction", ":party_no"),
          (faction_get_slot, ":num_towns", ":merchant_faction", slot_faction_num_towns),
@@ -2722,11 +2731,6 @@ simple_triggers = [
              (neg|party_slot_eq, ":cur_center", slot_center_is_besieged_by, -1),
              (assign, ":can_leave", 0),
            (try_end),
-           (try_begin),
-            (store_random_in_range, ":random_can_leave", 0, 100),
-            (ge, ":random_can_leave", 30), # chance they leave, helps with blobbing 
-            (assign, ":can_leave", 0),
-           (try_end),           
            (eq, ":can_leave", 1),
 
            (assign, ":do_trade", 0),
