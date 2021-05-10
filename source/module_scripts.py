@@ -44209,7 +44209,7 @@ scripts = [
 
        (faction_slot_eq, "$g_talk_troop_faction", slot_faction_leader, "$g_talk_troop"),
        (assign, ":relevance", 30),
-       (assign, ":suggested_relation_change", -1),
+       (assign, ":suggested_relation_change", -3),
        (assign, ":comment", "str_comment_you_accosted_my_caravan_default"),
        (try_begin),
             (lt, "$g_talk_troop_faction_relation", -5),
