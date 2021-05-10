@@ -26832,7 +26832,9 @@ scripts = [
       (try_begin),
         (eq, ":display_message", 1),
         (str_store_party_name_link, s3, ":center_no"),
-        (display_message, "@{s3} is no longer under siege."),
+        (store_faction_of_party, ":center_faction", ":center_no"),
+        (faction_get_color, ":color", ":center_faction"),
+        (display_message, "@{s3} is no longer under siege.", ":color"),
       (try_end),
 
       #SB : ideally we deal with post-conquest here but this is also called for cancelled sieges
