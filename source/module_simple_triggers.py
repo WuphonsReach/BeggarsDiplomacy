@@ -931,18 +931,14 @@ simple_triggers = [
 
 		(try_begin),
 			(party_slot_eq, ":acting_village", slot_center_original_faction, ":target_faction"),
-
 			(call_script, "script_add_notification_menu", "mnu_notification_border_incident", ":acting_village", -1),
 		(else_try),
 			(party_slot_eq, ":acting_village", slot_center_ex_faction, ":target_faction"),
-
 			(call_script, "script_add_notification_menu", "mnu_notification_border_incident", ":acting_village", -1),
-
 		(else_try),
 			(set_fixed_point_multiplier, 1),
 			(store_distance_to_party_from_party, ":distance", ":acting_village", ":target_village"),
 			(lt, ":distance", 25),
-
 			(call_script, "script_add_notification_menu", "mnu_notification_border_incident", ":acting_village", ":target_village"),
 		(try_end),
    (try_end),
@@ -5188,23 +5184,60 @@ simple_triggers = [
     (try_for_range, ":center_no", villages_begin, villages_end),
       (party_slot_eq, ":center_no", slot_village_state, svs_normal), # must not be looted, being raided, etc.
       (party_slot_eq, ":center_no", slot_center_has_bandits, 0), # must not be infested
-      (party_get_slot, ":prosperity", ":center_no", slot_town_prosperity),
-      (lt, ":prosperity", 35), # only for low-prosperity villages
+      (party_get_slot, ":old_prosperity", ":center_no", slot_town_prosperity),
+      (lt, ":old_prosperity", 35), # only for low-prosperity villages
+
       (store_random_in_range, ":chance", 0, 100),
-      (lt, ":chance", 50),
-      (party_get_slot, ":elder", ":center_no", slot_town_elder),
+      (lt, ":chance", 50), # only 50% chance
+
       (try_begin),
         (store_random_in_range, ":random", -60, 40),
-        (ge, ":random", ":prosperity"), # percent chance to boost prosperity
+        (ge, ":random", ":old_prosperity"), # percent chance to boost prosperity
         (store_random_in_range, ":boost", 0, 6),
         (call_script, "script_change_center_prosperity", ":center_no", ":boost"),
+        (party_get_slot, ":new_prosperity", ":center_no", slot_town_prosperity),
+
+        # attempt to pay for it
+        (assign, ":paid_for_by_party", -1),
+        (try_begin),
+          (neg|party_slot_eq, ":center_no", slot_town_lord, "trp_player"),
+          (party_get_slot, ":center_lord", ":center_no", slot_town_lord),
+          (is_between, ":center_lord", active_npcs_begin, active_npcs_end),
+          # pay for it from the fief's lord's purse
+          (troop_get_slot, ":center_lord_wealth", ":center_lord", slot_troop_wealth),
+          (ge, ":center_lord_wealth", 5000), # lord has > N denars
+          (val_sub, ":center_lord_wealth", 300),
+          (troop_set_slot, ":center_lord", slot_troop_wealth, ":center_lord_wealth"),
+          (assign, ":paid_for_by_party", ":center_lord"),
+        (else_try),
+          (neg|party_slot_eq, ":center_no", slot_town_lord, "trp_player"),
+          (store_faction_of_party, ":center_faction", ":center_no"),
+          (is_between, ":center_faction", npc_kingdoms_begin, kingdoms_end),
+          (faction_get_slot, ":faction_leader", ":center_faction", slot_faction_leader),
+          (is_between, ":faction_leader", active_npcs_begin, active_npcs_end),
+          # pay for it from the faction leader's purse
+          (troop_get_slot, ":faction_leader_wealth", ":faction_leader", slot_troop_wealth),
+          (ge, ":faction_leader_wealth", 10000), # lord has > N denars
+          (val_sub, ":faction_leader_wealth", 300),
+          (troop_set_slot, ":faction_leader", slot_troop_wealth, ":faction_leader_wealth"),
+          (assign, ":paid_for_by_party", ":faction_leader"),
+        (try_end),
+
         (try_begin),
           (ge, "$cheat_mode", DPLMC_DEBUG_MIN),
           (store_distance_to_party_from_party, ":dist_to_main_party", "p_main_party", ":center_no"),
-          (le, ":dist_to_main_party", 12), # limit debug output to towns within range of the player (otherwise too chatty)
-          (str_store_party_name, s21, ":center_no"),
-          (assign, reg20, ":boost"),
-          (display_message, "@{!}CHARITY: Boost {s21} village prosperity by +{reg20} points."),
+          (le, ":dist_to_main_party", 40), # limit debug output to towns within range of the player (otherwise too chatty)
+          (str_store_troop_name, s90, ":paid_for_by_party"),
+          (str_store_party_name, s91, ":center_no"),
+          (assign, reg90, ":boost"),
+          (assign, reg91, ":old_prosperity"),
+          (assign, reg92, ":new_prosperity"),
+          (try_begin),
+            (is_between, ":paid_for_by_party", active_npcs_begin, active_npcs_end),
+            (display_message, "@{!}CHARITY: Boost {s91} prosperity by +{reg90} points ({reg91}->{reg92}), paid for by {s90}."),
+          (else_try),
+            (display_message, "@{!}CHARITY: Boost {s91} prosperity by +{reg90} points ({reg91}->{reg92})."),
+          (try_end),
         (end_try),
       (try_end),
     (try_end),
