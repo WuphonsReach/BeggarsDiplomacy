@@ -2646,7 +2646,7 @@ simple_triggers = [
 ##    ]),
 
   # Spawn village farmer parties
-  (4,
+  (2,
    [
       (neg|is_currently_night), # only spawn farmers during the day
       (try_for_range, ":village_no", villages_begin, villages_end),
@@ -2784,7 +2784,7 @@ simple_triggers = [
     ]),
 
   #Troop AI: Village farmers thinking
-  (3,
+  (2,
    [
      (neg|is_currently_night), # only spawn farmers during the day
       (try_for_parties, ":party_no"),
@@ -2801,7 +2801,7 @@ simple_triggers = [
         (try_end),
         (try_begin),
           (store_random_in_range, ":random_can_leave", 0, 100),
-          (ge, ":random_can_leave", 25), # chance that they will leave, reduce all leaving at same hour
+          (ge, ":random_can_leave", 15), # chance that they will leave, reduce all leaving at same hour
           (assign, ":can_leave", 0),
         (try_end), 
         (eq, ":can_leave", 1),
