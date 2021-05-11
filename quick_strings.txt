@@ -1,4 +1,4 @@
-1312
+1325
 qstr_Breaking_camp... Breaking_camp...
 qstr_Removing_disguise... Removing_disguise...
 qstr_{s17}_has_{reg17}_de {s17}_has_{reg17}_denars
@@ -1311,3 +1311,16 @@ qstr_{reg90} {reg90}
 qstr_^Market_Town:_{s50}^L ^Market_Town:_{s50}^Last_farmer_arrival:_{reg20}_hours^Last_farmer_returned:_{reg21}_hours^Last_attacked:_{reg22}_days^^Prices_at_village_(and_market_town):
 qstr_^Villages__{reg20}_:_ ^Villages_({reg20}):_{s51}^^Prices_at_town_(and_min/avg/max_for_villages):
 qstr_^Villages__{reg20}_:_{ ^Villages_({reg20}):_{s51}^^Prices_at_town_(min/avg/max_for_villages):
+qstr_^Market_Town:_{s90}^ ^Market_Town:_{s90}^Last_farmer_arrival:_{reg90}_hours^Last_farmer_returned:_{reg91}_hours^Last_attacked:_{reg92}_days
+qstr_^Market_Villages__{r ^Market_Villages_({reg20}):_{s51}
+qstr_^Market_Villages__{re ^Market_Villages_({reg90}):^{s51}
+qstr_^Market_Town:_{s50} ^Market_Town:_{s50}
+qstr_^Villages__{reg20}_:^ ^Villages_({reg20}):^{s51}
+qstr_^Market_Town:_{s50}^^ ^Market_Town:_{s50}^^Prices_at_village_(and_market_town):
+qstr_^Villages__{reg20}_:^{ ^Villages_({reg20}):^{s51}^^Prices_at_town_(min/avg/max_for_villages):
+qstr_No_towns No_towns
+qstr_^Villages__{reg20}_:^{s ^Villages_({reg20}):^{s51}^^Prices_at_village_(min/avg/max_for_nearby_villages):
+qstr_^Towns__{reg20}_:^{s ^Towns_({reg20}):^{s51}^^Prices_at_town_(min/avg/max_for_nearby_towns):
+qstr_^Villages__{reg20}_:^^ ^Villages_({reg20}):^^Prices_at_village_(min/avg/max_for_all_villages):
+qstr_^Towns__{reg20}_:^{s5 ^Towns_({reg20}):^{s51}^^Prices_at_town_(min/avg/max_for_all_towns):
+qstr_^Towns__{reg20}_:^^P ^Towns_({reg20}):^^Prices_at_town_(min/avg/max_for_all_towns):
