@@ -14517,7 +14517,8 @@ TOTAL:  {reg5}"),
   [
     (str_clear, s50),
     (str_clear, s51),
-    (try_for_range, ":cur_good", trade_goods_begin, trade_goods_end),
+
+    (try_for_range_backwards, ":cur_good", trade_goods_begin, trade_goods_end),
 
       (store_sub, ":cur_good_price_slot", ":cur_good", trade_goods_begin),
       (val_add, ":cur_good_price_slot", slot_town_trade_good_prices_begin),
@@ -14574,8 +14575,8 @@ TOTAL:  {reg5}"),
       # ---- build output for good using str_dplmc_s50_newline_s51 ----
       (str_store_item_name, s3, ":cur_good"),
       (assign, reg90, ":price"),
-      (str_store_string, s50, "@{s3}: {reg90} ({s90})"),
-      (str_store_string, s51, "str_dplmc_s50_newline_s51"),
+      (str_store_string, s51, "@{s3}: {reg90} ({s90})"),
+      (str_store_string, s50, "str_dplmc_s50_newline_s51"),
     (try_end),
 
     # prepare output
@@ -14620,7 +14621,7 @@ TOTAL:  {reg5}"),
     (str_clear, s51),
     (assign, ":max_reporting_distance", 100),
 
-    (try_for_range, ":cur_good", trade_goods_begin, trade_goods_end),
+    (try_for_range_backwards, ":cur_good", trade_goods_begin, trade_goods_end),
 
       (store_sub, ":cur_good_price_slot", ":cur_good", trade_goods_begin),
       (val_add, ":cur_good_price_slot", slot_town_trade_good_prices_begin),
@@ -14701,8 +14702,8 @@ TOTAL:  {reg5}"),
       # ---- build output for good using str_dplmc_s50_newline_s51 ----
       (str_store_item_name, s3, ":cur_good"),
       (assign, reg90, ":price"),
-      (str_store_string, s50, "@{s3}: {reg90} ({s90})"),
-      (str_store_string, s51, "str_dplmc_s50_newline_s51"),
+      (str_store_string, s51, "@{s3}: {reg90} ({s90})"),
+      (str_store_string, s50, "str_dplmc_s50_newline_s51"),
     (try_end),
 
     # prepare output
@@ -14759,7 +14760,7 @@ TOTAL:  {reg5}"),
     (str_clear, s50),
     (str_clear, s51),
 
-    (try_for_range, ":cur_good", trade_goods_begin, trade_goods_end),
+    (try_for_range_backwards, ":cur_good", trade_goods_begin, trade_goods_end),
 
       (store_sub, ":cur_good_price_slot", ":cur_good", trade_goods_begin),
       (val_add, ":cur_good_price_slot", slot_town_trade_good_prices_begin),
@@ -14834,8 +14835,8 @@ TOTAL:  {reg5}"),
       # ---- build output for good using str_dplmc_s50_newline_s51 ----
       (str_store_item_name, s3, ":cur_good"),
       (assign, reg90, ":price"),
-      (str_store_string, s50, "@{s3}: {reg90} ({s90})"),
-      (str_store_string, s51, "str_dplmc_s50_newline_s51"),
+      (str_store_string, s51, "@{s3}: {reg90} ({s90})"),
+      (str_store_string, s50, "str_dplmc_s50_newline_s51"),
     (try_end),
 
     # prepare output
