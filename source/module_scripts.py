@@ -45735,11 +45735,11 @@ scripts = [
     # The existing UI is overflowing when there are >6 origins.
 
 		(try_begin),
-			(ge, "$cheat_mode", DPLMC_DEBUG_MIN),
+			(eq, "$cheat_mode", DPLMC_DEBUG_ECONOMY),
 			(troop_slot_eq, "trp_log_array_entry_type", ":log_entry_no", logent_traveller_attacked),
 			(display_message, "str_attack_on_travellers_found_reg3_hours_ago"),
 		(else_try),
-			(ge, "$cheat_mode", DPLMC_DEBUG_MIN),
+			(eq, "$cheat_mode", DPLMC_DEBUG_ECONOMY),
 			(troop_slot_eq, "trp_log_array_entry_type", ":log_entry_no", logent_party_traded),
 			(display_message, "str_trade_event_found_reg3_hours_ago"),
 		(try_end),
@@ -47847,7 +47847,7 @@ scripts = [
         (call_script, "script_add_log_entry", logent_traveller_attacked, ":winner_party",  ":origin", ":destination", ":winner_faction"),
 
 		(try_begin),
-			(ge, "$cheat_mode", DPLMC_DEBUG_MIN),
+			(eq, "$cheat_mode", DPLMC_DEBUG_ECONOMY),
 			(neg|is_between, ":winner_faction", kingdoms_begin, kingdoms_end),
 			#(str_store_string, s65, "str_bandits_attacked_a_party_on_the_roads_so_a_bounty_is_probably_available"),
 			#(call_script, "script_add_notification_menu", "mnu_debug_alert_from_s65", 0, 0),
