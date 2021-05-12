@@ -38627,7 +38627,7 @@ scripts = [
                   ##diplomacy end+
           (troop_set_slot, ":troop_no", slot_troop_cur_center, ":town_no"),
           (try_begin),
-            (ge, "$cheat_mode", DPLMC_DEBUG_MIN),
+            (ge, "$cheat_mode", DPLMC_DEBUG_NEVER),
             (str_store_troop_name, 4, ":troop_no"),
             (str_store_party_name, 5, ":town_no"),
             (display_message, "@{!}{s4} is in {s5}"),
@@ -38828,7 +38828,7 @@ scripts = [
        (party_set_slot, ":town_no", slot_center_tavern_minstrel, ":troop_no"),
        (troop_set_slot, ":troop_no", slot_troop_cur_center, ":town_no"), #SB : set troop slot
        (try_begin),
-        (ge, "$cheat_mode", DPLMC_DEBUG_MIN),
+        (ge, "$cheat_mode", DPLMC_DEBUG_NEVER),
         (str_store_troop_name, s4, ":troop_no"),
         (str_store_party_name, s5, ":town_no"),
 
@@ -49764,7 +49764,7 @@ scripts = [
 
 
 	(try_begin),
-		(ge, "$cheat_mode", DPLMC_DEBUG_MIN),
+		(eq, "$cheat_mode", DPLMC_DEBUG_POLITICS),
 		(str_store_troop_name, s4, ":feast_host"),
 		(assign, reg4, ":quality_of_feast"),
 		(display_message, "@{!}DEBUG - {s4}'s feast has rating of {reg4}"),
@@ -49801,7 +49801,7 @@ scripts = [
 	(assign, reg4, ":nobility_in_faction"),
 
 	(try_begin),
-		(ge, "$cheat_mode", DPLMC_DEBUG_MIN),
+		(eq, "$cheat_mode", DPLMC_DEBUG_POLITICS),
 		(display_message, "str_attendance_reg3_nobles_out_of_reg4"),
 	(try_end),
 	]),
