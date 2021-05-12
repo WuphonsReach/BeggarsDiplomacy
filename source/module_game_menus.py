@@ -14480,7 +14480,6 @@ TOTAL:  {reg5}"),
     (try_end),  
 
     # report header information (not per trade good) into s29
-    (store_current_hours, ":cur_hours"),
     (try_begin),
       (is_between, "$g_encountered_party", villages_begin, villages_end),
       (party_get_slot, ":market_town_no", "$g_encountered_party", slot_village_market_town),
@@ -14583,7 +14582,6 @@ TOTAL:  {reg5}"),
     (str_store_string_reg, s90, s50),
 
     # report header information (not per trade good) into s99
-    (store_current_hours, ":cur_hours"),
     (try_begin),
       (is_between, "$g_encountered_party", villages_begin, villages_end),
       (party_get_slot, ":market_town_no", "$g_encountered_party", slot_village_market_town),
@@ -14710,7 +14708,6 @@ TOTAL:  {reg5}"),
     (str_store_string_reg, s90, s50),
 
     # report header information (not per trade good) into s99
-    (store_current_hours, ":cur_hours"),
     (try_begin),
       (is_between, "$g_encountered_party", villages_begin, villages_end),
       (assign, ":village_count", 0),
@@ -14843,7 +14840,6 @@ TOTAL:  {reg5}"),
     (str_store_string_reg, s90, s50),
 
     # report header information (not per trade good) into s99
-    (store_current_hours, ":cur_hours"),
     (try_begin),
       (is_between, "$g_encountered_party", villages_begin, villages_end),
       (assign, ":village_count", 0),

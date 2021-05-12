@@ -74214,8 +74214,6 @@ Born at {s43}^Contact in {s44} of the {s45}.^\
       (try_begin),
         (ge, ":set_minimum", 0),
         (gt, ":set_maximum", ":set_minimum"),
-        (store_add, ":set_min_plus_max", ":set_minimum", ":set_maximum"),
-        (store_div, ":set_midpoint", ":set_min_plus_max", 2), # calculate midpoint 0..1=0, 10..20=15
 
         (store_random_in_range, ":current_production", ":set_minimum", ":set_maximum"),
         (try_begin), # bias lower, roll again from minimum up to result of the first roll
