@@ -8318,7 +8318,7 @@ scripts = [
   (call_script, "script_dplmc_add_random_production", "p_town_7", slot_center_head_chicken, 3, 12, -1),
 
   #Reyvadin (tools, wool cloth, wine)
-  (call_script, "script_dplmc_add_random_production", "p_town_8", slot_center_smithies, 2, 5, 0),
+  (call_script, "script_dplmc_add_random_production", "p_town_8", slot_center_smithies, 2, 4, 0),
   (call_script, "script_dplmc_add_random_production", "p_town_8", slot_center_wool_looms, 15, 30, 1),
   (call_script, "script_dplmc_add_random_production", "p_town_8", slot_center_wine_presses, 2, 5, -1),
   (call_script, "script_dplmc_add_random_production", "p_town_8", slot_center_head_chicken, 4, 8, -1),
@@ -8328,6 +8328,7 @@ scripts = [
   (call_script, "script_dplmc_add_random_production", "p_town_9", slot_center_tanneries, 1, 5, 1),
   (call_script, "script_dplmc_add_random_production", "p_town_9", slot_center_fishing_fleet, 2, 7, -1),
   (call_script, "script_dplmc_add_random_production", "p_town_9", slot_center_iron_deposits, 0, 2, -1),
+  (call_script, "script_dplmc_add_random_production", "p_town_9", slot_center_smithies, 1, 2, -1),
   (call_script, "script_dplmc_add_random_production", "p_town_9", slot_center_fur_traps, 2, 6, -1),
   (call_script, "script_dplmc_add_random_production", "p_town_9", slot_center_head_pigs, 6, 12, -1),
   (call_script, "script_dplmc_add_random_production", "p_town_9", slot_center_head_chicken, 8, 15, -1),
@@ -8341,7 +8342,7 @@ scripts = [
   #also produces spice
 
   #Curaw (tools, iron, smoked fish)
-  (call_script, "script_dplmc_add_random_production", "p_town_11", slot_center_smithies, 3, 6, 1),
+  (call_script, "script_dplmc_add_random_production", "p_town_11", slot_center_smithies, 2, 4, 1),
   (call_script, "script_dplmc_add_random_production", "p_town_11", slot_center_iron_deposits, 8, 15, -1),
   (call_script, "script_dplmc_add_random_production", "p_town_11", slot_center_fishing_fleet, 1, 5, 0),
   (call_script, "script_dplmc_add_random_production", "p_town_11", slot_center_head_chicken, 63, 15, -1),
@@ -8355,6 +8356,7 @@ scripts = [
   (call_script, "script_dplmc_add_random_production", "p_town_12", slot_center_head_pigs, 6, 12, -1),
 
   #Rivacheg (wool cloth, leatherwork, smoked fish)
+  (call_script, "script_dplmc_add_random_production", "p_town_13", slot_center_smithies, 1, 3, -1),
   (call_script, "script_dplmc_add_random_production", "p_town_13", slot_center_wool_looms, 15, 35, 1),
   (call_script, "script_dplmc_add_random_production", "p_town_13", slot_center_silk_looms, 2, 6, -1),
   (call_script, "script_dplmc_add_random_production", "p_town_13", slot_center_tanneries, 2, 5, 1),
