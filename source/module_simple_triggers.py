@@ -5173,8 +5173,8 @@ simple_triggers = [
    ]),
   
   # CHARITY - randomly boost villages with low prosperity
-  # a 50% chance every 12 hours to gain 0..5 points of prosperity, then
-  # a second roll against prosperity
+  # a 50% chance every 12 hours to gain 0..5 points of prosperity, 
+  # then there is a second roll against prosperity
   #  0 prosp = 40% chance
   # 10 prosp = 30% chance 
   # 20 prosp = 20% chance (5 days per 2.5 pts)
@@ -5189,19 +5189,20 @@ simple_triggers = [
       (party_slot_eq, ":center_no", slot_village_state, svs_normal), # must not be looted, being raided, etc.
       (party_slot_eq, ":center_no", slot_center_has_bandits, 0), # must not be infested
       (party_get_slot, ":old_prosperity", ":center_no", slot_town_prosperity),
-      (lt, ":old_prosperity", 35), # only for low-prosperity villages
 
+      # only for low-prosperity villages
+      (lt, ":old_prosperity", 35), 
+      # only 50% chance for any village
       (store_random_in_range, ":chance", 0, 100),
-      (lt, ":chance", 50), # only 50% chance
+      (lt, ":chance", 50), 
+      # percent chance to boost prosperity (lower prosperity gives higher odds)
+      (store_random_in_range, ":random", -60, 40),
+      (ge, ":random", ":old_prosperity"), 
 
+      (assign, ":boost", 1), # standard boost is +1 point
       (try_begin),
-        (store_random_in_range, ":random", -60, 40),
-        (ge, ":random", ":old_prosperity"), # percent chance to boost prosperity
-        (store_random_in_range, ":boost", 0, 6),
-        (call_script, "script_change_center_prosperity", ":center_no", ":boost"),
-        (party_get_slot, ":new_prosperity", ":center_no", slot_town_prosperity),
-
         # attempt to pay for it
+        # TODO: Figure out how this could/should work for the player's villages
         (assign, ":paid_for_by_party", -1),
         (try_begin),
           (neg|party_slot_eq, ":center_no", slot_town_lord, "trp_player"),
@@ -5213,6 +5214,7 @@ simple_triggers = [
           (val_sub, ":center_lord_wealth", 300),
           (troop_set_slot, ":center_lord", slot_troop_wealth, ":center_lord_wealth"),
           (assign, ":paid_for_by_party", ":center_lord"),
+          (store_random_in_range, ":boost", 3, 6), # 3..5
         (else_try),
           (neg|party_slot_eq, ":center_no", slot_town_lord, "trp_player"),
           (store_faction_of_party, ":center_faction", ":center_no"),
@@ -5222,15 +5224,19 @@ simple_triggers = [
           # pay for it from the faction leader's purse
           (troop_get_slot, ":faction_leader_wealth", ":faction_leader", slot_troop_wealth),
           (ge, ":faction_leader_wealth", 10000), # lord has > N denars
-          (val_sub, ":faction_leader_wealth", 300),
+          (val_sub, ":faction_leader_wealth", 200),
           (troop_set_slot, ":faction_leader", slot_troop_wealth, ":faction_leader_wealth"),
           (assign, ":paid_for_by_party", ":faction_leader"),
+          (store_random_in_range, ":boost", 2, 5), # 2..4
         (try_end),
+
+        (call_script, "script_change_center_prosperity", ":center_no", ":boost"),
+        (party_get_slot, ":new_prosperity", ":center_no", slot_town_prosperity),
 
         (try_begin),
           (ge, "$cheat_mode", DPLMC_DEBUG_MIN),
           (store_distance_to_party_from_party, ":dist_to_main_party", "p_main_party", ":center_no"),
-          (le, ":dist_to_main_party", 40), # limit debug output to towns within range of the player (otherwise too chatty)
+          (le, ":dist_to_main_party", 40), # limit debug output to towns within range of the player
           (str_store_party_name, s91, ":center_no"),
           (assign, reg90, ":boost"),
           (assign, reg91, ":old_prosperity"),
