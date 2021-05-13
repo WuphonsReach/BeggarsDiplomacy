@@ -115,7 +115,7 @@ triggers = [
 			(store_distance_to_party_from_party, ":distance", ":party", ":bandit_party"),
 			(lt, ":distance", ":spot_range"),
 			(try_begin),
-				(ge, "$cheat_mode", DPLMC_DEBUG_MIN),
+				(ge, "$cheat_mode", DPLMC_DEBUG_NEVER),
 				(str_store_party_name, s4, ":party"),
 				(display_message, "@{!}DEBUG -- Wanted bandits spotted by {s4}"),
 			(try_end),
