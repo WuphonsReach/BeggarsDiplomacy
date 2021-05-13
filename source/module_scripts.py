@@ -20113,17 +20113,15 @@ scripts = [
 				(val_div, ":cur_town_score", 100),
 			(try_end),
 			(try_begin),
-				(lt, ":consider_distance", 30), # percent of time to consider distance
+				(lt, ":consider_distance", 25), # percent of time to consider distance
 				(store_distance_to_party_from_party, ":dist", ":perspective_party",":cur_town"),
 				#Avoid asymptotic effects and undue weighting.
 				#Further explanation: What we really care about is time, not distance.
 				#It will take time to buy and sell once reaching our destination: halving
 				#the distance doesn't double the expected profit per month.
-				(val_clamp, ":dist", 35, 301), # treat nearby towns equivalent
-        (convert_to_fixed_point, ":dist"),
-        (store_sqrt, ":dist", ":dist"), # converts 35..100 -> 5..17
-        (convert_from_fixed_point, ":dist"),
-        (val_div, ":dist", 5), # convert 5..17 -> 1..3
+        #most towns are ~100 units away, map is ~300-350 across
+				(val_div, ":dist", 100), # dist -> 0..3
+        (val_add, ":dist", 2), # dist -> 2..5
         (val_min, ":dist", 1),
 				(val_div, ":cur_town_score", ":dist"),
 			(try_end),
