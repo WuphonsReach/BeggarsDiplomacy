@@ -16291,6 +16291,8 @@ scripts = [
   ]),
 
   #script_update_trade_good_prices
+  # called on startup after setting up village/town production/consumption
+  # called from a simple_trigger every 12 hours
   # INPUT: none
   ("update_trade_good_prices",
   [
@@ -16344,7 +16346,7 @@ scripts = [
   ]),
 
   #script_update_trade_good_price_for_party
-  # updates 1/4 of trade goods at a center per pass
+  # updates 25% of the trade goods at a center per pass
   # INPUT: arg1 = party_no
   ("update_trade_good_price_for_party",
   [
@@ -16362,7 +16364,14 @@ scripts = [
       (call_script, "script_center_get_production", ":center_no", ":cur_good"),
       (assign, ":production", reg0),
       (try_begin),
-        (is_between, ":center_no", towns_begin, towns_end),
+        # cut production due to town siege, and don't count village production
+        # this should lead to a price spike in the town
+        (is_between, ":center_no", towns_begin, towns_end), # must be a town
+        (party_slot_ge, ":center_no", slot_center_is_besieged_by, 0), # is besieged
+        (val_div, ":production", 2), 
+      (else_try),
+        (is_between, ":center_no", towns_begin, towns_end), # must be a town
+        # add village production (that made it to the town)
         (call_script, "script_dplmc_center_get_total_village_production", ":center_no", ":cur_good"),
         (assign, ":village_production", reg4),
         (val_div, ":village_production", 2), # plus 1/2 all village production that made it to town
@@ -16388,10 +16397,10 @@ scripts = [
   		(store_sub, ":net_production", ":production", ":consumption"),
       (assign, ":magnitude_of_change", 3),
       (try_begin),
-        (gt, ":consumption", 0),
+        (gt, ":consumption", 0), # there is at least some consumption
         (assign, ":magnitude_limit", ":net_production"),
         (val_abs, ":magnitude_limit"),
-        (val_min, ":magnitude_limit", 11),
+        (val_clamp, ":magnitude_limit", 0, 11),
         (store_mul, ":net_production_x100", ":net_production", 100),
         (val_abs, ":net_production_x100"),
         (val_div, ":net_production_x100", ":consumption"), # percentage (like 57)
@@ -16403,7 +16412,7 @@ scripts = [
       (try_end),
       (assign, ":net_production_magnitude_boost", 0),
       (try_begin),
-        (ge, ":consumption", 25), # huge demand (TODO: tie to caladria average?)
+        (ge, ":consumption", 20), # huge demand (TODO: tie to caladria average?)
         (lt, ":net_production", 0), # allow more inflation for unmet demand
         (assign, ":net_production_magnitude_boost", ":net_production"),
         (val_abs, ":net_production_magnitude_boost"),
@@ -16414,11 +16423,11 @@ scripts = [
       (try_end),
       (val_add, ":magnitude_of_change", ":net_production_magnitude_boost"),
 
-      # change price factor based on production vs consumption
+      # change price factor based on magnitude_of_change
       (assign, ":starting_price", ":cur_price"),
       (try_begin),
         (gt, ":net_production", 0), # excess, decrease the price-factor
-        (store_mul, ":change_factor", ":magnitude_of_change", 4), # up to a -40 point swing in factor
+        (store_mul, ":change_factor", ":magnitude_of_change", 4), # up to a -60 point swing in factor
         (store_random_in_range, ":random_change", 0, ":change_factor"),
         # calculate final price factor
         (try_begin), # price already below avg, reduce the impact
@@ -16432,7 +16441,7 @@ scripts = [
         (val_clamp, ":cur_price", minimum_price_factor, maximum_price_factor),
       (else_try),
         (lt, ":net_production", 0), # shortfall, increase the price-factor
-        (store_mul, ":change_factor", ":magnitude_of_change", 25), # up to a +250 point swing in factor
+        (store_mul, ":change_factor", ":magnitude_of_change", 25), # up to a +325 point swing in factor
         (store_random_in_range, ":random_change", 0, ":change_factor"),
         # calculate final price factor
         (try_begin), # price already above avg, reduce the impact
@@ -16449,7 +16458,7 @@ scripts = [
 		  #Price of manufactured goods drift towards primary raw material
       (try_begin),
         (item_get_slot, ":raw_material", ":cur_good", slot_item_primary_raw_material),
-        (neq, ":raw_material", 0),
+        (gt, ":raw_material", 0),
         (store_sub, ":raw_material_price_slot", ":raw_material", trade_goods_begin),
         (val_add, ":raw_material_price_slot", slot_town_trade_good_prices_begin),
 
@@ -16508,7 +16517,7 @@ scripts = [
         # towns drift towards the average price factor
         (store_sub, ":price_difference", ":cur_price", average_price_factor),
         (try_begin),
-          # faster drift if cur_price < mkt-avg-price
+          # faster drift if cur_price < average_price_factor
           # (800-1000)*90/100 = -180 + 1000 = 820
           (lt, ":cur_price", average_price_factor),
           (val_mul, ":price_difference", 90),
