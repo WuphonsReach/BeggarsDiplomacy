@@ -2687,8 +2687,9 @@ simple_triggers = [
     ]),
 
 
-  #Troop AI: Caravan Merchants thinking
-  (2,
+  #Troop AI: Caravan Merchants thinking about leaving the town
+  # Frequency is low (1h) because only some caravans process each cycle
+  (1,
    [
      (neg|is_currently_night), # only spawn during the day
        (game_get_reduce_campaign_ai, ":reduce_campaign_ai"), #SB : moved this up top
