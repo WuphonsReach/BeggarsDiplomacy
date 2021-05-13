@@ -2702,7 +2702,7 @@ simple_triggers = [
         (assign, ":continue_flag", 1),
         (try_begin),
           (store_random_in_range, ":random_continue", 0, 100),
-          (ge, ":random_continue", 15), # chance they leave, helps with blobbing 
+          (ge, ":random_continue", 12), # chance they leave, helps with blobbing 
           (assign, ":continue_flag", 0),
         (try_end),
         (eq, ":continue_flag", 1),
