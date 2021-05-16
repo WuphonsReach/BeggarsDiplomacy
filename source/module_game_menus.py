@@ -16171,7 +16171,7 @@ goods, and books will never be sold. ^^You can change some settings here freely.
          (assign, ":divisor", ":num_fit"),
          (convert_to_fixed_point, ":divisor"),
          (store_sqrt, ":divisor", ":divisor"),
-         (convert_to_fixed_point, ":xp_ratio_to_add"),
+         (convert_from_fixed_point, ":xp_ratio_to_add"),
          (val_div, ":xp_ratio_to_add", ":divisor"),
        (try_end),
 ##       (assign, reg0, ":xp_ratio_to_add"),
