@@ -1289,7 +1289,7 @@ triggers = [
 
             (troop_set_slot, ":pretender", slot_troop_cur_center, ":town"),
             (try_begin), #SB : cheat mode
-              (ge, "$cheat_mode", DPLMC_DEBUG_MIN),
+              (ge, "$cheat_mode", DPLMC_DEBUG_NEVER),
               (str_store_troop_name_link, 4, ":pretender"),
               (str_store_party_name_link, 5, ":town"),
               (display_message, "@{!}{s4} is in {s5}"),
