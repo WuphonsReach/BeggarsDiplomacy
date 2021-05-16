@@ -5192,6 +5192,7 @@ simple_triggers = [
           (ge, ":center_lord_wealth", 5000), # lord has > N denars
           (val_sub, ":center_lord_wealth", 300),
           (troop_set_slot, ":center_lord", slot_troop_wealth, ":center_lord_wealth"),
+          (assign, ":paid_party_new_wealth", ":center_lord_wealth"),
           (assign, ":paid_for_by_party", ":center_lord"),
           (store_random_in_range, ":boost", 3, 6), # 3..5
         (else_try),
@@ -5205,6 +5206,7 @@ simple_triggers = [
           (ge, ":faction_leader_wealth", 10000), # lord has > N denars
           (val_sub, ":faction_leader_wealth", 200),
           (troop_set_slot, ":faction_leader", slot_troop_wealth, ":faction_leader_wealth"),
+          (assign, ":paid_party_new_wealth", ":faction_leader_wealth"),
           (assign, ":paid_for_by_party", ":faction_leader"),
           (store_random_in_range, ":boost", 2, 5), # 2..4
         (try_end),
@@ -5220,10 +5222,11 @@ simple_triggers = [
           (assign, reg90, ":boost"),
           (assign, reg91, ":old_prosperity"),
           (assign, reg92, ":new_prosperity"),
+          (assign, reg93, ":paid_party_new_wealth"),
           (try_begin),
             (is_between, ":paid_for_by_party", active_npcs_begin, active_npcs_end),
             (str_store_troop_name, s90, ":paid_for_by_party"),
-            (display_message, "@{!}CHARITY: Boost {s91} prosperity by +{reg90} points ({reg91}->{reg92}), paid for by {s90}."),
+            (display_message, "@{!}CHARITY: Boost {s91} prosperity by +{reg90} points ({reg91}->{reg92}), paid for by {s90} (balance {reg93} denars)."),
           (else_try),
             (display_message, "@{!}CHARITY: Boost {s91} prosperity by +{reg90} points ({reg91}->{reg92})."),
           (try_end),
