@@ -10107,7 +10107,7 @@ TOTAL:  {reg5}"),
         [
           (party_slot_eq, "$current_town", slot_village_state, svs_normal),
           (neg|party_slot_ge, "$current_town", slot_village_infested_by_bandits, 1),
-          (party_slot_ge, "$current_town", slot_center_player_relation, -1), #relationship check, non-negative
+          (party_slot_ge, "$current_town", slot_center_player_relation, 0), #relationship check, non-negative
           (check_quest_active, "qst_hunt_down_fugitive"),
           (quest_slot_eq, "qst_hunt_down_fugitive", slot_quest_target_center, "$current_town"),
           (neg|check_quest_concluded, "qst_hunt_down_fugitive"), #SB : other condition
@@ -10127,12 +10127,14 @@ TOTAL:  {reg5}"),
           (assign, ":player_party_size", reg0),
           (call_script, "script_party_count_members_with_full_health","$current_town"),
           (store_mul, ":villagers_party_size", reg0, 3), #twice the effective size
+          (call_script, "script_change_player_relation_with_center",  "$current_town", -1),
           (try_begin),
             (this_or_next|ge, ":pursuasion_skill", ":random_no"),
             (gt, ":player_party_size", ":villagers_party_size"),
             (jump_to_menu, "mnu_village_hunt_down_fugitive_persuaded"),
           (else_try),
             # go to being murder-hobos
+            (call_script, "script_change_player_relation_with_center",  "$current_town", -3),
             (jump_to_menu,"mnu_village_start_attack"),
           (try_end),
         ]),
