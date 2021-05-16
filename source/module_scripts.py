@@ -122,6 +122,7 @@ scripts = [
       ##diplomacy end+
 
       (call_script, "script_initialize_banner_info"),
+      (call_script, "script_initialize_food_morale_bonuses"),
       (call_script, "script_initialize_item_info"),
       (call_script, "script_initialize_aristocracy"),
       (call_script, "script_initialize_npcs"),
@@ -7544,36 +7545,6 @@ scripts = [
       (ge, "$cheat_mode", DPLMC_DEBUG_MIN),
       (display_message, "@{!}SCRIPT: initialize_item_info."),
     (try_end),
-
-	  # Setting food bonuses - these have been changed to incentivize using historical rations. Bread is the most cost-efficient
-	  #Staples
-    (item_set_slot, "itm_bread", slot_item_food_bonus, 8), #brought up from 4
-    (item_set_slot, "itm_grain", slot_item_food_bonus, 2), #new - can be boiled as porridge
-
-	  #Fat sources - preserved
-    (item_set_slot, "itm_smoked_fish", slot_item_food_bonus, 4),
-    (item_set_slot, "itm_dried_meat", slot_item_food_bonus, 5),
-    (item_set_slot, "itm_cheese", slot_item_food_bonus, 5),
-    (item_set_slot, "itm_sausages", slot_item_food_bonus, 5),
-    (item_set_slot, "itm_butter", slot_item_food_bonus, 5), #brought down from 8
-
-	  #Fat sources - perishable
-    (item_set_slot, "itm_chicken", slot_item_food_bonus, 8), #brought up from 7
-    (item_set_slot, "itm_cattle_meat", slot_item_food_bonus, 7),
-    (item_set_slot, "itm_pork", slot_item_food_bonus, 7),
-
-	  #Produce
-    (item_set_slot, "itm_raw_olives", slot_item_food_bonus, 3),
-    (item_set_slot, "itm_cabbages", slot_item_food_bonus, 2),
-    (item_set_slot, "itm_raw_grapes", slot_item_food_bonus, 4),
-    (item_set_slot, "itm_apples", slot_item_food_bonus, 4), #brought down from 5
-
-	  #Sweet items
-    (item_set_slot, "itm_raw_date_fruit", slot_item_food_bonus, 4), #brought down from 8
-    (item_set_slot, "itm_honey", slot_item_food_bonus, 6), #brought down from 12
-
-    (item_set_slot, "itm_wine", slot_item_food_bonus, 5),
-    (item_set_slot, "itm_ale", slot_item_food_bonus, 4),
 
     ## ITEM DEMAND IN VILLAGES/TOWNS/DESERT
 
@@ -74816,6 +74787,48 @@ Born at {s43}^Contact in {s44} of the {s45}.^\
     (try_for_range,":cur_center", towns_begin, towns_end),
       (call_script, "script_refresh_town_goods_merchant_inventory", ":cur_center"),
     (try_end),
+  ]),
+
+  ("initialize_food_morale_bonuses",
+  [
+    (try_begin),
+      (ge, "$cheat_mode", DPLMC_DEBUG_NEVER),
+      (display_message, "@{!}SCRIPT: initialize_food_morale_bonuses."),
+    (try_end),
+
+	  # Setting food bonuses 
+    # - incentivize using historical rations. Bread is the most cost-efficient
+    # - perishables are also very good, but short-lived and expensive
+
+	  #Staples
+    (item_set_slot, "itm_bread", slot_item_food_bonus, 8),
+    (item_set_slot, "itm_grain", slot_item_food_bonus, 2),
+
+	  #Fat sources - preserved
+    (item_set_slot, "itm_smoked_fish", slot_item_food_bonus, 4),
+    (item_set_slot, "itm_dried_meat", slot_item_food_bonus, 5),
+    (item_set_slot, "itm_cheese", slot_item_food_bonus, 5),
+    (item_set_slot, "itm_sausages", slot_item_food_bonus, 5),
+    (item_set_slot, "itm_butter", slot_item_food_bonus, 5),
+
+	  #Fat sources - perishable
+    (item_set_slot, "itm_chicken", slot_item_food_bonus, 9),
+    (item_set_slot, "itm_cattle_meat", slot_item_food_bonus, 9),
+    (item_set_slot, "itm_pork", slot_item_food_bonus, 9),
+
+	  #Produce
+    (item_set_slot, "itm_raw_olives", slot_item_food_bonus, 3),
+    (item_set_slot, "itm_cabbages", slot_item_food_bonus, 2),
+    (item_set_slot, "itm_raw_grapes", slot_item_food_bonus, 4),
+    (item_set_slot, "itm_apples", slot_item_food_bonus, 4),
+
+	  #Sweet items
+    (item_set_slot, "itm_honey", slot_item_food_bonus, 6),
+
+    # these never get used in the party morale calculations
+    (item_set_slot, "itm_raw_date_fruit", slot_item_food_bonus, 4),
+    (item_set_slot, "itm_wine", slot_item_food_bonus, 5),
+    (item_set_slot, "itm_ale", slot_item_food_bonus, 4),
   ]),
 
     # #script_cf_dplmc_disguise_evaluate_contraband
