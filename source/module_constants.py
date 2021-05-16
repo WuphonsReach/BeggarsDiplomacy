@@ -1530,8 +1530,18 @@ companions_end = kings_begin
 
 active_npcs_begin = "trp_npc1"
 active_npcs_end = kingdom_ladies_begin
-#"active_npcs_begin replaces kingdom_heroes_begin to allow for companions to become lords. Includes anyone who may at some point lead their own party: the original kingdom heroes, companions who may become kingdom heroes, and pretenders. (slto_kingdom_hero as an occupation means that you lead a party on the map. Pretenders have the occupation "slto_inactive_pretender", even if they are part of a player's party, until they have their own independent party)
-#If you're a modder and you don't want to go through and switch every kingdom_heroes to active_npcs, simply define a constant: kingdom_heroes_begin = active_npcs_begin., and kingdom_heroes_end = active_npcs_end. I haven't tested for that, but I think it should work.
+#"active_npcs_begin replaces kingdom_heroes_begin to allow for companions to become lords. 
+# Includes anyone who may at some point lead their own party: 
+#   the original kingdom heroes, 
+#   companions who may become kingdom heroes, 
+#   and pretenders. 
+# (slto_kingdom_hero as an occupation means that you lead a party on the map. 
+# Pretenders have the occupation "slto_inactive_pretender", even if they are 
+# part of a player's party, until they have their own independent party)
+#If you're a modder and you don't want to go through and switch every 
+# kingdom_heroes to active_npcs, simply define a constant: 
+# kingdom_heroes_begin = active_npcs_begin., and kingdom_heroes_end = active_npcs_end. 
+# I haven't tested for that, but I think it should work.
 
 active_npcs_including_player_begin = "trp_kingdom_heroes_including_player_begin"
 original_kingdom_heroes_begin = "trp_kingdom_1_lord"
