@@ -2330,6 +2330,8 @@ simple_triggers = [
 			##diplomacy end+
 			(troop_slot_ge, "trp_player", slot_troop_renown, dplmc_command_renown_limit), #SB : const / 2
 			(troop_slot_ge, ":npc", slot_troop_woman_to_woman_string, 1),
+      (store_random_in_range, ":random_no", 0, 100),
+      (lt, ":random_no", 5), # slow down the rate that advice is given
 			(assign, "$npc_with_sisterly_advice", ":npc"),
 		(try_end),
 	 (else_try),
