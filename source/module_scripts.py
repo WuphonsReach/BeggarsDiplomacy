@@ -7287,88 +7287,98 @@ scripts = [
 	  (troop_set_slot, "trp_kingdom_5_pretender", slot_troop_age, 45),
 	]),
 
-
-
-
-
 	("initialize_trade_routes",
 	[
-	  #SARGOTH - 10 routes
-      (call_script, "script_set_trade_route_between_centers", "p_town_1", "p_town_2"), #Sargoth - Tihr
-      (call_script, "script_set_trade_route_between_centers", "p_town_1", "p_town_4"), #Sargoth - Suno
-      (call_script, "script_set_trade_route_between_centers", "p_town_1", "p_town_12"), #Sargoth - Wercheg
-      (call_script, "script_set_trade_route_between_centers", "p_town_1", "p_town_11"), #Sargoth - Curaw
-      (call_script, "script_set_trade_route_between_centers", "p_town_1", "p_town_8"), #Sargoth - Reyvadin
-      (call_script, "script_set_trade_route_between_centers", "p_town_1", "p_town_13"), #Sargoth - Rivacheg
-      (call_script, "script_set_trade_route_between_centers", "p_town_1", "p_town_7"), #Sargoth - Uxkhal
-      (call_script, "script_set_trade_route_between_centers", "p_town_1", "p_town_9"), #Sargoth - Khudan
-      (call_script, "script_set_trade_route_between_centers", "p_town_1", "p_town_6"), #Sargoth - Praven
-      (call_script, "script_set_trade_route_between_centers", "p_town_1", "p_town_15"), #Sargoth - Yalen
-      (call_script, "script_set_trade_route_between_centers", "p_town_1", "p_town_16"), #Sargoth - Dhirim
+    (try_begin),
+      (ge, "$cheat_mode", DPLMC_DEBUG_MIN),
+      (display_message, "@{!}SCRIPT: initialize_trade_routes."),
+    (try_end),
 
-	  #TIHR- 8 Routes
-      (call_script, "script_set_trade_route_between_centers", "p_town_2", "p_town_4"), #Tihr- Suno
-      (call_script, "script_set_trade_route_between_centers", "p_town_2", "p_town_6"), #Tihr - Praven
-      (call_script, "script_set_trade_route_between_centers", "p_town_2", "p_town_7"), #Tihr - Uxkhal
-      (call_script, "script_set_trade_route_between_centers", "p_town_2", "p_town_15"), #Tihr - Yalen
-      (call_script, "script_set_trade_route_between_centers", "p_town_2", "p_town_12"), #Tihr - Wercheg
-      (call_script, "script_set_trade_route_between_centers", "p_town_2", "p_town_8"), #Tihr - Reyvadin
-      (call_script, "script_set_trade_route_between_centers", "p_town_2", "p_town_11"), #Tihr - Curaw
-      (call_script, "script_set_trade_route_between_centers", "p_town_2", "p_town_16"), #Thir - Dhirim
+    # erase all trade routes
+    (try_for_range, ":center_no", towns_begin, towns_end),
+      (try_for_range, ":cur_slot", slot_town_trade_routes_begin, slot_town_trade_routes_end),
+        (party_set_slot, ":center_no", ":cur_slot", 0),
+      (try_end), 
+    (try_end),
 
-	  #VELUCA - 8 Routes
-      (call_script, "script_set_trade_route_between_centers", "p_town_3", "p_town_7"), #Veluca- Uxkhal
-      (call_script, "script_set_trade_route_between_centers", "p_town_3", "p_town_5"), #Veluca - Jelkala
-      (call_script, "script_set_trade_route_between_centers", "p_town_3", "p_town_15"), #Veluca - Yalen
-      (call_script, "script_set_trade_route_between_centers", "p_town_3", "p_town_16"), #Veluca - Dhirim
-      (call_script, "script_set_trade_route_between_centers", "p_town_3", "p_town_14"), #Veluca - Halmar
-      (call_script, "script_set_trade_route_between_centers", "p_town_3", "p_town_4"), #Veluca - Suno
-      (call_script, "script_set_trade_route_between_centers", "p_town_3", "p_town_19"), #Veluca - Shariz
-      (call_script, "script_set_trade_route_between_centers", "p_town_3", "p_town_6"), #Veluca - Praven
+    # NOTE: First argument should be lower than second argument, that is the pattern here
+    # (helps avoid defining a duplicate trade route)
 
-	  #SUNO - 11 routes
-	  #Sargoth, Tihr, Veluca
-      (call_script, "script_set_trade_route_between_centers", "p_town_4", "p_town_12"), #Suno - Wercheg
-      (call_script, "script_set_trade_route_between_centers", "p_town_4", "p_town_8"), #Suno - Reyvadin
-      (call_script, "script_set_trade_route_between_centers", "p_town_4", "p_town_11"), #Suno - Curaw
-      (call_script, "script_set_trade_route_between_centers", "p_town_4", "p_town_6"), #Suno - Praven
-      (call_script, "script_set_trade_route_between_centers", "p_town_4", "p_town_7"), #Suno - Uxkhal
-      (call_script, "script_set_trade_route_between_centers", "p_town_4", "p_town_16"), #Suno - Dhirim
-      (call_script, "script_set_trade_route_between_centers", "p_town_4", "p_town_5"), #Suno - Jelkala
-      (call_script, "script_set_trade_route_between_centers", "p_town_4", "p_town_15"), #Suno - Yalen
+	  #SARGOTH
+      (call_script, "script_set_trade_route_between_centers", "p_town_1", "p_town_2"), #Tihr
+      (call_script, "script_set_trade_route_between_centers", "p_town_1", "p_town_4"), #Suno
+      (call_script, "script_set_trade_route_between_centers", "p_town_1", "p_town_12"), #Wercheg
+      (call_script, "script_set_trade_route_between_centers", "p_town_1", "p_town_11"), #Curaw
+      (call_script, "script_set_trade_route_between_centers", "p_town_1", "p_town_8"), #Reyvadin
+      (call_script, "script_set_trade_route_between_centers", "p_town_1", "p_town_13"), #Rivacheg
+      (call_script, "script_set_trade_route_between_centers", "p_town_1", "p_town_7"), #Uxkhal
+      (call_script, "script_set_trade_route_between_centers", "p_town_1", "p_town_9"), #Khudan
+      (call_script, "script_set_trade_route_between_centers", "p_town_1", "p_town_6"), #Praven
+      (call_script, "script_set_trade_route_between_centers", "p_town_1", "p_town_14"), #Halmar
+      (call_script, "script_set_trade_route_between_centers", "p_town_1", "p_town_15"), #Yalen
+      (call_script, "script_set_trade_route_between_centers", "p_town_1", "p_town_16"), #Dhirim
+      (call_script, "script_set_trade_route_between_centers", "p_town_1", "p_town_19"), #Shariz
 
-	  #JELKALA - 6 ROUTES
-      #Veluca, Suno
-      (call_script, "script_set_trade_route_between_centers", "p_town_5", "p_town_15"), #Jelkala - Yalen
-      (call_script, "script_set_trade_route_between_centers", "p_town_5", "p_town_6"), #Jelkala - Praven
-      (call_script, "script_set_trade_route_between_centers", "p_town_5", "p_town_7"), #Jelkala - Uxkhal
-      (call_script, "script_set_trade_route_between_centers", "p_town_5", "p_town_19"), #Jelkala - Shariz
+	  #TIHR
+      (call_script, "script_set_trade_route_between_centers", "p_town_2", "p_town_4"), #Suno
+      (call_script, "script_set_trade_route_between_centers", "p_town_2", "p_town_6"), #Praven
+      (call_script, "script_set_trade_route_between_centers", "p_town_2", "p_town_7"), #Uxkhal
+      (call_script, "script_set_trade_route_between_centers", "p_town_2", "p_town_15"), #Yalen
+      (call_script, "script_set_trade_route_between_centers", "p_town_2", "p_town_12"), #Wercheg
+      (call_script, "script_set_trade_route_between_centers", "p_town_2", "p_town_8"), #Reyvadin
+      (call_script, "script_set_trade_route_between_centers", "p_town_2", "p_town_11"), #Curaw
+      (call_script, "script_set_trade_route_between_centers", "p_town_2", "p_town_16"), #Dhirim
+      (call_script, "script_set_trade_route_between_centers", "p_town_2", "p_town_19"), #Shariz
 
-	  #PRAVEN - 7 ROUTES
-	  #Tihr, Veluca, Suno, Jelkala
-      (call_script, "script_set_trade_route_between_centers", "p_town_6", "p_town_7"), #Praven - Uxkhal
-      (call_script, "script_set_trade_route_between_centers", "p_town_6", "p_town_15"), #Praven - Yalen
-      (call_script, "script_set_trade_route_between_centers", "p_town_6", "p_town_16"), #Praven - Dhirim
+	  #VELUCA
+      (call_script, "script_set_trade_route_between_centers", "p_town_3", "p_town_7"), #Uxkhal
+      (call_script, "script_set_trade_route_between_centers", "p_town_3", "p_town_5"), #Jelkala
+      (call_script, "script_set_trade_route_between_centers", "p_town_3", "p_town_15"), #Yalen
+      (call_script, "script_set_trade_route_between_centers", "p_town_3", "p_town_16"), #Dhirim
+      (call_script, "script_set_trade_route_between_centers", "p_town_3", "p_town_14"), #Halmar
+      (call_script, "script_set_trade_route_between_centers", "p_town_3", "p_town_4"), #Suno
+      (call_script, "script_set_trade_route_between_centers", "p_town_3", "p_town_19"), #Shariz
+      (call_script, "script_set_trade_route_between_centers", "p_town_3", "p_town_6"), #Praven
 
-	  #UXKHAL - 9 Routes
-	  #Sargoth, Tihr, Suno, Jelkala, Praven
+	  #SUNO
+      (call_script, "script_set_trade_route_between_centers", "p_town_4", "p_town_12"), #Wercheg
+      (call_script, "script_set_trade_route_between_centers", "p_town_4", "p_town_8"), #Reyvadin
+      (call_script, "script_set_trade_route_between_centers", "p_town_4", "p_town_11"), #Curaw
+      (call_script, "script_set_trade_route_between_centers", "p_town_4", "p_town_6"), #Praven
+      (call_script, "script_set_trade_route_between_centers", "p_town_4", "p_town_7"), #Uxkhal
+      (call_script, "script_set_trade_route_between_centers", "p_town_4", "p_town_16"), #Dhirim
+      (call_script, "script_set_trade_route_between_centers", "p_town_4", "p_town_5"), #Jelkala
+      (call_script, "script_set_trade_route_between_centers", "p_town_4", "p_town_15"), #Yalen
+
+	  #JELKALA
+      (call_script, "script_set_trade_route_between_centers", "p_town_5", "p_town_15"), #Yalen
+      (call_script, "script_set_trade_route_between_centers", "p_town_5", "p_town_6"), #Praven
+      (call_script, "script_set_trade_route_between_centers", "p_town_5", "p_town_7"), #Uxkhal
+      (call_script, "script_set_trade_route_between_centers", "p_town_5", "p_town_19"), #Shariz
+
+	  #PRAVEN
+      (call_script, "script_set_trade_route_between_centers", "p_town_6", "p_town_7"), #Uxkhal
+      (call_script, "script_set_trade_route_between_centers", "p_town_6", "p_town_15"), #Yalen
+      (call_script, "script_set_trade_route_between_centers", "p_town_6", "p_town_16"), #Dhirim
+
+	  #UXKHAL
       (call_script, "script_set_trade_route_between_centers", "p_town_7", "p_town_15"), #Yalen
       (call_script, "script_set_trade_route_between_centers", "p_town_7", "p_town_16"), #Dhirim
       (call_script, "script_set_trade_route_between_centers", "p_town_7", "p_town_19"), #Shariz
       (call_script, "script_set_trade_route_between_centers", "p_town_7", "p_town_14"), #Halmar
 
-	  #REYVADIN - 9 Routes
-	  #Suno, Sargoth
+	  #REYVADIN
       (call_script, "script_set_trade_route_between_centers", "p_town_8", "p_town_9"), #Khudan
+      (call_script, "script_set_trade_route_between_centers", "p_town_8", "p_town_10"), #Tulga
       (call_script, "script_set_trade_route_between_centers", "p_town_8", "p_town_11"), #Curaw
       (call_script, "script_set_trade_route_between_centers", "p_town_8", "p_town_12"), #Wercheg
       (call_script, "script_set_trade_route_between_centers", "p_town_8", "p_town_13"), #Rivacheg
+      (call_script, "script_set_trade_route_between_centers", "p_town_8", "p_town_14"), #Halmar
       (call_script, "script_set_trade_route_between_centers", "p_town_8", "p_town_16"), #Dhirim
       (call_script, "script_set_trade_route_between_centers", "p_town_8", "p_town_18"), #Narra
       (call_script, "script_set_trade_route_between_centers", "p_town_8", "p_town_17"), #Ichamur
 
-	  #KHUDAN - 9 Routes
-	  #Sargoth, Reyvadin
+	  #KHUDAN
       (call_script, "script_set_trade_route_between_centers", "p_town_9", "p_town_11"), #Curaw
       (call_script, "script_set_trade_route_between_centers", "p_town_9", "p_town_13"), #Rivacheg
       (call_script, "script_set_trade_route_between_centers", "p_town_9", "p_town_12"), #Wercheg
@@ -7376,9 +7386,11 @@ scripts = [
       (call_script, "script_set_trade_route_between_centers", "p_town_9", "p_town_10"), #Tulga
       (call_script, "script_set_trade_route_between_centers", "p_town_9", "p_town_16"), #Dhirim
       (call_script, "script_set_trade_route_between_centers", "p_town_9", "p_town_18"), #Narra
+      (call_script, "script_set_trade_route_between_centers", "p_town_9", "p_town_22"), #Bariyye
 
-	  #TULGA - 7 Routes
-	  #Khudan
+	  #TULGA
+      (call_script, "script_set_trade_route_between_centers", "p_town_10", "p_town_12"), #Wercheg
+      (call_script, "script_set_trade_route_between_centers", "p_town_10", "p_town_13"), #Rivacheg
       (call_script, "script_set_trade_route_between_centers", "p_town_10", "p_town_17"), #Ichamur
       (call_script, "script_set_trade_route_between_centers", "p_town_10", "p_town_18"), #Narra
       (call_script, "script_set_trade_route_between_centers", "p_town_10", "p_town_22"), #Bariyye
@@ -7386,24 +7398,21 @@ scripts = [
       (call_script, "script_set_trade_route_between_centers", "p_town_10", "p_town_14"), #Halmar
       (call_script, "script_set_trade_route_between_centers", "p_town_10", "p_town_20"), #Durquba
 
-	  #CURAW - 9 Routes
-	  #Khudan, Reyvadin, Sargoth, Suno
+	  #CURAW
       (call_script, "script_set_trade_route_between_centers", "p_town_11", "p_town_12"), #Wercheg
       (call_script, "script_set_trade_route_between_centers", "p_town_11", "p_town_13"), #Rivacheg
       (call_script, "script_set_trade_route_between_centers", "p_town_11", "p_town_14"), #Halmar
       (call_script, "script_set_trade_route_between_centers", "p_town_11", "p_town_16"), #Dhirim
       (call_script, "script_set_trade_route_between_centers", "p_town_11", "p_town_17"), #Ichamur
 
-	  #WERCHEG - 7 Routes
-	  #Sargoth, Suno, Reyvadin, Khudan, Curaw, Tihr
+	  #WERCHEG
       (call_script, "script_set_trade_route_between_centers", "p_town_12", "p_town_13"), #Rivacheg
+      (call_script, "script_set_trade_route_between_centers", "p_town_12", "p_town_17"), #Ichamur
 
-	  #RIVACHEG - 6 Routes
-	  #Sargoth, Reyvadin, Khudan, Curaw, Wercheg
+	  #RIVACHEG
       (call_script, "script_set_trade_route_between_centers", "p_town_13", "p_town_17"), #Ichamur
 
-	  #HALMAR- 11 Routes
-	  #Veluca, Uxkhal, Tulga, Curaw
+	  #HALMAR
       (call_script, "script_set_trade_route_between_centers", "p_town_14", "p_town_17"), #Ichamur
       (call_script, "script_set_trade_route_between_centers", "p_town_14", "p_town_18"), #Narra
       (call_script, "script_set_trade_route_between_centers", "p_town_14", "p_town_21"), #Ahmerrad
@@ -7412,42 +7421,39 @@ scripts = [
       (call_script, "script_set_trade_route_between_centers", "p_town_14", "p_town_19"), #Shariz
       (call_script, "script_set_trade_route_between_centers", "p_town_14", "p_town_16"), #Dhirim
 
-	  #YALEN - 7 Routes
-	  #Sargoth, Tihr, Veluca, Suno, Jelkala, Praven, Uxkhal
+	  #YALEN
+      (call_script, "script_set_trade_route_between_centers", "p_town_15", "p_town_19"), #Shariz
 
-	  #DHIRIM - 13 Routes
-	  #Sargoth, Thir, Veluca, Suno, Praven, Uxkhal, Reyvadin, Khudan, Curaw, Halmar
+	  #DHIRIM
+      (call_script, "script_set_trade_route_between_centers", "p_town_16", "p_town_17"), #Ichamur
       (call_script, "script_set_trade_route_between_centers", "p_town_16", "p_town_18"), #Narra
       (call_script, "script_set_trade_route_between_centers", "p_town_16", "p_town_20"), #Durquba
       (call_script, "script_set_trade_route_between_centers", "p_town_16", "p_town_19"), #Shariz
+      (call_script, "script_set_trade_route_between_centers", "p_town_16", "p_town_21"), #Ahmerrad
 
-	  #ICHAMUR - 7 Routes
-      #Reyvadin, Khudan, Tulga, Curaw, Rivacheg, Halmar
+	  #ICHAMUR
       (call_script, "script_set_trade_route_between_centers", "p_town_17", "p_town_18"), #Narra
+      (call_script, "script_set_trade_route_between_centers", "p_town_17", "p_town_22"), #Bariyye
 
-	  #NARRA - 9 Routes
-      #Reyvadin, Khudan, Tulga, Halmar, Dhirim, Ichamur
+	  #NARRA
+      (call_script, "script_set_trade_route_between_centers", "p_town_18", "p_town_19"), #Shariz
       (call_script, "script_set_trade_route_between_centers", "p_town_18", "p_town_20"), #Durquba
       (call_script, "script_set_trade_route_between_centers", "p_town_18", "p_town_21"), #Ahmerrad
       (call_script, "script_set_trade_route_between_centers", "p_town_18", "p_town_22"), #Bariyye
 
-	  #SHARIZ - 8 Routes
-      #Veluca, Jelkala, Uxkhal, Halmar, Dhirim
+	  #SHARIZ
       (call_script, "script_set_trade_route_between_centers", "p_town_19", "p_town_20"), #Durquba
       (call_script, "script_set_trade_route_between_centers", "p_town_19", "p_town_21"), #Ahmerrad
       (call_script, "script_set_trade_route_between_centers", "p_town_19", "p_town_22"), #Bariyye
 
-	  #DURQUBA - 7 Routes
-      #Tulga, Halmar, Dhirim, Narra, Shariz
+	  #DURQUBA
       (call_script, "script_set_trade_route_between_centers", "p_town_20", "p_town_21"), #Ahmerrad
       (call_script, "script_set_trade_route_between_centers", "p_town_20", "p_town_22"), #Bariyye
 
-	  #AHMERRAD - 6 Routes
-      #Tulga, Halmar, Narra, Shariz, Durquba
+	  #AHMERRAD
       (call_script, "script_set_trade_route_between_centers", "p_town_21", "p_town_22"), #Bariyye
 
-	  #BARIYYE - 6 Routes
-      #Tulga, Halmar, Narra, Shariz, Durquba, Ahmerrad
+	  #BARIYYE
 	]),
 
 

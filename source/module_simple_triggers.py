@@ -5280,6 +5280,9 @@ simple_triggers = [
 
     (call_script, "script_initialize_item_info"),
     (call_script, "script_initialize_economic_information"),
+    (call_script, "script_initialize_trade_routes"),
+   ]),
+
    ]),
 
   (24,
