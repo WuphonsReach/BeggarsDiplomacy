@@ -1,4 +1,4 @@
-1363
+1366
 qstr_Breaking_camp... Breaking_camp...
 qstr_Removing_disguise... Removing_disguise...
 qstr_{s17}_has_{reg17}_de {s17}_has_{reg17}_denars
@@ -1362,3 +1362,6 @@ qstr_{!}WALLED:_{s90}__st {!}WALLED:_{s90}_(str:_{reg93})_was_given_{reg91}_dena
 qstr_{!}WALLED:_{s90}__str {!}WALLED:_{s90}_(str:_{reg93})_was_given_{reg91}_denars_for_a_total_wealth_of_{reg92}.
 qstr_{!}CARAVAN_RETARGET: {!}CARAVAN_RETARGET:_{s92}_caravan:_{s90}->{s91}
 qstr_{!}CARAVAN_DIVERTED: {!}CARAVAN_DIVERTED:_{s92}_caravan:_{s90}->{s91}
+qstr_{!}{s4}:_occupation= {!}{s4}:_occupation={reg3}
+qstr_{!}{s4}:_occupation={ {!}{s4}:_occupation={reg3},_met={reg4},_PPH={reg5}
+qstr_{!}{s4}:_occ={reg3} {!}{s4}:_occ={reg3},_met={reg4},_PPH={reg5},_ctr={reg6},_PoP={reg7}
