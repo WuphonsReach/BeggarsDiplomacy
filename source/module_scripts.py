@@ -37590,31 +37590,45 @@ scripts = [
   (store_script_param, ":party_no", 1),
   (store_script_param, ":center_no", 2),
   (store_script_param, ":percentage_change", 3), #this should probably always be a constant. Currently it is 25
+  
   (assign, ":percentage_change", 30),
-  ##diplomacy start+
-  (party_get_slot, ":origin", ":party_no", slot_party_last_traded_center),
-  #If optional economic changes are enabled, reduce the percentage change in order
-  #to make prices feel less static.
-  (try_begin),
-  (ge, "$g_dplmc_gold_changes", DPLMC_GOLD_CHANGES_LOW),
-  #Only apply lessened price movements to towns.
-  (this_or_next|party_slot_eq, ":center_no", slot_party_type, spt_town),
-    (is_between, ":center_no", towns_begin, towns_end),
-  #This halves the average impact as well as making it more variable.
-  (val_add, ":percentage_change", 1),
-  (store_random_in_range, ":percentage_change", 0, ":percentage_change"),
-  #Display economics diagnostic
-  (eq, "$cheat_mode", DPLMC_DEBUG_ECONOMY),
-  (str_store_party_name, s3, ":origin"),
-  (str_store_party_name, s4, ":center_no"),
-  (assign, reg4, ":percentage_change"),
-  (display_message, "@{!}DEBUG -- Trade from {s3} to {s4}: rolled random impact of {reg4}"),
+  (try_begin), # for MEDIUM+ decrease the impact of caravans / farmers
+    (ge, "$g_dplmc_gold_changes", DPLMC_GOLD_CHANGES_MEDIUM),
+    (try_begin),
+      (is_between, ":center_no", towns_begin, towns_end),
+      (assign, ":percentage_change", 10),
+    (else_try),
+      (assign, ":percentage_change", 10),
+    (try_end),
   (try_end),
-  ##diplomacy end+
+
+  (party_get_slot, ":origin", ":party_no", slot_party_last_traded_center),
+  #If optional economic changes are enabled, randomize the percent change
+  #as 0..percentage_change - more dynamic, halves the impact
+  (try_begin),
+    (ge, "$g_dplmc_gold_changes", DPLMC_GOLD_CHANGES_LOW),
+    #Only apply lessened price movements to towns.
+    (this_or_next|party_slot_eq, ":center_no", slot_party_type, spt_town),
+    (is_between, ":center_no", towns_begin, towns_end),
+    #Use store_random to halve the average impact as well as making it more variable.
+    (val_add, ":percentage_change", 1),
+    (val_clamp, ":percentage_change", 2, 101),
+    (store_random_in_range, ":percentage_change", 2, ":percentage_change"),
+  (try_end),
+
+  (try_begin),
+    (eq, "$cheat_mode", DPLMC_DEBUG_NEVER),
+    (store_distance_to_party_from_party, ":dist_center", "p_main_party", ":center_no"),
+    (le, ":dist_center", 10),
+    (str_store_party_name, s3, ":origin"),
+    (str_store_party_name, s4, ":center_no"),
+    (str_store_party_name, s5, ":party_no"),
+    (assign, reg4, ":percentage_change"),
+    (display_message, "@{!}DEBUG: {s5} trade from {s3} to {s4}: impact of {reg4}"),
+  (try_end),
 
   (party_get_slot, ":origin", ":party_no", slot_party_last_traded_center),
   (party_set_slot, ":party_no", slot_party_last_traded_center, ":center_no"),
-  ##diplomacy start+
   #Update the record of trade route arrival times
     (try_begin),
         (ge, ":origin", centers_begin),
@@ -37644,6 +37658,7 @@ scripts = [
         (store_current_hours, ":cur_hours"),
         (party_set_slot, ":center_no", dplmc_slot_village_trade_last_returned_from_market, ":cur_hours"),
   (try_end),
+
     #SB : drop off prisoners
     (try_begin),
       (ge, "$g_dplmc_gold_changes", DPLMC_GOLD_CHANGES_HIGH),
@@ -37720,13 +37735,12 @@ scripts = [
       (try_end),
 
     (try_end),
-  ##diplomacy end+
 
     (assign, ":total_change", 0),
     (store_sub, ":item_to_price_slot", slot_town_trade_good_prices_begin, trade_goods_begin),
     (try_for_range, ":cur_good", trade_goods_begin, trade_goods_end),
       (store_random_in_range, ":random_no", 0, 100),
-      (lt, ":random_no", 25), # only do 1/4 of trade goods on each event
+      (lt, ":random_no", 25), # only do 1/3 of trade goods on each event
 
       (store_add, ":cur_good_price_slot", ":cur_good", ":item_to_price_slot"),
       (party_get_slot, ":cur_merchant_price", ":party_no", ":cur_good_price_slot"),
@@ -37758,16 +37772,14 @@ scripts = [
         # see :percentage_change, :price_dif
         # farmers/caravans usually push the price-factor by 10-20 points, but 80-90 pts has been seen
         (ge, "$cheat_mode", DPLMC_DEBUG_NEVER),
-        (store_distance_to_party_from_party, ":dist_origin", "p_main_party", ":origin"),
         (store_distance_to_party_from_party, ":dist_center", "p_main_party", ":center_no"),
-        (this_or_next|le, ":dist_origin", 10),
         (le, ":dist_center", 10),
         (str_store_party_name, s3, ":origin"),
         (str_store_party_name, s4, ":center_no"),
         (str_store_item_name, s5, ":cur_good"),
         (assign, reg4, ":initial_price"),
         (assign, reg5, ":cur_center_price"),      
-        (display_log_message, "@{!}DEBUG -- Trade of {s5} from {s3} to {s4} brings price from {reg4} to {reg5}"),
+        (display_log_message, "@{!}DEBUG: Trade of {s5} from {s3} to {s4} brings price from {reg4} to {reg5}"),
       (try_end),
 
     (try_end),
