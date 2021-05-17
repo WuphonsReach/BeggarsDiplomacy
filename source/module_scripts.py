@@ -16402,6 +16402,7 @@ scripts = [
         (val_clamp, ":net_production_magnitude_boost", 0, 11),
       (try_end),
       (val_add, ":magnitude_of_change", ":net_production_magnitude_boost"),
+      (val_max, ":magnitude_of_change", 0),
 
       # change price factor based on magnitude_of_change
       (assign, ":starting_price", ":cur_price"),
@@ -16421,6 +16422,12 @@ scripts = [
         (val_clamp, ":cur_price", minimum_price_factor, maximum_price_factor),
       (else_try),
         (lt, ":net_production", 0), # shortfall, increase the price-factor
+        (try_begin),
+          # town siege, increase the magnitude_of_change by another +10
+          (is_between, ":center_no", towns_begin, towns_end), # must be a town
+          (party_slot_ge, ":center_no", slot_center_is_besieged_by, 0), # is besieged
+          (val_add, ":magnitude_of_change", 10),
+        (try_end),
         (store_mul, ":change_factor", ":magnitude_of_change", 25), # up to a +325 point swing in factor
         (store_random_in_range, ":random_change", 0, ":change_factor"),
         # calculate final price factor
