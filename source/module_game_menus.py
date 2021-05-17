@@ -2555,7 +2555,7 @@ game_menus = [
 				# (str_store_string, s5, "str_whereabouts_unknown"),
 
 				(try_begin),
-					(ge, "$cheat_mode", DPLMC_DEBUG_MIN),
+					(ge, "$cheat_mode", DPLMC_DEBUG_NEVER),
 					(troop_get_slot, reg2, ":companion", slot_troop_current_mission),
 					(troop_get_slot, reg3, ":companion", slot_troop_days_on_mission),
 					(troop_get_slot, reg4, ":companion", slot_troop_prisoner_of_party),
