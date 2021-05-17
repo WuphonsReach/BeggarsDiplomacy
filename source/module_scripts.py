@@ -16843,12 +16843,6 @@ scripts = [
     (val_mul, ":modified_center_good_production", ":status_percent"),
     (val_div, ":modified_center_good_production", 100),
 
-    # TODO: Add player's enterprise production
-    #(party_slot_ge, "$g_encountered_party", slot_center_player_enterprise, 1),
-    #(party_get_slot, ":item_produced", "$g_encountered_party", slot_center_player_enterprise),
-    #(call_script, "script_get_enterprise_name", ":item_produced"),
-    #(str_store_string, s4, reg0),
-
 		(assign, reg0, ":modified_center_good_production"), #modded by prosperity/status
 		(assign, reg1, ":production_modded_by_raw_materials"),
 		(assign, reg2, ":base_cg_prod"),
@@ -38570,7 +38564,7 @@ scripts = [
 ("update_companion_candidates_in_taverns",
     [
       (try_begin),
-        (ge, "$cheat_mode", DPLMC_DEBUG_MIN),
+        (ge, "$cheat_mode", DPLMC_DEBUG_NEVER),
         (display_message, "str_shuffling_companion_locations"),
       (try_end),
 
