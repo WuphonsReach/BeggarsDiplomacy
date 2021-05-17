@@ -16943,10 +16943,18 @@ scripts = [
     (assign, ":base_consumer_consumption", ":consumer_consumption"),
 
 		(try_begin), #Reduce consumer consumption if cost is high
+      # 100 * 1000 / (1000 + 0) = 100
+      # 100 * 1000 / (1000 + 250x2) = 66    -- price of 1250
+      # 100 * 1000 / (1000 + 500x2) = 50    -- price of 1500
+      # 100 * 1000 / (1000 + 750x2) = 40    -- price of 1750
+      # 100 * 1000 / (1000 + 1000x2) = 33   -- price of 2000
 			(gt, ":consumer_consumption", 0),
 			(gt, ":cur_center_price", average_price_factor),
+      (store_sub, ":consumption_price_impact", ":cur_center_price", average_price_factor),
+      (val_mul, ":consumption_price_impact", 2),
+      (val_add, ":consumption_price_impact", average_price_factor)
 			(val_mul, ":consumer_consumption", average_price_factor),
-			(val_div, ":consumer_consumption", ":cur_center_price"),
+			(val_div, ":consumer_consumption", ":consumption_price_impact"),
 		(try_end),
 
 		(assign, ":raw_material_consumption", 0),
