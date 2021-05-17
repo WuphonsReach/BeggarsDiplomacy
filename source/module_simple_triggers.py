@@ -850,7 +850,11 @@ simple_triggers = [
         (party_set_slot, ":center_no", slot_town_wealth, ":cur_wealth"),
       (try_end),
 
-     #this is moved up from below , from a 24 x 15 slot to a 24 slot
+    ]),
+
+  #Converging center prosperity to ideal prosperity once/day, 10% chance per cycle
+  (24,
+  [
      (try_for_range, ":center_no", centers_begin, centers_end),
        #(neg|is_between, ":center_no", castles_begin, castles_end),
        (store_random_in_range, ":random", 0, 30),
@@ -883,11 +887,7 @@ simple_triggers = [
          (val_add, "$newglob_total_prosperity_from_convergence", 1),
        (try_end),
      (try_end),
-    ]),
-
-  #Converging center prosperity to ideal prosperity once in every 15 days
-  (24*15,
-   []),
+  ]),
 
   #Checking if the troops are resting at a half payment point
   (6,
