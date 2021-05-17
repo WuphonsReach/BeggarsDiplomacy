@@ -16489,8 +16489,8 @@ scripts = [
         (store_add, ":new_price", ":market_price_average_price", ":price_difference"),
         (try_begin),
           (ge, "$cheat_mode", DPLMC_DEBUG_NEVER),
-          (store_distance_to_party_from_party, ":dist_to_main_party", "p_main_party", ":center_no"),
-          (le, ":dist_to_main_party", 8), # limit debug output to towns within range of the player (otherwise too chatty)
+          (store_distance_to_party_from_party, ":debug_dist_to_main_party", "p_main_party", ":center_no"),
+          (le, ":debug_dist_to_main_party", 8), # limit debug output to towns within range of the player (otherwise too chatty)
           (str_store_item_name, s20, ":cur_good"),
           (str_store_party_name, s21, ":center_no"),
           (assign, reg90, ":market_price"),
@@ -16521,8 +16521,8 @@ scripts = [
 
       (try_begin),
         (ge, "$cheat_mode", DPLMC_DEBUG_MIN),
-        (store_distance_to_party_from_party, ":dist_to_main_party", "p_main_party", ":center_no"),
-        (le, ":dist_to_main_party", 8), # limit debug output to towns within range of the player (otherwise too chatty)
+        (store_distance_to_party_from_party, ":debug_dist_to_main_party", "p_main_party", ":center_no"),
+        (le, ":debug_dist_to_main_party", 8), # limit debug output to towns within range of the player (otherwise too chatty)
         (str_store_item_name, s20, ":cur_good"),
         (str_store_party_name, s21, ":center_no"),
         (assign, reg20, ":production"),
@@ -20221,8 +20221,8 @@ scripts = [
 
     (try_begin),
       (eq, "$cheat_mode", DPLMC_DEBUG_EXPERIMENTAL),
-      (store_distance_to_party_from_party, ":dist_to_main_party", "p_main_party", ":town_no"),
-      (le, ":dist_to_main_party", 5),
+      (store_distance_to_party_from_party, ":debug_dist_to_main_party", "p_main_party", ":town_no"),
+      (le, ":debug_dist_to_main_party", 8),
       (str_store_party_name, s90, ":town_no"), # origin town
       (str_store_faction_name, s91, ":faction_no"),
       (str_store_party_name, s93, ":result"), # result town
@@ -25994,7 +25994,6 @@ scripts = [
       (store_script_param_1, ":cur_center"),
 
       (set_merchandise_modifier_quality,80),
-      (store_distance_to_party_from_party, ":dist_to_main_party", "p_main_party", ":cur_center"),
       (party_get_slot, ":market_town", ":cur_center", slot_village_market_town),
       (party_get_slot, ":merchant_troop", ":cur_center", slot_town_elder),
       (party_get_slot, ":center_prosperity", ":cur_center", slot_town_prosperity),
@@ -26034,7 +26033,8 @@ scripts = [
 
       (try_begin),
         (ge, "$cheat_mode", DPLMC_DEBUG_MIN),
-        (le, ":dist_to_main_party", 10), # limit debug output to centers within range of the player (otherwise too chatty)
+        (store_distance_to_party_from_party, ":debug_dist_to_main_party", "p_main_party", ":cur_center"),
+        (le, ":debug_dist_to_main_party", 10), # limit debug output to centers within range of the player (otherwise too chatty)
         (str_store_party_name, s20, ":market_town"),
         (str_store_party_name, s21, ":cur_center"),
         (assign, reg20, ":total_center_cur_production"),
@@ -26076,7 +26076,8 @@ scripts = [
 
       (try_begin),
         (ge, "$cheat_mode", DPLMC_DEBUG_MIN),
-        (le, ":dist_to_main_party", 10), # limit debug output to centers within range of the player (otherwise too chatty)
+        (store_distance_to_party_from_party, ":debug_dist_to_main_party", "p_main_party", ":cur_center"),
+        (le, ":debug_dist_to_main_party", 10), # limit debug output to centers within range of the player (otherwise too chatty)
         (assign, reg21, ":number_of_slots_to_stock"),
         (display_message, "@{!}Populate {reg21} slots"),
       (try_end),
@@ -26156,7 +26157,8 @@ scripts = [
 
         (try_begin),
           (ge, "$cheat_mode", DPLMC_DEBUG_MIN),
-          (le, ":dist_to_main_party", 10), # limit debug output to towns within range of the player (otherwise too chatty)
+          (store_distance_to_party_from_party, ":debug_dist_to_main_party", "p_main_party", ":cur_center"),
+          (le, ":debug_dist_to_main_party", 10), # limit debug output to towns within range of the player (otherwise too chatty)
           (str_store_item_name, s20, ":cur_good"),
           (assign, reg20, ":total_center_cur_production"),
           (assign, reg21, ":cur_center_production"),
@@ -26180,7 +26182,8 @@ scripts = [
         (call_script, "script_change_center_prosperity", ":cur_center", ":prosperity_added"),
         (try_begin),
           (ge, "$cheat_mode", DPLMC_DEBUG_MIN),
-          (le, ":dist_to_main_party", 10), # limit debug output to towns within range of the player (otherwise too chatty)
+          (store_distance_to_party_from_party, ":debug_dist_to_main_party", "p_main_party", ":cur_center"),
+          (le, ":debug_dist_to_main_party", 10), # limit debug output to towns within range of the player (otherwise too chatty)
           (assign, reg20, ":gold_removed"),
           (assign, reg21, ":prosperity_added"),
           (display_message, "@{!}Converted {reg20} gold into +{reg21} prosperity."),
@@ -74604,7 +74607,6 @@ Born at {s43}^Contact in {s44} of the {s45}.^\
     [
       (store_script_param_1, ":cur_center"),
 
-      (store_distance_to_party_from_party, ":dist_to_main_party", "p_main_party", ":cur_center"),
       (set_merchandise_modifier_quality,150),
       (party_get_slot,":cur_merchant",":cur_center",slot_town_merchant),
       (party_get_slot, ":center_prosperity", ":cur_center", slot_town_prosperity),
@@ -74644,7 +74646,8 @@ Born at {s43}^Contact in {s44} of the {s45}.^\
 
       (try_begin),
         (ge, "$cheat_mode", DPLMC_DEBUG_MIN),
-        (le, ":dist_to_main_party", 10), # limit debug output to centers within range of the player (otherwise too chatty)
+        (store_distance_to_party_from_party, ":debug_dist_to_main_party", "p_main_party", ":cur_center"),
+        (le, ":debug_dist_to_main_party", 10), # limit debug output to centers within range of the player (otherwise too chatty)
         (str_store_party_name, s21, ":cur_center"),
         (assign, reg20, ":total_center_cur_production"),
         (assign, reg22, ":total_center_base_production"),
@@ -74690,7 +74693,8 @@ Born at {s43}^Contact in {s44} of the {s45}.^\
 
       (try_begin),
         (ge, "$cheat_mode", DPLMC_DEBUG_MIN),
-        (le, ":dist_to_main_party", 10), # limit debug output to centers within range of the player (otherwise too chatty)
+        (store_distance_to_party_from_party, ":debug_dist_to_main_party", "p_main_party", ":cur_center"),
+        (le, ":debug_dist_to_main_party", 10), # limit debug output to centers within range of the player (otherwise too chatty)
         (assign, reg21, ":number_of_slots_to_stock"),
         (display_message, "@{!}Populate {reg21} slots"),
       (try_end),
@@ -74770,7 +74774,8 @@ Born at {s43}^Contact in {s44} of the {s45}.^\
 
         (try_begin),
           (ge, "$cheat_mode", DPLMC_DEBUG_MIN),
-          (le, ":dist_to_main_party", 10), # limit debug output to towns within range of the player (otherwise too chatty)
+          (store_distance_to_party_from_party, ":debug_dist_to_main_party", "p_main_party", ":cur_center"),
+          (le, ":debug_dist_to_main_party", 10), # limit debug output to towns within range of the player (otherwise too chatty)
           (str_store_item_name, s20, ":cur_good"),
           (assign, reg20, ":total_center_cur_production"),
           (assign, reg21, ":cur_center_production"),
@@ -74917,8 +74922,8 @@ Born at {s43}^Contact in {s44} of the {s45}.^\
 
     (try_begin),
       (ge, "$cheat_mode", DPLMC_DEBUG_NEVER),
-      (store_distance_to_party_from_party, ":dist_to_main_party", "p_main_party", ":center_no"),
-      (le, ":dist_to_main_party", 8), # limit debug output to towns within range of the player (otherwise too chatty)
+      (store_distance_to_party_from_party, ":debug_dist_to_main_party", "p_main_party", ":center_no"),
+      (le, ":debug_dist_to_main_party", 8), # limit debug output to towns within range of the player (otherwise too chatty)
       (str_store_item_name, s20, ":cur_good"),
       (str_store_party_name, s21, ":center_no"),
       (assign, reg20, ":total_village_prod_base"),
@@ -74994,8 +74999,8 @@ Born at {s43}^Contact in {s44} of the {s45}.^\
 
       (try_begin),
         (ge, "$cheat_mode", DPLMC_DEBUG_NEVER),
-        (store_distance_to_party_from_party, ":dist_to_main_party", "p_main_party", ":center_no"),
-        (le, ":dist_to_main_party", 8), # limit debug output to towns within range of the player (otherwise too chatty)
+        (store_distance_to_party_from_party, ":debug_dist_to_main_party", "p_main_party", ":center_no"),
+        (le, ":debug_dist_to_main_party", 8), # limit debug output to towns within range of the player (otherwise too chatty)
         (str_store_item_name, s20, ":cur_good"),
         (str_store_party_name, s21, ":center_no"),
         (str_store_party_name, s23, ":market_town"),

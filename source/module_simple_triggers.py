@@ -829,8 +829,8 @@ simple_triggers = [
           (try_end),
           (try_begin),
             (ge, "$cheat_mode", DPLMC_DEBUG_EXPERIMENTAL),
-            (store_distance_to_party_from_party, ":dist_to_main_party", "p_main_party", ":center_no"),
-            (le, ":dist_to_main_party", 150),
+            (store_distance_to_party_from_party, ":debug_dist_to_main_party", "p_main_party", ":center_no"),
+            (le, ":debug_dist_to_main_party", 10),
             (str_store_party_name, s11, ":center_no"),
             (str_store_party_name, s12, ":village_reinforcements"),
             (assign, reg11, ":reinforcement_cost"),
@@ -1992,8 +1992,8 @@ simple_triggers = [
 
       (try_begin),
         (ge, "$cheat_mode", DPLMC_DEBUG_NEVER),
-        (store_distance_to_party_from_party, ":dist_to_main_party", "p_main_party", ":village_no"),
-        (le, ":dist_to_main_party", 8), # limit debug output to towns within range of the player (otherwise too chatty)
+        (store_distance_to_party_from_party, ":debug_dist_to_main_party", "p_main_party", ":village_no"),
+        (le, ":debug_dist_to_main_party", 8), # limit debug output to towns within range of the player (otherwise too chatty)
         (str_store_party_name, s20, ":village_no"),
         (assign, reg20, ":num_acres"),
         (assign, reg21, ":num_cattle"),
@@ -5217,8 +5217,8 @@ simple_triggers = [
 
         (try_begin),
           (ge, "$cheat_mode", DPLMC_DEBUG_EXPERIMENTAL),
-          (store_distance_to_party_from_party, ":dist_to_main_party", "p_main_party", ":center_no"),
-          (le, ":dist_to_main_party", 25), # limit debug output to towns within range of the player
+          (store_distance_to_party_from_party, ":debug_dist_to_main_party", "p_main_party", ":center_no"),
+          (le, ":debug_dist_to_main_party", 15), # limit debug output to towns within range of the player
           (str_store_party_name, s91, ":center_no"),
           (assign, reg90, ":boost"),
           (assign, reg91, ":old_prosperity"),
@@ -5292,8 +5292,8 @@ simple_triggers = [
 
       (try_begin),
         (ge, "$cheat_mode", DPLMC_DEBUG_EXPERIMENTAL),
-        (store_distance_to_party_from_party, ":dist_to_main_party", "p_main_party", ":center_no"),
-        (le, ":dist_to_main_party", 25), # limit debug output to towns within range of the player
+        (store_distance_to_party_from_party, ":debug_dist_to_main_party", "p_main_party", ":center_no"),
+        (le, ":debug_dist_to_main_party", 15), # limit debug output to towns within range of the player
         (str_store_party_name, s90, ":center_no"),
         (assign, reg91, ":gold"),
         (assign, reg92, ":cur_wealth"),
@@ -5314,8 +5314,8 @@ simple_triggers = [
   (24,
    [
      # only fire when player is close to village_66 (Fisdnar)
-    (store_distance_to_party_from_party, ":dist_to_main_party", "p_main_party", "p_village_66"),
-    (le, ":dist_to_main_party", 15),
+    (store_distance_to_party_from_party, ":debug_dist_to_main_party", "p_main_party", "p_village_66"),
+    (le, ":debug_dist_to_main_party", 15),
 
     (this_or_next|eq, "$cheat_mode", DPLMC_DEBUG_EXPERIMENTAL),
     (eq, "$g_infinite_camping", 1),
@@ -5380,8 +5380,8 @@ simple_triggers = [
         
         (try_begin),
           (ge, "$cheat_mode", DPLMC_DEBUG_EXPERIMENTAL),
-          (store_distance_to_party_from_party, ":dist_to_main_party", "p_main_party", ":party_no"),
-          (le, ":dist_to_main_party", 250),
+          (store_distance_to_party_from_party, ":debug_dist_to_main_party", "p_main_party", ":party_no"),
+          (le, ":debug_dist_to_main_party", 25),
           (str_store_party_name, s90, ":target_center"), # original town
           (str_store_party_name, s91, ":new_target_center"), # original town
           (str_store_faction_name, s92, ":merchant_faction"),
