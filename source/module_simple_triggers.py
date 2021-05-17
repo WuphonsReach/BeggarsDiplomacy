@@ -3787,9 +3787,10 @@ simple_triggers = [
     ]),
 
   # Spawn some bandits.
-  (36,
+  (13,
    [
        (call_script, "script_spawn_bandits"),
+
        #SB : clean up looters a bit, especially ones running away       
        (try_for_parties, ":party_no"),
          (party_is_active, ":party_no"),

@@ -40400,9 +40400,24 @@ scripts = [
     [
       (set_spawn_radius,1),
 
+      (assign, ":debug_on", 0),
       (try_begin),
-        (eq, "$cheat_mode", DPLMC_DEBUG_MILITARY),
-        (display_message, "@{!}DEBUG : Doing spawn bandit script"),
+        (eq, "$cheat_mode", DPLMC_DEBUG_EXPERIMENTAL),
+        (display_message, "@{!}DEBUG: Spawning bandits (spawn_bandits)"),
+        (assign, ":debug_on", 1),
+      (try_end),
+
+      # calculate the number of wars
+      (assign, ":war_count", 0),
+      (try_for_range, ":primary_faction_candidate", kingdoms_begin, kingdoms_end),
+        (faction_slot_eq, ":primary_faction_candidate", slot_faction_state, sfs_active),
+        (try_for_range, ":secondary_faction_candidate", kingdoms_begin, kingdoms_end),
+          (faction_slot_eq, ":primary_faction_candidate", slot_faction_state, sfs_active),
+          (lt, ":primary_faction_candidate", ":secondary_faction_candidate"),
+          (store_relation, ":relation", ":primary_faction_candidate", ":secondary_faction_candidate"),
+          (lt, ":relation", 0),
+          (val_add, ":war_count", 1),
+        (try_end),
       (try_end),
 
       (party_template_set_slot, "pt_steppe_bandits", slot_party_template_lair_type, "pt_steppe_bandit_lair"),
@@ -40419,9 +40434,31 @@ scripts = [
       (party_template_set_slot, "pt_sea_raiders", slot_party_template_lair_spawnpoint, "p_sea_raider_spawn_point_1"),
       (party_template_set_slot, "pt_desert_bandits", slot_party_template_lair_spawnpoint, "p_desert_bandit_spawn_point"),
 
+      # BANDIT PACKS
+      # Old logic was 1 new spawn every 36h, guaranteed (4.7/week)
+      # New logic is 50% chance every 13 hours, which is about 6.5/week.
+      # Existence of the lair gives the old limits, so eliminating the lair
+      # has a major effect on how many bandits can be running around.
+      # Old constant for limit was 14 at mount&blade, 18 in warband, 16 last decision
+      (assign, ":base_spawn_limit", 6),
+      (assign, ":bonus_spawn_for_lair", 12),
       (try_begin),
         (store_num_parties_of_template, ":num_parties", "pt_mountain_bandits"),
-        (lt,":num_parties",16), #was 14 at mount&blade, 18 in warband, 16 last decision
+        (assign, ":party_limit", ":base_spawn_limit"),  
+        (try_begin), # spawn additional parties if the bandit lair has spawned
+          (party_template_get_slot, ":bandit_lair_party", "pt_mountain_bandits", slot_party_template_lair_party),
+          (ge, ":bandit_lair_party", 1),
+          (val_add, ":party_limit", ":bonus_spawn_for_lair"),
+        (try_end),
+        (try_begin),
+          (eq, ":debug_on", 1),
+          (assign, reg91, ":num_parties"),
+          (assign, reg92, ":party_limit"),
+          (display_message, "@{!}Mountain: {reg91}/{reg92}"),
+        (try_end),
+        (lt, ":num_parties", ":party_limit"),
+        (store_random_in_range, ":spawn_chance", 0, 100),
+        (lt, ":spawn_chance", 50), # % per cycle to spawn a party at all
         (store_random,":spawn_point",num_mountain_bandit_spawn_points),
         (val_add,":spawn_point","p_mountain_bandit_spawn_point"),
         (set_spawn_radius, 25),
@@ -40429,7 +40466,21 @@ scripts = [
       (try_end),
       (try_begin),
         (store_num_parties_of_template, ":num_parties", "pt_forest_bandits"),
-        (lt,":num_parties",16), #was 14 at mount&blade, 18 in warband, 16 last decision
+        (assign, ":party_limit", ":base_spawn_limit"),  
+        (try_begin), # spawn additional parties if the bandit lair has spawned
+          (party_template_get_slot, ":bandit_lair_party", "pt_forest_bandits", slot_party_template_lair_party),
+          (ge, ":bandit_lair_party", 1),
+          (val_add, ":party_limit", ":bonus_spawn_for_lair"),
+        (try_end),
+        (try_begin),
+          (eq, ":debug_on", 1),
+          (assign, reg91, ":num_parties"),
+          (assign, reg92, ":party_limit"),
+          (display_message, "@{!}Forest: {reg91}/{reg92}"),
+        (try_end),
+        (lt, ":num_parties", ":party_limit"),
+        (store_random_in_range, ":spawn_chance", 0, 100),
+        (lt, ":spawn_chance", 50), # % per cycle to spawn a party at all
         (store_random,":spawn_point",num_forest_bandit_spawn_points),
         (val_add,":spawn_point","p_forest_bandit_spawn_point"),
         (set_spawn_radius, 25),
@@ -40437,7 +40488,21 @@ scripts = [
       (try_end),
       (try_begin),
         (store_num_parties_of_template, ":num_parties", "pt_sea_raiders"),
-        (lt,":num_parties",16), #was 14 at mount&blade, 18 in warband, 16 last decision
+        (assign, ":party_limit", ":base_spawn_limit"),  
+        (try_begin), # spawn additional parties if the bandit lair has spawned
+          (party_template_get_slot, ":bandit_lair_party", "pt_sea_raiders", slot_party_template_lair_party),
+          (ge, ":bandit_lair_party", 1),
+          (val_add, ":party_limit", ":bonus_spawn_for_lair"),
+        (try_end),
+        (try_begin),
+          (eq, ":debug_on", 1),
+          (assign, reg91, ":num_parties"),
+          (assign, reg92, ":party_limit"),
+          (display_message, "@{!}Sea Raiders: {reg91}/{reg92}"),
+        (try_end),
+        (lt, ":num_parties", ":party_limit"),
+        (store_random_in_range, ":spawn_chance", 0, 100),
+        (lt, ":spawn_chance", 50), # % per cycle to spawn a party at all
         (store_random,":spawn_point",num_sea_raider_spawn_points),
         (val_add,":spawn_point","p_sea_raider_spawn_point_1"),
         (set_spawn_radius, 25),
@@ -40445,7 +40510,21 @@ scripts = [
       (try_end),
       (try_begin),
         (store_num_parties_of_template, ":num_parties", "pt_steppe_bandits"),
-        (lt,":num_parties",16), #was 14 at mount&blade, 18 in warband, 16 last decision
+        (assign, ":party_limit", ":base_spawn_limit"),  
+        (try_begin), # spawn additional parties if the bandit lair has spawned
+          (party_template_get_slot, ":bandit_lair_party", "pt_steppe_bandits", slot_party_template_lair_party),
+          (ge, ":bandit_lair_party", 1),
+          (val_add, ":party_limit", ":bonus_spawn_for_lair"),
+        (try_end),
+        (try_begin),
+          (eq, ":debug_on", 1),
+          (assign, reg91, ":num_parties"),
+          (assign, reg92, ":party_limit"),
+          (display_message, "@{!}Steppe: {reg91}/{reg92}"),
+        (try_end),
+        (lt, ":num_parties", ":party_limit"),
+        (store_random_in_range, ":spawn_chance", 0, 100),
+        (lt, ":spawn_chance", 50), # % per cycle to spawn a party at all
         (store_random,":spawn_point",num_steppe_bandit_spawn_points),
         (val_add,":spawn_point","p_steppe_bandit_spawn_point"),
         (set_spawn_radius, 25),
@@ -40453,7 +40532,21 @@ scripts = [
       (try_end),
       (try_begin),
         (store_num_parties_of_template, ":num_parties", "pt_taiga_bandits"),
-        (lt,":num_parties",16), #was 14 at mount&blade, 18 in warband, 16 last decision
+        (assign, ":party_limit", ":base_spawn_limit"),  
+        (try_begin), # spawn additional parties if the bandit lair has spawned
+          (party_template_get_slot, ":bandit_lair_party", "pt_taiga_bandits", slot_party_template_lair_party),
+          (ge, ":bandit_lair_party", 1),
+          (val_add, ":party_limit", ":bonus_spawn_for_lair"),
+        (try_end),
+        (try_begin),
+          (eq, ":debug_on", 1),
+          (assign, reg91, ":num_parties"),
+          (assign, reg92, ":party_limit"),
+          (display_message, "@{!}Taiga: {reg91}/{reg92}"),
+        (try_end),
+        (lt, ":num_parties", ":party_limit"),
+        (store_random_in_range, ":spawn_chance", 0, 100),
+        (lt, ":spawn_chance", 50), # % per cycle to spawn a party at all
         (store_random,":spawn_point",num_taiga_bandit_spawn_points),
         (val_add,":spawn_point","p_taiga_bandit_spawn_point"),
         (set_spawn_radius, 25),
@@ -40461,7 +40554,21 @@ scripts = [
       (try_end),
       (try_begin),
         (store_num_parties_of_template, ":num_parties", "pt_desert_bandits"),
-        (lt,":num_parties",16), #was 14 at mount&blade, 18 in warband, 16 last decision
+        (assign, ":party_limit", ":base_spawn_limit"),  
+        (try_begin), # spawn additional parties if the bandit lair has spawned
+          (party_template_get_slot, ":bandit_lair_party", "pt_desert_bandits", slot_party_template_lair_party),
+          (ge, ":bandit_lair_party", 1),
+          (val_add, ":party_limit", ":bonus_spawn_for_lair"),
+        (try_end),
+        (try_begin),
+          (eq, ":debug_on", 1),
+          (assign, reg91, ":num_parties"),
+          (assign, reg92, ":party_limit"),
+          (display_message, "@{!}Desert: {reg91}/{reg92}"),
+        (try_end),
+        (lt, ":num_parties", ":party_limit"),
+        (store_random_in_range, ":spawn_chance", 0, 100),
+        (lt, ":spawn_chance", 50), # % per cycle to spawn a party at all
         (store_random,":spawn_point",num_desert_bandit_spawn_points),
         (val_add,":spawn_point","p_desert_bandit_spawn_point"),
         (set_spawn_radius, 25),
@@ -40471,7 +40578,23 @@ scripts = [
       # LOOTERS
       (try_begin),
         (store_num_parties_of_template, ":num_parties", "pt_looters"),
-        (lt,":num_parties",42), #was 33 at mount&blade, 50 in warband, 42 last decision
+        (assign, ":party_limit", 30), #was 33 at mount&blade, 50 in warband, 42 last decision
+        # add more parties when wars are happening
+        (store_mul, ":war_count_bonus_parties", ":war_count", 3),
+        (val_add, ":party_limit", ":war_count_bonus_parties"),
+        # add more if the looter quest is active
+        (try_begin),
+          (check_quest_active, "qst_deal_with_looters"),
+          (val_add, ":party_limit", 10),
+        (try_end),
+        # TODO: Maybe add higher limit based on number of looted villages
+        (try_begin),
+          (eq, ":debug_on", 1),
+          (assign, reg91, ":num_parties"),
+          (assign, reg92, ":party_limit"),
+          (display_message, "@{!}Looters: {reg91}/{reg92}"),
+        (try_end),
+        (lt,":num_parties", ":party_limit"), 
         (try_begin), #SB : quest active, small chance to keep spawning from nearby villages
           (check_quest_active, "qst_deal_with_looters"),
           (quest_get_slot, ":spawn_point", "qst_deal_with_looters", slot_quest_giver_center),
@@ -40502,11 +40625,25 @@ scripts = [
       # DESERTERS
       (try_begin),
         (store_num_parties_of_template, ":num_parties", "pt_deserters"),
-        (lt,":num_parties",15),
-        (set_spawn_radius, 4),
+        (assign, ":party_limit", 8),
+        # add more parties when wars are happening
+        (store_mul, ":war_count_bonus_parties", ":war_count", 8),
+        (val_add, ":party_limit", ":war_count_bonus_parties"),
+        (try_begin),
+          (eq, ":debug_on", 1),
+          (assign, reg91, ":num_parties"),
+          (assign, reg92, ":party_limit"),
+          (assign, reg90, ":war_count"),
+          (display_message, "@{!}Deserters: {reg91}/{reg92} ({reg90} wars)"),
+        (try_end),
+        (lt,":num_parties", ":party_limit"),
+        (set_spawn_radius, 8),
 
+        # note: this can overshoot the party_limit
         (try_for_range, ":troop_no", active_npcs_begin, active_npcs_end),
           (troop_slot_eq, ":troop_no", slot_troop_occupation, slto_kingdom_hero),
+          #TODO: look at whether party is in a warring kingdom?
+
           (store_random_in_range, ":random_no", 0, 100),
           (lt, ":random_no", 5),
           
@@ -40527,6 +40664,7 @@ scripts = [
           (store_random_in_range, ":number_to_add", 10, ":max_number_to_add"),
           (party_add_members, ":new_party", ":tier_1_troop", ":number_to_add"),
 
+          # TODO: Have mixed deserter parties instead of always single-type
           (store_random_in_range, ":random_no", 1, 4),
           (try_for_range, ":unused", 0, ":random_no"),
             (party_upgrade_with_xp, ":new_party", 1000000, 0),
@@ -40535,9 +40673,19 @@ scripts = [
       (try_end), #deserters ends
 
       # SPAWN BANDIT LAIRS
+      # Old logic was guaranteed respawn attempt every 36h, 
+      # but not all attempts succeeded (4.7 attempts/week).
+      # New logic is ~13 cycles/week, 20% attempt per cycle (2.6 attempts/week).
+      # This is a slower than the old code, making elimination of
+      # the bandit lairs have more of an impact. 
       (try_for_range, ":bandit_template", bandit_party_templates_begin, bandit_party_templates_end), #SB : template range
         (party_template_get_slot, ":bandit_lair_party", ":bandit_template", slot_party_template_lair_party),
         (le, ":bandit_lair_party", 1),
+
+        # respawn of a lair should take a few days on average
+        # the spawn attempt *can* fail, so it will take longer than expected (probably 2x-3x)
+        (store_random_in_range, ":spawn_lair_chance", 0, 100),
+        (le, ":spawn_lair_chance", 20), # % per cycle to attempt respawn of the lair
 
         (party_template_get_slot, ":bandit_lair_template", ":bandit_template", slot_party_template_lair_type),
         (party_template_get_slot, ":bandit_lair_template_spawnpoint", ":bandit_template", slot_party_template_lair_spawnpoint),
@@ -40615,6 +40763,22 @@ scripts = [
           (party_template_set_slot, ":bandit_template", slot_party_template_lair_party, 0),
         (else_try),
         (try_end),
+
+        (try_begin),
+          (eq, ":debug_on", 1),
+          (party_template_get_slot, ":final_bandit_lair_party", ":bandit_template", slot_party_template_lair_party),
+          (try_begin),
+            (ge, ":center_too_close", 1),
+            (display_message, "@{!}Failed to spawn lair: {s4} (too close to centers)."),
+          (else_try),
+            (gt, ":final_bandit_lair_party", 0),
+            (display_message, "@{!}Spawned lair: {s4}"),
+          (else_try),
+            # This failure is usually due to either wrong terrain or wrong elevation
+            (display_message, "@{!}Failed to spawn lair: {s4} (wrong terrain/elevation)."),
+          (try_end),
+        (try_end),
+
       (try_end),
      ]),
 
