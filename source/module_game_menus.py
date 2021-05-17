@@ -759,17 +759,28 @@ game_menus = [
         ]
        ),
 
-      ("status_check",[(ge,"$cheat_mode",DPLMC_CHEAT_YES)],"{!}NPC status check.",
+      ("status_check",[(ge,"$cheat_mode",DPLMC_CHEAT_YES)],"{!}Companions status check.",
        [
         (try_for_range, ":npc", companions_begin, companions_end),
+          (try_begin),
             (main_party_has_troop, ":npc"),
-            (str_store_troop_name, 4, ":npc"),
+            (str_store_troop_name, s4, ":npc"),
             (troop_get_slot, reg3, ":npc", slot_troop_morality_state),
             (troop_get_slot, reg4, ":npc", slot_troop_2ary_morality_state),
             (troop_get_slot, reg5, ":npc", slot_troop_personalityclash_state),
             (troop_get_slot, reg6, ":npc", slot_troop_personalityclash2_state),
             (troop_get_slot, reg7, ":npc", slot_troop_personalitymatch_state),
             (display_message, "@{!}{s4}: M{reg3}, 2M{reg4}, PC{reg5}, 2PC{reg6}, PM{reg7}"),
+          (else_try),
+            # companions not yet in the party
+            (str_store_troop_name, s4, ":npc"),
+            (troop_get_slot, reg3, ":npc", slot_troop_occupation),
+            (troop_get_slot, reg4, ":npc", slot_troop_met),
+            (troop_get_slot, reg5, ":npc", slot_troop_playerparty_history),
+            (troop_get_slot, reg6, ":npc", slot_troop_cur_center),
+            (troop_get_slot, reg7, ":npc", slot_troop_prisoner_of_party),
+            (display_message, "@{!}{s4}: occ={reg3}, met={reg4}, PPH={reg5}, ctr={reg6}, PoP={reg7}"),
+          (try_end),
         (try_end),
         ]
        ),
