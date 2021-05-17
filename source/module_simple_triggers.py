@@ -5190,8 +5190,8 @@ simple_triggers = [
           (is_between, ":center_lord", active_npcs_begin, active_npcs_end),
           # pay for it from the fief's lord's purse
           (troop_get_slot, ":center_lord_wealth", ":center_lord", slot_troop_wealth),
-          (ge, ":center_lord_wealth", 5000), # lord has > N denars
-          (val_sub, ":center_lord_wealth", 300),
+          (ge, ":center_lord_wealth", 10000), # lord has > N denars
+          (val_sub, ":center_lord_wealth", 800),
           (troop_set_slot, ":center_lord", slot_troop_wealth, ":center_lord_wealth"),
           (assign, ":paid_party_new_wealth", ":center_lord_wealth"),
           (assign, ":paid_for_by_party", ":center_lord"),
@@ -5204,8 +5204,8 @@ simple_triggers = [
           (is_between, ":faction_leader", active_npcs_begin, active_npcs_end),
           # pay for it from the faction leader's purse
           (troop_get_slot, ":faction_leader_wealth", ":faction_leader", slot_troop_wealth),
-          (ge, ":faction_leader_wealth", 10000), # lord has > N denars
-          (val_sub, ":faction_leader_wealth", 200),
+          (ge, ":faction_leader_wealth", 25000), # lord has > N denars
+          (val_sub, ":faction_leader_wealth", 500),
           (troop_set_slot, ":faction_leader", slot_troop_wealth, ":faction_leader_wealth"),
           (assign, ":paid_party_new_wealth", ":faction_leader_wealth"),
           (assign, ":paid_for_by_party", ":faction_leader"),
@@ -5216,9 +5216,9 @@ simple_triggers = [
         (party_get_slot, ":new_prosperity", ":center_no", slot_town_prosperity),
 
         (try_begin),
-          (ge, "$cheat_mode", DPLMC_DEBUG_MIN),
+          (ge, "$cheat_mode", DPLMC_DEBUG_EXPERIMENTAL),
           (store_distance_to_party_from_party, ":dist_to_main_party", "p_main_party", ":center_no"),
-          (le, ":dist_to_main_party", 40), # limit debug output to towns within range of the player
+          (le, ":dist_to_main_party", 25), # limit debug output to towns within range of the player
           (str_store_party_name, s91, ":center_no"),
           (assign, reg90, ":boost"),
           (assign, reg91, ":old_prosperity"),
