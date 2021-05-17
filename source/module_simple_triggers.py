@@ -5245,27 +5245,68 @@ simple_triggers = [
   (6,
    [
     (ge, "$g_dplmc_gold_changes", DPLMC_GOLD_CHANGES_MEDIUM),
+
+    (assign, ":gold", reinforcement_cost_easy),
+    (assign, ":target_gold", reinforcement_cost_easy),
+    (val_mul, ":target_gold", 5),
+
     (try_for_range, ":center_no", walled_centers_begin, walled_centers_end),
       (party_get_slot, ":cur_wealth", ":center_no", slot_town_wealth),
-      (lt, ":cur_wealth", reinforcement_cost_easy),
+      (lt, ":cur_wealth", ":target_gold"),
       (party_get_slot, ":center_strength", ":center_no", slot_party_cached_strength),
       (lt, ":center_strength", 400), # roughly, strength = 10x the number of troops (give or take 30-50%)
+      (store_random_in_range, ":random", 0, 100),
+      (lt, ":random", 25), # percent chance        
+
+      # attempt to pay for it
+      # TODO: Figure out how this could/should work for the player's walled centers
+      (assign, ":paid_for_by_party", -1),
       (try_begin),
-        (store_random_in_range, ":random", 0, 100),
-        (lt, ":random", 20), # percent chance        
-        (store_random_in_range, ":gold", 0, 200),
-        (val_add, ":gold", 100),
-        (val_add, ":cur_wealth", ":gold"),
-        (party_set_slot, ":center_no", slot_town_wealth, ":cur_wealth"),
+        (neg|party_slot_eq, ":center_no", slot_town_lord, "trp_player"),
+        (party_get_slot, ":center_lord", ":center_no", slot_town_lord),
+        (is_between, ":center_lord", active_npcs_begin, active_npcs_end),
+        # pay for it from the fief's lord's purse
+        (troop_get_slot, ":center_lord_wealth", ":center_lord", slot_troop_wealth),
+        (ge, ":center_lord_wealth", 10000), # lord has > N denars
+        (val_sub, ":center_lord_wealth", ":gold"),
+        (troop_set_slot, ":center_lord", slot_troop_wealth, ":center_lord_wealth"),
+        (assign, ":paid_party_new_wealth", ":center_lord_wealth"),
+        (assign, ":paid_for_by_party", ":center_lord"),
+      (else_try),
+        (neg|party_slot_eq, ":center_no", slot_town_lord, "trp_player"),
+        (store_faction_of_party, ":center_faction", ":center_no"),
+        (is_between, ":center_faction", npc_kingdoms_begin, kingdoms_end),
+        (faction_get_slot, ":faction_leader", ":center_faction", slot_faction_leader),
+        (is_between, ":faction_leader", active_npcs_begin, active_npcs_end),
+        # pay for it from the faction leader's purse
+        (troop_get_slot, ":faction_leader_wealth", ":faction_leader", slot_troop_wealth),
+        (ge, ":faction_leader_wealth", 25000), # lord has > N denars
+        (val_sub, ":faction_leader_wealth", ":gold"),
+        (troop_set_slot, ":faction_leader", slot_troop_wealth, ":faction_leader_wealth"),
+        (assign, ":paid_party_new_wealth", ":faction_leader_wealth"),
+        (assign, ":paid_for_by_party", ":faction_leader"),
+      (try_end),
+
+      (val_add, ":cur_wealth", ":gold"),
+      (party_set_slot, ":center_no", slot_town_wealth, ":cur_wealth"),
+
+      (try_begin),
+        (ge, "$cheat_mode", DPLMC_DEBUG_EXPERIMENTAL),
+        (store_distance_to_party_from_party, ":dist_to_main_party", "p_main_party", ":center_no"),
+        (le, ":dist_to_main_party", 25), # limit debug output to towns within range of the player
+        (str_store_party_name, s90, ":center_no"),
+        (assign, reg91, ":gold"),
+        (assign, reg92, ":cur_wealth"),
+        (assign, reg93, ":center_strength"),
         (try_begin),
-          (eq, "$cheat_mode", DPLMC_DEBUG_EXPERIMENTAL),
-          (str_store_party_name, s11, ":center_no"),
-          (assign, reg4, ":gold"),
-          (assign, reg5, ":cur_wealth"),
-          (assign, reg6, ":center_strength"),
-          (display_message, "@{!}Center {s11} (str: {reg6}) was given {reg4} denars for a total wealth of {reg5}."),
+          (is_between, ":paid_for_by_party", active_npcs_begin, active_npcs_end),
+          (str_store_troop_name, s91, ":paid_for_by_party"),
+          (display_message, "@{!}WALLED: {s90} (str: {reg93}) was given {reg91} denars by {s91} for a total wealth of {reg92}."),
+        (else_try),
+          (display_message, "@{!}WALLED: {s90} (str: {reg93}) was given {reg91} denars for a total wealth of {reg92}."),
         (try_end),
       (try_end),
+
     (try_end),
    ]),
 
