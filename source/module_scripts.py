@@ -74684,7 +74684,7 @@ Born at {s43}^Contact in {s44} of the {s45}.^\
       (try_end),
 
       # the default for goods not produced here (0 = lowest possible probability)
-      (assign, ":probability_floor", 250),
+      (assign, ":probability_floor", 50),
       (reset_item_probabilities, ":probability_floor"),
 
       # calculate item probabilities (higher = more common)
@@ -74715,8 +74715,8 @@ Born at {s43}^Contact in {s44} of the {s45}.^\
 
         # base probability is current-production amount
         (assign, ":probability", ":cur_center_production"), # could be as much as 300 units, but probably 1..50
-        (val_div, ":probability", 10),
-        (val_clamp, ":probability", 1, 6),
+        (val_div, ":probability", 5),
+        (val_clamp, ":probability", 1, 5),
         (val_mul, ":probability", 10),
 
         # price (above a certain price value) is a negative to probability
