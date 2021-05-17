@@ -664,9 +664,9 @@ simple_triggers = [
 	   ##diplomacy end+
     ]),
 
-  #Hiring men with hero wealths (once a day)
-  #Hiring men with center wealths (once a day)
-  (24,
+  #Hiring men with hero wealths (2x a day)
+  #Hiring men with center wealths (2x a day)
+  (12,
    [
    #SB : move this unscoped variable up
      (options_get_campaign_ai, ":reduce_campaign_ai"),
@@ -828,9 +828,9 @@ simple_triggers = [
             (party_set_flags, ":result", pf_default_behavior, 1),
           (try_end),
           (try_begin),
-            (eq, "$cheat_mode", DPLMC_DEBUG_EXPERIMENTAL),
+            (ge, "$cheat_mode", DPLMC_DEBUG_EXPERIMENTAL),
             (store_distance_to_party_from_party, ":dist_to_main_party", "p_main_party", ":center_no"),
-            (le, ":dist_to_main_party", 10),
+            (le, ":dist_to_main_party", 150),
             (str_store_party_name, s11, ":center_no"),
             (str_store_party_name, s12, ":village_reinforcements"),
             (assign, reg11, ":reinforcement_cost"),
