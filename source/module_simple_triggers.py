@@ -5325,10 +5325,73 @@ simple_triggers = [
     (call_script, "script_initialize_trade_routes"),
    ]),
 
-   ]),
+  # Merchant caravans will re-evalulate their target town if it is besieged, or changes
+  # to hostile ownership during the trip time.  This cleans up the situation where you'll
+  # have a bunch of caravans ping-ponging on the outskirts of town during a siege.
+  (12,
+  [
+    (try_for_parties, ":party_no"),
+      (party_slot_eq, ":party_no", slot_party_type, spt_kingdom_caravan),
+      (neg|party_is_in_any_town, ":party_no"),
 
-  (24,
-   []),
+      (get_party_ai_object, ":target_center", ":party_no"),
+      (is_between, ":target_center", towns_begin, towns_end),
+      (store_faction_of_party, ":merchant_faction", ":party_no"),
+
+      # get merchant relation with town's faction
+      (store_faction_of_party, ":target_faction", ":target_center"),
+      (store_relation, ":reln", ":target_faction", ":merchant_faction"),
+
+      # get siege status
+      (party_get_slot, ":besieger", ":target_center", slot_center_is_besieged_by),
+
+      (this_or_next|lt, ":reln", 0), # now at war
+      (gt, ":besieger", 0), # is under siege
+
+      (store_random_in_range, ":random_no", 0, 100),
+      (lt, ":random_no", 50), # % chance of redirection
+
+      # divert to the nearest safe & friendly town
+      (assign, ":new_target_center", -1),
+      (assign, ":distance", 99999),
+      (try_for_range, ":new_town_id", towns_begin, towns_end),
+        (neg|eq, ":new_town_id", ":target_center"),
+        (store_random_in_range, ":distance_random_no", 0, 100),
+        (lt, ":distance_random_no", 50), # % chance of using this town
+
+        # be at peace with candidate town's faction
+        (store_faction_of_party, ":new_town_faction", ":new_town_id"),
+        (store_relation, ":new_reln", ":new_town_faction", ":merchant_faction"),
+        (ge, ":new_reln", 0),
+        # new candidate is not besieged
+        (party_get_slot, ":new_besieger", ":new_town_id", slot_center_is_besieged_by),
+        (le, ":new_besieger", 0),
+
+        (store_distance_to_party_from_party, ":new_town_distance", ":party_no", ":new_town_id"),
+        (gt, ":distance", ":new_town_distance"),
+        (assign, ":new_target_center", ":new_town_id"),
+        (assign, ":distance", ":new_town_distance"),
+      (try_end),
+
+      (try_begin),
+        (is_between, ":new_target_center", towns_begin, towns_end),
+        (party_set_ai_object, ":party_no", ":new_target_center"),
+        (party_set_slot, ":party_no", slot_party_ai_object, ":new_target_center"),
+        
+        (try_begin),
+          (ge, "$cheat_mode", DPLMC_DEBUG_EXPERIMENTAL),
+          (store_distance_to_party_from_party, ":dist_to_main_party", "p_main_party", ":party_no"),
+          (le, ":dist_to_main_party", 250),
+          (str_store_party_name, s90, ":target_center"), # original town
+          (str_store_party_name, s91, ":new_target_center"), # original town
+          (str_store_faction_name, s92, ":merchant_faction"),
+          (display_message, "@{!}CARAVAN DIVERTED: {s92} caravan: {s90}->{s91}"),
+        (try_end),
+      (try_end),
+
+    (try_end),
+  ]),
+
   (24,
    []),
   (24,
