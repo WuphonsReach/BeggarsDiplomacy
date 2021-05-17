@@ -16952,7 +16952,7 @@ scripts = [
 			(gt, ":cur_center_price", average_price_factor),
       (store_sub, ":consumption_price_impact", ":cur_center_price", average_price_factor),
       (val_mul, ":consumption_price_impact", 2),
-      (val_add, ":consumption_price_impact", average_price_factor)
+      (val_add, ":consumption_price_impact", average_price_factor),
 			(val_mul, ":consumer_consumption", average_price_factor),
 			(val_div, ":consumer_consumption", ":consumption_price_impact"),
 		(try_end),

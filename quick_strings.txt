@@ -1,4 +1,4 @@
-1325
+1363
 qstr_Breaking_camp... Breaking_camp...
 qstr_Removing_disguise... Removing_disguise...
 qstr_{s17}_has_{reg17}_de {s17}_has_{reg17}_denars
@@ -1324,3 +1324,41 @@ qstr_^Towns__{reg20}_:^{s ^Towns_({reg20}):^{s51}^^Prices_at_town_(min/avg/max_f
 qstr_^Villages__{reg20}_:^^ ^Villages_({reg20}):^^Prices_at_village_(min/avg/max_for_all_villages):
 qstr_^Towns__{reg20}_:^{s5 ^Towns_({reg20}):^{s51}^^Prices_at_town_(min/avg/max_for_all_towns):
 qstr_^Towns__{reg20}_:^^P ^Towns_({reg20}):^^Prices_at_town_(min/avg/max_for_all_towns):
+qstr_{!}CHARITY:_Boost_{s91 {!}CHARITY:_Boost_{s91}_prosperity_by_+{reg90}_points_({reg91}->{reg92}),_paid_for_by_{s90}_(balance_{reg93}_denars).
+qstr_Castles__{reg80}__{r Castles_({reg80})_{reg81}/{reg82}/{reg83}
+qstr_Towns__{reg80}__{reg Towns_({reg80})_{reg81}/{reg82}/{reg83}
+qstr_Villages__{reg80}__{ Villages_({reg80})_{reg81}/{reg82}/{reg83}
+qstr_^Distances^{s85}^{s8 ^Distances^{s85}^{s86}^{s87}
+qstr_{!}SCRIPT:_initialize_ {!}SCRIPT:_initialize_food_morale_bonuses.
+qstr_{!}DEBUG:_Spawning_b {!}DEBUG:_Spawning_bandits_(spawn_bandits)
+qstr_{!}Mountain:_{reg91} {!}Mountain:_{reg91}/{reg92}
+qstr_{!}Forest:_{reg91}/{ {!}Forest:_{reg91}/{reg92}
+qstr_{!}Steppe:_{reg91}/{ {!}Steppe:_{reg91}/{reg92}
+qstr_{!}Taiga:_{reg91}/{r {!}Taiga:_{reg91}/{reg92}
+qstr_{!}Desert:_{reg91}/{ {!}Desert:_{reg91}/{reg92}
+qstr_{!}Looters:_{reg91}/ {!}Looters:_{reg91}/{reg92}
+qstr_{!}Deserters:_{reg91 {!}Deserters:_{reg91}/{reg92}
+qstr_{!}Sea_Raiders:_{reg {!}Sea_Raiders:_{reg91}/{reg92}
+qstr_{!}Attempt_to_spawn_ {!}Attempt_to_spawn_lair:_{s4},_but_too_close_to_centers.
+qstr_{!}Attempt_to_spawn_l {!}Attempt_to_spawn_lair:_{s4}
+qstr_{!}Deserters:_{reg91} {!}Deserters:_{reg91}/{reg92}_({reg90}_wars)
+qstr_{!}Failed_to_spawn_l {!}Failed_to_spawn_lair:_{s4}_(too_close_to_centers).
+qstr_{!}Spawned_lair:_{s4 {!}Spawned_lair:_{s4}
+qstr_{!}Failed_to_spawn_la {!}Failed_to_spawn_lair:_{s4}
+qstr_{!}DEBUG:_{s5}_trade {!}DEBUG:_{s5}_trade_from_{s3}_to_{s4}:_impact_of_{reg4}
+qstr_{!}DEBUG:_Trade_of_{ {!}DEBUG:_Trade_of_{s5}_from_{s3}_to_{s4}_brings_price_from_{reg4}_to_{reg5}
+qstr_{!}Failed_to_spawn_lai {!}Failed_to_spawn_lair:_{s4}_(wrong_terrain/elevation).
+qstr_{!}CARAVAN:_{s90}_>{ {!}CARAVAN:_{s90}->{s93}_for_{s91}_{s92},_scoreing_{reg90}_out_of_{reg91}_routes.
+qstr_{!}CARAVAN_1:_{reg91 {!}CARAVAN-1:_{reg91}_+_{reg90}
+qstr_{!}CARAVAN_3:_{reg90 {!}CARAVAN-3:_{reg90}
+qstr_{!}CARAVAN_5:_{reg90 {!}CARAVAN-5:_{reg90}
+qstr_{!}CARAVAN:_{s90}_>{s {!}CARAVAN:_{s90}->{s93}_for_{s91}_{s92},_scoring_{reg90}_out_of_{reg91}_routes.
+qstr_{!}CARAVAN_2:_{reg90 {!}CARAVAN-2:_{reg90}
+qstr_{!}CARAVAN_7:_{reg90 {!}CARAVAN-7:_{reg90}
+qstr_{!}CARAVAN:_{s90}_>{s9 {!}CARAVAN:_{s90}->{s93}_for_{s91}_caravan,_scoring_{reg90}_out_of_{reg91}_routes.
+qstr_{!}ROUTE:_{s90}_{reg {!}ROUTE:_{s90}_{reg90}->{reg91}->{reg92}->{reg93}
+qstr_{!}SCRIPT:_initialize_t {!}SCRIPT:_initialize_trade_routes.
+qstr_{!}WALLED:_{s90}__st {!}WALLED:_{s90}_(str:_{reg93})_was_given_{reg91}_denars_by_{s91}_for_a_total_wealth_of_{reg92}.
+qstr_{!}WALLED:_{s90}__str {!}WALLED:_{s90}_(str:_{reg93})_was_given_{reg91}_denars_for_a_total_wealth_of_{reg92}.
+qstr_{!}CARAVAN_RETARGET: {!}CARAVAN_RETARGET:_{s92}_caravan:_{s90}->{s91}
+qstr_{!}CARAVAN_DIVERTED: {!}CARAVAN_DIVERTED:_{s92}_caravan:_{s90}->{s91}
