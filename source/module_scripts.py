@@ -26113,7 +26113,7 @@ scripts = [
 
         # base probability is current-production amount
         (assign, ":probability", ":cur_center_production"), # could be as much as 100 units, but probably 1..25
-        (val_div, ":probability", 5),
+        (val_div, ":probability", 3),
         (val_clamp, ":probability", 1, 6),
         (val_mul, ":probability", 10),
 
@@ -26148,7 +26148,7 @@ scripts = [
 
         (try_begin),
           (is_between, ":cur_good", food_begin, food_end), # food gets a bonus to probability
-          (val_mul, ":probability", 4),
+          (val_mul, ":probability", 4), # villages get a larger bonus to probability for foods
         (try_end),
 
         (val_max, ":probability", 1),
