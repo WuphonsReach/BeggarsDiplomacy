@@ -20145,7 +20145,7 @@ scripts = [
           (val_mul, ":price_dif", 2),
         (try_end),
         # fuzzy the price difference
-        (store_random_in_range, ":price_diff_fuzzing", 500, 1500),
+        (store_random_in_range, ":price_diff_fuzzing", 800, 1200),
         (val_mul, ":price_dif", ":price_diff_fuzzing"),
         (val_div, ":price_dif", 1000),
         (val_add, ":cur_town_score", ":price_dif"),
@@ -20183,7 +20183,11 @@ scripts = [
           (val_clamp, ":source_mercantilism", -3, 4),
           (faction_get_slot, ":dest_mercantilism", ":cur_faction", dplmc_slot_faction_mercantilism),
           (val_clamp, ":dest_mercantilism", -3, 4),
-          ##Default (if both factions have mercantilism 0) is a 6% reduction.  Possible range is 0% (least) to 12% (most).
+          # Default (if both factions have mercantilism 0) is a 6% reduction.  
+          # Possible range is 0% (least) to 12% (most).
+          # We need to expand that to 48% to have a stronger impact
+          (val_mul, ":source_mercantilism", 4),
+          (val_mul, ":dest_mercantilism", 4),
           (store_sub, ":percent", 94, ":source_mercantilism"),
           (val_sub, ":percent", ":dest_mercantilism"),
 
@@ -20191,6 +20195,7 @@ scripts = [
           (val_add, ":cur_town_score", 50),
           (val_div, ":cur_town_score", 100),
         (try_end),
+
         (try_begin),
           (lt, ":consider_distance", 25), # percent of time to consider distance
           (store_distance_to_party_from_party, ":dist", ":perspective_party",":cur_town"),
@@ -20198,9 +20203,9 @@ scripts = [
           #Further explanation: What we really care about is time, not distance.
           #It will take time to buy and sell once reaching our destination: halving
           #the distance doesn't double the expected profit per month.
-          #most towns are ~100 units away, map is ~300-350 across
-          (val_div, ":dist", 120), # dist -> 0..3
-          (val_add, ":dist", 2), # dist -> 2..5
+          #most towns are ~100 units away, map is ~250-320 across
+          (val_div, ":dist", 90), # dist -> 0..3
+          (val_add, ":dist", 1), # dist -> 1..4
           (val_max, ":dist", 1),
           (val_div, ":cur_town_score", ":dist"),
         (try_end),
@@ -20209,7 +20214,7 @@ scripts = [
 
       (try_begin), # fuzz the results so that caravans choose different destinations
         (ge, "$g_dplmc_gold_changes", DPLMC_GOLD_CHANGES_MEDIUM),
-        (store_random_in_range, ":score_bonus_percent", 700, 1300),
+        (store_random_in_range, ":score_bonus_percent", 800, 1200),
         (val_mul, ":cur_town_score", ":score_bonus_percent"),
         (val_div, ":cur_town_score", 1000),
       (try_end),
@@ -20227,7 +20232,7 @@ scripts = [
     (try_begin),
       (eq, "$cheat_mode", DPLMC_DEBUG_EXPERIMENTAL),
       (store_distance_to_party_from_party, ":debug_dist_to_main_party", "p_main_party", ":town_no"),
-      (le, ":debug_dist_to_main_party", 8),
+      (le, ":debug_dist_to_main_party", 50),
       (str_store_party_name, s90, ":town_no"), # origin town
       (str_store_faction_name, s91, ":faction_no"),
       (str_store_party_name, s93, ":result"), # result town
