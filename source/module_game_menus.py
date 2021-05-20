@@ -772,7 +772,7 @@ game_menus = [
             (troop_get_slot, reg7, ":npc", slot_troop_personalitymatch_state),
             (display_message, "@{!}{s4}: M{reg3}, 2M{reg4}, PC{reg5}, 2PC{reg6}, PM{reg7}"),
           (else_try),
-            # companions not yet in the party
+            # companions not in the party
             (str_store_troop_name, s4, ":npc"),
             (troop_get_slot, reg3, ":npc", slot_troop_occupation),
             (troop_get_slot, reg4, ":npc", slot_troop_met),
