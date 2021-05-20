@@ -18285,7 +18285,7 @@ scripts = [
       (try_end),
 
       (try_begin),
-        (ge, "$cheat_mode", DPLMC_DEBUG_MIN),
+        (ge, "$cheat_mode", DPLMC_DEBUG_NEVER),
         (assign, reg1, ":stack_size"),
         (assign, reg2, ":gain"),
         (display_message, "str_our_per_person__reg0_num_people__reg1_total_gain__reg2"),
@@ -18325,7 +18325,7 @@ scripts = [
       (try_end),
 
       (try_begin),
-        (ge, "$cheat_mode", DPLMC_DEBUG_MIN),
+        (ge, "$cheat_mode", DPLMC_DEBUG_NEVER),
         (assign, reg1, ":stack_size"),
         (assign, reg2, ":gain"),
         (display_message, "str_ene_per_person__reg0_num_people__reg1_total_gain__reg2"),
@@ -18370,7 +18370,7 @@ scripts = [
         (try_end),
 
         (try_begin),
-          (ge, "$cheat_mode", DPLMC_DEBUG_MIN),
+          (ge, "$cheat_mode", DPLMC_DEBUG_NEVER),
           (assign, reg1, ":stack_size"),
           (assign, reg2, ":gain"),
           (display_message, "str_all_per_person__reg0_num_people__reg1_total_gain__reg2"),
@@ -18384,7 +18384,7 @@ scripts = [
     (val_mul, ":our_losses", 100),
 
     (try_begin),
-      (ge, "$cheat_mode", DPLMC_DEBUG_MIN),
+      (ge, "$cheat_mode", DPLMC_DEBUG_NEVER),
       (assign, reg0, ":enemy_losses"),
       (display_message, "@{!}DEBUGS : enemy_loses : {reg0}"),
     (try_end),
@@ -18397,7 +18397,7 @@ scripts = [
     (try_end),
 
     (try_begin),
-      (ge, "$cheat_mode", DPLMC_DEBUG_MIN),
+      (ge, "$cheat_mode", DPLMC_DEBUG_NEVER),
       (assign, reg1, ":loss_ratio"),
       (display_message, "str_loss_ratio_is_reg1"),
     (try_end),
@@ -18415,7 +18415,7 @@ scripts = [
     (try_end),
 
     (try_begin),
-      (ge, "$cheat_mode", DPLMC_DEBUG_MIN),
+      (ge, "$cheat_mode", DPLMC_DEBUG_NEVER),
       (assign, reg0, ":total_gain"),
       (display_message, "@{!}DEBUGS1 : total_gain : {reg0}"),
     (try_end),
@@ -18429,7 +18429,7 @@ scripts = [
     (val_div, ":total_gain", 100),
 
     (try_begin),
-      (ge, "$cheat_mode", DPLMC_DEBUG_MIN),
+      (ge, "$cheat_mode", DPLMC_DEBUG_NEVER),
       (assign, reg0, ":total_gain"),
       (display_message, "@{!}DEBUGS2 : total_gain : {reg0}"),
     (try_end),
@@ -18482,7 +18482,7 @@ scripts = [
       (val_div, ":total_enemy_morale_gain", 4),
 
       (try_begin),
-        (ge, "$cheat_mode", DPLMC_DEBUG_MIN),
+        (ge, "$cheat_mode", DPLMC_DEBUG_NEVER),
         (assign, reg7, ":total_enemy_morale_gain"),
         (display_message, "str_total_enemy_morale_gain__reg6_last_total_enemy_morale_gain__reg7_remaining_enemy_population__reg5"),
       (try_end),
@@ -18518,7 +18518,7 @@ scripts = [
     (val_div, ":morale_gain", ":num_player_party_shares"),#if there are lots of soldiers in my party there will be less morale increase.
 
     (try_begin),
-      (ge, "$cheat_mode", DPLMC_DEBUG_MIN),
+      (ge, "$cheat_mode", DPLMC_DEBUG_NEVER),
       (assign, reg0, ":num_player_party_shares"),
       (assign, reg1, ":total_gain"),
       (display_message, "@{!}DEBUGS3 : num_player_party_shares:{reg0}, total_gain:{reg1}"),
