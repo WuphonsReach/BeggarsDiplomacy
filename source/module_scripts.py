@@ -20232,7 +20232,7 @@ scripts = [
     (try_begin),
       (eq, "$cheat_mode", DPLMC_DEBUG_EXPERIMENTAL),
       (store_distance_to_party_from_party, ":debug_dist_to_main_party", "p_main_party", ":town_no"),
-      (le, ":debug_dist_to_main_party", 50),
+      (le, ":debug_dist_to_main_party", 150),
       (str_store_party_name, s90, ":town_no"), # origin town
       (str_store_faction_name, s91, ":faction_no"),
       (str_store_party_name, s93, ":result"), # result town
@@ -25767,7 +25767,7 @@ scripts = [
           (assign, ":party_count_limit", 0),
         (else_try),
           (ge, ":num_towns", 1),
-          (store_mul, ":party_count_limit", ":num_towns", 3),
+          (store_mul, ":party_count_limit", ":num_towns", 5),
           (val_add, ":party_count_limit", 3),
           (store_div, ":moar_caravans", ":num_towns", 2),
           (val_add, ":party_count_limit", ":moar_caravans"),
