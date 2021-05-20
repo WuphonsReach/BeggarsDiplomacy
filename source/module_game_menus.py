@@ -14702,7 +14702,7 @@ TOTAL:  {reg5}"),
   [
     (str_clear, s50),
     (str_clear, s51),
-    (assign, ":max_reporting_distance", 100),
+    (assign, ":max_reporting_distance", 90),
 
     (try_for_range_backwards, ":cur_good", trade_goods_begin, trade_goods_end),
 
