@@ -17523,6 +17523,8 @@ mission_templates = [
       [
         (display_message, "str_cannot_leave_now"),
       ], []),
+
+      bodyguard_trigger_a, bodyguard_trigger_b, bodyguard_trigger_c,
   ]),
 
     (
