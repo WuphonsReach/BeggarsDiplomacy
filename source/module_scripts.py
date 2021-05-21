@@ -20232,7 +20232,7 @@ scripts = [
     (try_begin),
       (eq, "$cheat_mode", DPLMC_DEBUG_EXPERIMENTAL),
       (store_distance_to_party_from_party, ":debug_dist_to_main_party", "p_main_party", ":town_no"),
-      (le, ":debug_dist_to_main_party", 150),
+      (le, ":debug_dist_to_main_party", 25),
       (str_store_party_name, s90, ":town_no"), # origin town
       (str_store_faction_name, s91, ":faction_no"),
       (str_store_party_name, s93, ":result"), # result town
