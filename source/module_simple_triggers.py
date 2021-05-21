@@ -2665,11 +2665,12 @@ simple_triggers = [
     ]),
 
 
-   (12,
+   (8,
    [
       # Updating trade good prices according to the productions
       (call_script, "script_update_trade_good_prices"),
  
+      # TODO: Move this to another trigger (it was probably daily/weekly before)
       # Updating player odds
        (try_for_range, ":cur_center", centers_begin, centers_end),
          (party_get_slot, ":player_odds", ":cur_center", slot_town_player_odds),
