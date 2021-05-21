@@ -16888,7 +16888,7 @@ scripts = [
       (eq, ":svs", svs_under_siege),
       (assign, ":status_percent", 25),
     (else_try),
-      (party_slot_ge, ":center_no", slot_center_has_bandits, 0),
+      (party_slot_ge, ":center_no", slot_center_has_bandits, 1),
       (assign, ":status_percent", 50),
     (else_try),
       (eq, ":svs", svs_recovering),
