@@ -64843,7 +64843,8 @@ scripts = [
     (set_show_messages, 0),#<-dplmc+ added
     (store_troop_gold, ":m_gold", ":merchant"),#dplmc+: to support "dry runs", move this out of the loop
 
-    (try_for_range_backwards, ":i_slot", dplmc_ek_alt_items_end, ":inv_cap"),#we're reserving several "safe" slots in the beginning of the inventory
+    #we're reserving several "safe" slots in the beginning of the inventory
+    (try_for_range_backwards, ":i_slot", dplmc_ek_alt_items_end, ":inv_cap"),
 
       (troop_get_inventory_slot, ":item", ":customer", ":i_slot"),
       (troop_get_inventory_slot_modifier, ":imod", ":customer", ":i_slot"),

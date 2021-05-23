@@ -15068,7 +15068,8 @@ TOTAL:  {reg5}"),
     "Items in your inventory whose type is marked as sellable and whose prices \
 are below {reg1} denars will be sold to the {reg2?appropriate merchants:elder} \
 in the current {reg2?town:village} automatically.  Specifically food, trade \
-goods, and books will never be sold. ^^You can change some settings here freely.",
+goods, and books will never be sold. Items in the first six inventory slots are \
+also excluded.^^You can change some settings here freely.",
     "none",
   [
 	##dplmc+ added section begin
