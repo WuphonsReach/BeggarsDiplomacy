@@ -20250,11 +20250,9 @@ scripts = [
           #Further explanation: What we really care about is time, not distance.
           #It will take time to buy and sell once reaching our destination: halving
           #the distance doesn't double the expected profit per month.
-          #most towns are ~100 units away, map is ~250-280 across
-          (val_sub, ":dist", 40),
-          (val_max, ":dist", 0),
-          (val_div, ":dist", 60), # dist -> 0..4
-          (val_add, ":dist", 1), # dist -> 1..5
+          #most towns are ~100 units away, map is ~300-320 across
+          (val_div, ":dist", 60), # dist -> 0..5
+          (val_add, ":dist", 3), # dist -> 3..8
           (val_max, ":dist", 1),
           (val_div, ":cur_town_score", ":dist"),
         (try_end),
