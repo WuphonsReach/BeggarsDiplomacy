@@ -5360,9 +5360,13 @@ scripts = [
   # This script is called from the game engine when the date needs to be displayed.
   # INPUT: arg1 = number of days passed since the beginning of the game
   # OUTPUT: result string = date
+  #   reg1: cur_day (of month)
+  #   reg2: cur_year
+  #     s1: date string
   ("game_get_date_text",
     [
       (store_script_param_2, ":num_hours"),
+
       (store_div, ":num_days", ":num_hours", 24),
       (store_add, ":cur_day", ":num_days", 23),
       (assign, ":cur_month", 3),
