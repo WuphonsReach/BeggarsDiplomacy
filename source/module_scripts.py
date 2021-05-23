@@ -16349,6 +16349,7 @@ scripts = [
       (val_add, ":cur_good_price_slot", slot_town_trade_good_prices_begin),
       (party_get_slot, ":cur_price", ":center_no", ":cur_good_price_slot"),
       (assign, ":market_price", ":cur_price"),
+      (assign, ":avg_village_price_index", average_price_factor),
 
       (call_script, "script_center_get_production", ":center_no", ":cur_good"),
       (assign, ":production", reg0),
@@ -16363,6 +16364,7 @@ scripts = [
         # add village production (that made it to the town)
         (call_script, "script_dplmc_center_get_total_village_production", ":center_no", ":cur_good"),
         (assign, ":village_production", reg4),
+        (assign, ":avg_village_price_index", reg9),
         (val_div, ":village_production", 2), # plus 1/2 all village production that made it to town
         (val_add, ":production", ":village_production"),
       (else_try),
@@ -16417,13 +16419,20 @@ scripts = [
       (assign, ":starting_price", ":cur_price"),
       (try_begin),
         (gt, ":net_production", 0), # excess, decrease the price-factor
-        (store_mul, ":change_factor", ":magnitude_of_change", 4), # up to a -60 point swing in factor
-        (store_random_in_range, ":random_change", 0, ":change_factor"),
+        (try_begin), # towns don't like to discount as much
+          (is_between, ":center_no", towns_begin, towns_end),
+          (val_mul, ":magnitude_of_change", 2),
+          (val_div, ":magnitude_of_change", 3),
+        (try_end),
+        # mag is 0..10 (0..6 for towns)
+        (store_mul, ":max_change_factor", ":magnitude_of_change", 6),
+        (store_mul, ":min_change_factor", ":magnitude_of_change", 1),
+        (store_random_in_range, ":random_change", ":min_change_factor", ":max_change_factor"),
         # calculate final price factor
         (try_begin), # price already below avg, reduce the impact
           (lt, ":cur_price", average_price_factor),
           (store_sub, ":amount_below_average", average_price_factor, ":cur_price"),
-          (val_div, ":amount_below_average", 30), # kicks in below 940
+          (val_div, ":amount_below_average", 40), # kicks in below 920
           (gt, ":amount_below_average", 0),
           (val_div, ":random_change", ":amount_below_average"),
         (try_end),
@@ -16435,15 +16444,18 @@ scripts = [
           # town siege, increase the magnitude_of_change by another +10
           (is_between, ":center_no", towns_begin, towns_end), # must be a town
           (party_slot_ge, ":center_no", slot_center_is_besieged_by, 0), # is besieged
-          (val_add, ":magnitude_of_change", 10),
+          (val_mul, ":magnitude_of_change", 2),
+          (val_add, ":magnitude_of_change", 5),
         (try_end),
-        (store_mul, ":change_factor", ":magnitude_of_change", 25), # up to a +325 point swing in factor
-        (store_random_in_range, ":random_change", 0, ":change_factor"),
+        # mag is 0..10 (5..25 if besieged)
+        (store_mul, ":max_change_factor", ":magnitude_of_change", 25),
+        (store_mul, ":min_change_factor", ":magnitude_of_change", 5),
+        (store_random_in_range, ":random_change", ":min_change_factor", ":max_change_factor"),
         # calculate final price factor
         (try_begin), # price already above avg, reduce the impact
           (gt, ":cur_price", average_price_factor),
           (store_sub, ":amount_above_average", ":cur_price", average_price_factor),
-          (val_div, ":amount_above_average", 200), # kicks in above 1400
+          (val_div, ":amount_above_average", 250), # kicks in above 1500
           (gt, ":amount_above_average", 0),
           (val_div, ":random_change", ":amount_above_average"),
         (try_end),
@@ -16481,8 +16493,8 @@ scripts = [
 		  (try_begin),
         # villages drift towards the town market price (tilted towards the average_price_factor)
 		    (is_between, ":center_no", villages_begin, villages_end),
-        (store_add, ":market_price_average_price", ":market_price", average_price_factor),
-        (val_add,  ":market_price_average_price", average_price_factor),
+        (store_mul, ":market_price_average_price", average_price_factor, 2),
+        (val_add,  ":market_price_average_price", ":market_price"),
         (val_div, ":market_price_average_price", 3),
         (store_sub, ":price_difference", ":cur_price", ":market_price_average_price"),
         (try_begin),
@@ -16496,33 +16508,21 @@ scripts = [
         (try_end),
         (val_div, ":price_difference", 100),
         (store_add, ":new_price", ":market_price_average_price", ":price_difference"),
-        (try_begin),
-          (ge, "$cheat_mode", DPLMC_DEBUG_NEVER),
-          (store_distance_to_party_from_party, ":debug_dist_to_main_party", "p_main_party", ":center_no"),
-          (le, ":debug_dist_to_main_party", 8), # limit debug output to towns within range of the player (otherwise too chatty)
-          (str_store_item_name, s20, ":cur_good"),
-          (str_store_party_name, s21, ":center_no"),
-          (assign, reg90, ":market_price"),
-          (assign, reg91, ":market_price_average_price"),
-          (assign, reg92, ":price_difference"),
-          (assign, reg93, ":cur_price"),
-          (assign, reg94, ":new_price"),
-          (display_message, "@{!}{s21}/{s20}: price: {reg93} mkt: {reg90} mpap: {reg91} pd: {reg92} final: {reg94}"),
-        (try_end),
       (else_try),
-        # towns drift towards the average price factor
-        (store_sub, ":price_difference", ":cur_price", average_price_factor),
+        # towns drift towards the tilted average price factor of their villages
+        # but only for "fresh" prices, otherwise it defaults to the average_price_factor
+        (store_sub, ":price_difference", ":cur_price", ":avg_village_price_index"),
         (try_begin),
-          # faster drift if cur_price < average_price_factor
+          # faster drift if cur_price < avg_village_price_index
           # (800-1000)*90/100 = -180 + 1000 = 820
-          (lt, ":cur_price", average_price_factor),
+          (lt, ":cur_price", ":avg_village_price_index"),
           (val_mul, ":price_difference", 90),
         (else_try),
           # (1800-1000)*95/100 = 760 + 1000 = 1760
           (val_mul, ":price_difference", 95),
         (try_end),
         (val_div, ":price_difference", 100),
-        (store_add, ":new_price", average_price_factor, ":price_difference"),
+        (store_add, ":new_price", ":avg_village_price_index", ":price_difference"),
       (try_end),
 
       (val_clamp, ":new_price", minimum_price_factor, maximum_price_factor),
