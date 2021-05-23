@@ -37579,207 +37579,258 @@ scripts = [
 
 #script_do_party_center_trade
 # INPUT: arg1 = party_no, arg2 = center_no, arg3 = percentage_change_in_center
-# OUTPUT: reg0 = total_change
+# OUTPUT: 
+#   reg0: total_profit (note, this is based on the price index, not actual price)
+#     a party going from low average price-index town to high average price-index
+#     center will result in more tariff profit
 ("do_party_center_trade",
 [
   (store_script_param, ":party_no", 1),
   (store_script_param, ":center_no", 2),
   (store_script_param, ":percentage_change", 3), #this should probably always be a constant. Currently it is 25
+  (party_get_slot, ":origin", ":party_no", slot_party_last_traded_center),
+  (store_faction_of_party, ":party_faction", ":party_no"),
+  (store_current_hours, ":cur_hours"),
   
+  (assign, ":debug_on", 0),
+  (try_begin),
+    (ge, "$cheat_mode", DPLMC_DEBUG_MIN),
+    (assign, ":debug_dist_to_main_party_limit", 15),
+    (store_distance_to_party_from_party, ":debug_dist_to_main_party", "p_main_party", ":center_no"),
+    (le, ":debug_dist_to_main_party", ":debug_dist_to_main_party_limit"),
+    (assign, ":debug_on", 1),
+  (try_end),
+
   (assign, ":percentage_change", 30),
-  (try_begin), # for MEDIUM+ decrease the impact of caravans / farmers
-    (ge, "$g_dplmc_gold_changes", DPLMC_GOLD_CHANGES_MEDIUM),
+  # for LOW+ decrease the impact of caravans / farmers
+  # decrease impact more for MEDIUM+ gold changes
+  (try_begin), 
+    (ge, "$g_dplmc_gold_changes", DPLMC_GOLD_CHANGES_LOW),
     (try_begin),
-      (is_between, ":center_no", towns_begin, towns_end),
-      (assign, ":percentage_change", 10),
+      # villages/towns already track their price-index somewhat closely
+      # there are also fewer village arrivals/departures
+      (is_between, ":origin", villages_begin, villages_end),
+      (store_random_in_range, ":percentage_change", 10, 35),
+      (ge, "$g_dplmc_gold_changes", DPLMC_GOLD_CHANGES_MEDIUM),
+      (val_mul, ":percentage_change", 2),
+      (val_div, ":percentage_change", 3),
     (else_try),
-      (assign, ":percentage_change", 10),
+      # caravans can be frequent, so have smaller upper/lower limits
+      (is_between, ":origin", towns_begin, towns_end),
+      (store_random_in_range, ":percentage_change", 5, 25),
+      (ge, "$g_dplmc_gold_changes", DPLMC_GOLD_CHANGES_MEDIUM),
+      (val_mul, ":percentage_change", 2),
+      (val_div, ":percentage_change", 3),
+    (else_try),
+      (store_random_in_range, ":percentage_change", 2, 8),
     (try_end),
   (try_end),
-
-  (party_get_slot, ":origin", ":party_no", slot_party_last_traded_center),
-  #If optional economic changes are enabled, randomize the percent change
-  #as 0..percentage_change - more dynamic, halves the impact
-  (try_begin),
-    (ge, "$g_dplmc_gold_changes", DPLMC_GOLD_CHANGES_LOW),
-    #Only apply lessened price movements to towns.
-    (this_or_next|party_slot_eq, ":center_no", slot_party_type, spt_town),
-    (is_between, ":center_no", towns_begin, towns_end),
-    #Use store_random to halve the average impact as well as making it more variable.
-    (val_add, ":percentage_change", 1),
-    (val_clamp, ":percentage_change", 2, 101),
-    (store_random_in_range, ":percentage_change", 2, ":percentage_change"),
-  (try_end),
+  (val_clamp, ":percentage_change", 2, 101),
 
   (try_begin),
-    (eq, "$cheat_mode", DPLMC_DEBUG_NEVER),
-    (store_distance_to_party_from_party, ":dist_center", "p_main_party", ":center_no"),
-    (le, ":dist_center", 10),
-    (str_store_party_name, s3, ":origin"),
-    (str_store_party_name, s4, ":center_no"),
-    (str_store_party_name, s5, ":party_no"),
-    (assign, reg4, ":percentage_change"),
-    (display_message, "@{!}DEBUG: {s5} trade from {s3} to {s4}: impact of {reg4}"),
+    (eq, ":debug_on", 999),
+    (str_store_party_name, s90, ":party_no"),
+    (str_store_faction_name, s91, ":party_faction"),
+    (assign, reg90, ":percentage_change"),
+    (display_message, "@{!}DEBUG-DPCT ({s91} {s90}): {reg90} pct-change"),
   (try_end),
 
   (party_get_slot, ":origin", ":party_no", slot_party_last_traded_center),
   (party_set_slot, ":party_no", slot_party_last_traded_center, ":center_no"),
   #Update the record of trade route arrival times
-    (try_begin),
-        (ge, ":origin", centers_begin),
-      ##zerilius changes begin
-      # (this_or_next|party_slot_eq, ":origin", villages_begin, villages_end),
-      (this_or_next|party_slot_eq, ":origin", slot_party_type, spt_village),
-      ##zerilius changes end
-        (is_between, ":origin", villages_begin, villages_end),
-        (store_current_hours, ":cur_hours"),
-        (party_set_slot, ":origin", dplmc_slot_village_trade_last_arrived_to_market, ":cur_hours"),
-    (try_end),
-    (try_begin),
-      (ge, ":origin", centers_begin),
+  (try_begin),
+    (ge, ":origin", centers_begin),
+    (this_or_next|party_slot_eq, ":origin", slot_party_type, spt_village),
+    (is_between, ":origin", villages_begin, villages_end),
+    (party_set_slot, ":origin", dplmc_slot_village_trade_last_arrived_to_market, ":cur_hours"),
+  (try_end),
+  (try_begin),
+    (ge, ":origin", centers_begin),
     (this_or_next|party_slot_eq, ":center_no", slot_party_type, spt_town),
     (is_between, ":center_no", towns_begin, towns_end),
-    (store_current_hours, ":cur_hours"),
     (try_for_range, ":trade_route_slot", slot_town_trade_routes_begin, slot_town_trade_routes_end),
-          (party_slot_eq,  ":center_no", ":trade_route_slot", ":origin"),
-    (store_sub, ":trade_route_arrival_slot", ":trade_route_slot", slot_town_trade_routes_begin),
-    (val_add, ":trade_route_arrival_slot", dplmc_slot_town_trade_route_last_arrivals_begin),
-    (is_between, ":trade_route_arrival_slot", dplmc_slot_town_trade_route_last_arrivals_begin, dplmc_slot_town_trade_route_last_arrivals_end),#this will always be true unless a modder increased the number of trade route slots without increasing the number of last arrival slots
-    (party_set_slot, ":center_no", ":trade_route_arrival_slot", ":cur_hours"),
-        (try_end),
-        (else_try),
-          (this_or_next|party_slot_eq, ":center_no", slot_party_type, spt_village),
-              (is_between, ":center_no", villages_begin, villages_end),
-        (store_current_hours, ":cur_hours"),
-        (party_set_slot, ":center_no", dplmc_slot_village_trade_last_returned_from_market, ":cur_hours"),
+      (party_slot_eq,  ":center_no", ":trade_route_slot", ":origin"),
+      (store_sub, ":trade_route_arrival_slot", ":trade_route_slot", slot_town_trade_routes_begin),
+      (val_add, ":trade_route_arrival_slot", dplmc_slot_town_trade_route_last_arrivals_begin),
+      (is_between, ":trade_route_arrival_slot", dplmc_slot_town_trade_route_last_arrivals_begin, dplmc_slot_town_trade_route_last_arrivals_end),#this will always be true unless a modder increased the number of trade route slots without increasing the number of last arrival slots
+      (party_set_slot, ":center_no", ":trade_route_arrival_slot", ":cur_hours"),
+    (try_end),
+  (else_try),
+    (this_or_next|party_slot_eq, ":center_no", slot_party_type, spt_village),
+    (is_between, ":center_no", villages_begin, villages_end),
+    (party_set_slot, ":center_no", dplmc_slot_village_trade_last_returned_from_market, ":cur_hours"),
   (try_end),
 
-    #SB : drop off prisoners
+  #SB : drop off prisoners
+  (try_begin),
+    (ge, "$g_dplmc_gold_changes", DPLMC_GOLD_CHANGES_HIGH),
+    (is_between, ":center_no", walled_centers_begin, walled_centers_end),
+    (store_faction_of_party, ":town_faction", ":center_no"),
+    (store_faction_of_party, ":party_faction", ":party_no"),
+    (eq, ":town_faction", ":party_faction"),
+    (call_script, "script_party_prisoners_add_party_prisoners", ":center_no", ":party_no"),
+    (call_script, "script_party_remove_all_prisoners", ":party_no"),
+  (try_end),
+
+  #sell off looted items
+  (try_begin), 
+    (ge, "$g_dplmc_gold_changes", DPLMC_GOLD_CHANGES_MEDIUM),
+    (is_between, ":center_no", towns_begin, towns_end),
+    (party_get_slot, ":num_items", ":party_no", slot_party_next_looted_item_slot),
+    (is_between, ":num_items", 1, num_party_loot_slots + 1), #has any loot
+      # (this_or_next|eq, ":num_items", 0),
+    (party_get_slot, ":town_merchant", ":center_no", slot_town_merchant),
+    (party_get_slot, ":town_weapon", ":center_no", slot_town_weaponsmith),
+    (party_get_slot, ":town_armor", ":center_no", slot_town_armorer),
+    (party_get_slot, ":town_horse", ":center_no", slot_town_horse_merchant),
+
+    #apply penalty with 0 trade skill for farmer, 2 for caravan masters
+    (assign, ":seller_troop", -1), #0 skill
     (try_begin),
-      (ge, "$g_dplmc_gold_changes", DPLMC_GOLD_CHANGES_HIGH),
-      (is_between, ":center_no", walled_centers_begin, walled_centers_end),
-      (store_faction_of_party, ":town_faction", ":center_no"),
-      (store_faction_of_party, ":party_faction", ":party_no"),
-      (eq, ":town_faction", ":party_faction"),
-      (call_script, "script_party_prisoners_add_party_prisoners", ":center_no", ":party_no"),
-      (call_script, "script_party_remove_all_prisoners", ":party_no"),
-    (else_try), #sell off looted items
-      (ge, "$g_dplmc_gold_changes", DPLMC_GOLD_CHANGES_MEDIUM),
-      (is_between, ":center_no", towns_begin, towns_end),
-      (party_get_slot, ":num_items", ":party_no", slot_party_next_looted_item_slot),
-      (is_between, ":num_items", 1, num_party_loot_slots + 1), #has any loot
-        # (this_or_next|eq, ":num_items", 0),
-      (party_get_slot, ":town_merchant", ":center_no", slot_town_merchant),
-      (party_get_slot, ":town_weapon", ":center_no", slot_town_weaponsmith),
-      (party_get_slot, ":town_armor", ":center_no", slot_town_armorer),
-      (party_get_slot, ":town_horse", ":center_no", slot_town_horse_merchant),
+      (party_get_slot, ":spt", ":party_no", slot_party_type),
+      # (eq, ":spt", spt_village_farmer),
+      # (assign, ":seller_troop", -1), #0 skill
+    # (else_try),
+      (eq, ":spt", spt_kingdom_caravan),
+      (assign, ":seller_troop", "trp_caravan_master"), #knows_common, 2 skill
+    (else_try),
+      (eq, ":spt", spt_kingdom_hero_party),
+      (party_stack_get_troop_id, ":seller_troop", ":party_no", 0),
+    (try_end),
 
-      #apply penalty with 0 trade skill for farmer, 2 for caravan masters
-      (assign, ":seller_troop", -1), #0 skill
+    (val_add, ":num_items", slot_party_looted_item_1),
+    (try_for_range, ":slot_no", slot_party_looted_item_1, ":num_items"),
+      (party_get_slot, ":item_no", ":party_no", ":slot_no"),
+      (gt, ":item_no", 0),
+      (item_get_type, ":itp", ":item_no"),
+      (store_add, ":imod_slot", ":slot_no", num_party_loot_slots),
+      (party_get_slot, ":imod_no", ":party_no", ":imod_slot"),
+      (item_get_type, ":itp", ":item_no"),
       (try_begin),
-        (party_get_slot, ":spt", ":party_no", slot_party_type),
-        # (eq, ":spt", spt_village_farmer),
-        # (assign, ":seller_troop", -1), #0 skill
-      # (else_try),
-        (eq, ":spt", spt_kingdom_caravan),
-        (assign, ":seller_troop", "trp_caravan_master"), #knows_common, 2 skill
+        (this_or_next|is_between, ":itp", itp_type_one_handed_wpn, itp_type_goods),
+        (is_between, ":itp", itp_type_pistol, itp_type_animal),
+        (assign, ":merchant", ":town_weapon"),
       (else_try),
-        (eq, ":spt", spt_kingdom_hero_party),
-        (party_stack_get_troop_id, ":seller_troop", ":party_no", 0),
+        (is_between, ":itp", itp_type_head_armor, itp_type_pistol),
+        (assign, ":merchant", ":town_armor"),
+      (else_try),
+        (eq, ":itp", itp_type_horse),
+        (assign, ":merchant", ":town_horse"),
+      (else_try),
+        (assign, ":merchant", ":town_merchant"),
       (try_end),
-      (val_add, ":num_items", slot_party_looted_item_1),
-      (try_for_range, ":slot_no", slot_party_looted_item_1, ":num_items"),
-        (party_get_slot, ":item_no", ":party_no", ":slot_no"),
-        (gt, ":item_no", 0),
-        (item_get_type, ":itp", ":item_no"),
-        (store_add, ":imod_slot", ":slot_no", num_party_loot_slots),
-        (party_get_slot, ":imod_no", ":party_no", ":imod_slot"),
-        (item_get_type, ":itp", ":item_no"),
-        (try_begin),
-          (this_or_next|is_between, ":itp", itp_type_one_handed_wpn, itp_type_goods),
-          (is_between, ":itp", itp_type_pistol, itp_type_animal),
-          (assign, ":merchant", ":town_weapon"),
-        (else_try),
-          (is_between, ":itp", itp_type_head_armor, itp_type_pistol),
-          (assign, ":merchant", ":town_armor"),
-        (else_try),
-          (eq, ":itp", itp_type_horse),
-          (assign, ":merchant", ":town_horse"),
-        (else_try),
-          (assign, ":merchant", ":town_merchant"),
-        (try_end),
-        (gt, ":merchant", 0),
-        (store_troop_gold, ":merchant_gold", ":merchant"),
-        (call_script, "script_dplmc_get_item_value_with_imod", ":item_no", ":imod_no"),
-        (store_div, ":price", reg0, 4), #or some other factor
+      (gt, ":merchant", 0),
+      (store_troop_gold, ":merchant_gold", ":merchant"),
+      (call_script, "script_dplmc_get_item_value_with_imod", ":item_no", ":imod_no"),
+      (store_div, ":price", reg0, 4), #or some other factor
 
-        (call_script, "script_dplmc_get_trade_penalty", ":item_no", ":center_no", ":seller_troop", ":merchant"),
-        (val_mul, ":price", reg0),
-        (val_div, ":price", 100),
-        (val_max, ":price", 1),
-        (gt, ":merchant_gold", ":price"), #can afford
-        (troop_remove_gold, ":merchant", ":price"),
-        (troop_add_item, ":merchant", ":item_no", ":imod_no"),
-        # (party_set_slot, ":party_no", ":slot_no", -1), #clear off later
-        # (party_set_slot, ":party_no", ":imod_slot", -1),
-      (try_end),
-
-      #any unsold item at this point are cleared
-      (try_for_range, ":slot_no", slot_party_next_looted_item_slot, slot_party_looted_item_1_modifier + num_party_loot_slots),
-        (party_set_slot, ":party_no", ":slot_no", 0),
-      (try_end),
-
+      (call_script, "script_dplmc_get_trade_penalty", ":item_no", ":center_no", ":seller_troop", ":merchant"),
+      (val_mul, ":price", reg0),
+      (val_div, ":price", 100),
+      (val_max, ":price", 1),
+      (gt, ":merchant_gold", ":price"), #can afford
+      (troop_remove_gold, ":merchant", ":price"),
+      (troop_add_item, ":merchant", ":item_no", ":imod_no"),
     (try_end),
 
-    (assign, ":total_change", 0),
-    (store_sub, ":item_to_price_slot", slot_town_trade_good_prices_begin, trade_goods_begin),
-    (try_for_range, ":cur_good", trade_goods_begin, trade_goods_end),
-      (store_random_in_range, ":random_no", 0, 100),
-      (lt, ":random_no", 25), # only do 1/3 of trade goods on each event
-
-      (store_add, ":cur_good_price_slot", ":cur_good", ":item_to_price_slot"),
-      (party_get_slot, ":cur_merchant_price", ":party_no", ":cur_good_price_slot"),
-      (party_get_slot, ":cur_center_price", ":center_no", ":cur_good_price_slot"),
-      (store_sub, ":price_dif", ":cur_merchant_price", ":cur_center_price"),
-      (assign, ":cur_change", ":price_dif"),
-      (val_abs, ":cur_change"),
-      (val_add, ":total_change", ":cur_change"),
-      (val_mul, ":cur_change", ":percentage_change"),
-      (val_div, ":cur_change", 100),
-
-      #This is to reconvert from absolute value
-      (try_begin),
-        (lt, ":price_dif", 0),
-        (val_mul, ":cur_change", -1),
-      (try_end),
-
-      (assign, ":initial_price", ":cur_center_price"),
-
-      #The new price for the caravan or peasant is set before the change, 
-      # so the prices in the trading town have full effect on the next center
-      (party_set_slot, ":party_no", ":cur_good_price_slot", ":cur_center_price"),
-
-      (val_add, ":cur_center_price", ":cur_change"),
-      (party_set_slot, ":center_no", ":cur_good_price_slot", ":cur_center_price"),
-
-      (try_begin),
-        # note: this is a very chatty debug due to looping through the entire list of trade goods
-        # see :percentage_change, :price_dif
-        # farmers/caravans usually push the price-factor by 10-20 points, but 80-90 pts has been seen
-        (ge, "$cheat_mode", DPLMC_DEBUG_NEVER),
-        (store_distance_to_party_from_party, ":dist_center", "p_main_party", ":center_no"),
-        (le, ":dist_center", 10),
-        (str_store_party_name, s3, ":origin"),
-        (str_store_party_name, s4, ":center_no"),
-        (str_store_item_name, s5, ":cur_good"),
-        (assign, reg4, ":initial_price"),
-        (assign, reg5, ":cur_center_price"),      
-        (display_log_message, "@{!}DEBUG: Trade of {s5} from {s3} to {s4} brings price from {reg4} to {reg5}"),
-      (try_end),
-
+    #any unsold item at this point are cleared
+    (try_for_range, ":slot_no", slot_party_next_looted_item_slot, slot_party_looted_item_1_modifier + num_party_loot_slots),
+      (party_set_slot, ":party_no", ":slot_no", 0),
     (try_end),
-    (assign, reg0, ":total_change"),
-  ]),
+  (try_end),
+
+  # calculate trade-profit, adjust prices of some items
+  (assign, ":total_profit", 0),
+  (store_sub, ":item_to_price_slot", slot_town_trade_good_prices_begin, trade_goods_begin),
+  (try_for_range, ":cur_good", trade_goods_begin, trade_goods_end),
+    (store_add, ":cur_good_price_slot", ":cur_good", ":item_to_price_slot"),
+    (party_get_slot, ":cur_merchant_price", ":party_no", ":cur_good_price_slot"),
+    (party_get_slot, ":cur_center_price", ":center_no", ":cur_good_price_slot"),
+    (assign, ":initial_center_price", ":cur_center_price"),
+
+    # The new price for the caravan or peasant is set before the filter, 
+    # so the prices in the trading town have full effect on the next center
+    (party_set_slot, ":party_no", ":cur_good_price_slot", ":initial_center_price"),
+
+    # calculate the price difference, this gets added to the tariffs (total_change)
+    # tax only profitable difference between the two price-indexes
+    # but take the sqrt() of the difference (which helps even out the amounts)
+    (store_sub, ":price_dif", ":cur_merchant_price", ":cur_center_price"),
+    (try_begin),
+      (gt, ":price_dif", 0),
+
+      # scale the diff down using sqrt() 
+      # 9..81..225..2500 -> 3..9..25..50
+      (assign, ":sqrt_price_dif", ":price_dif"),
+      (convert_to_fixed_point, ":sqrt_price_dif"),
+      (store_sqrt, ":sqrt_price_dif", ":sqrt_price_dif"),
+      (convert_from_fixed_point, ":sqrt_price_dif"),
+      # scale back up linearly
+      (val_mul, ":sqrt_price_dif", 9), 
+      # use random to take approximately 1/2 on average
+      (store_random_in_range, ":sqrt_price_dif", 0, ":sqrt_price_dif"),
+      # add back some base profit on each profitable item
+      (val_add, ":sqrt_price_dif", 2),
+
+      (val_add, ":total_profit", ":sqrt_price_dif"),
+    (try_end),
+
+    # only adjust some trade good prices at the target center
+    # this helps even out the effect of lots of caravans
+    (store_random_in_range, ":random_no", 0, 100),
+    (lt, ":random_no", 33), 
+
+    # calculate the price change
+    (assign, ":cur_change", ":price_dif"),
+    (val_abs, ":cur_change"),
+    (val_mul, ":cur_change", ":percentage_change"),
+    (val_div, ":cur_change", 100),
+    #This is to reconvert from absolute value
+    (try_begin),
+      (lt, ":price_dif", 0),
+      (val_mul, ":cur_change", -1),
+    (try_end),
+
+    # apply the price change
+    (val_add, ":cur_center_price", ":cur_change"),
+    (party_set_slot, ":center_no", ":cur_good_price_slot", ":cur_center_price"),
+
+    (try_begin),
+      (eq, ":debug_on", 1),
+      (eq, ":debug_on", 99999),
+      (str_store_party_name, s92, ":center_no"),
+      (str_store_item_name, s95, ":cur_good"),
+      (assign, reg91, ":initial_center_price"),
+      (assign, reg92, ":cur_center_price"),
+      (assign, reg93, ":cur_merchant_price"),
+      (display_log_message, "@{!}{s92}/{s95} trade: {reg91}->({reg93})->{reg92}"),
+    (try_end),
+  (try_end),
+
+  # all parties have a base level of profit made that they will pay tariff on
+  (val_add, ":total_profit", 100),
+  # tweak based on the party type
+  (party_get_slot, ":spt", ":party_no", slot_party_type),
+  (try_begin),
+    (eq, ":spt", spt_village_farmer),
+    (val_div, ":total_profit", 6),
+  (else_try),
+    (eq, ":spt", spt_kingdom_caravan),
+    (val_div, ":total_profit", 2),
+  (else_try),
+    (val_div, ":total_profit", 3),
+  (try_end),
+
+  (try_begin),
+    (eq, ":debug_on", 1),
+    (str_store_party_name, s90, ":party_no"),
+    (str_store_party_name, s92, ":center_no"),
+    (str_store_party_name, s93, ":origin"),
+    (assign, reg90, ":total_profit"),
+    (display_message, "@{!}TARIFF-PROFIT: ({s90}) {s93}->{s92} = {reg90} denars"),
+  (try_end),
+  (assign, reg0, ":total_profit"),
+]),
 
   #script_player_join_faction
   # INPUT: arg1 = faction_no
