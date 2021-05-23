@@ -40521,11 +40521,11 @@ scripts = [
       # BANDIT PACKS
       # Old logic was 1 new spawn every 36h, guaranteed (4.7/week)
       # New logic is 50% chance every 13 hours, which is about 6.5/week.
-      # Existence of the lair gives the old limits, so eliminating the lair
+      # Existence of the lair gives higher limits, so eliminating the lair
       # has a major effect on how many bandits can be running around.
       # Old constant for limit was 14 at mount&blade, 18 in warband, 16 last decision
-      (assign, ":base_spawn_limit", 6),
-      (assign, ":bonus_spawn_for_lair", 12),
+      (assign, ":base_spawn_limit", 8),
+      (assign, ":bonus_spawn_for_lair", 10),
       (try_begin),
         (store_num_parties_of_template, ":num_parties", "pt_mountain_bandits"),
         (assign, ":party_limit", ":base_spawn_limit"),  
@@ -40662,9 +40662,10 @@ scripts = [
       # LOOTERS
       (try_begin),
         (store_num_parties_of_template, ":num_parties", "pt_looters"),
-        (assign, ":party_limit", 30), #was 33 at mount&blade, 50 in warband, 42 last decision
+        (assign, ":party_limit", 25), #was 33 at mount&blade, 50 in warband, 42 last decision
         # add more parties when wars are happening
-        (store_mul, ":war_count_bonus_parties", ":war_count", 3),
+        (store_mul, ":war_count_bonus_parties", ":war_count", 5),
+        (store_div, ":war_count_bonus_parties", ":war_count", 2),
         (val_add, ":party_limit", ":war_count_bonus_parties"),
         # add more if the looter quest is active
         (try_begin),
@@ -40711,7 +40712,7 @@ scripts = [
         (store_num_parties_of_template, ":num_parties", "pt_deserters"),
         (assign, ":party_limit", 8),
         # add more parties when wars are happening
-        (store_mul, ":war_count_bonus_parties", ":war_count", 8),
+        (store_mul, ":war_count_bonus_parties", ":war_count", 7),
         (val_add, ":party_limit", ":war_count_bonus_parties"),
         (try_begin),
           (eq, ":debug_on", 1),
