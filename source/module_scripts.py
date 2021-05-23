@@ -16591,7 +16591,7 @@ scripts = [
         (eq, "itm_ale", ":player_produced_good_id"),
         (val_add, ":base_cg_prod", 1),
       (try_end),
-			(val_mul, ":base_cg_prod", 4),
+			(val_mul, ":base_cg_prod", 3),
 
 		(else_try),
 			(eq, ":cur_good", "itm_smoked_fish"),
@@ -16600,7 +16600,7 @@ scripts = [
 		(else_try),
 			(eq, ":cur_good", "itm_salt"),
 			(party_get_slot, ":base_cg_prod", ":center_no", slot_center_salt_pans),
-			(val_mul, ":base_cg_prod", 5),
+			(val_mul, ":base_cg_prod", 4),
 
 		#Cattle products
 		(else_try),
@@ -16647,16 +16647,16 @@ scripts = [
         (eq, "itm_leatherwork", ":player_produced_good_id"),
         (val_add, ":base_cg_prod", 2),
       (try_end),
-			(val_mul, ":base_cg_prod", 5),
+			(val_mul, ":base_cg_prod", 4),
 
 		(else_try),
 			(eq, ":cur_good", "itm_honey"),
 			(party_get_slot, ":base_cg_prod", ":center_no", slot_center_apiaries),
-			(val_mul, ":base_cg_prod", 3),
+			(val_mul, ":base_cg_prod", 2),
 		(else_try),
 			(eq, ":cur_good", "itm_cabbages"),
 			(party_get_slot, ":base_cg_prod", ":center_no", slot_center_household_gardens),
-			(val_mul, ":base_cg_prod", 5),
+			(val_mul, ":base_cg_prod", 4),
 		(else_try),
 			(eq, ":cur_good", "itm_apples"),
 			(party_get_slot, ":base_cg_prod", ":center_no", slot_center_acres_fruit_trees),
@@ -16697,21 +16697,21 @@ scripts = [
 		(else_try),
 			(eq, ":cur_good", "itm_iron"), 
 			(party_get_slot, ":base_cg_prod", ":center_no", slot_center_iron_deposits),
-			(val_mul, ":base_cg_prod", 5),
+			(val_mul, ":base_cg_prod", 3),
 		(else_try),
 			(eq, ":cur_good", "itm_tools"),
 			(party_get_slot, ":base_cg_prod", ":center_no", slot_center_smithies),
       (try_begin),
         (eq, "itm_tools", ":player_produced_good_id"),
-        (val_add, ":base_cg_prod", 1),
+        (val_add, ":base_cg_prod", 2),
       (try_end),
-			(val_mul, ":base_cg_prod", 3),
+			(val_mul, ":base_cg_prod", 2),
 
 		#Other artisanal goods
 		(else_try),
 			(eq, ":cur_good", "itm_pottery"),
 			(party_get_slot, ":base_cg_prod", ":center_no", slot_center_pottery_kilns),
-			(val_mul, ":base_cg_prod", 4),
+			(val_mul, ":base_cg_prod", 3),
 
 		(else_try),
 			(eq, ":cur_good", "itm_raw_grapes"),
@@ -16724,7 +16724,7 @@ scripts = [
         (eq, "itm_wine", ":player_produced_good_id"),
         (val_add, ":base_cg_prod", 1),
       (try_end),
-			(val_mul, ":base_cg_prod", 7),
+			(val_mul, ":base_cg_prod", 3),
 		(else_try),
 			(eq, ":cur_good", "itm_raw_olives"),
 			(party_get_slot, ":base_cg_prod", ":center_no", slot_center_acres_olives),
@@ -16736,7 +16736,7 @@ scripts = [
         (eq, "itm_oil", ":player_produced_good_id"),
         (val_add, ":base_cg_prod", 1),
       (try_end),
-			(val_mul, ":base_cg_prod", 5),
+			(val_mul, ":base_cg_prod", 3),
 
 		#Flax and linen
 		(else_try),
@@ -16746,7 +16746,7 @@ scripts = [
         (eq, "itm_linen", ":player_produced_good_id"),
         (val_add, ":base_cg_prod", 1),
       (try_end),
-			(val_mul, ":base_cg_prod", 5),
+			(val_mul, ":base_cg_prod", 4),
 		(else_try),
 			(eq, ":cur_good", "itm_raw_flax"),
 			(party_get_slot, ":base_cg_prod", ":center_no", slot_center_acres_flax),
@@ -16758,7 +16758,7 @@ scripts = [
         (val_add, ":base_cg_prod", 1),
       (try_end),
 			(party_get_slot, ":base_cg_prod", ":center_no", slot_center_silk_looms),
-			(val_mul, ":base_cg_prod", 5),
+			(val_mul, ":base_cg_prod", 3),
 		(else_try),
 			(eq, ":cur_good", "itm_raw_silk"),
 			(party_get_slot, ":base_cg_prod", ":center_no", slot_center_silk_farms),
@@ -16970,7 +16970,7 @@ scripts = [
 		(try_begin),
 			(eq, ":cur_good", "itm_grain"),
 			(party_get_slot, ":grain_for_bread", ":center_no", slot_center_mills),
-			(val_mul, ":grain_for_bread", 10),
+			(val_mul, ":grain_for_bread", 8),
 
 			(party_get_slot, ":grain_for_ale", ":center_no", slot_center_breweries),
 			(val_mul, ":grain_for_ale", 5),
@@ -16995,17 +16995,17 @@ scripts = [
 		(else_try),
 			(eq, ":cur_good", "itm_raw_leather"),
 			(party_get_slot, ":raw_material_consumption", ":center_no", slot_center_tanneries),
-			(val_mul, ":raw_material_consumption", 12),
+			(val_mul, ":raw_material_consumption", 8),
 
 		(else_try),
 			(eq, ":cur_good", "itm_raw_grapes"),
 			(party_get_slot, ":raw_material_consumption", ":center_no", slot_center_wine_presses),
-			(val_mul, ":raw_material_consumption", 15),
+			(val_mul, ":raw_material_consumption", 11),
 
 		(else_try),
 			(eq, ":cur_good", "itm_raw_olives"),
 			(party_get_slot, ":raw_material_consumption", ":center_no", slot_center_olive_presses),
-			(val_mul, ":raw_material_consumption", 10),
+			(val_mul, ":raw_material_consumption", 8),
 
 
 		(else_try),
@@ -17015,7 +17015,7 @@ scripts = [
 		(else_try),
 			(eq, ":cur_good", "itm_raw_silk"),
 			(party_get_slot, ":raw_material_consumption", ":center_no", slot_center_silk_looms),
-			(val_mul, ":raw_material_consumption", 5),
+			(val_mul, ":raw_material_consumption", 4),
 
 
 		(else_try),
