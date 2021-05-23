@@ -16281,7 +16281,7 @@ scripts = [
 
   #script_update_trade_good_prices
   # called on startup after setting up village/town production/consumption
-  # called from a simple_trigger every 12 hours
+  # called from a simple_trigger every 8 hours
   # INPUT: none
   ("update_trade_good_prices",
   [
