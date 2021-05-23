@@ -26010,6 +26010,15 @@ scripts = [
       (troop_clear_inventory, ":merchant_troop"),
       (assign, ":debug_dist_to_main_party_limit", 15),
 
+      (try_begin),
+        (ge, "$cheat_mode", DPLMC_DEBUG_NEVER),
+        (store_distance_to_party_from_party, ":debug_dist_to_main_party", "p_main_party", ":cur_center"),
+        (le, ":debug_dist_to_main_party", ":debug_dist_to_main_party_limit"), # limit debug output to within range of player
+        (str_store_party_name, s20, ":market_town"),
+        (str_store_party_name, s21, ":cur_center"),
+        (display_message, "@{!}RESTOCK: {s21} ({s20}): Village goods merchant"),
+      (try_end),
+
       # probabilities (0 = lowest possible probability)
       (reset_item_probabilities, 0),
 
@@ -26061,7 +26070,7 @@ scripts = [
 
         # price (above a certain price value) is a negative to probability
         (val_max, ":cur_good_base_price", 200), # treat everything under this as equal probability
-        (store_div, ":inverse_base_price", 5000, ":cur_good_base_price"),
+        (store_div, ":inverse_base_price", 1500, ":cur_good_base_price"),
         (val_max, ":inverse_base_price", 1), 
         (val_mul, ":probability", ":inverse_base_price"),
         (val_max, ":probability", 1),
@@ -26075,7 +26084,7 @@ scripts = [
         (set_item_probability_in_merchandise, ":cur_good", ":probability"),
 
         (try_begin),
-          (ge, "$cheat_mode", DPLMC_DEBUG_MIN),
+          (ge, "$cheat_mode", DPLMC_DEBUG_NEVER),
           (store_distance_to_party_from_party, ":debug_dist_to_main_party", "p_main_party", ":cur_center"),
           (le, ":debug_dist_to_main_party", ":debug_dist_to_main_party_limit"), # limit debug output to within range of player
           (str_store_item_name, s20, ":cur_good"),
@@ -26132,7 +26141,7 @@ scripts = [
       (val_clamp, ":number_of_slots_to_stock", 0, 31),
 
       (try_begin),
-        (ge, "$cheat_mode", DPLMC_DEBUG_MIN),
+        (ge, "$cheat_mode", DPLMC_DEBUG_NEVER),
         (store_distance_to_party_from_party, ":debug_dist_to_main_party", "p_main_party", ":cur_center"),
         (le, ":debug_dist_to_main_party", ":debug_dist_to_main_party_limit"), # limit debug output to within range of player
         (str_store_party_name, s20, ":market_town"),
@@ -26142,7 +26151,7 @@ scripts = [
         (assign, reg23, ":types_of_good_produced_qty"),
         (assign, reg24, ":center_prosperity"),
         (assign, reg25, ":number_of_slots_to_stock"),
-        (display_message, "@{!}RESTOCK: {s21} ({s20}): {reg21} avg-p-factor {reg24} prosp {reg23} goods {reg22} base-prod {reg25} slots"),
+        (display_message, "@{!}RESTOCK: {s21} ({s20}): {reg21} APF {reg24} prosp {reg23} goods {reg22} base-prod {reg25} slots"),
       (try_end),
 
       (gt, ":number_of_slots_to_stock", 0), # no sense continuing to populate merchant inventory
@@ -26160,7 +26169,7 @@ scripts = [
         (troop_remove_gold, ":merchant_troop", ":gold_removed"),
         (call_script, "script_change_center_prosperity", ":cur_center", ":prosperity_added"),
         (try_begin),
-          (ge, "$cheat_mode", DPLMC_DEBUG_MIN),
+          (ge, "$cheat_mode", DPLMC_DEBUG_NEVER),
           (store_distance_to_party_from_party, ":debug_dist_to_main_party", "p_main_party", ":cur_center"),
           (le, ":debug_dist_to_main_party", ":debug_dist_to_main_party_limit"), # limit debug output to within range of player
           (assign, reg20, ":gold_removed"),
@@ -74593,6 +74602,14 @@ Born at {s43}^Contact in {s44} of the {s45}.^\
       (troop_clear_inventory, ":cur_merchant"),
       (assign, ":debug_dist_to_main_party_limit", 15),
 
+      (try_begin),
+        (ge, "$cheat_mode", DPLMC_DEBUG_NEVER),
+        (store_distance_to_party_from_party, ":debug_dist_to_main_party", "p_main_party", ":cur_center"),
+        (le, ":debug_dist_to_main_party", ":debug_dist_to_main_party_limit"), # limit debug output to within range of player
+        (str_store_party_name, s21, ":cur_center"),
+        (display_message, "@{!}RESTOCK: {s21}: Town goods merchant"),
+      (try_end),
+
       # probabilities (0 = lowest possible probability)
       (reset_item_probabilities, 0),
 
@@ -74622,7 +74639,7 @@ Born at {s43}^Contact in {s44} of the {s45}.^\
         (call_script, "script_center_get_consumption", ":cur_center", ":cur_good"),
 		    (assign, ":cur_center_consumption", reg0),
 
-        # good is produced locally (or by the market)
+        # good is produced locally (or by the market villages)
         (gt, ":base_center_production", 0),
 
         # sqrt prod and consumption values
@@ -74643,8 +74660,8 @@ Born at {s43}^Contact in {s44} of the {s45}.^\
         (val_mul, ":probability", 25),
 
         # price (above a certain price value) is a negative to probability
-        (val_max, ":cur_good_base_price", 300), # treat everything under this as equal probability
-        (store_div, ":inverse_base_price", 10000, ":cur_good_base_price"),
+        (val_max, ":cur_good_base_price", 400), # treat everything under this as equal probability
+        (store_div, ":inverse_base_price", 3000, ":cur_good_base_price"),
         (val_max, ":inverse_base_price", 1), 
         (val_mul, ":probability", ":inverse_base_price"),
         (val_max, ":probability", 1),
@@ -74658,7 +74675,7 @@ Born at {s43}^Contact in {s44} of the {s45}.^\
         (set_item_probability_in_merchandise, ":cur_good", ":probability"),
 
         (try_begin),
-          (ge, "$cheat_mode", DPLMC_DEBUG_MIN),
+          (ge, "$cheat_mode", DPLMC_DEBUG_NEVER),
           (store_distance_to_party_from_party, ":debug_dist_to_main_party", "p_main_party", ":cur_center"),
           (le, ":debug_dist_to_main_party", ":debug_dist_to_main_party_limit"), # limit debug output to within range of player
           (str_store_item_name, s20, ":cur_good"),
@@ -74715,7 +74732,7 @@ Born at {s43}^Contact in {s44} of the {s45}.^\
       (val_clamp, ":number_of_slots_to_stock", 0, 82),
 
       (try_begin),
-        (ge, "$cheat_mode", DPLMC_DEBUG_MIN),
+        (ge, "$cheat_mode", DPLMC_DEBUG_NEVER),
         (store_distance_to_party_from_party, ":debug_dist_to_main_party", "p_main_party", ":cur_center"),
         (le, ":debug_dist_to_main_party", ":debug_dist_to_main_party_limit"), # limit debug output to within range of player
         (str_store_party_name, s21, ":cur_center"),
@@ -74724,7 +74741,7 @@ Born at {s43}^Contact in {s44} of the {s45}.^\
         (assign, reg23, ":types_of_good_produced_qty"),
         (assign, reg24, ":center_prosperity"),
         (assign, reg25, ":number_of_slots_to_stock"),
-        (display_message, "@{!}RESTOCK: {s21}: {reg21} avg-p-factor {reg24} prosp {reg23} goods {reg22} base-prod {reg25} slots"),
+        (display_message, "@{!}RESTOCK: {s21}: {reg21} APF {reg24} prosp {reg23} goods {reg22} base-prod {reg25} slots"),
       (try_end),
 
       (troop_add_merchandise, ":cur_merchant", itp_type_goods, ":number_of_slots_to_stock"),
