@@ -40760,7 +40760,7 @@ scripts = [
       # Old logic was guaranteed respawn attempt every 36h, 
       # but not all attempts succeeded (4.7 attempts/week).
       # New logic is ~13 cycles/week, 20% attempt per cycle (2.6 attempts/week).
-      # This is a slower than the old code, making elimination of
+      # This is much slower than the old code, making elimination of
       # the bandit lairs have more of an impact. 
       (try_for_range, ":bandit_template", bandit_party_templates_begin, bandit_party_templates_end), #SB : template range
         (party_template_get_slot, ":bandit_lair_party", ":bandit_template", slot_party_template_lair_party),
@@ -40858,8 +40858,8 @@ scripts = [
             (gt, ":final_bandit_lair_party", 0),
             (display_message, "@{!}Spawned lair: {s4}"),
           (else_try),
-            # This failure is usually due to either wrong terrain or wrong elevation
-            (display_message, "@{!}Failed to spawn lair: {s4} (wrong terrain/elevation)."),
+            # This failure is usually due to either wrong terrain or wrong location (elevation, x/y coordinate)
+            (display_message, "@{!}Failed to spawn lair: {s4} (wrong terrain/location)."),
           (try_end),
         (try_end),
 
