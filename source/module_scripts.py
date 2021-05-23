@@ -20689,7 +20689,8 @@ scripts = [
 	            (is_between, ":giver_center_no", villages_begin, villages_end),
 	            #The quest giver is the village elder
 	            (party_get_slot, ":num_cattle", ":giver_center_no", slot_village_number_of_cattle),
-	            (lt, ":num_cattle", 50),
+	            (le, ":num_cattle", 10),
+              (neg|party_slot_ge, ":giver_center_no", slot_town_prosperity, 30),
 	            (assign, ":quest_target_center", ":giver_center_no"),
 	            (store_random_in_range, ":quest_target_amount", 5, 11),
 	            (assign, ":quest_expiration_days", 20),
