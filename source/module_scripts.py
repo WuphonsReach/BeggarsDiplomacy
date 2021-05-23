@@ -16567,7 +16567,7 @@ scripts = [
       (party_set_slot, ":center_no", ":cur_good_price_slot", ":new_price"),
 
       (try_begin),
-        (ge, "$cheat_mode", DPLMC_DEBUG_MIN),
+        (ge, "$cheat_mode", DPLMC_DEBUG_NEVER),
         (store_distance_to_party_from_party, ":debug_dist_to_main_party", "p_main_party", ":center_no"),
         (le, ":debug_dist_to_main_party", 8), # limit debug output to towns within range of the player (otherwise too chatty)
         (str_store_item_name, s20, ":cur_good"),
