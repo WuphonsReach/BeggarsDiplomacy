@@ -25793,10 +25793,10 @@ scripts = [
       (try_end),
   ]),
 
-  # script_create_kingdom_party_if_below_limit
+  # script_create_kingdom_party_if_below_limit (Only for kingdom caravans)
   # Input: arg1 = faction_no, arg2 = party_type (variables beginning with spt_)
   # Output: reg0 = party_no
-  ("create_kingdom_party_if_below_limit", #NOTE: Only for kingdom caravans
+  ("create_kingdom_party_if_below_limit",
     [
       (store_script_param_1, ":faction_no"),
       (store_script_param_2, ":party_type"),
@@ -25816,10 +25816,12 @@ scripts = [
           (assign, ":party_count_limit", 0),
         (else_try),
           (ge, ":num_towns", 1),
-          (store_mul, ":party_count_limit", ":num_towns", 5),
-          (val_add, ":party_count_limit", 3),
-          (store_div, ":moar_caravans", ":num_towns", 2),
-          (val_add, ":party_count_limit", ":moar_caravans"),
+          # tests have been done with as many as n=139 caravans on the map
+          # six factions x4 + 22 towns x3 = 90
+          (store_mul, ":party_count_limit", ":num_towns", 3),
+          (val_add, ":party_count_limit", 4),
+          #(store_div, ":moar_caravans", ":num_towns", 2),
+          #(val_add, ":party_count_limit", ":moar_caravans"),
         (try_end),
       (try_end),
 
