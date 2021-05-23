@@ -7562,12 +7562,12 @@ scripts = [
     (item_set_slot, "itm_grain", slot_item_rural_demand, 20),
     (item_set_slot, "itm_grain", slot_item_desert_demand, 25),
 
-    (item_set_slot, "itm_bread", slot_item_urban_demand, 50),
+    (item_set_slot, "itm_bread", slot_item_urban_demand, 60),
     (item_set_slot, "itm_bread", slot_item_rural_demand, 25),
     (item_set_slot, "itm_bread", slot_item_desert_demand, 45),
 
 	  (item_set_slot, "itm_ale", slot_item_urban_demand, 20),
-	  (item_set_slot, "itm_ale", slot_item_rural_demand, 15),
+	  (item_set_slot, "itm_ale", slot_item_rural_demand, 18),
     (item_set_slot, "itm_ale", slot_item_desert_demand, 0),
 
     (item_set_slot, "itm_raw_olives", slot_item_urban_demand, 15),
@@ -7582,8 +7582,8 @@ scripts = [
 	  (item_set_slot, "itm_raw_grapes", slot_item_rural_demand, 5),
     (item_set_slot, "itm_raw_grapes", slot_item_desert_demand, 12),
 
-	  (item_set_slot, "itm_wine", slot_item_urban_demand, 20),
-	  (item_set_slot, "itm_wine", slot_item_rural_demand, 9),
+	  (item_set_slot, "itm_wine", slot_item_urban_demand, 30),
+	  (item_set_slot, "itm_wine", slot_item_rural_demand, 10),
     (item_set_slot, "itm_wine", slot_item_desert_demand, 2),
 
 	  (item_set_slot, "itm_apples", slot_item_urban_demand, 30),
@@ -7668,7 +7668,7 @@ scripts = [
 
 	  (item_set_slot, "itm_iron", slot_item_urban_demand, 5),
 	  (item_set_slot, "itm_iron", slot_item_rural_demand, 3),
-	  (item_set_slot, "itm_iron", slot_item_desert_demand, 1),
+	  (item_set_slot, "itm_iron", slot_item_desert_demand, 3),
 
 	  (item_set_slot, "itm_tools", slot_item_urban_demand, 15),
 	  (item_set_slot, "itm_tools", slot_item_rural_demand, 8),
@@ -7680,7 +7680,7 @@ scripts = [
 
     (item_set_slot, "itm_raw_silk", slot_item_urban_demand, 12),
 	  (item_set_slot, "itm_raw_silk", slot_item_rural_demand, 2),
-    (item_set_slot, "itm_raw_silk", slot_item_desert_demand, 15),
+    (item_set_slot, "itm_raw_silk", slot_item_desert_demand, 10),
 
 	  (item_set_slot, "itm_raw_dyes", slot_item_urban_demand, 10),
 	  (item_set_slot, "itm_raw_dyes", slot_item_rural_demand, 2),
@@ -7844,7 +7844,6 @@ scripts = [
 
     (item_set_slot, "itm_raw_silk", slot_item_production_slot, slot_center_silk_farms),
     (item_set_slot, "itm_raw_silk", slot_item_production_string, "str_mulberry_groves"),
-    (item_set_slot, "itm_raw_silk", slot_item_is_raw_material_only_for, "itm_velvet"),
     (item_set_slot, "itm_raw_silk", slot_item_base_price, 675),
 
     (item_set_slot, "itm_raw_silk", slot_item_production_slot, slot_center_kirmiz_farms),
