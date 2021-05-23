@@ -10802,9 +10802,23 @@ TOTAL:  {reg5}"),
         (troop_is_mounted, ":bandit_troop"),
         (val_div, ":xp_reward", 2),
       (try_end),
+      # add a flat XP bonus on top
+      (add_xp_to_troop, ":xp_reward", 60),
       (add_xp_to_troop, ":xp_reward", "trp_player"),
       (call_script, "script_game_get_upgrade_cost", ":bandit_troop"), #20, 40, 80
+      # usually 20-50 per enemy troop
       (store_mul, ":gold_reward", "$num_center_bandits", reg0),
+      (try_begin),
+        (is_between, "$current_town", towns_begin, towns_end),
+        # add 50%
+        (val_mul, ":gold_reward", 3),
+        (val_div, ":gold_reward", 2),
+        # add 15-75 base gold
+        (store_random_in_range, ":base_gold_reward", 1, 5),
+        (val_mul, ":base_gold_reward", 15),
+        (val_add, ":gold_reward", ":base_gold_reward"),
+        #TODO: Add more gold based on player's honor or renown?
+      (try_end),
       (call_script, "script_troop_add_gold", "trp_player", ":gold_reward"),
       #SB : string setup
       (str_store_troop_name_by_count,s4, ":bandit_troop", "$num_center_bandits"),
