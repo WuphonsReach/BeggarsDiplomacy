@@ -13816,6 +13816,7 @@ TOTAL:  {reg5}"),
           (quest_slot_eq, "qst_collect_taxes", slot_quest_current_state, 0),
           (quest_set_slot, "qst_collect_taxes", slot_quest_current_state, 1),
         (try_end),
+         # this is sneaky, because something is apparently checked in order to break the 1000-hour rest early
         (rest_for_hours_interactive, 1000, 5, 0), #rest while not attackable
         (assign,"$auto_enter_town","$current_town"),
         (assign, "$g_town_visit_after_rest", 1),
