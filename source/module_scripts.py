@@ -74834,6 +74834,7 @@ Born at {s43}^Contact in {s44} of the {s45}.^\
   #   reg2 = production after prosperity check
   #   reg3 = modified_production 
   #   reg4 = final production (based on if farmers arrived timely to market)
+  #   reg9 = average price-index of all market villages (72h) for this good
   # Notes:
   # - similar to script_dplmc_good_produced_at_center_or_its_villages
   # - similar to script_dplmc_assess_ability_to_purchase_good_from_center
@@ -74843,12 +74844,16 @@ Born at {s43}^Contact in {s44} of the {s45}.^\
 		(store_script_param_2, ":cur_good"),
 
     (store_current_hours, ":cur_hours"),
+    (store_sub, ":cur_good_price_slot", ":cur_good", trade_goods_begin),
+    (val_add, ":cur_good_price_slot", slot_town_trade_good_prices_begin),
 
     (assign, ":total_village_prod_base", 0),
     (assign, ":total_village_prod_after_raw_materials", 0),
     (assign, ":total_village_prod_after_prosperity_check", 0),
     (assign, ":total_village_prod_modified_original", 0),
     (assign, ":total_village_prod_modified", 0),
+    (assign, ":village_count", 0),
+    (assign, ":avg_village_price_index", average_price_factor),
 
     (try_begin),
       (is_between, ":center_no", towns_begin, towns_end),
@@ -74870,8 +74875,16 @@ Born at {s43}^Contact in {s44} of the {s45}.^\
         # penalty starts after 2 * N hours
         (store_div, ":time_penalty", ":hours_ago", 36),
         (val_max, ":time_penalty", 1),
-
         (val_div, ":this_village_production", ":time_penalty"),
+
+        (try_begin), # price is fresh enough to add to the average
+          (le, ":hours_ago", 144),
+          (party_get_slot, ":cur_price_index", ":village_no", ":cur_good_price_slot"),
+          # mix in the average of the village price-factor vs average_price_factor
+          (val_add, ":avg_village_price_index", ":cur_price_index"),
+          (val_add, ":avg_village_price_index", average_price_factor),
+          (val_add, ":village_count", 2),
+        (try_end),
 
         (val_add, ":total_village_prod_modified", ":this_village_production"),
       (try_end),
@@ -74882,6 +74895,10 @@ Born at {s43}^Contact in {s44} of the {s45}.^\
     (val_div, ":total_village_prod_after_prosperity_check", 2),
     (val_div, ":total_village_prod_modified_original", 2),
     (val_div, ":total_village_prod_modified", 2),
+
+    # there's always at least one average_price_factor mixed in
+    (val_add, ":village_count", 1),
+    (val_div, ":avg_village_price_index", ":village_count"),
 
     (try_begin),
       (ge, "$cheat_mode", DPLMC_DEBUG_NEVER),
@@ -74900,6 +74917,7 @@ Born at {s43}^Contact in {s44} of the {s45}.^\
     (assign, reg2, ":total_village_prod_after_prosperity_check"),
     (assign, reg3, ":total_village_prod_modified_original"),
 		(assign, reg4, ":total_village_prod_modified"),
+    (assign, reg9, ":avg_village_price_index"),
   ]),
 
   # script_dplmc_center_get_market_town_production (calculate local market back to village)
