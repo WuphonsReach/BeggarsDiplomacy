@@ -40473,10 +40473,10 @@ I suppose there are plenty of bounty hunters around to get the job done . . .", 
   (try_begin),
 	  (ge, "$g_dplmc_gold_changes", DPLMC_GOLD_CHANGES_HIGH), # Require higher relation with the center, party trade skill reduces it
 	  (neq, "$g_encountered_party", "$g_starting_town"),
-	  (assign, ":required_relation", 11),
+	  (assign, ":required_relation", 15),
     (assign, ":relation_adjustment", ":trade_skill"), # could be 0..14
-    (val_div, ":relation_adjustment", 2),
-    (val_sub, ":required_relation", ":relation_adjustment"), # end result is 4..11 needed
+    (val_div, ":relation_adjustment", 2), # 0..7
+    (val_sub, ":required_relation", ":relation_adjustment"), # end result is 8..15 needed
   (try_end),
   (val_clamp, ":required_relation", 0, 100),
   (try_begin),
