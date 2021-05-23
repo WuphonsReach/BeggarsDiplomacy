@@ -29555,6 +29555,7 @@ scripts = [
 
 	  (try_begin),
 		  (gt, ":renown_change", 0),
+      (assign, ":planned_renown_change", ":renown_change"),
 		  (assign, reg4, ":renown_change"),
 
 		  (store_div, ":subtraction", ":old_renown", 200),
@@ -29565,6 +29566,7 @@ scripts = [
 	    (assign, reg5, ":renown_change"),
 
 		  (ge, "$cheat_mode", DPLMC_DEBUG_MIN),
+      (neg|eq, ":planned_renown_change", ":renown_change"),
 	    (display_message, "str_renown_change_of_reg4_reduced_to_reg5_because_of_high_existing_renown"),
 	  (try_end),
 
