@@ -7324,9 +7324,11 @@ scripts = [
       (call_script, "script_set_trade_route_between_centers", "p_town_1", "p_town_19"), #Shariz
 
 	  #TIHR
+      (call_script, "script_set_trade_route_between_centers", "p_town_2", "p_town_3"), #Veluca
       (call_script, "script_set_trade_route_between_centers", "p_town_2", "p_town_4"), #Suno
       (call_script, "script_set_trade_route_between_centers", "p_town_2", "p_town_6"), #Praven
       (call_script, "script_set_trade_route_between_centers", "p_town_2", "p_town_7"), #Uxkhal
+      (call_script, "script_set_trade_route_between_centers", "p_town_2", "p_town_13"), #Rivacheg
       (call_script, "script_set_trade_route_between_centers", "p_town_2", "p_town_15"), #Yalen
       (call_script, "script_set_trade_route_between_centers", "p_town_2", "p_town_12"), #Wercheg
       (call_script, "script_set_trade_route_between_centers", "p_town_2", "p_town_8"), #Reyvadin
@@ -7341,8 +7343,10 @@ scripts = [
       (call_script, "script_set_trade_route_between_centers", "p_town_3", "p_town_16"), #Dhirim
       (call_script, "script_set_trade_route_between_centers", "p_town_3", "p_town_14"), #Halmar
       (call_script, "script_set_trade_route_between_centers", "p_town_3", "p_town_4"), #Suno
+      (call_script, "script_set_trade_route_between_centers", "p_town_3", "p_town_18"), #Narra
       (call_script, "script_set_trade_route_between_centers", "p_town_3", "p_town_19"), #Shariz
       (call_script, "script_set_trade_route_between_centers", "p_town_3", "p_town_6"), #Praven
+      (call_script, "script_set_trade_route_between_centers", "p_town_3", "p_town_20"), #Durquba
 
 	  #SUNO
       (call_script, "script_set_trade_route_between_centers", "p_town_4", "p_town_12"), #Wercheg
@@ -7358,12 +7362,18 @@ scripts = [
       (call_script, "script_set_trade_route_between_centers", "p_town_5", "p_town_15"), #Yalen
       (call_script, "script_set_trade_route_between_centers", "p_town_5", "p_town_6"), #Praven
       (call_script, "script_set_trade_route_between_centers", "p_town_5", "p_town_7"), #Uxkhal
+      (call_script, "script_set_trade_route_between_centers", "p_town_5", "p_town_18"), #Narra
       (call_script, "script_set_trade_route_between_centers", "p_town_5", "p_town_19"), #Shariz
+      (call_script, "script_set_trade_route_between_centers", "p_town_5", "p_town_20"), #Durquba
+      (call_script, "script_set_trade_route_between_centers", "p_town_5", "p_town_21"), #Ahmerrad
+      (call_script, "script_set_trade_route_between_centers", "p_town_5", "p_town_22"), #Bariyye
 
 	  #PRAVEN
       (call_script, "script_set_trade_route_between_centers", "p_town_6", "p_town_7"), #Uxkhal
+      (call_script, "script_set_trade_route_between_centers", "p_town_6", "p_town_12"), #Wercheg
+      (call_script, "script_set_trade_route_between_centers", "p_town_6", "p_town_14"), #Halmar
       (call_script, "script_set_trade_route_between_centers", "p_town_6", "p_town_15"), #Yalen
-      (call_script, "script_set_trade_route_between_centers", "p_town_6", "p_town_16"), #Dhirim
+      (call_script, "script_set_trade_route_between_centers", "p_town_6", "p_town_16"), #Dhirim      
 
 	  #UXKHAL
       (call_script, "script_set_trade_route_between_centers", "p_town_7", "p_town_15"), #Yalen
@@ -7381,6 +7391,9 @@ scripts = [
       (call_script, "script_set_trade_route_between_centers", "p_town_8", "p_town_16"), #Dhirim
       (call_script, "script_set_trade_route_between_centers", "p_town_8", "p_town_18"), #Narra
       (call_script, "script_set_trade_route_between_centers", "p_town_8", "p_town_17"), #Ichamur
+      (call_script, "script_set_trade_route_between_centers", "p_town_8", "p_town_20"), #Durquba
+      (call_script, "script_set_trade_route_between_centers", "p_town_8", "p_town_21"), #Ahmerrad
+      (call_script, "script_set_trade_route_between_centers", "p_town_8", "p_town_22"), #Bariyye
 
 	  #KHUDAN
       (call_script, "script_set_trade_route_between_centers", "p_town_9", "p_town_11"), #Curaw
@@ -7406,6 +7419,7 @@ scripts = [
       (call_script, "script_set_trade_route_between_centers", "p_town_11", "p_town_12"), #Wercheg
       (call_script, "script_set_trade_route_between_centers", "p_town_11", "p_town_13"), #Rivacheg
       (call_script, "script_set_trade_route_between_centers", "p_town_11", "p_town_14"), #Halmar
+      (call_script, "script_set_trade_route_between_centers", "p_town_11", "p_town_15"), #Yalen
       (call_script, "script_set_trade_route_between_centers", "p_town_11", "p_town_16"), #Dhirim
       (call_script, "script_set_trade_route_between_centers", "p_town_11", "p_town_17"), #Ichamur
 
@@ -7414,7 +7428,9 @@ scripts = [
       (call_script, "script_set_trade_route_between_centers", "p_town_12", "p_town_17"), #Ichamur
 
 	  #RIVACHEG
+      (call_script, "script_set_trade_route_between_centers", "p_town_13", "p_town_14"), #Halmar
       (call_script, "script_set_trade_route_between_centers", "p_town_13", "p_town_17"), #Ichamur
+      (call_script, "script_set_trade_route_between_centers", "p_town_13", "p_town_20"), #Durquba
 
 	  #HALMAR
       (call_script, "script_set_trade_route_between_centers", "p_town_14", "p_town_17"), #Ichamur
@@ -7427,6 +7443,7 @@ scripts = [
 
 	  #YALEN
       (call_script, "script_set_trade_route_between_centers", "p_town_15", "p_town_19"), #Shariz
+      (call_script, "script_set_trade_route_between_centers", "p_town_15", "p_town_21"), #Ahmerrad
 
 	  #DHIRIM
       (call_script, "script_set_trade_route_between_centers", "p_town_16", "p_town_17"), #Ichamur
@@ -7458,6 +7475,21 @@ scripts = [
       (call_script, "script_set_trade_route_between_centers", "p_town_21", "p_town_22"), #Bariyye
 
 	  #BARIYYE
+
+    (try_begin),
+      (ge, "$cheat_mode", DPLMC_DEBUG_MIN),
+      (try_for_range, ":center_no", towns_begin, towns_end),
+        (assign, ":center_trade_route_qty", 0),
+        (str_store_party_name, s90, ":center_no"),
+        (try_for_range, ":cur_slot", slot_town_trade_routes_begin, slot_town_trade_routes_end),
+          (neg|party_slot_eq, ":center_no", ":cur_slot", 0),
+          (val_add, ":center_trade_route_qty", 1),
+        (try_end),
+        (assign, reg90, ":center_trade_route_qty"),
+        (display_message, "@{!}ROUTES: {reg90} for {s90}"),
+      (try_end),
+    (try_end),
+
 	]),
 
 
