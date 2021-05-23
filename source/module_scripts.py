@@ -20097,6 +20097,7 @@ scripts = [
     (assign, ":result", -1),
 	  (assign, ":best_town_score", 0),
     (assign, ":considered_trade_routes", 0),
+    (assign, ":total_trade_routes", 0),
     (store_sub, ":item_to_price_slot", slot_town_trade_good_prices_begin, trade_goods_begin),
 
 	  # If economics changes are enabled, the caravan may also take into account the distance
@@ -20112,6 +20113,7 @@ scripts = [
       # check that trade route is defined
       (party_get_slot, ":cur_town", ":town_no", ":cur_slot"),
       (gt, ":cur_town", 0),
+      (val_add, ":total_trade_routes", 1),
 
       # must be at peace with town's faction
       (store_faction_of_party, ":cur_faction", ":cur_town"),
@@ -20207,9 +20209,11 @@ scripts = [
           #Further explanation: What we really care about is time, not distance.
           #It will take time to buy and sell once reaching our destination: halving
           #the distance doesn't double the expected profit per month.
-          #most towns are ~100 units away, map is ~250-320 across
-          (val_div, ":dist", 90), # dist -> 0..3
-          (val_add, ":dist", 1), # dist -> 1..4
+          #most towns are ~100 units away, map is ~250-280 across
+          (val_sub, ":dist", 40),
+          (val_max, ":dist", 0),
+          (val_div, ":dist", 60), # dist -> 0..4
+          (val_add, ":dist", 1), # dist -> 1..5
           (val_max, ":dist", 1),
           (val_div, ":cur_town_score", ":dist"),
         (try_end),
@@ -20236,13 +20240,14 @@ scripts = [
     (try_begin),
       (eq, "$cheat_mode", DPLMC_DEBUG_EXPERIMENTAL),
       (store_distance_to_party_from_party, ":debug_dist_to_main_party", "p_main_party", ":town_no"),
-      (le, ":debug_dist_to_main_party", 25),
+      (le, ":debug_dist_to_main_party", 5),
       (str_store_party_name, s90, ":town_no"), # origin town
       (str_store_faction_name, s91, ":faction_no"),
       (str_store_party_name, s93, ":result"), # result town
       (assign, reg90, ":best_town_score"),
       (assign, reg91, ":considered_trade_routes"),
-      (display_message, "@{!}CARAVAN: {s90}->{s93} for {s91} caravan, scoring {reg90} out of {reg91} routes."),
+      (assign, reg92, ":total_trade_routes"),
+      (display_message, "@{!}CARAVAN: {s90}->{s93} for {s91} caravan, scoring {reg90} out of {reg91}/{reg92} routes."),
     (try_end),
   ]),
 
