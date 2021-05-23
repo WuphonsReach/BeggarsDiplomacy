@@ -4545,7 +4545,8 @@ simple_triggers = [
      (assign, ":trainer_skill", reg0),
      (store_sub, ":needed_hours", 20, ":trainer_skill"),
      (val_mul, ":needed_hours", 3),
-     (val_div, ":needed_hours", 5),
+     (val_div, ":needed_hours", 10),
+     (val_add, ":needed_hours", 3),
      (ge, "$qst_train_peasants_against_bandits_num_hours_trained", ":needed_hours"),
      (assign, "$qst_train_peasants_against_bandits_num_hours_trained", 0),
      (rest_for_hours, 0, 0, 0), #stop resting
