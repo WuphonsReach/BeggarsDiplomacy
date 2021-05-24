@@ -37859,6 +37859,12 @@ scripts = [
     (try_end),
   (try_end),
 
+  # adjust by prosperity of the origin (-50% to +49%)
+  (party_get_slot, ":prosperity", ":origin", slot_town_prosperity), # 0 to 99
+  (val_add, ":prosperity", 50), # 50 to 149
+  (val_mul, ":total_profit", ":prosperity"),
+  (val_div, ":total_profit", 100), # scale back down
+
   # all parties have a base level of profit made that they will pay tariff on
   (val_add, ":total_profit", 100),
   # tweak based on the party type

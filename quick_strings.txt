@@ -1,4 +1,4 @@
-1370
+1338
 qstr_Breaking_camp... Breaking_camp...
 qstr_Removing_disguise... Removing_disguise...
 qstr_{s17}_has_{reg17}_de {s17}_has_{reg17}_denars
@@ -50,8 +50,8 @@ qstr_{!}DEBUG___{s4}_facti {!}DEBUG_-_{s4}_faction_changed_from_slot_troop_chang
 qstr_{s1}_has_switched_fr {s1}_has_switched_from_{s2}_to_{s3}.
 qstr_{!}DEBUG_:_{s2}_is_b {!}DEBUG_:_{s2}_is_besieged_by_{s3}
 qstr_{!}DEBUG___Checking_ {!}DEBUG_-_Checking_fire_at_{s4}_for_{s5}_-_current_time_{reg3},_last_nearby_fire_{reg4}
-qstr_{!}CHARITY:_Boost_{s {!}CHARITY:_Boost_{s91}_prosperity_by_+{reg90}_points_({reg91}->{reg92}),_paid_for_by_{s90}_(balance_{reg93}_denars).
-qstr_{!}CHARITY:_Boost_{s9 {!}CHARITY:_Boost_{s91}_prosperity_by_+{reg90}_points_({reg91}->{reg92}).
+qstr_{!}CHARITY:_Boost_{s {!}CHARITY:_Boost_{s91}_prosperity_by_+{reg90}_({reg91}->{reg92}),_paid_for_by_{s90}_(balance_{reg93}_denars).
+qstr_{!}CHARITY:_Boost_{s9 {!}CHARITY:_Boost_{s91}_prosperity_by_+{reg90}_({reg91}->{reg92}).
 qstr_{!}WALLED:_{s90}__st {!}WALLED:_{s90}_(str:_{reg93})_was_given_{reg91}_denars_by_{s91}_for_a_total_wealth_of_{reg92}.
 qstr_{!}WALLED:_{s90}__str {!}WALLED:_{s90}_(str:_{reg93})_was_given_{reg91}_denars_for_a_total_wealth_of_{reg92}.
 qstr_{!}CARAVAN_DIVERTED: {!}CARAVAN_DIVERTED:_{s92}_caravan:_{s90}->{s91}
@@ -379,6 +379,7 @@ qstr_{!}DEBUG_:_{s21}.^CH {!}DEBUG_:_{s21}.^CHEAT_MODE_ASSESSMENT:_{s14}^
 qstr_{s5}_has_been_defeat {s5}_has_been_defeated!
 qstr_{!}DEBUG____Assigned {!}DEBUG_--_Assigned_lord_reputation_and_relations
 qstr_{!}SCRIPT:_initializ {!}SCRIPT:_initialize_trade_routes.
+qstr_{!}ROUTES:_{reg90}_f {!}ROUTES:_{reg90}_for_{s90}
 qstr_{!}SCRIPT:_initialize {!}SCRIPT:_initialize_item_info.
 qstr_{!}SCRIPT:_initialize_ {!}SCRIPT:_initialize_economic_information.
 qstr_{s7}_opened_the_gate {s7}_opened_the_gate
@@ -403,9 +404,8 @@ qstr_Win_Battle Win_Battle
 qstr_Lose_Battle Lose_Battle
 qstr_{!}_{s61} {!}_{s61}
 qstr_{!}DEBUG____ERROR:_M {!}DEBUG_--_ERROR:_More_than_15_trade_routes_are_given_for_{s1}.
-qstr_{!}{s21}/{s20}:_pric {!}{s21}/{s20}:_price:_{reg93}_mkt:_{reg90}_mpap:_{reg91}_pd:_{reg92}_final:_{reg94}
 qstr_{!}{s21}/{s20}:_{reg {!}{s21}/{s20}:_{reg20}-{reg21}={reg22}_({reg23}_mag)_price:_{reg24}->{reg25}->{reg26}
-qstr_{!}DEBUG____Caravan_ {!}DEBUG_--_Caravan_trades_in_{s4},_originally_from_{s5}
+qstr_{!}DEBUG_DMTT__{s91} {!}DEBUG-DMTT_({s91}_{s90}):_{s93}_({reg93})_->_{s92}_({reg92})
 qstr_{!}_DEBUG_loot_playe {!}_DEBUG_loot_player_items:_g_player_surrenders_=_{reg0},_merciful_=_{reg1}
 qstr_{!}{s4}_is_sent_to_{ {!}{s4}_is_sent_to_{s5}_after_defeat
 qstr_{!}DEBUGS_:_enemy_lo {!}DEBUGS_:_enemy_loses_:_{reg0}
@@ -427,7 +427,7 @@ qstr_{reg0}_castle{reg1?s: {reg0}_castle{reg1?s:}_and_{s0}
 qstr_{reg0}_town{reg1?s:} {reg0}_town{reg1?s:}
 qstr_{reg0}_town{reg1?s:}_ {reg0}_town{reg1?s:}_and_{s0}
 qstr_{reg0}_town{reg1?s:}_{ {reg0}_town{reg1?s:},_{s0}
-qstr_{!}CARAVAN:_{s90}_>{ {!}CARAVAN:_{s90}->{s93}_for_{s91}_caravan,_scoring_{reg90}_out_of_{reg91}_routes.
+qstr_{!}CARAVAN:_{s90}_>{ {!}CARAVAN:_{s90}->{s93}_for_{s91}_caravan,_scoring_{reg90}_out_of_{reg91}/{reg92}_routes.
 qstr_{!}DEBUG:_Lair_dista {!}DEBUG:_Lair_distance_from_{s4}_is_{reg10}.
 qstr_{!}DEBUG____Checking {!}DEBUG_--_Checking_for_denounce_lord,_eligible_in_{reg4}_days
 qstr_{!}DEBUG____Rival_fo {!}DEBUG_--_Rival_found_in_{s4}
@@ -448,8 +448,9 @@ qstr_Tribune Tribune
 qstr_{s5}_of_the_{s7}_has {s5}_of_the_{s7}_has_taken_ownership_of_{s4}.
 qstr_{s4}_has_been_awarde {s4}_has_been_awarded_to_{s5}_of_the_{s7}.
 qstr_{!}DEBUG____{s4}_awa {!}DEBUG_--_{s4}_awarded_to_{s5}
+qstr_{!}RESTOCK:_{s21}__{ {!}RESTOCK:_{s21}_({s20}):_Village_goods_merchant
 qstr_{!}{s20}:_{reg21}_ne {!}{s20}:_{reg21}_net-prod_{reg23}_price-factor_{reg22}_probability
-qstr_{!}RESTOCK:_{s21}__{ {!}RESTOCK:_{s21}_({s20}):_{reg21}_avg-p-factor_{reg24}_prosp_{reg23}_goods_{reg22}_base-prod_{reg25}_slots
+qstr_{!}RESTOCK:_{s21}__{s {!}RESTOCK:_{s21}_({s20}):_{reg21}_APF_{reg24}_prosp_{reg23}_goods_{reg22}_base-prod_{reg25}_slots
 qstr_{!}Converted_{reg20} {!}Converted_{reg20}_gold_into_+{reg21}_prosperity.
 qstr__Being_Raided_ (Being_Raided)
 qstr__Deserted_ (Deserted)
@@ -553,8 +554,9 @@ qstr_{!}{reg11} {!}{reg11}
 qstr_{!}{reg12} {!}{reg12}
 qstr_{!}DEBUG:_selected_f {!}DEBUG:_selected_food_{s20}_({reg20})_attempted_quantity_{reg21}
 qstr_{!}DEBUG:_consumed_a {!}DEBUG:_consumed_amount_{reg0}_(out_of_{reg1})
-qstr_{!}DEBUG:_{s5}_trade {!}DEBUG:_{s5}_trade_from_{s3}_to_{s4}:_impact_of_{reg4}
-qstr_{!}DEBUG:_Trade_of_{ {!}DEBUG:_Trade_of_{s5}_from_{s3}_to_{s4}_brings_price_from_{reg4}_to_{reg5}
+qstr_{!}DEBUG_DPCT__{s91} {!}DEBUG-DPCT_({s91}_{s90}):_{reg90}_pct-change
+qstr_{!}{s92}/{s95}_trade {!}{s92}/{s95}_trade:_{reg91}->({reg93})->{reg92}
+qstr_{!}TARIFF_PROFIT:__{ {!}TARIFF-PROFIT:_({s90})_{s93}->{s92}_=_{reg90}_denars
 qstr_{!}DEBUG___{s4}_faction_ {!}DEBUG_-_{s4}_faction_changed_by_marriage,_case_1
 qstr_{!}_DEBUG___{s4}_cha {!}_DEBUG_-_{s4}_changed_by_player's_defection
 qstr_{!}DEBUG___{s4}_faction_c {!}DEBUG_-_{s4}_faction_changed_by_marriage,_case_3
@@ -588,7 +590,7 @@ qstr_{!}Looters:_{reg91}/ {!}Looters:_{reg91}/{reg92}
 qstr_{!}Deserters:_{reg91 {!}Deserters:_{reg91}/{reg92}_({reg90}_wars)
 qstr_{!}Failed_to_spawn_l {!}Failed_to_spawn_lair:_{s4}_(too_close_to_centers).
 qstr_{!}Spawned_lair:_{s4 {!}Spawned_lair:_{s4}
-qstr_{!}Failed_to_spawn_la {!}Failed_to_spawn_lair:_{s4}_(wrong_terrain/elevation).
+qstr_{!}Failed_to_spawn_la {!}Failed_to_spawn_lair:_{s4}_(wrong_terrain/location).
 qstr_Manor Manor
 qstr_A_manor_lets_you_res A_manor_lets_you_rest_at_the_village_and_pay_your_troops_half_wages_while_you_rest.
 qstr_Mill Mill
@@ -899,7 +901,8 @@ qstr_{!}DEBUG:_{s20}__slo {!}DEBUG:_{s20}_(slot_{reg20}):_set_to_production_valu
 qstr_{!}DEBUG:_{s20}__slot {!}DEBUG:_{s20}_(slot_{reg20}):_divided_by_{reg22}_to_production_value_of_{reg21}.
 qstr_{!}DEBUG:_{s20}__slot_ {!}DEBUG:_{s20}_(slot_{reg20}):_multiplied_by_{reg22}_to_production_value_of_{reg21}.
 qstr_{!}DEBUG:_{s20}__slot_{ {!}DEBUG:_{s20}_(slot_{reg20}):_change_by_{reg22}-{reg23}_for_resulting_production_value_of_{reg21}.
-qstr_{!}RESTOCK:_{s21}:_{ {!}RESTOCK:_{s21}:_{reg21}_avg-p-factor_{reg24}_prosp_{reg23}_goods_{reg22}_base-prod_{reg25}_slots
+qstr_{!}RESTOCK:_{s21}:_T {!}RESTOCK:_{s21}:_Town_goods_merchant
+qstr_{!}RESTOCK:_{s21}:_{ {!}RESTOCK:_{s21}:_{reg21}_APF_{reg24}_prosp_{reg23}_goods_{reg22}_base-prod_{reg25}_slots
 qstr_UNKNOWN_STATUS! UNKNOWN_STATUS!
 qstr_Normal Normal
 qstr_Being_Raided Being_Raided
@@ -1104,7 +1107,8 @@ qstr_Perhaps_you_have_for Perhaps_you_have_forgotten_the_face_of_your_father.
 qstr__Next_pay_day:_{s1} _Next_pay_day:_{s1}
 qstr_{s1}^^Affiliated_to_ {s1}^^Affiliated_to_{s5}
 qstr_{!}{s4}:_M{reg3}_2M {!}{s4}:_M{reg3},_2M{reg4},_PC{reg5},_2PC{reg6},_PM{reg7}
-qstr_{!}{s4}:_occ={reg3} {!}{s4}:_occ={reg3},_met={reg4},_PPH={reg5},_ctr={reg6},_PoP={reg7}
+qstr_Unknown Unknown
+qstr_{!}{s4}:_occ={reg3} {!}{s4}:_occ={reg3},_met={reg4},_PPH={reg5},_ctr={s96},_PoP={reg7}
 qstr_Back_to_the_beginnin Back_to_the_beginning...
 qstr_View_next_segment... View_next_segment...
 qstr_{!}__ {!}_-
@@ -1333,39 +1337,3 @@ qstr_As_a_hunter_provisi As_a_hunter,_provisions_and_raw_goods_are_expected_as_w
 qstr_As_a_caravan_guard_ As_a_caravan_guard,_you_will_be_able_to_bear_weapons_but_bring_only_a_few_personal_belongings.
 qstr_As_a_merchant_you_w As_a_merchant,_you_will_be_able_to_bring_any_assortment_of_goods.
 qstr_As_a_bard_you_will_ As_a_bard,_you_will_be_allowed_some_personal_possessions_and_your_instrument.
-qstr_{!}RESTOCK:_{s21}__{s {!}RESTOCK:_{s21}_({s20}):_Village_goods_merchant
-qstr_{!}Failed_to_spawn_lai {!}Failed_to_spawn_lair:_{s4}_(wrong_terrain/location).
-qstr_{!}RESTOCK:_{s21}:_T {!}RESTOCK:_{s21}:_Town_goods_merchant
-qstr_{!}RESTOCK:_{s21}__{s2 {!}RESTOCK:_{s21}_({s20}):_{reg21}_APF_{reg24}_prosp_{reg23}_goods_{reg22}_base-prod_{reg25}_slots
-qstr_{!}RESTOCK:_{s21}:_{r {!}RESTOCK:_{s21}:_{reg21}_APF_{reg24}_prosp_{reg23}_goods_{reg22}_base-prod_{reg25}_slots
-qstr_{!}do_merchant_town_ {!}do_merchant_town_trade_({s90}):_{s92}->{s91}
-qstr_{!}do_party_center_t {!}do_party_center_trade_({s90}):_{s92}->{s91},_{reg90}_pct-change
-qstr_{!}do_merchant_town_t {!}do_merchant_town_trade_({s91}_{s90}):_{s93}->{s92}
-qstr_{!}do_party_center_tr {!}do_party_center_trade_({s91}_{s90}):_{s93}->{s92},_{reg90}_pct-change
-qstr_{!}SET:_arrived_to_m {!}SET:_arrived_to_market_{s1}
-qstr_{!}SET:_{origin}_>{c {!}SET:_{origin}->{center_no}_trade_route_last_arrival_{s1}
-qstr_{!}SET:_returned_fro {!}SET:_returned_from_market_{s1}
-qstr_{!}SET:_{s93}_>{s92} {!}SET:_{s93}->{s92}_trade_route_last_arrival_{s1}
-qstr_{!}DEBUG_DMTT__{s91} {!}DEBUG-DMTT_({s91}_{s90}):_{s93}->{s92}
-qstr_{!}DEBUG_DPCT__{s91} {!}DEBUG-DPCT_({s91}_{s90}):_{s93}->{s92},_{reg90}_pct-change
-qstr_{!}set_{s93}_>{s92}_ {!}set_{s93}->{s92}_arrived_to_market:_{s1}
-qstr_{!}set_{s93}_>{s92}_t {!}set_{s93}->{s92}_trade_route_last_arrival:_{s1}
-qstr_{!}set_{s93}_>{s92}_r {!}set_{s93}->{s92}_returned_from_market:_{s1}
-qstr_{!}Trade_{s95}:_{reg {!}Trade_{s95}:_{reg91}->{reg92}
-qstr_{!}{s92}/{s95}_trade {!}{s92}/{s95}_trade:_{reg91}->({reg93})->{reg92}
-qstr_{!}Total_profit:_{re {!}Total_profit:_{reg90}
-qstr_{!}Total_profit_for_ {!}Total_profit_for_{s90}:_{reg90}
-qstr_{!}DEBUG_DPCT__{s91}_ {!}DEBUG-DPCT_({s91}_{s90}):_{reg90}_pct-change
-qstr_{!}Set_{s93}_>{s92}_ {!}Set_{s93}->{s92}_arrived_to_market:_{s1}
-qstr_{!}Set_{s93}_>{s92}_t {!}Set_{s93}->{s92}_trade_route_last_arrival:_{s1}
-qstr_{!}Set_{s93}_>{s92}_r {!}Set_{s93}->{s92}_returned_from_market:_{s1}
-qstr_{!}Taxable_Profit__{ {!}Taxable_Profit_({s92})_for_{s90}:_{reg90}
-qstr_{!}DEBUG_DMTT__{s91}_ {!}DEBUG-DMTT_({s91}_{s90}):_{s93}_({reg93})_->_{s92}_({reg92})
-qstr_{!}Taxable_Profit__{s {!}Taxable_Profit_({s92})_for_{s90}:_{reg90}_denars
-qstr_{!}TARIFF_PROFIT:__{ {!}TARIFF-PROFIT:_({s90})_{s93}->{s92}_=_{reg90}_denars
-qstr_{!}CARAVAN:_{s90}_>{s {!}CARAVAN:_{s90}->{s93}_for_{s91}_caravan,_scoring_{reg90}_out_of_{reg91}/{reg92}_routes.
-qstr_{!}ROUTES:_{reg90}_f {!}ROUTES:_{reg90}_for_{s90}
-qstr_{!}CHARITY:_Boost_{s91 {!}CHARITY:_Boost_{s91}_prosperity_by_+{reg90}_({reg91}->{reg92}),_paid_for_by_{s90}_(balance_{reg93}_denars).
-qstr_{!}CHARITY:_Boost_{s91} {!}CHARITY:_Boost_{s91}_prosperity_by_+{reg90}_({reg91}->{reg92}).
-qstr_Unknown Unknown
-qstr_{!}{s4}:_occ={reg3}_ {!}{s4}:_occ={reg3},_met={reg4},_PPH={reg5},_ctr={s96},_PoP={reg7}
