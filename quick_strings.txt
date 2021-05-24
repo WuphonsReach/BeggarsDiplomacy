@@ -1,4 +1,4 @@
-1368
+1370
 qstr_Breaking_camp... Breaking_camp...
 qstr_Removing_disguise... Removing_disguise...
 qstr_{s17}_has_{reg17}_de {s17}_has_{reg17}_denars
@@ -1367,3 +1367,5 @@ qstr_{!}CARAVAN:_{s90}_>{s {!}CARAVAN:_{s90}->{s93}_for_{s91}_caravan,_scoring_{
 qstr_{!}ROUTES:_{reg90}_f {!}ROUTES:_{reg90}_for_{s90}
 qstr_{!}CHARITY:_Boost_{s91 {!}CHARITY:_Boost_{s91}_prosperity_by_+{reg90}_({reg91}->{reg92}),_paid_for_by_{s90}_(balance_{reg93}_denars).
 qstr_{!}CHARITY:_Boost_{s91} {!}CHARITY:_Boost_{s91}_prosperity_by_+{reg90}_({reg91}->{reg92}).
+qstr_Unknown Unknown
+qstr_{!}{s4}:_occ={reg3}_ {!}{s4}:_occ={reg3},_met={reg4},_PPH={reg5},_ctr={s96},_PoP={reg7}
