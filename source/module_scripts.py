@@ -8286,10 +8286,12 @@ scripts = [
   (try_end),
 
   #Sargoth (linen, wine)
+  (call_script, "script_dplmc_add_random_production", "p_town_3", slot_center_acres_vineyard, 200, 500, -1),
   (call_script, "script_dplmc_add_random_production", "p_town_1", slot_center_linen_looms, 5, 8, 1),
   (call_script, "script_dplmc_add_random_production", "p_town_1", slot_center_wine_presses, 1, 3, -1),
   (call_script, "script_dplmc_add_random_production", "p_town_1", slot_center_head_chicken, 5, 11, -1),
   (call_script, "script_dplmc_add_random_production", "p_town_1", slot_center_head_pigs, 8, 20, -1),
+  (call_script, "script_dplmc_add_random_production", "p_town_3", slot_center_head_sheep, 5, 9, -1),
 
   #Tihr (salt, smoked fish, linen)
   (call_script, "script_dplmc_add_random_production", "p_town_2", slot_center_salt_pans, 1, 5, -1),
@@ -8589,13 +8591,14 @@ scripts = [
     #Sargoth
     (try_begin),
       (eq, "p_town_1", ":min_dist_town"),
-      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_acres_flax, 200, 600, -1),
-      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_acres_vineyard, 400, 800, 0),
+      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_acres_flax, 400, 600, -1),
+      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_acres_vineyard, 500, 900, 0),
       (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_mills, 0, 3, -1),
       (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_head_chicken, 12, 25, -1),
       (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_head_pigs, 8, 15, -1),
+      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_head_sheep, 5, 10, -1),
       (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_silk_farms, 80, 300, -1),
-      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_acres_grain, 900, 3000, -1),
+      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_acres_grain, 1200, 2000, -1),
 
     #Tihr
     (else_try),
@@ -8609,7 +8612,7 @@ scripts = [
       (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_acres_flax, 400, 600, -1), # and she speaks of Flax
       (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_head_cattle, 8, 20, -1),
       (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_silk_farms, 100, 200, -1),
-      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_acres_grain, 800, 1500, -1),
+      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_acres_grain, 1200, 1800, -1),
 
     #Veluca
     (else_try),
