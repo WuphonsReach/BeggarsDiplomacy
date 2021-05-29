@@ -2653,7 +2653,7 @@ simple_triggers = [
       (neg|is_currently_night), # only spawn farmers during the day
       (try_for_range, ":village_no", villages_begin, villages_end),
         (party_slot_eq, ":village_no", slot_village_state, svs_normal), # must not be looted, being raided, etc.
-        (party_slot_eq, ":village_no", slot_center_has_bandits, 0), # must not be infested
+        (party_slot_eq, ":village_no", slot_village_infested_by_bandits, 0), # must not be infested
         (party_get_slot, ":farmer_party", ":village_no", slot_village_farmer_party),
         (this_or_next|eq, ":farmer_party", 0),
         (neg|party_is_active, ":farmer_party"),
@@ -3597,7 +3597,9 @@ simple_triggers = [
           (assign, ":bandit_troop", reg0),
           (party_set_slot, ":center_no", slot_center_has_bandits, ":bandit_troop"),
           (try_begin),
-            (eq, "$cheat_mode", DPLMC_DEBUG_ECONOMY),
+            (ge, "$cheat_mode", DPLMC_DEBUG_NEVER),
+            (store_distance_to_party_from_party, ":debug_dist_to_main_party", "p_main_party", ":center_no"),
+            (le, ":debug_dist_to_main_party", 90),
             (str_store_party_name, s1, ":center_no"),
             (str_store_troop_name_plural, s2, ":bandit_troop"),
             (display_message, "@{!}{s1} is infested by {s2} (at night)."),
@@ -3614,7 +3616,9 @@ simple_triggers = [
           (lt, ":random_no", ":random_chance"),
           (party_set_slot, ":center_no", slot_center_has_bandits, 0),
           (try_begin),
-            (eq, "$cheat_mode", DPLMC_DEBUG_ECONOMY),
+            (ge, "$cheat_mode", DPLMC_DEBUG_NEVER),
+            (store_distance_to_party_from_party, ":debug_dist_to_main_party", "p_main_party", ":center_no"),
+            (le, ":debug_dist_to_main_party", 90),
             (str_store_party_name, s1, ":center_no"),
             (display_message, "@{s1} is no longer infested by bandits (at night)."),
           (try_end),
@@ -5169,7 +5173,7 @@ simple_triggers = [
     (ge, "$g_dplmc_gold_changes", DPLMC_GOLD_CHANGES_LOW),
     (try_for_range, ":center_no", villages_begin, villages_end),
       (party_slot_eq, ":center_no", slot_village_state, svs_normal), # must not be looted, being raided, etc.
-      (party_slot_eq, ":center_no", slot_center_has_bandits, 0), # must not be infested
+      (party_slot_eq, ":center_no", slot_village_infested_by_bandits, 0), # must not be infested
       (party_get_slot, ":old_prosperity", ":center_no", slot_town_prosperity),
 
       # only for low-prosperity villages

@@ -16933,7 +16933,7 @@ scripts = [
       (eq, ":svs", svs_under_siege),
       (assign, ":status_percent", 25),
     (else_try),
-      (party_slot_ge, ":center_no", slot_center_has_bandits, 1),
+      (party_slot_ge, ":center_no", slot_village_infested_by_bandits, 1),
       (assign, ":status_percent", 50),
     (else_try),
       (eq, ":svs", svs_recovering),
@@ -26187,7 +26187,7 @@ scripts = [
         (eq, ":svs", svs_looted),
         (val_div, ":number_of_slots_to_stock", 4),
       (else_try),
-        (party_slot_ge, ":cur_center", slot_center_has_bandits, 1),
+        (party_slot_ge, ":cur_center", slot_village_infested_by_bandits, 1),
         (val_div, ":number_of_slots_to_stock", 2),
       (try_end),
 
