@@ -5355,11 +5355,11 @@ simple_triggers = [
       (gt, ":besieger", 0), # is under siege
 
       (store_random_in_range, ":random_no", 0, 100),
-      (lt, ":random_no", 50), # % chance of redirection
+      (lt, ":random_no", 33), # % chance of redirection
 
       # divert to the nearest safe & friendly town
       (assign, ":new_target_center", -1),
-      (assign, ":distance", 99999),
+      (assign, ":lowest_distance_score", 99999),
       (try_for_range, ":new_town_id", towns_begin, towns_end),
         (neg|eq, ":new_town_id", ":target_center"),
         (store_random_in_range, ":distance_random_no", 0, 100),
@@ -5373,10 +5373,15 @@ simple_triggers = [
         (party_get_slot, ":new_besieger", ":new_town_id", slot_center_is_besieged_by),
         (le, ":new_besieger", 0),
 
+        # calculate distance, but fuzz the score up/down a bit
         (store_distance_to_party_from_party, ":new_town_distance", ":party_no", ":new_town_id"),
-        (gt, ":distance", ":new_town_distance"),
+        (store_random_in_range, ":randomize_score", 80, 121),
+        (val_mul, ":new_town_distance", ":randomize_score"),
+        (val_div, ":new_town_distance", 100),
+
+        (lt, ":new_town_distance", ":lowest_distance_score"),
         (assign, ":new_target_center", ":new_town_id"),
-        (assign, ":distance", ":new_town_distance"),
+        (assign, ":lowest_distance_score", ":new_town_distance"),
       (try_end),
 
       (try_begin),
@@ -5387,7 +5392,7 @@ simple_triggers = [
         (try_begin),
           (ge, "$cheat_mode", DPLMC_DEBUG_EXPERIMENTAL),
           (store_distance_to_party_from_party, ":debug_dist_to_main_party", "p_main_party", ":party_no"),
-          (le, ":debug_dist_to_main_party", 25),
+          (le, ":debug_dist_to_main_party", 80),
           (str_store_party_name, s90, ":target_center"), # original town
           (str_store_party_name, s91, ":new_target_center"), # original town
           (str_store_faction_name, s92, ":merchant_faction"),
