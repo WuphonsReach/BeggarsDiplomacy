@@ -8849,11 +8849,14 @@ scripts = [
     #Ahmerrad
     (else_try),
       (eq, "p_town_21", ":min_dist_town"),
+      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_acres_flax, 200, 400, -1),
       (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_acres_grain, 400, 900, -1),
       (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_acres_dates, 200, 400, 0),
+      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_acres_olives, 100, 300, -1),
       (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_kirmiz_farms, 200, 400, -1),
+      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_salt_pans, 0, 2, -1),
       (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_head_chicken, 8, 15, -1),
-      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_head_sheep, 12, 24, -1),
+      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_head_sheep, 18, 28, -1),
 
     #Bariyye
     (else_try),
