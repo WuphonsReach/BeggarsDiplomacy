@@ -40774,7 +40774,7 @@ scripts = [
       # LOOTERS
       (try_begin),
         (store_num_parties_of_template, ":num_parties", "pt_looters"),
-        (assign, ":party_limit", 25), #was 33 at mount&blade, 50 in warband, 42 last decision
+        (assign, ":party_limit", 20), #was 33 at mount&blade, 50 in warband, 42 last decision
         # add more parties when wars are happening
         (store_mul, ":war_count_bonus_parties", ":war_count", 5),
         (store_div, ":war_count_bonus_parties", ":war_count", 2),
@@ -40822,9 +40822,9 @@ scripts = [
       # DESERTERS
       (try_begin),
         (store_num_parties_of_template, ":num_parties", "pt_deserters"),
-        (assign, ":party_limit", 8),
+        (assign, ":party_limit", 5),
         # add more parties when wars are happening
-        (store_mul, ":war_count_bonus_parties", ":war_count", 7),
+        (store_mul, ":war_count_bonus_parties", ":war_count", 5),
         (val_add, ":party_limit", ":war_count_bonus_parties"),
         (try_begin),
           (eq, ":debug_on", 1),
