@@ -241,15 +241,15 @@ slot_faction_sum_advice_about_factions_end			= 160
 dplmc_treaty_truce_days_initial    = 60
 dplmc_treaty_truce_days_expire     =  0
 
-#Trade treaties convert to truces after 20 days.
+#Trade treaties convert to truces after expiration
 dplmc_treaty_trade_days_initial    = 120
 dplmc_treaty_trade_days_expire     = dplmc_treaty_truce_days_initial
 
-#Defensive alliances convert to trade treaties after 20 days.
+#Defensive alliances convert to trade treaties after expiration
 dplmc_treaty_defense_days_initial  = 180
 dplmc_treaty_defense_days_expire   = dplmc_treaty_trade_days_initial
 
-#Alliances convert to defensive alliances after 20 days.
+#Alliances convert to defensive alliances after expiration
 dplmc_treaty_alliance_days_initial = 240
 dplmc_treaty_alliance_days_expire  = dplmc_treaty_defense_days_initial
 
