@@ -927,6 +927,7 @@ simple_triggers = [
 		(neq, ":acting_faction", ":target_faction"),
 
 		(call_script, "script_diplomacy_faction_get_diplomatic_status_with_faction", ":target_faction", ":acting_faction"),
+    #TODO: Allow border incidents to fire during truces (which will shorten it)
 		(eq, reg0, 0),
 
 		(try_begin),
@@ -938,7 +939,8 @@ simple_triggers = [
 		(else_try),
 			(set_fixed_point_multiplier, 1),
 			(store_distance_to_party_from_party, ":distance", ":acting_village", ":target_village"),
-			(lt, ":distance", 25),
+      #The two villages must be relatively close
+			(lt, ":distance", 40),
 			(call_script, "script_add_notification_menu", "mnu_notification_border_incident", ":acting_village", ":target_village"),
 		(try_end),
    (try_end),
