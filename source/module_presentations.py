@@ -13381,8 +13381,11 @@ presentations = [
         (position_set_y, pos1, 900),
         (overlay_set_size, reg1, pos1),
         #SB : colorize by faction
-        (faction_get_color, ":color", "$players_kingdom"),
-        (overlay_set_color, reg1, ":color"),
+        # Note: Colorizing by faction doesn't work well for Vaegir/Sarranid colors
+        # We could apply "|tf_with_outline" to the create_text_overlay above, but 
+        # that looks odd and out of place (unless we do all the numeric values?).
+        #(faction_get_color, ":color", "$players_kingdom"),
+        #(overlay_set_color, reg1, ":color"),
         (position_set_x, pos1, 500),
         (position_set_y, pos1, ":cur_y"),
         (overlay_set_position, reg1, pos1),
