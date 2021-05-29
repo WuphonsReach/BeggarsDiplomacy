@@ -968,14 +968,15 @@ scripts = [
 
 	  #assign love interests to unmarried male lords
 	  (try_for_range, ":cur_troop", lords_begin, lords_end),
+      # already married
 	    (troop_slot_eq, ":cur_troop", slot_troop_spouse, -1),
-##diplomacy start+ Also bypass this for characters that start with manually-assigned fiancees
-       (troop_slot_eq, ":cur_troop", slot_troop_betrothed, -1),
-##diplomacy end+
-		(neg|is_between, ":cur_troop", kings_begin, kings_end),
-		(neg|is_between, ":cur_troop", pretenders_begin, pretenders_end),
+      # bypass this for characters that start with manually-assigned fiancees
+      (troop_slot_eq, ":cur_troop", slot_troop_betrothed, -1),
+      # ignore kings/pretenders as well (they never marry)
+  		(neg|is_between, ":cur_troop", kings_begin, kings_end),
+	  	(neg|is_between, ":cur_troop", pretenders_begin, pretenders_end),
 
-		(call_script, "script_assign_troop_love_interests", ":cur_troop"),
+		  (call_script, "script_assign_troop_love_interests", ":cur_troop"),
 	  (try_end),
 
 	  (store_random_in_range, "$romantic_attraction_seed", 0, 5),
@@ -24243,17 +24244,14 @@ scripts = [
             ##diplomacy end+
 			(call_script, "script_courtship_event_lady_break_relation_with_suitor", ":courted_lady", ":troop_no"),
 	    (try_end),
-		##diplomacy start+
-		# Don't call this script for married troops / rulers
-		#(call_script, "script_assign_troop_love_interests", ":troop_no"),
 		(try_begin),
+      # Don't call this script for married troops / rulers / pretenders
 			(neg|troop_slot_ge, ":troop_no", slot_troop_spouse, 0),
 			(neg|is_between, ":troop_no", kings_begin, kings_end),
 			(neg|is_between, ":troop_no", pretenders_begin, pretenders_end),
 			(call_script, "script_assign_troop_love_interests", ":troop_no"),
 		(try_end),
-		##diplomacy end+
-	  (else_try),
+  (else_try),
 		(is_between, ":troop_no", kingdom_ladies_begin, kingdom_ladies_end),
 		(try_for_range, ":active_npc", active_npcs_begin, active_npcs_end),
 			(try_for_range, ":love_interest_slot", slot_troop_love_interest_1, slot_troop_love_interests_end),
@@ -41328,6 +41326,9 @@ scripts = [
      ]),
 
   #script_change_center_prosperity
+  # Reduces the center's prosperity by arg2, and also displays a message
+  # when prosperity crosses a breakpoint.
+  # These breakpoints are currently at the 20/40/60/80 marks.
   # INPUT: arg1 = center_no, arg2 = difference
   # OUTPUT: none
   ("change_center_prosperity",
