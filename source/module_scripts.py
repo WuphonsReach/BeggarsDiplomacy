@@ -37874,8 +37874,13 @@ scripts = [
   (try_end),
 
   # adjust by prosperity of the origin (-50% to +49%)
-  (party_get_slot, ":prosperity", ":origin", slot_town_prosperity), # 0 to 99
-  (val_add, ":prosperity", 50), # 50 to 149
+  (party_get_slot, ":origin_prosperity", ":origin", slot_town_prosperity), # 0 to 99
+  (store_add, ":prosperity", ":origin_prosperity", 50), # 50 to 149
+  (val_mul, ":total_profit", ":prosperity"),
+  (val_div, ":total_profit", 100), # scale back down
+  # adjust by prosperity of the destination (-50% to +49%)
+  (party_get_slot, ":destination_prosperity", ":center_no", slot_town_prosperity), # 0 to 99
+  (store_add, ":prosperity", ":destination_prosperity", 50), # 50 to 149
   (val_mul, ":total_profit", ":prosperity"),
   (val_div, ":total_profit", 100), # scale back down
 
@@ -37893,13 +37898,17 @@ scripts = [
     (val_div, ":total_profit", 3),
   (try_end),
 
+  # farmers are about 50-250 denars
+  # caravans are about 500-1000 denars
   (try_begin),
     (eq, ":debug_on", 1),
     (str_store_party_name, s90, ":party_no"),
     (str_store_party_name, s92, ":center_no"),
     (str_store_party_name, s93, ":origin"),
     (assign, reg90, ":total_profit"),
-    (display_message, "@{!}TARIFF-PROFIT: ({s90}) {s93}->{s92} = {reg90} denars"),
+    (assign, reg92, ":destination_prosperity"),
+    (assign, reg93, ":origin_prosperity"),
+    (display_message, "@{!}TARIFF-PROFIT: ({s90}) {s93}({reg93})->{s92}({reg92}) = {reg90} denars"),
   (try_end),
   (assign, reg0, ":total_profit"),
 ]),
