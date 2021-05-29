@@ -28038,6 +28038,10 @@ scripts = [
 			(troop_get_slot, ":love_interest_town", ":love_interest", slot_troop_cur_center),
 			(eq, ":center_no", ":love_interest_town"),
 
+      # only court sometimes (slows down the courtship process)
+      (store_random_in_range, ":random", 0, 20), 
+      (eq, ":random", 0),
+
 			(call_script, "script_courtship_event_troop_court_lady", ":troop_no", ":love_interest"),
 			(party_set_slot, ":led_party", slot_party_leader_last_courted, ":current_time"),
 		(try_end),
@@ -50183,8 +50187,8 @@ scripts = [
 	(try_end),
 	]),
 
-	("lady_evaluate_troop_as_suitor",
-	[
+("lady_evaluate_troop_as_suitor",
+[
 	(store_script_param, ":lady", 1),
 	(store_script_param, ":suitor", 2),
 
@@ -50192,8 +50196,8 @@ scripts = [
 	(assign, ":romantic_chemistry", reg0),
 
 	(try_begin),
-      (call_script, "script_cf_test_lord_incompatibility_to_s17", ":lady", ":suitor"),
-    (try_end),
+    (call_script, "script_cf_test_lord_incompatibility_to_s17", ":lady", ":suitor"),
+  (try_end),
 
 	(store_sub, ":personality_modifier", 0, reg0),
 	(assign, reg2, ":personality_modifier"),
@@ -50203,7 +50207,7 @@ scripts = [
 		(val_div, ":renown_modifier", 20),
 		(try_begin),
 			(this_or_next|troop_slot_eq, ":lady", slot_lord_reputation_type, lrep_conventional),
-				(troop_slot_eq, ":lady", slot_lord_reputation_type, lrep_ambitious),
+      (troop_slot_eq, ":lady", slot_lord_reputation_type, lrep_ambitious),
 			(val_mul, ":renown_modifier", 2),
 			(val_sub, ":renown_modifier", 15),
 		(try_end),
@@ -50212,7 +50216,17 @@ scripts = [
 	(store_add, ":final_score", ":renown_modifier", ":personality_modifier"),
 	(val_add, ":final_score", ":romantic_chemistry"),
 	(assign, reg0, ":final_score"),
-	]),
+
+	(try_begin),
+		(ge, "$cheat_mode", DPLMC_DEBUG_EXPERIMENTAL),
+    (assign, reg90, ":final_score"),
+    (str_store_troop_name, s91, ":lady"),
+    #(store_faction_of_troop, s92, ":lady"),
+    (str_store_troop_name, s93, ":suitor"),
+    #(store_faction_of_troop, s94, ":suitor"),
+		(display_message, "@{!}EVAL-SUITOR: {s91} -> {s93} score {reg90}"),
+	(try_end),
+]),
 
 	("courtship_event_troop_court_lady",
 	[
@@ -50278,36 +50292,61 @@ scripts = [
 
 	(try_end),
 
-
-#	(call_script, "script_troop_get_relation_with_troop", ":lady", ":suitor"),
-#	(assign, ":orig_relation", reg0),
-
-    (call_script, "script_lady_evaluate_troop_as_suitor", ":lady", ":suitor"),
-
-	(store_random_in_range, ":random", 5, 16),
-	(store_div, ":relationship_change", reg0, ":random"),
-
 	(call_script, "script_troop_get_relation_with_troop", ":lady", ":suitor"),
 	(assign, ":orig_relation", reg0),
 
-	(call_script, "script_troop_change_relation_with_troop", ":lady", ":suitor", ":relationship_change"),
+  (call_script, "script_lady_evaluate_troop_as_suitor", ":lady", ":suitor"),
+  (assign, ":relationship_change", reg0),
+  # reg0 comes back as -120 to +120 (I think)
+  # higher random value results in slower courtship/relationship change
+  (try_begin),
+    (eq, ":suitor", "trp_player"),
+    (store_random_in_range, ":random", 10, 31),
+  (else_try),
+    (store_random_in_range, ":random", 10, 51),
+  (try_end),
+	(val_div, ":relationship_change", ":random"),
+  (try_begin),
+    # stop fuzzing above +10 relations, if the value decreases again
+    # below what is needed to log a favor event, it will log another
+    # favor event when we go back above the +12
+    (lt, ":orig_relation", 10),
+    # fuzz the result by -4 to +2, the imbalance slowly causes
+    # borderline situations (low chemistry) to eventually break
+    # off the courtship
+    (store_random_in_range, ":random_fuzzy", -4, 3), 
+    (val_add, ":relationship_change", ":random_fuzzy"),
+  (try_end),
+  (val_clamp, ":relationship_change", -3, 4), # -3 to +3
 
+	(call_script, "script_troop_change_relation_with_troop", ":lady", ":suitor", ":relationship_change"),
 	(call_script, "script_troop_get_relation_with_troop", ":lady", ":suitor"),
 	(assign, ":lady_suitor_relation", reg0),
 
+  (try_begin),
+		(ge, "$cheat_mode", DPLMC_DEBUG_EXPERIMENTAL),
+    (assign, reg91, ":orig_relation"),
+    (assign, reg92, ":lady_suitor_relation"),
+    (str_store_troop_name, s91, ":lady"),
+    #(store_faction_of_troop, s92, ":lady"),
+    (str_store_troop_name, s93, ":suitor"),
+    #(store_faction_of_troop, s94, ":suitor"),
+		(display_message, "@{!}COURTING: {s91} -> {s93} ({reg91} -> {reg92})"),
+	(try_end),
+
 	(try_begin),
-		(ge, ":lady_suitor_relation", 10),
-		(lt, ":orig_relation", 10),
+		(ge, ":lady_suitor_relation", 12),
+		(lt, ":orig_relation", 12),
 		(call_script, "script_add_log_entry", logent_lady_favors_suitor, ":lady", 0, ":suitor", 0),
 
 		(try_begin),
-			(eq, "$cheat_mode", DPLMC_DEBUG_POLITICS),
+			(ge, "$cheat_mode", DPLMC_DEBUG_EXPERIMENTAL),
 			(display_message, "str_note__favor_event_logged"),
 		(try_end),
 
 	(else_try),
 		(this_or_next|lt, ":lady_suitor_relation", -20),
-			(ge, ":lady_suitor_relation", 20),
+    (ge, ":lady_suitor_relation", 20),
 
 		(call_script, "script_get_kingdom_lady_social_determinants", ":lady"),
 		(assign, ":guardian", reg0),
@@ -50355,7 +50394,10 @@ scripts = [
 
 			(this_or_next|troop_slot_eq, ":suitor", slot_lord_reputation_type, lrep_selfrighteous),
 			(this_or_next|troop_slot_eq, ":suitor", slot_lord_reputation_type, lrep_debauched),
-				(troop_slot_eq, ":suitor", slot_lord_reputation_type, lrep_quarrelsome),
+      (troop_slot_eq, ":suitor", slot_lord_reputation_type, lrep_quarrelsome),
+
+      (store_random_in_range, ":random", 0, 5), # roll for initiative
+			(eq, ":random", 0),
 
 			(troop_slot_eq, ":suitor", slot_troop_betrothed, -1),
 			(troop_slot_eq, ":lady", slot_troop_betrothed, -1),
@@ -50367,7 +50409,7 @@ scripts = [
 			(troop_set_slot, ":lady", slot_troop_betrothal_time, ":hours"),
 			(troop_set_slot, ":suitor", slot_troop_betrothal_time, ":hours"),
 			(try_begin),
-				(eq, "$cheat_mode", DPLMC_DEBUG_POLITICS),
+				(ge, "$cheat_mode", DPLMC_DEBUG_EXPERIMENTAL),
 				(display_message, "str_result_lady_forced_to_agree_to_engagement"),
 			(try_end),
 
@@ -50375,10 +50417,13 @@ scripts = [
 		(else_try),
 			(lt, ":lady_suitor_relation", -20),
 
+      (store_random_in_range, ":random", 0, 5), # roll for initiative
+			(eq, ":random", 0),
+
 			(call_script, "script_add_log_entry", logent_lady_rejects_suitor, ":lady", 0, ":suitor", 0),
 			(call_script, "script_courtship_event_lady_break_relation_with_suitor", ":lady", ":suitor"),
 			(try_begin),
-				(eq, "$cheat_mode", DPLMC_DEBUG_POLITICS),
+				(ge, "$cheat_mode", DPLMC_DEBUG_EXPERIMENTAL),
 				(display_message, "str_result_lady_rejects_suitor"),
 			(try_end),
 
@@ -50399,7 +50444,7 @@ scripts = [
 			(troop_set_slot, ":suitor", slot_troop_betrothal_time, ":hours"),
 
 			(try_begin),
-				(eq, "$cheat_mode", DPLMC_DEBUG_POLITICS),
+				(ge, "$cheat_mode", DPLMC_DEBUG_EXPERIMENTAL),
 				(str_store_troop_name, s4, ":lady"),
 				(str_store_troop_name, s5, ":suitor"),
 				(display_message, "str_result_happy_engagement_between_s4_and_s5"),
@@ -50410,15 +50455,12 @@ scripts = [
 			(gt, ":lady_suitor_relation", 20),
 
 			(eq, ":competitor_preferred_by_lady", -1),
-			##diplomacy start+
-			##Fix Native bug, the following line should be checking ":lady", not ":guardian"
-			##OLD:
-			#(this_or_next|troop_slot_eq, ":guardian", slot_lord_reputation_type, lrep_adventurous),
-			#	(troop_slot_eq, ":guardian", slot_lord_reputation_type, lrep_ambitious),
-			##NEW:
+
 			(this_or_next|troop_slot_eq, ":lady", slot_lord_reputation_type, lrep_adventurous),
-				(troop_slot_eq, ":lady", slot_lord_reputation_type, lrep_ambitious),
-			##diplomacy end+
+      (troop_slot_eq, ":lady", slot_lord_reputation_type, lrep_ambitious),
+
+      (store_random_in_range, ":random", 0, 5), # roll for initiative
+			(eq, ":random", 0),
 
 			(troop_slot_eq, ":suitor", slot_troop_betrothed, -1),
 			(troop_slot_eq, ":lady", slot_troop_betrothed, -1),
@@ -50428,7 +50470,7 @@ scripts = [
 			#add elopements to quarrel descriptions
 
 			(try_begin),
-				(eq, "$cheat_mode", DPLMC_DEBUG_POLITICS),
+				(ge, "$cheat_mode", DPLMC_DEBUG_EXPERIMENTAL),
 				(str_store_troop_name, s4, ":lady"),
 				(str_store_troop_name, s5, ":suitor"),
 				(display_message, "str_result_s4_elopes_with_s5"),
@@ -50440,7 +50482,7 @@ scripts = [
 			(eq, ":competitor_preferred_by_guardian", -1),
 			(gt, ":suitor_guardian_relation", 4),
 
-			(store_random_in_range, ":random", 0, 5),
+			(store_random_in_range, ":random", 0, 5), 
 			(eq, ":random", 0),
 
 			(troop_slot_eq, ":suitor", slot_troop_betrothed, -1),
@@ -50453,7 +50495,7 @@ scripts = [
 			(troop_set_slot, ":lady", slot_troop_betrothal_time, ":hours"),
 			(troop_set_slot, ":suitor", slot_troop_betrothal_time, ":hours"),
 			(try_begin),
-				(eq, "$cheat_mode", DPLMC_DEBUG_POLITICS),
+				(ge, "$cheat_mode", DPLMC_DEBUG_EXPERIMENTAL),
 				(str_store_troop_name, s4, ":lady"),
 				(str_store_troop_name, s5, ":suitor"),
 				(display_message, "str_result_s4_reluctantly_agrees_to_engagement_with_s5"),
@@ -50463,9 +50505,9 @@ scripts = [
 		(else_try),
 			(gt, ":lady_suitor_relation", 20),
 
-			(store_random_in_range, reg3, 0, 3),
+			(store_random_in_range, reg3, 0, 5), # 0..4 = 20% chance to break off
 			(try_begin),
-				(eq, "$cheat_mode", DPLMC_DEBUG_POLITICS),
+				(ge, "$cheat_mode", DPLMC_DEBUG_EXPERIMENTAL),
 				(display_message, "str_result_stalemate_patience_roll_=_reg3"),
 			(try_end),
 
