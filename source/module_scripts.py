@@ -26749,7 +26749,18 @@ scripts = [
                (try_end),
 			   ##diplomacy end+
 
-               (call_script, "script_village_set_state",  ":village_no", svs_looted),
+          # mark village as looted
+          (call_script, "script_village_set_state",  ":village_no", svs_looted),
+          # half of livestock are slaughtered
+          (party_get_slot, ":num_cattle", ":village_no", slot_center_head_cattle),
+          (val_div, ":num_cattle", 2),
+          (val_max, ":num_cattle", 0),
+          (party_set_slot, ":village_no", slot_center_head_cattle, ":num_cattle"),
+          (party_get_slot, ":num_sheep", ":village_no", slot_center_head_sheep),
+          (val_div, ":num_sheep", 2),
+          (val_max, ":num_sheep", 0),
+          (party_set_slot, ":village_no", slot_center_head_sheep, ":num_sheep"),
+
                (party_set_slot, ":village_no", slot_center_accumulated_rents, 0), #new 1.126
                (party_set_slot, ":village_no", slot_center_accumulated_tariffs, 0), #new 1.126
 
