@@ -38978,14 +38978,13 @@ scripts = [
            (quest_slot_eq, "qst_train_peasants_against_bandits", slot_quest_target_center, ":village_no"),
            (assign, ":random_no", 100),
          (try_end),
-         # (eq, ":continue", 1),
-         ## SB : update bandit creation parameters
+         # decide whether to infest the village
          (lt, ":random_no", 3),
          (call_script, "script_center_get_bandits", ":village_no", 0),
          (assign, ":bandit_troop", reg0),
          (party_set_slot, ":village_no", slot_village_infested_by_bandits, ":bandit_troop"),
-         #Reduce prosperity of the village by 3: reduce to -1
-         (call_script, "script_change_center_prosperity", ":village_no", -1),
+         #Reduce prosperity of the village by -3, additional penalties happen over time
+         (call_script, "script_change_center_prosperity", ":village_no", -3),
          (val_add, "$newglob_total_prosperity_from_bandits", -1),
          (try_begin),
            (eq, "$cheat_mode", DPLMC_DEBUG_ECONOMY),
