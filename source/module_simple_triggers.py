@@ -5413,11 +5413,9 @@ simple_triggers = [
       
       (party_get_slot, ":prosperity", ":center_no", slot_town_prosperity),
       (assign, reg91, ":prosperity"),
-      (store_random_in_range, ":loss_of_prosperity", 1, 6), # 1..5 (avg 3)
-      (val_sub, ":prosperity", ":loss_of_prosperity"),
-      (val_max, ":prosperity", 0),
-      (party_set_slot, ":center_no", slot_town_prosperity, ":prosperity"),
-      (assign, reg92, ":prosperity"),
+      (store_random_in_range, ":loss_of_prosperity", -5, 0), # [-5,-1] (avg -3)
+      (call_script, "script_change_center_prosperity", ":center_no", ":loss_of_prosperity"),
+      (party_get_slot, reg92, ":center_no", slot_town_prosperity),
 
       (party_get_slot, ":num_cattle", ":center_no", slot_center_head_cattle),
       (assign, reg93, ":num_cattle"),
