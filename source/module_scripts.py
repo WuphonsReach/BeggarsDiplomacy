@@ -40885,6 +40885,10 @@ scripts = [
           (try_for_range, ":unused", 0, ":random_no"),
             (party_upgrade_with_xp, ":new_party", 1000000, 0),
           (try_end),
+
+          # assign to the deserters faction after creation and upgrades
+          # without this, the lords / manhunters / etc. will ignore them?
+          (party_set_faction, ":new_party", "fac_deserters"),
         (try_end),
       (try_end), #deserters ends
 

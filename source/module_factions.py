@@ -18,6 +18,7 @@ from compiler import *
 ####################################################################################################################
 
 default_kingdom_relations = [("outlaws",-0.05),("peasant_rebels", -0.1),("deserters", -0.05),("mountain_bandits", -0.02),("forest_bandits", -0.02)]
+
 factions = [
   ("no_faction","No Faction",0, 0.9, [], []),
   ("commoners","Commoners",0, 0.1,[("player_faction",0.1)], []),
