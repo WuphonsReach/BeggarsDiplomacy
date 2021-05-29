@@ -30805,11 +30805,6 @@ scripts = [
       (try_end),
 
     (assign, ":truce_duration", dplmc_treaty_truce_days_initial),
-    (store_random_in_range, ":half_truce", 0, 4),
-    (try_begin),
-      (eq, ":half_truce", 0),
-      (assign, ":truce_duration", dplmc_treaty_truce_days_half_done),
-    (try_end),
 	  (try_begin), #add truce
   		(store_add, ":truce_slot", ":kingdom_a", slot_faction_truce_days_with_factions_begin),
 	  	(val_sub, ":truce_slot", kingdoms_begin),
@@ -60658,12 +60653,6 @@ scripts = [
       (eq, ":initializing_war_peace_cond", 0), # if game startup
       (store_random_in_range, ":truce_duration", dplmc_treaty_truce_days_expire, dplmc_treaty_truce_days_initial),
       (val_add, ":truce_duration", 1),
-    (else_try),
-      (store_random_in_range, ":half_truce", 0, 2),
-      (try_begin),
-        (eq, ":half_truce", 0),
-        (assign, ":truce_duration", dplmc_treaty_truce_days_half_done),
-      (try_end),
     (try_end),
 	  (try_begin), #add truce
   		(store_add, ":truce_slot", ":kingdom_a", slot_faction_truce_days_with_factions_begin),
