@@ -16632,6 +16632,12 @@ scripts = [
 			(eq, ":cur_good", "itm_grain"),
 			(party_get_slot, ":base_cg_prod", ":center_no", slot_center_acres_grain),
 			(val_div, ":base_cg_prod", 80),
+      # grain production is doubly influenced by prosperity (-50% to +50%)
+      # this is on top of what happens down below
+      (party_get_slot, ":prosperity_grain_adjust", ":center_no", slot_town_prosperity),
+      (val_add, ":prosperity_grain_adjust", 50),
+      (val_mul, ":base_cg_prod", ":prosperity_grain_adjust"),
+      (val_div, ":base_cg_prod", 100),
 		(else_try),
 			(eq, ":cur_good", "itm_ale"),
 			(party_get_slot, ":base_cg_prod", ":center_no", slot_center_breweries),
@@ -20681,8 +20687,8 @@ scripts = [
 	            (is_between, ":giver_center_no", villages_begin, villages_end),
 	            #The quest giver is the village elder
 	            (call_script, "script_get_troop_item_amount", ":giver_troop", "itm_grain"),
-	            (eq, reg0, 0),
-	            (neg|party_slot_ge, ":giver_center_no", slot_town_prosperity, 25),
+	            (le, reg0, 0), # check elder's inventory
+	            (neg|party_slot_ge, ":giver_center_no", slot_town_prosperity, 30),
 	            (assign, ":quest_target_center", ":giver_center_no"),
 	            (assign, ":quest_target_item", "itm_grain"), #SB : fix this or add various goods
 	            (store_random_in_range, ":quest_target_amount", 3, 9),
@@ -26136,6 +26142,12 @@ scripts = [
         (try_begin),
           (is_between, ":cur_good", food_begin, food_end), # food gets a bonus to probability
           (val_mul, ":probability", 4),
+        (try_end),
+
+        (try_begin),
+          # cut probability for anything that the elder might request as aid
+          (eq, ":cur_good", "itm_grain"),
+          (val_div, ":probability", 2),
         (try_end),
 
         (val_max, ":probability", 25),
