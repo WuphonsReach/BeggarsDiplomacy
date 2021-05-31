@@ -8592,19 +8592,19 @@ scripts = [
     #Sargoth
     (try_begin),
       (eq, "p_town_1", ":min_dist_town"),
-      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_acres_flax, 400, 600, -1),
-      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_acres_vineyard, 500, 900, 0),
+      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_acres_flax, 400, 700, -1),
+      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_acres_vineyard, 500, 1000, 0),
       (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_mills, 0, 3, -1),
       (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_head_chicken, 12, 25, -1),
       (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_head_pigs, 8, 15, -1),
-      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_head_sheep, 5, 10, -1),
+      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_head_sheep, 6, 10, -1),
       (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_silk_farms, 80, 300, -1),
       (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_acres_grain, 1200, 2000, -1),
 
     #Tihr
     (else_try),
       (eq, "p_town_2", ":min_dist_town"),
-      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_acres_vineyard, 400, 700, 1),
+      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_acres_vineyard, 400, 750, 1),
       (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_household_gardens, 2, 6, -1),
       (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_salt_pans, 0, 3, -1),
       (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_mills, 0, 2, -1),
@@ -8618,7 +8618,7 @@ scripts = [
     #Veluca
     (else_try),
       (eq, "p_town_3", ":min_dist_town"),
-      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_acres_vineyard, 500, 700, 1),
+      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_acres_vineyard, 500, 750, 1),
       (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_acres_olives, 400, 600, 0),
       (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_head_chicken, 10, 28, -1),
       (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_head_sheep, 5, 15, -1),
@@ -8635,6 +8635,7 @@ scripts = [
       (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_head_chicken, 9, 24, -1),
       (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_head_pigs, 4, 10, -1),
       (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_head_cattle, 8, 20, -1),
+      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_head_sheep, 3, 6, -1),
       (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_mills, 1, 3, -1),
       (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_acres_grain, 1800, 3200, -1),
       (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_acres_flax, 200, 500, -1),
@@ -8648,7 +8649,7 @@ scripts = [
       (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_kirmiz_farms, 200, 600, 0),
       (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_head_chicken, 9, 25, -1),
       (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_head_pigs, 8, 18, -1),
-      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_head_sheep, 5, 15, -1),
+      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_head_sheep, 6, 15, -1),
       (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_mills, 0, 2, -1),
       (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_acres_grain, 600, 1200, -1),
 
@@ -8659,7 +8660,7 @@ scripts = [
       (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_breweries, 3, 6, 0),
       (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_mills, 1, 3, -1),
       (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_head_chicken, 6, 20, -1),
-      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_head_sheep, 5, 12, -1),
+      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_head_sheep, 6, 12, -1),
       (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_acres_grain, 1600, 3200, 0),
 
     #Uxkhal
@@ -8670,7 +8671,7 @@ scripts = [
       (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_acres_olives, 500, 800, -1),
       (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_apiaries, 1, 4, 1),
       (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_head_chicken, 12, 25, -1),
-      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_head_sheep, 3, 12, -1),
+      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_head_sheep, 5, 12, -1),
       (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_mills, 0, 2, -1),
       (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_acres_grain, 1400, 2800, -1),
       (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_acres_flax, 300, 600, -1),
@@ -8679,15 +8680,15 @@ scripts = [
     #Reyvadin
     (else_try),
       (eq, "p_town_8", ":min_dist_town"),
-      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_fur_traps, 4, 8, 0),
+      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_fur_traps, 4, 9, 0),
       (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_iron_deposits, 1, 4, -1),
       (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_head_cattle, 40, 120, -1),
       (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_head_chicken, 15, 30, -1),
-      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_head_pigs, 5, 10, -1),
-      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_head_sheep, 10, 15, -1),
+      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_head_pigs, 8, 12, -1),
+      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_head_sheep, 12, 18, -1),
       (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_acres_olives, 100, 300, 0),
-      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_acres_vineyard, 100, 300, -1),
-      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_acres_grain, 1800, 3600, -1),
+      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_acres_vineyard, 200, 400, -1),
+      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_acres_grain, 3600, 4800, -1),
       (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_household_gardens, 1, 3, -1),
 
     #Khudan
@@ -8817,12 +8818,12 @@ scripts = [
       (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_acres_fruit_trees, 400, 800, 1),
       (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_mills, 1, 3, -1),
       (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_head_chicken, 8, 18, 0),
-      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_head_sheep, 4, 12, -1),
+      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_head_sheep, 6, 12, -1),
 
     #Shariz
     (else_try),
       (eq, "p_town_19", ":min_dist_town"),
-      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_acres_grain, 1000, 2000, -1),
+      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_acres_grain, 1800, 2800, -1),
       (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_acres_flax, 600, 1200, -1),
       (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_silk_farms, 80, 200, -1),
       (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_acres_olives, 100, 400, 1),
@@ -8830,6 +8831,7 @@ scripts = [
       (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_salt_pans, 1, 2, -1),
       (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_mills, 0, 2, -1),
       (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_head_chicken, 7, 20, 1),
+      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_head_cattle, 6, 10, -1),
       (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_head_sheep, 10, 18, -1),
       (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_apiaries, 1, 4, -1),
 
