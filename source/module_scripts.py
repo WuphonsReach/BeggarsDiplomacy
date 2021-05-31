@@ -28068,16 +28068,35 @@ scripts = [
 			(troop_get_slot, ":love_interest_town", ":love_interest", slot_troop_cur_center),
 			(eq, ":center_no", ":love_interest_town"),
 
-      # only court sometimes (slows down the courtship process)
-      (store_random_in_range, ":random", 0, 20), 
-      (eq, ":random", 0),
+      # Attempts occur every 7 hours (assuming calculate_troop_ai) if the
+      # lord is in a center with a love interest.
+      # - 10% of attempts lead to meeting with the lady, lord tries again in 7 hours.
+      # - 20% of the time, lord will give up waiting for this week.
+      # Both outcomes set ":hours_since_last_courtship".
+      (try_begin),
+        # only court sometimes (slows down the courtship process)
+        (store_random_in_range, ":random", 0, 10), 
+        (eq, ":random", 0),
+			  (call_script, "script_courtship_event_troop_court_lady", ":troop_no", ":love_interest"),
+			  (party_set_slot, ":led_party", slot_party_leader_last_courted, ":current_time"),
+      (else_try),
+        # patience roll - chance to give up this attempt at courting
+        (store_random_in_range, ":random", 0, 5), 
+        (eq, ":random", 0),
+			  (party_set_slot, ":led_party", slot_party_leader_last_courted, ":current_time"),
+        (try_begin),
+          (ge, "$cheat_mode", DPLMC_DEBUG_NEVER),
+          (str_store_troop_name, s91, ":love_interest"),
+          #(store_faction_of_troop, s92, ":lady"),
+          (str_store_troop_name, s93, ":troop_no"),
+          #(store_faction_of_troop, s94, ":suitor"),
+          (display_message, "@{!}COURTING-SKIPPED: {s91} -> {s93}"),
+        (try_end),
+      (try_end),
 
-			(call_script, "script_courtship_event_troop_court_lady", ":troop_no", ":love_interest"),
-			(party_set_slot, ":led_party", slot_party_leader_last_courted, ":current_time"),
 		(try_end),
-    (try_end),
-
-    ]),
+  (try_end),
+  ]),
 
   # script_process_kingdom_parties_ai
   # This is called more frequently than decide_kingdom_parties_ai
@@ -50380,8 +50399,8 @@ scripts = [
 		(try_end),
 
 	(else_try),
-		(this_or_next|lt, ":lady_suitor_relation", -20),
-    (ge, ":lady_suitor_relation", 20),
+		(this_or_next|lt, ":lady_suitor_relation", -25),
+    (ge, ":lady_suitor_relation", 25),
 
 		(call_script, "script_get_kingdom_lady_social_determinants", ":lady"),
 		(assign, ":guardian", reg0),
@@ -50421,7 +50440,7 @@ scripts = [
 		#RESULTS
 		#Guardian forces lady to be betrothed to suitor now
 		(try_begin),
-			(lt, ":lady_suitor_relation", -20),
+			(lt, ":lady_suitor_relation", -30),
 			(this_or_next|troop_slot_eq, ":guardian", slot_lord_reputation_type, lrep_selfrighteous),
 			(this_or_next|troop_slot_eq, ":guardian", slot_lord_reputation_type, lrep_debauched),
 				(troop_slot_eq, ":guardian", slot_lord_reputation_type, lrep_quarrelsome),
@@ -50450,9 +50469,9 @@ scripts = [
 
 		#Lady rejects the suitor
 		(else_try),
-			(lt, ":lady_suitor_relation", -20),
+			(lt, ":lady_suitor_relation", -25),
 
-      (store_random_in_range, ":random", 0, 5), # roll for initiative
+      (store_random_in_range, ":random", 0, 3), # roll for initiative
 			(eq, ":random", 0),
 
 			(call_script, "script_add_log_entry", logent_lady_rejects_suitor, ":lady", 0, ":suitor", 0),
@@ -50464,12 +50483,15 @@ scripts = [
 
 		#A happy engagement, with parental blessing
 		(else_try),
-			(gt, ":lady_suitor_relation", 20),
+			(gt, ":lady_suitor_relation", 25),
 			(gt, ":suitor_guardian_relation", 0),
 			(eq, ":competitor_preferred_by_lady", -1),
 
 			(troop_slot_eq, ":suitor", slot_troop_betrothed, -1),
 			(troop_slot_eq, ":lady", slot_troop_betrothed, -1),
+
+      (store_random_in_range, ":random", 0, 5), # roll for initiative
+			(eq, ":random", 0),
 
 			(call_script, "script_add_log_entry", logent_lady_betrothed_to_suitor_by_choice, ":lady", 0, ":suitor", 0),
 			(troop_set_slot, ":suitor", slot_troop_betrothed, ":lady"),
@@ -50487,14 +50509,14 @@ scripts = [
 
 		#Lady elopes
 		(else_try),
-			(gt, ":lady_suitor_relation", 20),
+			(gt, ":lady_suitor_relation", 30),
 
 			(eq, ":competitor_preferred_by_lady", -1),
 
 			(this_or_next|troop_slot_eq, ":lady", slot_lord_reputation_type, lrep_adventurous),
       (troop_slot_eq, ":lady", slot_lord_reputation_type, lrep_ambitious),
 
-      (store_random_in_range, ":random", 0, 5), # roll for initiative
+      (store_random_in_range, ":random", 0, 8), # roll for initiative
 			(eq, ":random", 0),
 
 			(troop_slot_eq, ":suitor", slot_troop_betrothed, -1),
@@ -50513,11 +50535,12 @@ scripts = [
 
 		#Lady reluctantly agrees to marry under pressure from family
 		(else_try),
+			(gt, ":lady_suitor_relation", 35),
 			(troop_slot_eq, ":lady", slot_lord_reputation_type, lrep_conventional),
 			(eq, ":competitor_preferred_by_guardian", -1),
 			(gt, ":suitor_guardian_relation", 4),
 
-			(store_random_in_range, ":random", 0, 5), 
+			(store_random_in_range, ":random", 0, 4), 
 			(eq, ":random", 0),
 
 			(troop_slot_eq, ":suitor", slot_troop_betrothed, -1),
@@ -50538,9 +50561,9 @@ scripts = [
 
 		#Stalemate -- make patience roll
 		(else_try),
-			(gt, ":lady_suitor_relation", 20),
+			(gt, ":lady_suitor_relation", 30),
 
-			(store_random_in_range, reg3, 0, 5), # 0..4 = 20% chance to break off
+			(store_random_in_range, reg3, 0, 20), # 5% chance to break off
 			(try_begin),
 				(ge, "$cheat_mode", DPLMC_DEBUG_EXPERIMENTAL),
 				(display_message, "str_result_stalemate_patience_roll_=_reg3"),
