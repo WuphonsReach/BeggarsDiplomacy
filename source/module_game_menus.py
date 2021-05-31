@@ -17470,6 +17470,23 @@ also excluded.^^You can change some settings here freely.",
     
     #TODO: Decrease any treaty length by some small amount
 
+    (call_script, "script_diplomacy_faction_get_diplomatic_status_with_faction", ":acting_faction", ":target_faction"),
+	  (assign, ":acting_diplomatic_status", reg0),
+    (assign, ":acting_diplomatic_duration", reg1),
+    (call_script, "script_diplomacy_faction_get_diplomatic_status_with_faction", ":target_faction", ":acting_faction"),
+	  (assign, ":target_diplomatic_status", reg0),
+    (assign, ":target_diplomatic_duration", reg1),
+
+    (try_begin),
+			(ge, "$cheat_mode", DPLMC_DEBUG_EXPERIMENTAL),
+      (str_store_faction_name, s91, ":acting_faction"),
+      (str_store_faction_name, s92, ":target_faction"),
+      (assign, reg91, ":acting_diplomatic_status"),
+      (assign, reg92, ":acting_diplomatic_duration"),
+      (assign, reg93, ":target_diplomatic_status"),
+      (assign, reg94, ":target_diplomatic_duration"),
+			(display_message, "@{!}PROVOCATION: {s91} ({reg91}:{reg92}d) -> {s92} ({reg93}:{reg94}d) "),
+		(try_end),
   ],
   [
     ("continue",[],"Continue",

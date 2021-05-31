@@ -927,8 +927,19 @@ simple_triggers = [
 		(neq, ":acting_faction", ":target_faction"),
 
 		(call_script, "script_diplomacy_faction_get_diplomatic_status_with_faction", ":target_faction", ":acting_faction"),
+    # reg0 -- TRUCE = 1, PEACE = 0, CASUS BELLI = -1, WAR = -2
+    (assign, ":diplo_status_with_faction", reg0),
+    (assign, ":diplo_status_duration", reg1),
+    (try_begin),
+			(ge, "$cheat_mode", DPLMC_DEBUG_EXPERIMENTAL),
+      (str_store_faction_name, s91, ":acting_faction"),
+      (str_store_faction_name, s92, ":target_faction"),
+			(assign, reg90, ":diplo_status_with_faction"),
+      (assign, reg91, ":diplo_status_duration"),
+			(display_message, "@{!}PROVOCATION-TEST: {s91} -> {s92} status: {reg90} days: {reg91}"),
+		(try_end),
     #TODO: Allow border incidents to fire during truces (which will shorten it)
-		(eq, reg0, 0),
+		(eq, ":diplo_status_with_faction", 0),
 
 		(try_begin),
 			(party_slot_eq, ":acting_village", slot_center_original_faction, ":target_faction"),
