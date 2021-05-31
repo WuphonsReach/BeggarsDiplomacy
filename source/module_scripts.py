@@ -40819,6 +40819,35 @@ scripts = [
         (spawn_around_party,":spawn_point","pt_desert_bandits"),
       (try_end),
 
+      # QUEST LOOTERS
+      (try_begin), #SB : quest active, small chance to keep spawning from nearby villages
+        (check_quest_active, "qst_deal_with_looters"),
+        (quest_get_slot, ":spawn_point", "qst_deal_with_looters", slot_quest_giver_center),
+        (is_between, ":spawn_point", walled_centers_begin, walled_centers_end),
+
+        # usually spawn a new looter around the town
+        (try_begin),
+          (store_random_in_range, ":random_no", 0, 3),
+          (eq, ":random_no", 0),
+          (set_spawn_radius, 25),
+          (spawn_around_party, ":spawn_point", "pt_looters"),
+          (assign, ":spawned_party_id", reg0),
+          (party_set_flags, ":spawned_party_id", pf_quest_party, 1),
+        (try_end),
+
+        # maybe spawn a new looter around villages near the town
+        (try_for_range_backwards, ":village_no", villages_begin, villages_end),
+          (store_distance_to_party_from_party, ":dist_to_spawn_point", ":spawn_point", ":village_no"),
+          (le, ":dist_to_spawn_point", 10),
+          (store_random_in_range, ":random_no", 0, 5),
+          (eq, ":random_no", 0),
+          (set_spawn_radius, 15),
+          (spawn_around_party, ":village_no", "pt_looters"),
+          (assign, ":spawned_party_id", reg0),
+          (party_set_flags, ":spawned_party_id", pf_quest_party, 1),
+        (try_end),
+      (try_end),
+
       # LOOTERS
       (try_begin),
         (store_num_parties_of_template, ":num_parties", "pt_looters"),
@@ -40827,11 +40856,6 @@ scripts = [
         (store_mul, ":war_count_bonus_parties", ":war_count", 5),
         (store_div, ":war_count_bonus_parties", ":war_count", 2),
         (val_add, ":party_limit", ":war_count_bonus_parties"),
-        # add more if the looter quest is active
-        (try_begin),
-          (check_quest_active, "qst_deal_with_looters"),
-          (val_add, ":party_limit", 10),
-        (try_end),
         # TODO: Maybe add higher limit based on number of looted villages
         (try_begin),
           (eq, ":debug_on", 1),
@@ -40840,31 +40864,11 @@ scripts = [
           (display_message, "@{!}Looters: {reg91}/{reg92}"),
         (try_end),
         (lt,":num_parties", ":party_limit"), 
-        (try_begin), #SB : quest active, small chance to keep spawning from nearby villages
-          (check_quest_active, "qst_deal_with_looters"),
-          (quest_get_slot, ":spawn_point", "qst_deal_with_looters", slot_quest_giver_center),
-          (is_between, ":spawn_point", walled_centers_begin, walled_centers_end),
-          (assign, ":villages_end", villages_end),
-          (try_for_range_backwards, ":village_no", villages_begin, ":villages_end"),
-            (party_slot_eq, ":village_no", slot_village_bound_center, ":spawn_point"),
-            (store_random_in_range, ":random_no", 0, 5),
-            (eq, ":random_no", 0),
-            (assign, ":spawn_point", ":village_no"),
-            (assign, ":villages_end", -1),
-          (try_end),
-        (else_try),
-          (store_random_in_range,":spawn_point",villages_begin,villages_end), #spawn looters twice to have lots of them at the beginning
-        (try_end),
-        
+        (store_random_in_range, ":spawn_point", villages_begin, villages_end),
         (set_spawn_radius, 25),
         (spawn_around_party,":spawn_point","pt_looters"),
         (assign, ":spawned_party_id", reg0),
-        (try_begin),
-          (check_quest_active, "qst_deal_with_looters"),
-          (party_set_flags, ":spawned_party_id", pf_quest_party, 1),
-        (else_try),
-          (party_set_flags, ":spawned_party_id", pf_quest_party, 0),
-        (try_end),
+        (party_set_flags, ":spawned_party_id", pf_quest_party, 0),
       (try_end),
 
       # DESERTERS
