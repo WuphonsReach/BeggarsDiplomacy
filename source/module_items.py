@@ -181,31 +181,31 @@ items = [
 
  #["flour","Flour", [("salt_sack",0)], itp_merchandise|itp_type_goods|itp_consumable, 0, 40,weight(50)|abundance(100)|food_quality(45)|max_ammo(50),imodbits_none],
 
- ["oil","Oil", [("oil",0)], itp_merchandise|itp_type_goods|itp_consumable, 0, 475,weight(50)|abundance(60)|max_ammo(50),imodbits_none],
+ ["oil","Oil", [("oil",0)], itp_merchandise|itp_type_goods|itp_consumable, 0, 485,weight(50)|abundance(60)|max_ammo(50),imodbits_none],
 
  ["pottery","Pottery", [("jug",0)], itp_merchandise|itp_type_goods, 0, 250,weight(50)|abundance(90),imodbits_none],
 
- ["raw_flax","Flax Bundle", [("raw_flax",0)], itp_merchandise|itp_type_goods, 0, 210,weight(40)|abundance(90),imodbits_none],
- ["linen","Linen", [("linen",0)], itp_merchandise|itp_type_goods, 0, 410,weight(40)|abundance(90),imodbits_none],
+ ["raw_flax","Flax Bundle", [("raw_flax",0)], itp_merchandise|itp_type_goods, 0, 220,weight(40)|abundance(90),imodbits_none],
+ ["linen","Linen", [("linen",0)], itp_merchandise|itp_type_goods, 0, 470,weight(40)|abundance(90),imodbits_none],
 
  ["wool","Wool", [("wool_sack",0)], itp_merchandise|itp_type_goods, 0, 180,weight(40)|abundance(90),imodbits_none],
- ["wool_cloth","Wool Cloth", [("wool_cloth",0)], itp_merchandise|itp_type_goods, 0, 350,weight(40)|abundance(90),imodbits_none],
+ ["wool_cloth","Wool Cloth", [("wool_cloth",0)], itp_merchandise|itp_type_goods, 0, 365,weight(40)|abundance(90),imodbits_none],
 
  ["raw_silk","Raw Silk", [("raw_silk_bundle",0)], itp_merchandise|itp_type_goods, 0, 675,weight(30)|abundance(90),imodbits_none],
  ["raw_dyes","Dyes", [("dyes",0)], itp_merchandise|itp_type_goods, 0, 320,weight(10)|abundance(90),imodbits_none],
  ["velvet","Velvet", [("velvet",0)], itp_merchandise|itp_type_goods, 0, 1250,weight(40)|abundance(30),imodbits_none],
 
  ["iron","Iron", [("iron",0)], itp_merchandise|itp_type_goods, 0, 300,weight(60)|abundance(60),imodbits_none],
- ["tools","Tools", [("iron_hammer",0)], itp_merchandise|itp_type_goods, 0, 520,weight(50)|abundance(90),imodbits_none],
+ ["tools","Tools", [("iron_hammer",0)], itp_merchandise|itp_type_goods, 0, 570,weight(50)|abundance(90),imodbits_none],
 
- ["raw_leather","Hides", [("leatherwork_inventory",0)], itp_merchandise|itp_type_goods, 0, 220,weight(40)|abundance(90),imodbits_none],
- ["leatherwork","Leatherwork", [("leatherwork_frame",0)], itp_merchandise|itp_type_goods, 0, 350,weight(40)|abundance(90),imodbits_none],
+ ["raw_leather","Hides", [("leatherwork_inventory",0)], itp_merchandise|itp_type_goods, 0, 240,weight(40)|abundance(90),imodbits_none],
+ ["leatherwork","Leatherwork", [("leatherwork_frame",0)], itp_merchandise|itp_type_goods, 0, 360,weight(40)|abundance(90),imodbits_none],
 
- ["raw_date_fruit","Date Fruit", [("date_inventory",0)], itp_merchandise|itp_type_goods|itp_consumable|itp_food, 0, 120,weight(40)|food_quality(10)|max_ammo(10),imodbits_none],
+ ["raw_date_fruit","Date Fruit", [("date_inventory",0)], itp_merchandise|itp_type_goods|itp_consumable|itp_food, 0, 150,weight(40)|food_quality(10)|max_ammo(10),imodbits_none],
  ["furs","Furs", [("fur_pack",0)], itp_merchandise|itp_type_goods, 0, 420,weight(40)|abundance(90),imodbits_none],
 
- ["wine","Wine", [("amphora_slim",0)], itp_merchandise|itp_type_goods|itp_consumable, 0, 380,weight(30)|abundance(60)|max_ammo(50),imodbits_none],
- ["ale","Ale", [("ale_barrel",0)], itp_merchandise|itp_type_goods|itp_consumable, 0, 180,weight(30)|abundance(70)|max_ammo(50),imodbits_none],
+ ["wine","Wine", [("amphora_slim",0)], itp_merchandise|itp_type_goods|itp_consumable, 0, 405,weight(30)|abundance(60)|max_ammo(50),imodbits_none],
+ ["ale","Ale", [("ale_barrel",0)], itp_merchandise|itp_type_goods|itp_consumable, 0, 220,weight(30)|abundance(70)|max_ammo(50),imodbits_none],
 
 # ["dry_bread", "wheat_sack", itp_type_goods|itp_consumable, 0, slt_none,view_goods,95,weight(2),max_ammo(50),imodbits_none],
 #foods (first one is smoked_fish)
@@ -221,10 +221,10 @@ items = [
  ["grain","Grain", [("wheat_sack",0)], itp_merchandise|itp_type_goods|itp_consumable, 0, 30,weight(30)|abundance(110)|food_quality(40)|max_ammo(50),imodbits_none],
 
  ["cattle_meat","Beef", [("raw_meat",0)], itp_merchandise|itp_type_goods|itp_consumable|itp_food, 0, 80,weight(20)|abundance(100)|food_quality(80)|max_ammo(50),imodbits_none],
- ["bread","Bread", [("bread_a",0)], itp_merchandise|itp_type_goods|itp_consumable|itp_food, 0, 70,weight(30)|abundance(110)|food_quality(40)|max_ammo(50),imodbits_none],
+ ["bread","Bread", [("bread_a",0)], itp_merchandise|itp_type_goods|itp_consumable|itp_food, 0, 80,weight(30)|abundance(110)|food_quality(40)|max_ammo(50),imodbits_none],
  ["chicken","Chicken", [("chicken",0)], itp_merchandise|itp_type_goods|itp_consumable|itp_food, 0, 95,weight(10)|abundance(110)|food_quality(40)|max_ammo(50),imodbits_none],
- ["pork","Pork", [("pork",0)], itp_merchandise|itp_type_goods|itp_consumable|itp_food, 0, 75,weight(15)|abundance(100)|food_quality(70)|max_ammo(50),imodbits_none],
- ["butter","Butter", [("butter_pot",0)], itp_merchandise|itp_type_goods|itp_consumable|itp_food, 0, 150,weight(6)|abundance(110)|food_quality(40)|max_ammo(30),imodbits_none],
+ ["pork","Pork", [("pork",0)], itp_merchandise|itp_type_goods|itp_consumable|itp_food, 0, 95,weight(15)|abundance(100)|food_quality(70)|max_ammo(50),imodbits_none],
+ ["butter","Butter", [("butter_pot",0)], itp_merchandise|itp_type_goods|itp_consumable|itp_food, 0, 160,weight(6)|abundance(110)|food_quality(40)|max_ammo(30),imodbits_none],
 
 
  #Would like to remove flour altogether and reduce chicken, pork and butter (perishables) to non-trade items. Apples could perhaps become a generic "fruit", also representing dried fruit and grapes
