@@ -20810,23 +20810,26 @@ scripts = [
             # quest_gold_reward is the reward
 	          (is_between, ":giver_center_no", centers_begin, centers_end),
 	          (store_random_in_range, ":quest_target_center", villages_begin, villages_end),
+            # calculate ransom for kidnapped girl (1000 x (level/20 + 1))
 	          (store_character_level, ":quest_target_amount"),
-	          (val_div, ":quest_target_amount", 5),
+	          (val_div, ":quest_target_amount", 20),
             (val_add, ":quest_target_amount", 1),
-            (val_mul, ":quest_target_amount", 100), # bonus on player level is: (level/5 * 50) or 100-1200 gold
-	          (store_distance_to_party_from_party, ":dist", ":giver_center_no", ":quest_target_center"),
-	          (val_add, ":dist", 100), # dist will end up in the [100 to 400] range
-	          (val_mul, ":dist", 4), # bonus on distance is: 400-1600 gold
-	          (val_add, ":quest_target_amount", ":dist"),
-            (val_add, ":quest_target_amount", 500), # add a flat 500 gold
+            (val_mul, ":quest_target_amount", 1000),
             (call_script, "script_round_value", ":quest_target_amount"),
             (assign, ":quest_target_amount", reg0),
-	          (assign, ":quest_gold_reward", ":quest_target_amount"),
-            (val_div, ":quest_gold_reward", 6),
+            # calculate reward based on player level and distance
+            (store_character_level, ":quest_gold_reward"),
+            (val_mul, ":quest_gold_reward", 5), # 5..250
+            (val_add, ":quest_gold_reward", 100), # 105..350
+	          (store_distance_to_party_from_party, ":dist", ":giver_center_no", ":quest_target_center"),
+	          (val_add, ":dist", 100), # dist will end up in the [100 to 430] range
+	          (val_add, ":quest_gold_reward", ":dist"),
+            # round off the reward value
             (call_script, "script_round_value", ":quest_gold_reward"),
             (assign, ":quest_gold_reward", reg0),
+            # set expiration, give-again period
             (assign, ":quest_expiration_days", 15),
-            (store_random_in_range, ":random_period", 20, 50),
+            (store_random_in_range, ":random_period", 15, 40),
             (assign, ":quest_dont_give_again_period", ":random_period"),
 	          (assign, ":result", ":quest_no"),
 	        (else_try),
