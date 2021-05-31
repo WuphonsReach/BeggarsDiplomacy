@@ -27662,7 +27662,10 @@ scripts = [
 	]),
 
   #Currently called from process_ai_state, could be called from elsewhere
-  #It is used for lord to (1)Court ladies (2)Collect rents (3)Look for volunteers
+  #It is used for lord to 
+  # (1)Court ladies 
+  # (2)Collect rents 
+  # (3)Look for volunteers
   ## Upgrade equipment (by quality) and hire mercenaries (if Martial personality)
   ("troop_does_business_in_center",
   [
@@ -28046,6 +28049,7 @@ scripts = [
       (assign, reg2, ":troop_wealth"),
       (display_message, "@{s1} spends time in {s2}, {reg1} -> {reg2} denars"),
     (try_end),
+
     #Courtship
     (try_begin),
 		(party_get_slot, ":time_of_last_courtship", ":led_party", slot_party_leader_last_courted),
