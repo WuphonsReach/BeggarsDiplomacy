@@ -5418,7 +5418,7 @@ simple_triggers = [
   (24,
   [
     # infested villages lose prosperity per cycle, average of 3/day
-    # they also lose cattle/sheep at a rate of 4/day on average
+    # they also lose cattle/sheep at a rate of 3/day on average
     # cattle/sheep will grow back over time (based on slot_center_acres_pasture)
     (try_for_range, ":center_no", villages_begin, villages_end),
       (party_slot_ge, ":center_no", slot_village_infested_by_bandits, 1),
@@ -5431,7 +5431,7 @@ simple_triggers = [
 
       (party_get_slot, ":num_cattle", ":center_no", slot_center_head_cattle),
       (assign, reg93, ":num_cattle"),
-      (store_random_in_range, ":cattle_loss", 0, 9), # 0..8 (avg 4)
+      (store_random_in_range, ":cattle_loss", 0, 7), # 0..8 (avg 3)
       (val_sub, ":num_cattle", ":cattle_loss"),
       (val_max, ":num_cattle", 0),
       (party_set_slot, ":center_no", slot_center_head_cattle, ":num_cattle"),
@@ -5439,7 +5439,7 @@ simple_triggers = [
 
       (party_get_slot, ":num_sheep", ":center_no", slot_center_head_sheep),
       (assign, reg95, ":num_sheep"),
-      (store_random_in_range, ":sheep_loss", 0, 9), # 0..8 (avg 4)
+      (store_random_in_range, ":sheep_loss", 0, 7), # 0..8 (avg 3)
       (val_sub, ":num_sheep", ":sheep_loss"),
       (val_max, ":num_sheep", 0),
       (party_set_slot, ":center_no", slot_center_head_sheep, ":num_sheep"),
@@ -5448,7 +5448,7 @@ simple_triggers = [
       (try_begin),
         (ge, "$cheat_mode", DPLMC_DEBUG_EXPERIMENTAL),
         (store_distance_to_party_from_party, ":debug_dist_to_main_party", "p_main_party", ":center_no"),
-        (le, ":debug_dist_to_main_party", 90),
+        (le, ":debug_dist_to_main_party", 60),
         (str_store_party_name, s90, ":center_no"),
         (display_message, "@{!}INFESTED: {s90} prosp {reg91}->{reg92} cattle {reg93}->{reg94} sheep {reg95}->{reg96}"),
       (try_end),
