@@ -937,10 +937,9 @@ simple_triggers = [
 			(party_slot_eq, ":acting_village", slot_center_ex_faction, ":target_faction"),
 			(call_script, "script_add_notification_menu", "mnu_notification_border_incident", ":acting_village", -1),
 		(else_try),
-			(set_fixed_point_multiplier, 1),
 			(store_distance_to_party_from_party, ":distance", ":acting_village", ":target_village"),
       #The two villages must be relatively close
-			(lt, ":distance", 40),
+			(lt, ":distance", 25),
 			(call_script, "script_add_notification_menu", "mnu_notification_border_incident", ":acting_village", ":target_village"),
 		(try_end),
    (try_end),
