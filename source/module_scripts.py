@@ -55359,8 +55359,10 @@ scripts = [
 
         (add_troop_note_from_sreg, ":object_1", ":current_rumor_note", s5, 0), #troop, note slot, string, show
 
+    # TODO: If a rumor is output to two objects, debug-msg should include both names, not repeat itself
+
         (try_begin),
-          (ge, "$cheat_mode", DPLMC_DEBUG_MIN),
+          (ge, "$cheat_mode", DPLMC_DEBUG_NEVER),
           (str_store_troop_name, s3, ":object_1"),
           (assign, reg4, ":current_rumor_note"),
           (display_message, "str_rumor_note_to_s3s_slot_reg4_s5"),
@@ -55380,7 +55382,7 @@ scripts = [
         (add_troop_note_from_sreg, ":object_2", ":current_rumor_note", s5, 0), #troop, note slot, string, show
 
         (try_begin),
-          (ge, "$cheat_mode", DPLMC_DEBUG_MIN),
+          (ge, "$cheat_mode", DPLMC_DEBUG_NEVER),
           (str_store_troop_name, s3, ":object_2"),
           (assign, reg4, ":current_rumor_note"),
           (display_message, "str_rumor_note_to_s3s_slot_reg4_s5"),
