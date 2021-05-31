@@ -26160,10 +26160,10 @@ scripts = [
         (try_begin),
           # cut probability for anything that the elder might request as aid
           (eq, ":cur_good", "itm_grain"),
-          (val_div, ":probability", 2),
+          (val_div, ":probability", 4),
         (try_end),
 
-        (val_max, ":probability", 25),
+        (val_max, ":probability", 10),
         (set_item_probability_in_merchandise, ":cur_good", ":probability"),
 
         (try_begin),
