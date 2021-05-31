@@ -260,6 +260,8 @@ dplmc_treaty_trade_days_half_done = (dplmc_treaty_trade_days_initial + dplmc_tre
 dplmc_treaty_defense_days_half_done = (dplmc_treaty_defense_days_initial + dplmc_treaty_defense_days_expire) // 2
 dplmc_treaty_alliance_days_half_done = (dplmc_treaty_alliance_days_initial + dplmc_treaty_alliance_days_expire) // 2
 
+# provocation period is (N x base) where N = 1..3
+dplmc_treaty_provocation_base = dplmc_treaty_truce_days_half_done // 2
 
 # villages will never sell their last N cattle
 dplmc_village_cattle_reserve = 5

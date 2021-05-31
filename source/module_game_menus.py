@@ -17456,9 +17456,17 @@ also excluded.^^You can change some settings here freely.",
 	  (str_store_faction_name, s3, ":acting_faction"),
 	  (str_store_faction_name, s4, ":target_faction"),
 
+    # roll 2d3, then divide by 2, gives 25%=1, 50%=2, 25%=3
+    (store_random_in_range, ":roll_1", 0, 3),
+    (store_random_in_range, ":roll_2", 0, 3),
+    (store_add, ":roll", ":roll_1", ":roll_2"),
+    (val_div, ":roll", 2),
+    (val_add, ":roll", 2),
+    (store_mul, ":provocation_period", ":roll", dplmc_treaty_provocation_base),
+
 	  (store_add, ":slot_provocation_days", ":acting_faction", slot_faction_provocation_days_with_factions_begin),
 	  (val_sub, ":slot_provocation_days", kingdoms_begin),
-	  (faction_set_slot, ":target_faction", ":slot_provocation_days", 30),
+	  (faction_set_slot, ":target_faction", ":slot_provocation_days", ":provocation_period"),
     
     #TODO: Decrease any treaty length by some small amount
 
