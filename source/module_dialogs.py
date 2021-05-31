@@ -33076,7 +33076,7 @@ I suppose there are plenty of bounty hunters around to get the job done . . .", 
 		(str_store_troop_name, s9, "$lady_selected"), #lady
 
 		(try_begin),
-			(ge, "$cheat_mode", DPLMC_DEBUG_MIN), #for some reason, speaking to tavern merchant does not yield rumor. Try for Lady Baoth, Lord Etr
+			(ge, "$cheat_mode", DPLMC_DEBUG_NEVER), #for some reason, speaking to tavern merchant does not yield rumor. Try for Lady Baoth, Lord Etr
 			(display_message, "str_searching_for_rumors_for_s9"),
 		(try_end),
 
@@ -38555,7 +38555,7 @@ I suppose there are plenty of bounty hunters around to get the job done . . .", 
 		(str_store_troop_name, s9, "$lady_selected"), #lady
 
 		(try_begin),
-			(ge, "$cheat_mode", DPLMC_DEBUG_MIN), #for some reason, speaking to tavern merchant does not yield rumor. Try for Lady Baoth, Lord Etr
+			(ge, "$cheat_mode", DPLMC_DEBUG_NEVER), #for some reason, speaking to tavern merchant does not yield rumor. Try for Lady Baoth, Lord Etr
 			(display_message, "str_searching_for_rumors_for_s9"),
 		(try_end),
 
