@@ -37689,7 +37689,7 @@ scripts = [
   
   (assign, ":debug_on", 0),
   (try_begin),
-    (ge, "$cheat_mode", DPLMC_DEBUG_MIN),
+    (eq, "$cheat_mode", DPLMC_DEBUG_ECONOMY),
     (assign, ":debug_dist_to_main_party_limit", 15),
     (store_distance_to_party_from_party, ":debug_dist_to_main_party", "p_main_party", ":center_no"),
     (le, ":debug_dist_to_main_party", ":debug_dist_to_main_party_limit"),
@@ -37723,7 +37723,7 @@ scripts = [
   (val_clamp, ":percentage_change", 2, 101),
 
   (try_begin),
-    (eq, ":debug_on", 999),
+    (eq, ":debug_on", 999), #disable the debug output
     (str_store_party_name, s90, ":party_no"),
     (str_store_faction_name, s91, ":party_faction"),
     (assign, reg90, ":percentage_change"),
@@ -37892,7 +37892,7 @@ scripts = [
 
     (try_begin),
       (eq, ":debug_on", 1),
-      (eq, ":debug_on", 99999),
+      (eq, ":debug_on", 99999), #disable the debug output
       (str_store_party_name, s92, ":center_no"),
       (str_store_item_name, s95, ":cur_good"),
       (assign, reg91, ":initial_center_price"),
