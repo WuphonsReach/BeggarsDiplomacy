@@ -54717,7 +54717,11 @@ scripts = [
 
 	(
 	"diplomacy_faction_get_diplomatic_status_with_faction",
-	#result: -1 faction_1 has a casus belli against faction_2. 1, faction_1 has a truce with faction_2, -2, the two factions are at war
+	#result (in reg0): 
+  # -1 faction_1 has a casus belli against faction_2. 
+  # 0 faction_1 is at peace with faction_2
+  # 1, faction_1 has a truce with faction_2, 
+  # -2, the two factions are at war
 	[
 	(store_script_param, ":actor_faction", 1),
 	(store_script_param, ":target_faction", 2),
