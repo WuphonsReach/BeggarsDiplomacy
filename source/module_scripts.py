@@ -16634,12 +16634,6 @@ scripts = [
 			(eq, ":cur_good", "itm_grain"),
 			(party_get_slot, ":base_cg_prod", ":center_no", slot_center_acres_grain),
 			(val_div, ":base_cg_prod", 80),
-      # grain production is doubly influenced by prosperity (-50% to +50%)
-      # this is on top of what happens down below
-      (party_get_slot, ":prosperity_grain_adjust", ":center_no", slot_town_prosperity),
-      (val_add, ":prosperity_grain_adjust", 50),
-      (val_mul, ":base_cg_prod", ":prosperity_grain_adjust"),
-      (val_div, ":base_cg_prod", 100),
 		(else_try),
 			(eq, ":cur_good", "itm_ale"),
 			(party_get_slot, ":base_cg_prod", ":center_no", slot_center_breweries),
@@ -16858,6 +16852,20 @@ scripts = [
 				(assign, ":base_cg_prod", 15),
 			(try_end),
 		(try_end),
+
+    (try_begin),
+      (this_or_next|eq, ":cur_good", "itm_raw_grapes"),
+      (this_or_next|eq, ":cur_good", "itm_raw_olives"),
+      (eq, ":cur_good", "itm_grain"),
+      # some production is doubly influenced by prosperity (-25% to +25%)
+      # this is in addition to the overall prosperity adjustment further down
+      # makes some goods more volatile
+      (party_get_slot, ":prosperity_base_adjust", ":center_no", slot_town_prosperity),
+      (val_div, ":prosperity_base_adjust", 2), # 0..100 -> 0..50
+      (val_add, ":prosperity_base_adjust", 75), # 0..50 -> 75..125
+      (val_mul, ":base_cg_prod", ":prosperity_base_adjust"),
+      (val_div, ":base_cg_prod", 100),
+    (try_end),
 
 		#Modify production by other goods, higher impact_divisors make things less volatile
 		(assign, ":modified_center_good_production", ":base_cg_prod"),
