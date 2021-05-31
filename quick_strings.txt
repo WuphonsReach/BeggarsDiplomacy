@@ -1,4 +1,4 @@
-1341
+1344
 qstr_Breaking_camp... Breaking_camp...
 qstr_Removing_disguise... Removing_disguise...
 qstr_{s17}_has_{reg17}_de {s17}_has_{reg17}_denars
@@ -6,6 +6,7 @@ qstr_{!}{s3}_commander_of {!}{s3}_commander_of_party_#{reg4}_which_is_not_his_tr
 qstr_{!}_Commanded_party_ {!}_Commanded_party_#{reg4}_is_{s3},_troop_leaded_party_#{reg5}_is_{s65}
 qstr_Morale_for_{s9}_troo Morale_for_{s9}_troops:_{reg6}
 qstr_{!}Hire_reinforcemen {!}Hire_reinforcements_for_{s11}_from_{s12}_for_{reg11}_denars.
+qstr_{!}PROVOCATION_TEST: {!}PROVOCATION-TEST:_{s91}_->_{s92}_status:_{reg90}_days:_{reg91}
 qstr_{!}DEBUG____Doing_po {!}DEBUG_--_Doing_political_calculations_for_{s9}
 qstr_{!}DEBUG___{s4}_fact {!}DEBUG_-_{s4}_faction_changed_in_defection
 qstr_{s5}_has_decided_to_ {s5}_has_decided_to_grant_{s4}_to_another_lord_of_the_{s7}.
@@ -481,6 +482,7 @@ qstr_{s10}_hires_{reg2}_{ {s10}_hires_{reg2}_{s12}_in_{s11}
 qstr_{s10}_upgrades_{s3}{ {s10}_upgrades_{s3}{s11}_(costing_{s1})_in_{s4},_{reg0}_denars_remaining.
 qstr_Assigned_class_{reg0 Assigned_class_{reg0}_to_{s1}
 qstr_{s1}_spends_time_in_ {s1}_spends_time_in_{s2},_{reg1}_->_{reg2}_denars
+qstr_{!}COURTING_SKIPPED: {!}COURTING-SKIPPED:_{s91}_->_{s93}
 qstr_{s1}_has_been_besieg {s1}_has_been_besieged_by_{s2}_of_{s3}.
 qstr__{s1}__{s11}:_{s14} ({s1})_{s11}:_{s14}
 qstr_{s14}__{s21}_ {s14}_({s21})
@@ -516,7 +518,7 @@ qstr_{s0}_is_retreating_t {s0}_is_retreating_to_{s1}.
 qstr_{s0}_is_visiting_{s1 {s0}_is_visiting_{s1}.
 qstr_{s1}_and_{s2}_have_m {s1}_and_{s2}_have_made_peace_with_each_other.
 qstr_{!}DEBUG:_{s5}_has_t {!}DEBUG:_{s5}_has_truce_with_{s6}._Pact_with_{s7}_is_harder!
-qstr_{!}DEBUG____Player_s {!}DEBUG_--_Player's_kingdom_has_had_{reg3}_days_of_peace
+qstr_{!}PLAYER_PEACE:_Pla {!}PLAYER-PEACE:_Player's_kingdom_has_had_{reg3}_days_of_peace
 qstr_{s2}_{reg3?was:is_cu {s2}_{reg3?was:is_currently}_at_{s3}.
 qstr_{s2}_{reg3?was:is}_t {s2}_{reg3?was:is}_travelling_to_{s3}_and_{reg4?she:he}_{reg3?was:should_be}_close_to_{s4}{reg3?:_at_the_moment}.
 qstr_{s2}_{reg3?was:is}_tr {s2}_{reg3?was:is}_travelling_to_{s3}_and_{reg4?she:he}_{reg3?was:should_be}_between_{s4}_and_{s1}{reg3?:_at_the_moment}.
@@ -1291,6 +1293,7 @@ qstr_The_training_went_pe The_training_went_perfectly.
 qstr_{s13}_asked_you_to_r {s13}_asked_you_to_report_to_{reg4?her:him}_with_at_least_{reg13}_troops.
 qstr_{s13}_ordered_you_to {s13}_ordered_you_to_join_the_assault_against_{s14}.
 qstr_There_has_been_an_al There_has_been_an_alleged_border_incident:_{s9}
+qstr_{!}PROVOCATION:_{s91 {!}PROVOCATION:_{s91}_({reg91}:{reg92}d)_->_{s92}_({reg93}:{reg94}d)_
 qstr_{!}{s11}{s12} {!}{s11}{s12}
 qstr_{!}DEBUG____Hours_si {!}DEBUG_--_Hours_since_last_feast_started:_{reg4}
 qstr_^^Note_that_so_long_ ^^Note_that_so_long_as_you_remain_marshal,_the_lords_of_the_realm_will_be_expecting_you_to_lead_them_on_campaign._So,_if_you_are_awaiting_a_feast,_either_for_a_wedding_or_for_other_purposes,_you_may_wish_to_resign_the_marshalship_by_speaking_to_your_liege.

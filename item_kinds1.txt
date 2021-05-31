@@ -372,7 +372,7 @@ itemsfile version 3
  0
 0
 
- itm_oil Oil Oil 1  oil 0  33619979 0 475 0 50.000000 60 0 0 0 0 0 0 0 0 50 0 0
+ itm_oil Oil Oil 1  oil 0  33619979 0 485 0 50.000000 60 0 0 0 0 0 0 0 0 50 0 0
  0
 0
 
@@ -380,11 +380,11 @@ itemsfile version 3
  0
 0
 
- itm_raw_flax Flax_Bundle Flax_Bundle 1  raw_flax 0  65547 0 210 0 40.000000 90 0 0 0 0 0 0 0 0 0 0 0
+ itm_raw_flax Flax_Bundle Flax_Bundle 1  raw_flax 0  65547 0 220 0 40.000000 90 0 0 0 0 0 0 0 0 0 0 0
  0
 0
 
- itm_linen Linen Linen 1  linen 0  65547 0 410 0 40.000000 90 0 0 0 0 0 0 0 0 0 0 0
+ itm_linen Linen Linen 1  linen 0  65547 0 470 0 40.000000 90 0 0 0 0 0 0 0 0 0 0 0
  0
 0
 
@@ -392,7 +392,7 @@ itemsfile version 3
  0
 0
 
- itm_wool_cloth Wool_Cloth Wool_Cloth 1  wool_cloth 0  65547 0 350 0 40.000000 90 0 0 0 0 0 0 0 0 0 0 0
+ itm_wool_cloth Wool_Cloth Wool_Cloth 1  wool_cloth 0  65547 0 365 0 40.000000 90 0 0 0 0 0 0 0 0 0 0 0
  0
 0
 
@@ -412,19 +412,19 @@ itemsfile version 3
  0
 0
 
- itm_tools Tools Tools 1  iron_hammer 0  65547 0 520 0 50.000000 90 0 0 0 0 0 0 0 0 0 0 0
+ itm_tools Tools Tools 1  iron_hammer 0  65547 0 570 0 50.000000 90 0 0 0 0 0 0 0 0 0 0 0
  0
 0
 
- itm_raw_leather Hides Hides 1  leatherwork_inventory 0  65547 0 220 0 40.000000 90 0 0 0 0 0 0 0 0 0 0 0
+ itm_raw_leather Hides Hides 1  leatherwork_inventory 0  65547 0 240 0 40.000000 90 0 0 0 0 0 0 0 0 0 0 0
  0
 0
 
- itm_leatherwork Leatherwork Leatherwork 1  leatherwork_frame 0  65547 0 350 0 40.000000 90 0 0 0 0 0 0 0 0 0 0 0
+ itm_leatherwork Leatherwork Leatherwork 1  leatherwork_frame 0  65547 0 360 0 40.000000 90 0 0 0 0 0 0 0 0 0 0 0
  0
 0
 
- itm_raw_date_fruit Date_Fruit Date_Fruit 1  date_inventory 0  34144267 0 120 0 40.000000 100 10 0 0 0 0 0 0 0 10 0 0
+ itm_raw_date_fruit Date_Fruit Date_Fruit 1  date_inventory 0  34144267 0 150 0 40.000000 100 10 0 0 0 0 0 0 0 10 0 0
  0
 0
 
@@ -432,11 +432,11 @@ itemsfile version 3
  0
 0
 
- itm_wine Wine Wine 1  amphora_slim 0  33619979 0 380 0 30.000000 60 0 0 0 0 0 0 0 0 50 0 0
+ itm_wine Wine Wine 1  amphora_slim 0  33619979 0 405 0 30.000000 60 0 0 0 0 0 0 0 0 50 0 0
  0
 0
 
- itm_ale Ale Ale 1  ale_barrel 0  33619979 0 180 0 30.000000 70 0 0 0 0 0 0 0 0 50 0 0
+ itm_ale Ale Ale 1  ale_barrel 0  33619979 0 220 0 30.000000 70 0 0 0 0 0 0 0 0 50 0 0
  0
 0
 
@@ -484,7 +484,7 @@ itemsfile version 3
  0
 0
 
- itm_bread Bread Bread 1  bread_a 0  34144267 0 70 0 30.000000 110 40 0 0 0 0 0 0 0 50 0 0
+ itm_bread Bread Bread 1  bread_a 0  34144267 0 80 0 30.000000 110 40 0 0 0 0 0 0 0 50 0 0
  0
 0
 
@@ -492,11 +492,11 @@ itemsfile version 3
  0
 0
 
- itm_pork Pork Pork 1  pork 0  34144267 0 75 0 15.000000 100 70 0 0 0 0 0 0 0 50 0 0
+ itm_pork Pork Pork 1  pork 0  34144267 0 95 0 15.000000 100 70 0 0 0 0 0 0 0 50 0 0
  0
 0
 
- itm_butter Butter Butter 1  butter_pot 0  34144267 0 150 0 6.000000 110 40 0 0 0 0 0 0 0 30 0 0
+ itm_butter Butter Butter 1  butter_pot 0  34144267 0 160 0 6.000000 110 40 0 0 0 0 0 0 0 30 0 0
  0
 0
 
