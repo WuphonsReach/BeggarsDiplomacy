@@ -5488,7 +5488,7 @@ scripts = [
 
       #SB : possibly inherit half of spouse's renown
       (troop_get_slot, ":troop_renown", ":troop_no", slot_troop_renown),
-      (store_div, ":renown_bonus", ":troop_renown", 25),
+      (store_div, ":renown_bonus", ":troop_renown", 20),
       (val_add, ":limit", ":renown_bonus"),
 
       #SB : add non-standard size modifiers here
