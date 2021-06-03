@@ -59209,6 +59209,27 @@ scripts = [
         ##SB : get additional parameters
         (item_get_speed_rating, ":item_speed", ":item"),
         (item_get_weapon_length, ":item_length", ":item"),
+
+        # bonus points for various item properties
+        #(assign, ":i_bonus_score", 0),
+        #(try_begin),
+        #  (item_has_property, ":item", itp_can_penetrate_shield)
+        #  (val_add, ":i_bonus_score", 4),
+        #(else_try),
+        #  (item_has_property, ":item", itp_bonus_against_shield)
+        #  (val_add, ":i_bonus_score", 3),
+        #(else_try),
+        #  (item_has_property, ":item", itp_penalty_with_shield)
+        #  (val_add, ":i_bonus_score", -2),
+        #(else_try),
+        #  (item_has_property, ":item", itp_crush_through)
+        #  (val_add, ":i_bonus_score", 3),
+        #(else_try),
+        #  (item_has_property, ":item", itp_unbalanced)
+        #  (val_add, ":i_bonus_score", 2),
+        #(try_end),
+        #(val_add, ":i_score", ":i_bonus_score"),
+        
         #shootspeed?
 
         (try_begin),
