@@ -30197,7 +30197,10 @@ scripts = [
       ]),
 
   # script_diplomacy_start_war_between_kingdoms
-  # Input: arg1 = kingdom_1, arg2 = kingdom_2, arg3 = initializing_war_peace_cond
+  # Input: 
+  #   arg1 = kingdom_1, 
+  #   arg2 = kingdom_2, 
+  #   arg3 = initializing_war_peace_cond
   # Output: none
   ("diplomacy_start_war_between_kingdoms", #sets relations between two kingdoms and their vassals.
     [
@@ -54720,7 +54723,7 @@ scripts = [
 	#result (in reg0): 
   # -1 faction_1 has a casus belli against faction_2. 
   # 0 faction_1 is at peace with faction_2
-  # 1, faction_1 has a truce with faction_2, 
+  # 1, faction_1 has a truce/treaty with faction_2, 
   # -2, the two factions are at war
 	[
 	(store_script_param, ":actor_faction", 1),
