@@ -29585,6 +29585,7 @@ scripts = [
 		  (assign, reg4, ":renown_change"),
 
 		  (store_div, ":subtraction", ":old_renown", 200),
+      (val_sub, ":subtraction", 1), # kicks in above 400
 	    (val_sub, ":renown_change", ":subtraction"),
 	    (val_max, ":renown_change", 0),
 
