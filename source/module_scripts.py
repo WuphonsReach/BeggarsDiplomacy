@@ -27979,12 +27979,12 @@ scripts = [
 
       # Attempts occur every 7 hours (assuming calculate_troop_ai) if the
       # lord is in a center with a love interest.
-      # - 10% of attempts lead to meeting with the lady, lord tries again in 7 hours.
+      # - 14% of attempts lead to meeting with the lady, but lord tries again in 7 hours.
       # - 20% of the time, lord will give up waiting for this week.
       # Both outcomes set ":hours_since_last_courtship".
       (try_begin),
         # only court sometimes (slows down the courtship process)
-        (store_random_in_range, ":random", 0, 10), 
+        (store_random_in_range, ":random", 0, 7), 
         (eq, ":random", 0),
 			  (call_script, "script_courtship_event_troop_court_lady", ":troop_no", ":love_interest"),
 			  (party_set_slot, ":led_party", slot_party_leader_last_courted, ":current_time"),
@@ -50415,7 +50415,7 @@ scripts = [
 			(troop_slot_eq, ":suitor", slot_troop_betrothed, -1),
 			(troop_slot_eq, ":lady", slot_troop_betrothed, -1),
 
-      (store_random_in_range, ":random", 0, 5), # roll for initiative
+      (store_random_in_range, ":random", 0, 4), # roll for initiative
 			(eq, ":random", 0),
 
 			(call_script, "script_add_log_entry", logent_lady_betrothed_to_suitor_by_choice, ":lady", 0, ":suitor", 0),
