@@ -833,8 +833,10 @@ simple_triggers = [
 
     ]),
 
-  #Converging center prosperity to ideal prosperity once/day, 10% chance per cycle
-  (24,
+  # Converging center prosperity to ideal prosperity once/day, 
+  # 10% chance per cycle.  The CHARITY triggers do something
+  # similar, but only for low prosperity centers.
+  (23,
   [
      (try_for_range, ":center_no", centers_begin, centers_end),
        #(neg|is_between, ":center_no", castles_begin, castles_end),
@@ -1935,7 +1937,7 @@ simple_triggers = [
     ]),
 
   # Refresh merchant inventories (villages and goods merchants)
-   (8,
+   (9,
    [
       (try_for_range, ":village_no", villages_begin, villages_end),
         # randomly update them about every 3 days on average (was exactly every 7 days)
@@ -2661,6 +2663,7 @@ simple_triggers = [
    (8,
    [
       # Updating trade good prices according to the productions
+      # Only some centers get processed each cycle
       (call_script, "script_update_trade_good_prices"),
  
       # TODO: Move this to another trigger (it was probably daily/weekly before)
@@ -5151,7 +5154,7 @@ simple_triggers = [
   (call_script, "script_initialize_food_morale_bonuses"),
 ]),
   
-  # CHARITY - randomly boost villages with low prosperity
+  # VILLAGE CHARITY - randomly boost villages with low prosperity
   # a 50% chance every 12 hours to gain 1..4 points of prosperity, 
   # then there is a second roll against prosperity
   #  0 prosp = 40% chance
@@ -5161,7 +5164,7 @@ simple_triggers = [
   # 40 prosp = 0% chance
   # this helps looted/pillaged villages get back up to ~35 prosperity faster
   # yes, it's a bit of a hack, but makes villages more resilient
-  (12,
+  (11,
    [
     (ge, "$g_dplmc_gold_changes", DPLMC_GOLD_CHANGES_LOW),
     (try_for_range, ":center_no", villages_begin, villages_end),
@@ -5309,8 +5312,16 @@ simple_triggers = [
     (try_end),
    ]),
 
-  # DEBUG -- refresh some of the initialization things
-  (24,
+  # TOWN CHARITY - randomly boost towns with low prosperity
+  # a 50% chance every 13 hours to gain 1..4 points of prosperity, 
+  # then there is a second roll against prosperity
+  #  0 prosp = 30% chance
+  # 10 prosp = 20% chance 
+  # 20 prosp = 10% chance
+  # 30 prosp = 0% chance
+  # this helps looted/pillaged towns get back up to ~25 prosperity faster
+  # yes, it's a bit of a hack, but makes towns more resilient
+  (13,
    [
      # only fire when player is close to village_66 (Fisdnar)
     (store_distance_to_party_from_party, ":debug_dist_to_main_party", "p_main_party", "p_village_66"),
@@ -5327,7 +5338,7 @@ simple_triggers = [
   # Merchant caravans will re-evalulate their target town if it is besieged, or changes
   # to hostile ownership during the trip time.  This cleans up the situation where you'll
   # have a bunch of caravans ping-ponging on the outskirts of town during a siege.
-  (12,
+  (11,
   [
     (try_for_parties, ":party_no"),
       (party_slot_eq, ":party_no", slot_party_type, spt_kingdom_caravan),
@@ -5462,8 +5473,21 @@ simple_triggers = [
     (try_end),
   ]),
 
+  # DEBUG -- refresh some of the initialization things
   (24,
-   []),
+   [
+     # only fire when player is close to village_66 (Fisdnar)
+    (store_distance_to_party_from_party, ":debug_dist_to_main_party", "p_main_party", "p_village_66"),
+    (le, ":debug_dist_to_main_party", 15),
+
+    (this_or_next|eq, "$cheat_mode", DPLMC_DEBUG_EXPERIMENTAL),
+    (eq, "$g_infinite_camping", 1),
+
+    (call_script, "script_initialize_item_info"),
+    (call_script, "script_initialize_economic_information"),
+    (call_script, "script_initialize_trade_routes"),
+   ]),
+
   (24,
    []),
   (24,
