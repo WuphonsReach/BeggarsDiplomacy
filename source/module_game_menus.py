@@ -14314,9 +14314,10 @@ TOTAL:  {reg5}"),
 
   (
     "center_reports",0,
-    "Center Name: {s1}^Prosperity: {reg4}^Status: {reg5} ({s0})^Production: {reg7}/{reg6}^Rent Income: {reg1} denars^Tariff Income: {reg2} denars^Food Stock: for {reg3} days^{s99}^{s88}",
+    "Center Name: {s1}^Prosperity: {reg4}^Average Price Factor: {reg89}^Status: {reg5} ({s0})^Production: {reg7}/{reg6}^Rent Income: {reg1} denars^Tariff Income: {reg2} denars^Food Stock: for {reg3} days^{s99}^{s88}",
     "none",
-    [(party_get_slot, ":town_food_store", "$g_encountered_party", slot_party_food_store),
+    [
+     (party_get_slot, ":town_food_store", "$g_encountered_party", slot_party_food_store),
      (call_script, "script_center_get_food_consumption", "$g_encountered_party"),
      (assign, ":food_consumption", reg0),
      (try_begin),
@@ -14360,6 +14361,7 @@ TOTAL:  {reg5}"),
     (assign, ":distance_center_villages_avg", 0),
     (assign, ":distance_center_villages_min", 99999),
     (try_for_range, ":center", centers_begin, centers_end),
+      (neg|eq, "$g_encountered_party", ":center"),
       (store_distance_to_party_from_party, ":center_distance", "$g_encountered_party", ":center"),
       (try_begin),
         (is_between, ":center", castles_begin, castles_end),
@@ -14418,6 +14420,9 @@ TOTAL:  {reg5}"),
     (assign, reg83, ":distance_center_villages_max"),
     (str_store_string, s87, "@Villages ({reg80}) {reg81}/{reg82}/{reg83}"),
     (str_store_string, s88, "@^Distances^{s85}^{s86}^{s87}"),
+
+    (call_script, "script_dplmc_center_get_price_factor_index", "$g_encountered_party"),
+    (assign, reg89, reg0),
 
     # report center information into s99
     (store_current_hours, ":cur_hours"),
