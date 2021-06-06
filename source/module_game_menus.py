@@ -3225,7 +3225,7 @@ game_menus = [
     (store_attribute_level, ":charisma", "trp_player", ca_charisma),
 
     (troop_get_slot, ":renown", "trp_player", slot_troop_renown),
-    (val_div, ":renown", 25),
+    (val_div, ":renown", 20),
     (try_begin),
       (gt, ":leadership", 0),
       (str_store_string, s2, "@{!} +"),
