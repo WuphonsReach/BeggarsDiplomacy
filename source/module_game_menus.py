@@ -14054,7 +14054,7 @@ TOTAL:  {reg5}"),
     "none",
     [
       (store_character_level, ":level", "trp_player"),
-      (val_div, ":level", 15),
+      (val_div, ":level", 25),
       (val_add, ":level", 1),
       (quest_get_slot, ":quest_target_amount", "qst_train_peasants_against_bandits", slot_quest_target_amount),
       (quest_get_slot, ":quest_current_state", "qst_train_peasants_against_bandits", slot_quest_current_state),
