@@ -1,4 +1,4 @@
-1344
+1354
 qstr_Breaking_camp... Breaking_camp...
 qstr_Removing_disguise... Removing_disguise...
 qstr_{s17}_has_{reg17}_de {s17}_has_{reg17}_denars
@@ -1343,3 +1343,13 @@ qstr_As_a_hunter_provisi As_a_hunter,_provisions_and_raw_goods_are_expected_as_w
 qstr_As_a_caravan_guard_ As_a_caravan_guard,_you_will_be_able_to_bear_weapons_but_bring_only_a_few_personal_belongings.
 qstr_As_a_merchant_you_w As_a_merchant,_you_will_be_able_to_bring_any_assortment_of_goods.
 qstr_As_a_bard_you_will_ As_a_bard,_you_will_be_allowed_some_personal_possessions_and_your_instrument.
+qstr_{!}CASUS_BELLI:_{s91 {!}CASUS-BELLI:_{s91}_({reg91}:{reg92}d)_->_{s92}_({reg93}:{reg94}d)_
+qstr_{!}TRUCE_PROVOCATION {!}TRUCE-PROVOCATION:_{s91}_->_{s92}_({reg91}_->_{reg92}_days)_
+qstr_{!}PROVOCATION_TEST:_ {!}PROVOCATION-TEST:_{s91}_vs_{s92}_status:_{reg90}_days:_{reg91}
+qstr_{!}CASUS_BELLI:_{s92 {!}CASUS-BELLI:_{s92}_({reg90}d)_->_{s91}
+qstr_{!}TRUCE_PROVOCATION: {!}TRUCE-PROVOCATION:_{s91}_vs_{s92}_({reg91}_->_{reg92}_days)_
+qstr_{s59}:_{reg90} {s59}:_{reg90}
+qstr_{!}{s21}/{s20}:_{reg2 {!}{s21}/{s20}:_{reg20}-{reg21}={reg22}_({reg23}_mag)_price:_{reg24}->{reg27}->{reg25}->{reg26}
+qstr_{!}CHARITY:_Boost_{s91 {!}CHARITY:_Boost_{s91}_prosperity_by_+{reg90}_({reg91}->{reg92}),_paid_for_by_{s90}_({reg93}g).
+qstr_{!}{s21}/{s20}:_{reg20 {!}{s21}/{s20}:_{reg20}-{reg21}={reg22}_(mag:{reg23}_T:{reg24})_price:_{reg90}->{reg91}->{reg92}->{reg99}
+qstr_{!}CLEANSED:_{s90}_p {!}CLEANSED:_{s90}_prosp_{reg91}_cattle_{reg93}_sheep_{reg95}
