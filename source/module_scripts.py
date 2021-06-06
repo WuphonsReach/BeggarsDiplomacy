@@ -59136,24 +59136,24 @@ scripts = [
         (item_get_weapon_length, ":item_length", ":item"),
 
         # bonus points for various item properties
-        #(assign, ":i_bonus_score", 0),
-        #(try_begin),
-        #  (item_has_property, ":item", itp_can_penetrate_shield)
-        #  (val_add, ":i_bonus_score", 4),
+        (assign, ":i_bonus_score", 0),
+        (try_begin),
+          (item_has_property, ":item", itp_can_penetrate_shield),
+          (val_add, ":i_bonus_score", 4),
+        (else_try),
+          (item_has_property, ":item", itp_bonus_against_shield),
+          (val_add, ":i_bonus_score", 3),
         #(else_try),
-        #  (item_has_property, ":item", itp_bonus_against_shield)
-        #  (val_add, ":i_bonus_score", 3),
-        #(else_try),
-        #  (item_has_property, ":item", itp_penalty_with_shield)
+        #  (item_has_property, ":item", itp_penalty_with_shield),
         #  (val_add, ":i_bonus_score", -2),
+        (else_try),
+          (item_has_property, ":item", itp_crush_through),
+          (val_add, ":i_bonus_score", 3),
         #(else_try),
-        #  (item_has_property, ":item", itp_crush_through)
-        #  (val_add, ":i_bonus_score", 3),
-        #(else_try),
-        #  (item_has_property, ":item", itp_unbalanced)
+        #  (item_has_property, ":item", itp_unbalanced),
         #  (val_add, ":i_bonus_score", 2),
-        #(try_end),
-        #(val_add, ":i_score", ":i_bonus_score"),
+        (try_end),
+        (val_add, ":i_score", ":i_bonus_score"),
         
         #shootspeed?
 
@@ -59209,6 +59209,8 @@ scripts = [
         (else_try), #assume base of 100 speed, 100 length
           (this_or_next|eq, ":type", itp_type_one_handed_wpn),
           (eq, ":type", itp_type_two_handed_wpn),
+          # item length doesn't matter as much as speed
+          (val_clamp, ":item_length", 90, 101),
           (val_mul, ":item_length", ":item_speed"),
           (val_mul, ":i_score", ":item_length"),
         (else_try), #length priority over speed
