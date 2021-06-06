@@ -198,31 +198,12 @@ simple_triggers = [
    [
        (map_free),
        (call_script, "script_music_set_situation_with_culture", mtf_sit_travel),
-        ]),
+    ]),
 
-        #SB : change this block
-    (1,
-    [
-      # #escort caravan quest auto dialog trigger, moved to menu while auto-entering towns
-      # (try_begin),
-        # (eq, "$caravan_escort_state", 1),
-        # (party_is_active, "$caravan_escort_party_id"),
-
-        # (store_distance_to_party_from_party, ":caravan_distance_to_destination","$caravan_escort_destination_town","$caravan_escort_party_id"),
-        # (lt, ":caravan_distance_to_destination", 2),
-
-        # (store_distance_to_party_from_party, ":caravan_distance_to_player","p_main_party","$caravan_escort_party_id"),
-        # (lt, ":caravan_distance_to_player", 5),
-
-        # (assign, "$talk_context", tc_party_encounter),
-        # (assign, "$g_encountered_party", "$caravan_escort_party_id"),
-        # (party_stack_get_troop_id, ":caravan_leader", "$caravan_escort_party_id", 0),
-        # (party_stack_get_troop_dna, ":caravan_leader_dna", "$caravan_escort_party_id", 0),
-
-        # (start_map_conversation, ":caravan_leader", ":caravan_leader_dna"),
-      # (try_end),
-      #SB : debug block
-      (try_begin),
+  (1,
+  [
+      (try_begin), # note that $g_talk_troop can be -1
+        (ge, "$g_talk_troop", 0),
         (ge, "$cheat_mode", DPLMC_DEBUG_MIN),
         (troop_is_hero, "$g_talk_troop"),
         (str_store_troop_name, s17, "$g_talk_troop"),
