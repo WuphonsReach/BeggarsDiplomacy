@@ -14482,6 +14482,10 @@ TOTAL:  {reg5}"),
          (jump_to_menu, "mnu_center_reports_global_market"),
       ]),
 
+      ("to_center_reports_global_indexes", [], "Show global market indexes.", [
+         (jump_to_menu, "mnu_center_reports_global_indexes"),
+      ]),
+
       ("go_back_dot",[],"Go back.",
        [(try_begin),
           (party_slot_eq, "$g_encountered_party", slot_party_type, spt_village),
@@ -14983,6 +14987,30 @@ TOTAL:  {reg5}"),
       (assign, reg20, ":town_count"),
       (str_store_string, s99, "@^Towns ({reg20}):^^Prices at town (min/avg/max for all towns):"),
     (try_end),
+  ],
+  [("go_back_dot",[],"Go back.",[(jump_to_menu, "mnu_center_reports")])]
+  ),
+
+  (
+    "center_reports_global_indexes",0,
+    "Global Indexes:^{s90}",
+    "none",
+  [
+    (str_clear, s50),
+    (str_clear, s51),
+
+    (try_for_range, ":cur_center", towns_begin, towns_end),
+      (call_script, "script_dplmc_center_get_price_factor_index", ":cur_center"),
+      (assign, reg90, reg0),
+
+      # ---- build output for good using str_dplmc_s50_newline_s51 ----
+      (str_store_party_name, s59, ":cur_center"),
+      (str_store_string, s51, "@{s59}: {reg90}"),
+      (str_store_string, s50, "str_dplmc_s50_newline_s51"),
+    (try_end),
+
+    # prepare output
+    (str_store_string_reg, s90, s50),
   ],
   [("go_back_dot",[],"Go back.",[(jump_to_menu, "mnu_center_reports")])]
   ),
