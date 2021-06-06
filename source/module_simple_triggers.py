@@ -5323,16 +5323,72 @@ simple_triggers = [
   # yes, it's a bit of a hack, but makes towns more resilient
   (13,
    [
-     # only fire when player is close to village_66 (Fisdnar)
-    (store_distance_to_party_from_party, ":debug_dist_to_main_party", "p_main_party", "p_village_66"),
-    (le, ":debug_dist_to_main_party", 15),
+    (ge, "$g_dplmc_gold_changes", DPLMC_GOLD_CHANGES_LOW),
+    (try_for_range, ":center_no", towns_begin, towns_end),
+      (party_slot_eq, ":center_no", slot_center_is_besieged_by, -1), # not besieged
+      (party_get_slot, ":old_prosperity", ":center_no", slot_town_prosperity),
 
-    (this_or_next|eq, "$cheat_mode", DPLMC_DEBUG_EXPERIMENTAL),
-    (eq, "$g_infinite_camping", 1),
+      # only for low-prosperity towns
+      (lt, ":old_prosperity", 25), 
+      # percent chance to boost prosperity (lower prosperity gives higher odds)
+      (store_random_in_range, ":random", -70, 30),
+      (ge, ":random", ":old_prosperity"), 
 
-    (call_script, "script_initialize_item_info"),
-    (call_script, "script_initialize_economic_information"),
-    (call_script, "script_initialize_trade_routes"),
+      (assign, ":boost", 1), # standard free boost is +1 point
+      (try_begin),
+        # attempt to pay for it
+        # TODO: Figure out how this could/should work for the player's villages
+        (assign, ":paid_for_by_party", -1),
+        (try_begin),
+          (neg|party_slot_eq, ":center_no", slot_town_lord, "trp_player"),
+          (party_get_slot, ":center_lord", ":center_no", slot_town_lord),
+          (is_between, ":center_lord", active_npcs_begin, active_npcs_end),
+          # pay for it from the fief's lord's purse
+          (troop_get_slot, ":center_lord_wealth", ":center_lord", slot_troop_wealth),
+          (ge, ":center_lord_wealth", 20000), # lord has > N denars
+          (val_sub, ":center_lord_wealth", 2000),
+          (troop_set_slot, ":center_lord", slot_troop_wealth, ":center_lord_wealth"),
+          (assign, ":paid_party_new_wealth", ":center_lord_wealth"),
+          (assign, ":paid_for_by_party", ":center_lord"),
+          (store_random_in_range, ":boost", 3, 5), # 3..4
+        (else_try),
+          (neg|party_slot_eq, ":center_no", slot_town_lord, "trp_player"),
+          (store_faction_of_party, ":center_faction", ":center_no"),
+          (is_between, ":center_faction", npc_kingdoms_begin, kingdoms_end),
+          (faction_get_slot, ":faction_leader", ":center_faction", slot_faction_leader),
+          (is_between, ":faction_leader", active_npcs_begin, active_npcs_end),
+          # pay for it from the faction leader's purse
+          (troop_get_slot, ":faction_leader_wealth", ":faction_leader", slot_troop_wealth),
+          (ge, ":faction_leader_wealth", 30000), # lord has > N denars
+          (val_sub, ":faction_leader_wealth", 1200),
+          (troop_set_slot, ":faction_leader", slot_troop_wealth, ":faction_leader_wealth"),
+          (assign, ":paid_party_new_wealth", ":faction_leader_wealth"),
+          (assign, ":paid_for_by_party", ":faction_leader"),
+          (store_random_in_range, ":boost", 2, 4), # 2..3
+        (try_end),
+
+        (call_script, "script_change_center_prosperity", ":center_no", ":boost"),
+        (party_get_slot, ":new_prosperity", ":center_no", slot_town_prosperity),
+
+        (try_begin),
+          (ge, "$cheat_mode", DPLMC_DEBUG_MIN),
+          (store_distance_to_party_from_party, ":debug_dist_to_main_party", "p_main_party", ":center_no"),
+          (le, ":debug_dist_to_main_party", 100), # limit debug output to towns within range of the player
+          (str_store_party_name, s91, ":center_no"),
+          (assign, reg90, ":boost"),
+          (assign, reg91, ":old_prosperity"),
+          (assign, reg92, ":new_prosperity"),
+          (assign, reg93, ":paid_party_new_wealth"),
+          (try_begin),
+            (is_between, ":paid_for_by_party", active_npcs_begin, active_npcs_end),
+            (str_store_troop_name, s90, ":paid_for_by_party"),
+            (display_message, "@{!}CHARITY: Boost {s91} prosperity by +{reg90} ({reg91}->{reg92}), paid for by {s90} ({reg93}g)."),
+          (else_try),
+            (display_message, "@{!}CHARITY: Boost {s91} prosperity by +{reg90} ({reg91}->{reg92})."),
+          (try_end),
+        (end_try),
+      (try_end),
+    (try_end),
    ]),
 
   # Merchant caravans will re-evalulate their target town if it is besieged, or changes
