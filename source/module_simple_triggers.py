@@ -5396,30 +5396,56 @@ simple_triggers = [
     (try_end),
   ]),
 
-  (24,
+  (25,
   [
     # infested villages lose prosperity per cycle, average of 3/day
     # they also lose cattle/sheep at a rate of 3/day on average
     # cattle/sheep will grow back over time (based on slot_center_acres_pasture)
     (try_for_range, ":center_no", villages_begin, villages_end),
+      # only look at infested villages
       (party_slot_ge, ":center_no", slot_village_infested_by_bandits, 1),
-      
+
+      # get the information for the village
       (party_get_slot, ":prosperity", ":center_no", slot_town_prosperity),
       (assign, reg91, ":prosperity"),
+      (party_get_slot, ":num_cattle", ":center_no", slot_center_head_cattle),
+      (assign, reg93, ":num_cattle"),
+      (party_get_slot, ":num_sheep", ":center_no", slot_center_head_sheep),
+      (assign, reg95, ":num_sheep"),
+      
+      (try_begin), # attempt to de-infest the village
+        # only if the player does not have an active quest for the center
+        (neg|quest_slot_eq, "$random_quest_no", slot_quest_target_center, ":center_no"),
+        # only if prosperity / cattle / sheep are all low
+        (le, ":prosperity", 15),
+        (le, ":num_cattle", 15),
+        (le, ":num_sheep", 15),
+        # roll for cleaning
+        (store_random_in_range, ":cleaning_crew_roll", 0, 6),
+        (eq, ":cleaning_crew_roll", 0),
+        (party_set_slot, ":center_no", slot_village_infested_by_bandits, 0),
+        (try_begin),
+          (ge, "$cheat_mode", DPLMC_DEBUG_EXPERIMENTAL),
+          (store_distance_to_party_from_party, ":debug_dist_to_main_party", "p_main_party", ":center_no"),
+          (le, ":debug_dist_to_main_party", 120),
+          (str_store_party_name, s90, ":center_no"),
+          (display_message, "@{!}CLEANSED: {s90} prosp {reg91} cattle {reg93} sheep {reg95}"),
+        (try_end),
+      (try_end),
+
+      # check whether still infested
+      (party_slot_ge, ":center_no", slot_village_infested_by_bandits, 1),
+      
       (store_random_in_range, ":loss_of_prosperity", -5, 0), # [-5,-1] (avg -3)
       (call_script, "script_change_center_prosperity", ":center_no", ":loss_of_prosperity"),
       (party_get_slot, reg92, ":center_no", slot_town_prosperity),
 
-      (party_get_slot, ":num_cattle", ":center_no", slot_center_head_cattle),
-      (assign, reg93, ":num_cattle"),
       (store_random_in_range, ":cattle_loss", 0, 7), # 0..8 (avg 3)
       (val_sub, ":num_cattle", ":cattle_loss"),
       (val_max, ":num_cattle", 0),
       (party_set_slot, ":center_no", slot_center_head_cattle, ":num_cattle"),
       (assign, reg94, ":num_cattle"),
 
-      (party_get_slot, ":num_sheep", ":center_no", slot_center_head_sheep),
-      (assign, reg95, ":num_sheep"),
       (store_random_in_range, ":sheep_loss", 0, 7), # 0..8 (avg 3)
       (val_sub, ":num_sheep", ":sheep_loss"),
       (val_max, ":num_sheep", 0),
@@ -5429,7 +5455,7 @@ simple_triggers = [
       (try_begin),
         (ge, "$cheat_mode", DPLMC_DEBUG_EXPERIMENTAL),
         (store_distance_to_party_from_party, ":debug_dist_to_main_party", "p_main_party", ":center_no"),
-        (le, ":debug_dist_to_main_party", 60),
+        (le, ":debug_dist_to_main_party", 120),
         (str_store_party_name, s90, ":center_no"),
         (display_message, "@{!}INFESTED: {s90} prosp {reg91}->{reg92} cattle {reg93}->{reg94} sheep {reg95}->{reg96}"),
       (try_end),
