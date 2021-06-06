@@ -41361,7 +41361,6 @@ scripts = [
           (assign, reg7, "$newglob_total_prosperity_from_villageloot"),
           (assign, reg8, "$newglob_total_prosperity_from_townloot"),
           (assign, reg9, "$newglob_total_prosperity_from_village_trade"),
-          (assign, reg10, "$newglob_total_prosperity_from_convergence"),
           (assign, reg11, "$newglob_total_prosperity_losses"),
           (assign, reg12, "$newglob_total_prosperity_gains"),
         (display_message, "@{!}DEBUG: Total prosperity actual losses: {reg11}"),
@@ -41372,7 +41371,6 @@ scripts = [
         (display_message, "@{!}DEBUG: Prosperity changes from farmer trades: {reg9}"),
         (display_message, "@{!}DEBUG: Prosperity changes from looted villages: {reg7}"),
         (display_message, "@{!}DEBUG: Prosperity changes from sieges: {reg8}"),
-        (display_message, "@{!}DEBUG: Theoretical prosperity changes from convergence: {reg10}"),
       (try_end),
 
      ]),
@@ -41381,23 +41379,23 @@ scripts = [
   # INPUT: arg1 = center_no
   # OUTPUT: reg0 = ideal_prosperity
   ("get_center_ideal_prosperity",
-    [(store_script_param, ":center_no", 1),
-     (assign, ":ideal", 65),
+  [
+    (store_script_param, ":center_no", 1),
+    (assign, ":ideal", 75),
+    (try_begin),
+      (is_between, ":center_no", villages_begin, villages_end),
+      (assign, ":ideal", 65),
+      (try_begin),
+        (party_slot_eq, ":center_no", slot_center_has_fish_pond, 1),
+        (val_add, ":ideal", 10),
+      (try_end),
+    (try_end),
 
-	 (call_script, "script_center_get_goods_availability", ":center_no"),
-     (store_mul, ":hardship_index", reg0, 2),
-	 (val_sub, ":ideal", ":hardship_index"),
+    #TODO: Consider adding bonus/malus values based on other attributes
 
-     (try_begin),
-       (is_between, ":center_no", villages_begin, villages_end),
-       (party_slot_eq, ":center_no", slot_center_has_fish_pond, 1),
-       (val_add, ":ideal", 5),
-     (try_end),
-
-     (val_max, ":ideal", 0),
-
-     (assign, reg0, ":ideal"),
-     ]),
+    (val_max, ":ideal", 0),
+    (assign, reg0, ":ideal"),
+  ]),
 
   ("good_price_affects_good_production",
 	[
