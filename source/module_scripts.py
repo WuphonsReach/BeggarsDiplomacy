@@ -40874,15 +40874,22 @@ scripts = [
         (party_template_get_slot, ":bandit_lair_party", ":bandit_template", slot_party_template_lair_party),
         (le, ":bandit_lair_party", 1),
 
+        (set_spawn_radius, 20),
+
         # respawn of a lair should take a few days on average
         # the spawn attempt *can* fail, so it will take longer than expected (probably 2x-3x)
         (store_random_in_range, ":spawn_lair_chance", 0, 100),
+        (try_begin),
+          # sea raider lair is difficult to spawn in due to rules below
+          # give it a higher chance and cut down the spawn radius
+          (eq, ":bandit_template", "pt_sea_raiders"),
+          (set_spawn_radius, 18),
+          (val_sub, ":spawn_lair_chance", 10),
+        (try_end),
         (le, ":spawn_lair_chance", 20), # % per cycle to attempt respawn of the lair
 
         (party_template_get_slot, ":bandit_lair_template", ":bandit_template", slot_party_template_lair_type),
         (party_template_get_slot, ":bandit_lair_template_spawnpoint", ":bandit_template", slot_party_template_lair_spawnpoint),
-
-        (set_spawn_radius, 20),
 
         (spawn_around_party, ":bandit_lair_template_spawnpoint", ":bandit_lair_template"),
         (assign, ":new_camp", reg0),
