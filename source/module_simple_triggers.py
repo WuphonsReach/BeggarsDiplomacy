@@ -5229,7 +5229,7 @@ simple_triggers = [
           (try_begin),
             (is_between, ":paid_for_by_party", active_npcs_begin, active_npcs_end),
             (str_store_troop_name, s90, ":paid_for_by_party"),
-            (display_message, "@{!}CHARITY: Boost {s91} prosperity by +{reg90} ({reg91}->{reg92}), paid for by {s90} (balance {reg93} denars)."),
+            (display_message, "@{!}CHARITY: Boost {s91} prosperity by +{reg90} ({reg91}->{reg92}), paid for by {s90} ({reg93}g)."),
           (else_try),
             (display_message, "@{!}CHARITY: Boost {s91} prosperity by +{reg90} ({reg91}->{reg92})."),
           (try_end),
