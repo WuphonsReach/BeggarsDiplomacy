@@ -17400,6 +17400,7 @@ also excluded.^^You can change some settings here freely.",
 	  (store_faction_of_party, ":acting_faction", ":acting_village"),
 
 	  (try_begin),
+      # village is abused by current faction
 			(eq, ":target_village", -1),
 			(party_get_slot, ":target_faction", ":acting_village", slot_center_original_faction),
 			(try_begin),
@@ -17416,59 +17417,34 @@ also excluded.^^You can change some settings here freely.",
 
 			(str_store_string, s9, "str_local_notables_from_s1_a_village_claimed_by_the_s4_have_been_mistreated_by_their_overlords_from_the_s3_and_petition_s5_for_protection"),
 			(display_log_message, "@There has been an alleged border incident: {s9}"),
-
 			(call_script, "script_add_log_entry", logent_border_incident_subjects_mistreated, ":acting_village", -1, -1, ":acting_faction"),
-
-
     (else_try),
+      # two villages have an incident
 			(store_faction_of_party, ":target_faction", ":target_village"),
-
-		    (str_store_party_name, s1, ":acting_village"),
-		    (str_store_party_name, s2, ":target_village"),
+      (str_store_party_name, s1, ":acting_village"),
+      (str_store_party_name, s2, ":target_village"),
 
 			(store_random_in_range, ":random", 0, 3),
 			(try_begin),
 				(eq, ":random", 0),
-
 				(str_store_string, s9, "str_villagers_from_s1_stole_some_cattle_from_s2"),
 				(display_log_message, "@There has been an alleged border incident: {s9}"),
-
 				(call_script, "script_add_log_entry", logent_border_incident_cattle_stolen, ":acting_village", ":target_village", -1,":acting_faction"),
-
 			(else_try),
 				(eq, ":random", 1),
-
 				(str_store_string, s9, "str_villagers_from_s1_abducted_a_woman_from_a_prominent_family_in_s2_to_marry_one_of_their_boys"),
 				(display_log_message, "@There has been an alleged border incident: {s9}"),
-
 				(call_script, "script_add_log_entry", logent_border_incident_bride_abducted, ":acting_village", ":target_village", -1, ":acting_faction"),
 			(else_try),
 				(eq, ":random", 2),
-
 				(str_store_string, s9, "str_villagers_from_s1_killed_some_farmers_from_s2_in_a_fight_over_the_diversion_of_a_stream"),
 				(display_log_message, "@There has been an alleged border incident: {s9}"),
-
-			    (call_script, "script_add_log_entry", logent_border_incident_villagers_killed, ":acting_village", ":target_village", -1,":acting_faction"),
+        (call_script, "script_add_log_entry", logent_border_incident_villagers_killed, ":acting_village", ":target_village", -1,":acting_faction"),
 			(try_end),
-
 	  (try_end),
 
 	  (str_store_faction_name, s3, ":acting_faction"),
 	  (str_store_faction_name, s4, ":target_faction"),
-
-    # roll 2d3, then divide by 2, gives 25%=1, 50%=2, 25%=3
-    (store_random_in_range, ":roll_1", 0, 3),
-    (store_random_in_range, ":roll_2", 0, 3),
-    (store_add, ":roll", ":roll_1", ":roll_2"),
-    (val_div, ":roll", 2),
-    (val_add, ":roll", 2),
-    (store_mul, ":provocation_period", ":roll", dplmc_treaty_provocation_base),
-
-	  (store_add, ":slot_provocation_days", ":acting_faction", slot_faction_provocation_days_with_factions_begin),
-	  (val_sub, ":slot_provocation_days", kingdoms_begin),
-	  (faction_set_slot, ":target_faction", ":slot_provocation_days", ":provocation_period"),
-    
-    #TODO: Decrease any treaty length by some small amount
 
     (call_script, "script_diplomacy_faction_get_diplomatic_status_with_faction", ":acting_faction", ":target_faction"),
 	  (assign, ":acting_diplomatic_status", reg0),
@@ -17478,15 +17454,62 @@ also excluded.^^You can change some settings here freely.",
     (assign, ":target_diplomatic_duration", reg1),
 
     (try_begin),
-			(ge, "$cheat_mode", DPLMC_DEBUG_EXPERIMENTAL),
-      (str_store_faction_name, s91, ":acting_faction"),
-      (str_store_faction_name, s92, ":target_faction"),
-      (assign, reg91, ":acting_diplomatic_status"),
-      (assign, reg92, ":acting_diplomatic_duration"),
-      (assign, reg93, ":target_diplomatic_status"),
-      (assign, reg94, ":target_diplomatic_duration"),
-			(display_message, "@{!}PROVOCATION: {s91} ({reg91}:{reg92}d) -> {s92} ({reg93}:{reg94}d) "),
-		(try_end),
+      # the two are at peace (no treaties), add a CASUS BELLI
+      (eq, ":acting_diplomatic_status", 0),
+      (eq, ":target_diplomatic_status", 0),
+
+      # roll 2d3, then divide by 2, gives 25%=1, 50%=2, 25%=3
+      (store_random_in_range, ":roll_1", 0, 3),
+      (store_random_in_range, ":roll_2", 0, 3),
+      (store_add, ":roll", ":roll_1", ":roll_2"),
+      (val_div, ":roll", 2),
+      (val_add, ":roll", 2),
+      (store_mul, ":provocation_period", ":roll", dplmc_treaty_provocation_base),
+      # create casus belli (and duration)
+      (store_add, ":slot_provocation_days", ":acting_faction", slot_faction_provocation_days_with_factions_begin),
+      (val_sub, ":slot_provocation_days", kingdoms_begin),
+      (faction_set_slot, ":target_faction", ":slot_provocation_days", ":provocation_period"),
+
+      (try_begin),
+        (ge, "$cheat_mode", DPLMC_DEBUG_EXPERIMENTAL),
+        (str_store_faction_name, s91, ":acting_faction"),
+        (str_store_faction_name, s92, ":target_faction"),
+        (assign, reg90, ":provocation_period"),
+        (display_message, "@{!}CASUS-BELLI: {s92} ({reg90}d) -> {s91}"),
+      (try_end),
+    (else_try),
+      # the two factions have a TREATY
+      (eq, ":acting_diplomatic_status", 1),
+      (eq, ":target_diplomatic_status", 1),
+      # and that treaty is a TRUCE (based on days left)
+      (le, ":acting_diplomatic_duration", dplmc_treaty_truce_days_initial),
+      (le, ":target_diplomatic_duration", dplmc_treaty_truce_days_initial),
+      # the two sides should be equal values, but be accepting of problems
+      (assign, ":treaty_duration", ":acting_diplomatic_duration"),
+      (val_max, ":treaty_duration", ":target_diplomatic_duration"),
+      (assign, ":original_treaty_duration", ":treaty_duration"),
+      # cut the truce in half
+      (val_div, ":treaty_duration", 2),
+      # must be at least 2+ days left on the truce
+      (gt, ":treaty_duration", 2),
+
+      #Update the treaty duration
+      (store_add, ":truce_slot", ":acting_faction", slot_faction_truce_days_with_factions_begin),
+  		(val_sub, ":truce_slot", kingdoms_begin),
+      (faction_set_slot, ":target_faction", ":truce_slot", ":treaty_duration"),
+      (store_add, ":truce_slot", ":target_faction", slot_faction_truce_days_with_factions_begin),
+      (val_sub, ":truce_slot", kingdoms_begin),
+      (faction_set_slot, ":acting_faction", ":truce_slot", ":treaty_duration"),
+
+      (try_begin),
+        (ge, "$cheat_mode", DPLMC_DEBUG_EXPERIMENTAL),
+        (str_store_faction_name, s91, ":acting_faction"),
+        (str_store_faction_name, s92, ":target_faction"),
+        (assign, reg91, ":original_treaty_duration"),
+        (assign, reg92, ":treaty_duration"),
+        (display_message, "@{!}TRUCE-PROVOCATION: {s91} vs {s92} ({reg91} -> {reg92} days) "),
+      (try_end),
+    (try_end),
   ],
   [
     ("continue",[],"Continue",
