@@ -910,7 +910,7 @@ simple_triggers = [
 		(neq, ":acting_faction", ":target_faction"),
 
 		(call_script, "script_diplomacy_faction_get_diplomatic_status_with_faction", ":target_faction", ":acting_faction"),
-    # reg0 -- TRUCE = 1, PEACE = 0, CASUS BELLI = -1, WAR = -2
+    # reg0 -- TRUCE/TREATY = 1, PEACE = 0, CASUS BELLI = -1, WAR = -2
     (assign, ":diplo_status_with_faction", reg0),
     (assign, ":diplo_status_duration", reg1),
     (try_begin),
@@ -919,15 +919,17 @@ simple_triggers = [
       (str_store_faction_name, s92, ":target_faction"),
 			(assign, reg90, ":diplo_status_with_faction"),
       (assign, reg91, ":diplo_status_duration"),
-			(display_message, "@{!}PROVOCATION-TEST: {s91} -> {s92} status: {reg90} days: {reg91}"),
+			(display_message, "@{!}PROVOCATION-TEST: {s91} vs {s92} status: {reg90} days: {reg91}"),
 		(try_end),
-    #TODO: Allow border incidents to fire during truces (which will shorten it)
-		(eq, ":diplo_status_with_faction", 0),
+    # Must be at peace, or have a truce
+		(this_or_next|eq, ":diplo_status_with_faction", 0),
+    (eq, ":diplo_status_with_faction", 1),
+    (le, ":diplo_status_duration", dplmc_treaty_truce_days_initial),
 
+    (store_random_in_range, ":random", 0, 2),
 		(try_begin),
-			(party_slot_eq, ":acting_village", slot_center_original_faction, ":target_faction"),
-			(call_script, "script_add_notification_menu", "mnu_notification_border_incident", ":acting_village", -1),
-		(else_try),
+      (eq, ":random", 0),
+			(this_or_next|party_slot_eq, ":acting_village", slot_center_original_faction, ":target_faction"),
 			(party_slot_eq, ":acting_village", slot_center_ex_faction, ":target_faction"),
 			(call_script, "script_add_notification_menu", "mnu_notification_border_incident", ":acting_village", -1),
 		(else_try),
@@ -989,7 +991,9 @@ simple_triggers = [
 					(lt, ":relation", 0),
 					(faction_set_slot, ":faction_1", ":slot_provocation_days", 0),
 				(else_try), #Provocation expires
-					(eq, ":provocation_days", 1),
+          # Must be at peace in order to have casus belli that is counting down
+		      (eq, ":diplo_status_with_faction", 0),
+          (eq, ":provocation_days", 1),
 					(call_script, "script_add_notification_menu", "mnu_notification_casus_belli_expired", ":faction_1", ":faction_2"),
 					(faction_set_slot, ":faction_1", ":slot_provocation_days", 0),
 				(else_try),
