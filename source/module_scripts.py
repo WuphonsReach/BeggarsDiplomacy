@@ -31363,6 +31363,9 @@ scripts = [
 
 
 # script_exchange_prisoners_between_factions
+# The original code makes the assumptions that every Nord (etc.) that you
+# captured should be released when your faction declars peace with Nords.
+# But some of those troops might be deserters, etc., so only release 1/2.
 # Input: arg1 = faction_no_1, arg2 = faction_no_2
   ("exchange_prisoners_between_factions",
    [
@@ -31405,12 +31408,17 @@ scripts = [
            (try_end),
            (eq, ":continue", 1),
 
-           (try_begin),
-             (troop_is_hero, ":cur_troop_id"),
-             (call_script, "script_remove_troop_from_prison", ":cur_troop_id"),
-           (try_end),
-           (party_prisoner_stack_get_size, ":stack_size", ":party_no", ":troop_iterator"),
-           (party_remove_prisoners, ":party_no", ":cur_troop_id", ":stack_size"),
+          (party_prisoner_stack_get_size, ":stack_size", ":party_no", ":troop_iterator"),
+          (try_begin),
+            (troop_is_hero, ":cur_troop_id"),
+            (call_script, "script_remove_troop_from_prison", ":cur_troop_id"),
+            (party_remove_prisoners, ":party_no", ":cur_troop_id", ":stack_size"),
+          (else_try),
+            # only release 1/2 of enemy troops
+            (val_div, ":stack_size", 2),
+            (gt, ":stack_size", 0),
+            (party_remove_prisoners, ":party_no", ":cur_troop_id", ":stack_size"),
+          (try_end),
          (try_end),
        (try_end),
 
