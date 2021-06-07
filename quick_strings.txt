@@ -1,4 +1,4 @@
-1354
+1355
 qstr_Breaking_camp... Breaking_camp...
 qstr_Removing_disguise... Removing_disguise...
 qstr_{s17}_has_{reg17}_de {s17}_has_{reg17}_denars
@@ -1353,3 +1353,4 @@ qstr_{!}{s21}/{s20}:_{reg2 {!}{s21}/{s20}:_{reg20}-{reg21}={reg22}_({reg23}_mag)
 qstr_{!}CHARITY:_Boost_{s91 {!}CHARITY:_Boost_{s91}_prosperity_by_+{reg90}_({reg91}->{reg92}),_paid_for_by_{s90}_({reg93}g).
 qstr_{!}{s21}/{s20}:_{reg20 {!}{s21}/{s20}:_{reg20}-{reg21}={reg22}_(mag:{reg23}_T:{reg24})_price:_{reg90}->{reg91}->{reg92}->{reg99}
 qstr_{!}CLEANSED:_{s90}_p {!}CLEANSED:_{s90}_prosp_{reg91}_cattle_{reg93}_sheep_{reg95}
+qstr_{!}{s21}:_Converted_ {!}{s21}:_Converted_{reg20}_gold_into_+{reg21}_prosperity.

@@ -26145,30 +26145,6 @@ scripts = [
       (troop_add_merchandise, ":merchant_troop", itp_type_goods, ":number_of_slots_to_stock"),
       (troop_ensure_inventory_space, ":merchant_troop", 60),
       (troop_sort_inventory, ":merchant_troop"),
-
-      # Add prosperity to the village while reducing gold from the elder
-      (store_troop_gold, ":gold",":merchant_troop"),
-      (try_begin),
-        # elders like to keep a gold reserve
-        (val_sub, ":gold", 250), 
-        (val_max, ":gold", 0),
-        # calculate number of possible prosperity points, but always subtract one
-        (store_div, ":prosperity_added", ":gold", 300),
-        (val_sub, ":prosperity_added", 1),
-        (val_max, ":prosperity_added", 0),
-        (gt, ":prosperity_added", 0),
-        (store_mul, ":gold_removed", ":prosperity_added", 300),
-        (troop_remove_gold, ":merchant_troop", ":gold_removed"),
-        (call_script, "script_change_center_prosperity", ":cur_center", ":prosperity_added"),
-        (try_begin),
-          (ge, "$cheat_mode", DPLMC_DEBUG_MIN),
-          (store_distance_to_party_from_party, ":debug_dist_to_main_party", "p_main_party", ":cur_center"),
-          (le, ":debug_dist_to_main_party", ":debug_dist_to_main_party_limit"), # limit debug output to within range of player
-          (assign, reg20, ":gold_removed"),
-          (assign, reg21, ":prosperity_added"),
-          (display_message, "@{!}Converted {reg20} gold into +{reg21} prosperity."),
-        (try_end),
-      (try_end),
   ]),
 
   # script_refresh_village_defenders
@@ -50198,7 +50174,7 @@ scripts = [
 	(assign, reg0, ":final_score"),
 
 	(try_begin),
-		(ge, "$cheat_mode", DPLMC_DEBUG_EXPERIMENTAL),
+		(ge, "$cheat_mode", DPLMC_DEBUG_NEVER),
     (assign, reg90, ":final_score"),
     (str_store_troop_name, s91, ":lady"),
     #(store_faction_of_troop, s92, ":lady"),

@@ -5543,8 +5543,44 @@ simple_triggers = [
     (call_script, "script_initialize_trade_routes"),
    ]),
 
+  # VILLAGE ELDER GOLD -> PROSPERITY
+  # The village elder will invest any excess gold into the village's
+  # prosperity each day.  This rewards the player (through higher prosperity)
+  # for visiting villages and purchasing food/supplies.  
   (24,
-   []),
+  [
+    (try_for_range, ":center_no", villages_begin, villages_end),
+      (party_slot_eq, ":center_no", slot_village_state, svs_normal), # must not be looted, being raided, etc.
+      (party_slot_eq, ":center_no", slot_village_infested_by_bandits, 0), # must not be infested
+
+      (party_get_slot, ":merchant_troop", ":center_no", slot_town_elder),
+      (store_troop_gold, ":gold",":merchant_troop"),
+      (try_begin),
+        # elders like to keep a gold reserve
+        (val_sub, ":gold", 150), 
+        (val_max, ":gold", 0),
+        (gt, ":gold", 0),
+        # calculate number of possible prosperity points, but always subtract one
+        (store_div, ":prosperity_added", ":gold", 300),
+        (val_sub, ":prosperity_added", 1),
+        (val_max, ":prosperity_added", 0),
+        (gt, ":prosperity_added", 0),
+        (store_mul, ":gold_removed", ":prosperity_added", 300),
+        (troop_remove_gold, ":merchant_troop", ":gold_removed"),
+        (call_script, "script_change_center_prosperity", ":center_no", ":prosperity_added"),
+        (try_begin),
+          (ge, "$cheat_mode", DPLMC_DEBUG_MIN),
+          (store_distance_to_party_from_party, ":debug_dist_to_main_party", "p_main_party", ":center_no"),
+          (le, ":debug_dist_to_main_party", 20), # limit debug output to within range of player
+          (assign, reg20, ":gold_removed"),
+          (assign, reg21, ":prosperity_added"),
+          (str_store_party_name, s21, ":center_no"),
+          (display_message, "@{!}{s21}: Converted {reg20} gold into +{reg21} prosperity."),
+        (try_end),
+      (try_end),
+    (try_end),
+  ]),
+
   (24,
    []),
   (24,
