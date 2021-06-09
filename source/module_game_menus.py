@@ -9860,10 +9860,20 @@ TOTAL:  {reg5}"),
            (jump_to_menu, "mnu_center_manage"),
         ]),
       ("recruit_volunteers",
-      [
-        (call_script, "script_cf_village_recruit_volunteers_cond"),
-       ]
-       ,"Recruit Volunteers.",
+    [
+      (call_script, "script_cf_village_recruit_volunteers_cond"),
+
+      (party_slot_eq, "$current_town", slot_village_state, svs_normal),
+      (neg|party_slot_ge, "$current_town", slot_village_infested_by_bandits, 1),
+      (party_slot_ge, "$current_town", slot_center_player_relation, 0),
+      (party_get_slot, ":village_elder_troop", "$current_town", slot_town_elder),
+      (gt, ":village_elder_troop", 0),
+      # has player met elder, or is cheating, or is of same faction
+      (this_or_next|eq, "$cheat_mode", DPLMC_CHEAT_YES),
+      (this_or_next|faction_slot_eq, "$players_kingdom", slot_faction_ai_object, "$current_town"),
+      (troop_slot_ge,":village_elder_troop", slot_troop_met, 1),
+    ]
+    ,"Recruit Volunteers.",
        [
          (try_begin),
            (call_script, "script_cf_enter_center_location_bandit_check"),
@@ -9918,9 +9928,9 @@ TOTAL:  {reg5}"),
 		#rubik had a good idea: only enable this after having met the village elder
 		(party_get_slot, ":village_elder_troop", "$current_town",slot_town_elder),
 		(gt, ":village_elder_troop", 0),
-		(this_or_next|ge, "$cheat_mode", DPLMC_CHEAT_YES),#Always can jump to village elder in cheat mode
+		(this_or_next|eq, "$cheat_mode", DPLMC_CHEAT_YES),#Always can jump to village elder in cheat mode
 		(this_or_next|eq, "$players_kingdom", "$g_encountered_party_faction"), #allow when member
-        (troop_slot_ge,":village_elder_troop", slot_troop_met, 1),
+    (troop_slot_ge,":village_elder_troop", slot_troop_met, 1),
 		##diplomacy end+
        ]
        ,"Meet the Village Elder.",
@@ -9963,39 +9973,40 @@ TOTAL:  {reg5}"),
        [
      ]),
 	 ##diplomacy end+
-      ("village_buy_food",[(party_slot_eq, "$current_town", slot_village_state, svs_normal),
-                           (neg|party_slot_ge, "$current_town", slot_village_infested_by_bandits, 1),
-                           ],"Buy supplies from the peasants.",
-       [
-         (try_begin),
-           (call_script, "script_cf_enter_center_location_bandit_check"),
-         (else_try),
-           (party_get_slot, ":merchant_troop", "$current_town", slot_town_elder),
-
-      #(try_for_range, ":cur_goods", trade_goods_begin, trade_goods_end),
-        #(store_sub, ":cur_good_price_slot", ":cur_goods", trade_goods_begin),
-        #(val_add, ":cur_good_price_slot", slot_town_trade_good_prices_begin),
-		#(party_get_slot, ":cur_price", "$current_town", ":cur_good_price_slot"),
-	    #(call_script, "script_center_get_production", "$current_town", ":cur_goods"),
-        #(assign, reg13, reg0),
-	    #(call_script, "script_center_get_consumption", "$current_town", ":cur_goods"),
-        #(str_store_party_name, s1, "$current_town"),
-        #(str_store_item_name, s2, ":cur_goods"),
-		#(assign, reg16, ":cur_price"),
-        #(display_log_message, "@DEBUG:{s1}-{s2}, prd: {reg13}, con: {reg0}, raw: {reg1}, cns: {reg2}, fee: {reg16}"),
-	  #(try_end),
-
-           (change_screen_trade, ":merchant_troop"),
-         (try_end),
-         ]),
+      ("village_buy_food",
+    [
+      (party_slot_eq, "$current_town", slot_village_state, svs_normal),
+      (neg|party_slot_ge, "$current_town", slot_village_infested_by_bandits, 1),
+      (party_slot_ge, "$current_town", slot_center_player_relation, 0),
+      (party_get_slot, ":village_elder_troop", "$current_town", slot_town_elder),
+      (gt, ":village_elder_troop", 0),
+      # has player met elder, or is cheating, or is of same faction
+      (this_or_next|eq, "$cheat_mode", DPLMC_CHEAT_YES),
+      (this_or_next|faction_slot_eq, "$players_kingdom", slot_faction_ai_object, "$current_town"),
+      (troop_slot_ge,":village_elder_troop", slot_troop_met, 1),
+    ],"Buy supplies from the peasants.",
+    [
+      (try_begin),
+        (call_script, "script_cf_enter_center_location_bandit_check"),
+      (else_try),
+        (party_get_slot, ":village_elder_troop", "$current_town", slot_town_elder),
+        (gt, ":village_elder_troop", 0),
+        (change_screen_trade, ":village_elder_troop"),
+      (try_end),
+    ]),
 ##diplomacy start+
 #Import rubik's Auto-Sell options from Custom Commander
       ("dplmc_village_auto_sell",
         [
         (party_slot_eq, "$current_town", slot_village_state, svs_normal),
         (neg|party_slot_ge, "$current_town", slot_village_infested_by_bandits, 1),
+        (party_slot_ge, "$current_town", slot_center_player_relation, 0),
         (party_get_slot, ":village_elder_troop", "$current_town", slot_town_elder),
-        (ge, ":village_elder_troop", 0),
+        (gt, ":village_elder_troop", 0),
+        # has player met elder, or is cheating, or is of same faction
+        (this_or_next|eq, "$cheat_mode", DPLMC_CHEAT_YES),
+        (this_or_next|faction_slot_eq, "$players_kingdom", slot_faction_ai_object, "$current_town"),
+        (troop_slot_ge,":village_elder_troop", slot_troop_met, 1),
         ],
        "Sell items automatically.",
        [
@@ -10007,8 +10018,13 @@ TOTAL:  {reg5}"),
         [
         (party_slot_eq, "$current_town", slot_village_state, svs_normal),
         (neg|party_slot_ge, "$current_town", slot_village_infested_by_bandits, 1),
+        (party_slot_ge, "$current_town", slot_center_player_relation, 0),
         (party_get_slot, ":village_elder_troop", "$current_town", slot_town_elder),
-        (ge, ":village_elder_troop", 0),
+        (gt, ":village_elder_troop", 0),
+        # has player met elder, or is cheating, or is of same faction
+        (this_or_next|eq, "$cheat_mode", DPLMC_CHEAT_YES),
+        (this_or_next|faction_slot_eq, "$players_kingdom", slot_faction_ai_object, "$current_town"),
+        (troop_slot_ge,":village_elder_troop", slot_troop_met, 1),
         ],
        "Buy food automatically.",
        [
