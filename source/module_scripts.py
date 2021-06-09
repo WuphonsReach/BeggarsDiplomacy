@@ -40626,7 +40626,7 @@ scripts = [
 
       (assign, ":debug_on", 0),
       (try_begin),
-        (eq, "$cheat_mode", DPLMC_DEBUG_EXPERIMENTAL),
+        (eq, "$cheat_mode", DPLMC_DEBUG_NEVER),
         (display_message, "@{!}DEBUG: Spawning bandits (spawn_bandits)"),
         (assign, ":debug_on", 1),
       (try_end),
