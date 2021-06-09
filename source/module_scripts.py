@@ -26168,7 +26168,7 @@ scripts = [
       (val_mul, ":number_of_slots_to_stock", ":center_prosperity_multiplier"),
       (val_div, ":number_of_slots_to_stock", 100),
 
-      (val_add, ":number_of_slots_to_stock", 3),
+      (val_add, ":number_of_slots_to_stock", 6),
       # cut inventory if the center is being looted, etc.
       (party_get_slot, ":svs", ":cur_center", slot_village_state),
       (try_begin),
@@ -26180,10 +26180,10 @@ scripts = [
         (this_or_next|eq, ":svs", svs_deserted),
         (this_or_next|eq, ":svs", svs_being_raided),
         (eq, ":svs", svs_looted),
-        (val_div, ":number_of_slots_to_stock", 4),
+        (val_div, ":number_of_slots_to_stock", 6),
       (else_try),
         (party_slot_ge, ":cur_center", slot_village_infested_by_bandits, 1),
-        (val_div, ":number_of_slots_to_stock", 2),
+        (val_div, ":number_of_slots_to_stock", 3),
       (try_end),
 
       # hard clamp of the number of slots to stock with goods
