@@ -29625,6 +29625,7 @@ scripts = [
 
 		  (store_div, ":subtraction", ":old_renown", 200),
       (val_sub, ":subtraction", 1), # kicks in above 400
+	    (val_max, ":subtraction", 0),
 	    (val_sub, ":renown_change", ":subtraction"),
 	    (val_max, ":renown_change", 0),
 
