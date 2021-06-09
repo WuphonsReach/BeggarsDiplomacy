@@ -5481,7 +5481,13 @@ simple_triggers = [
       
       (try_begin), # attempt to de-infest the village
         # only if the player does not have an active quest for the center
-        (neg|quest_slot_eq, "$random_quest_no", slot_quest_target_center, ":center_no"),
+        (assign, ":continue", 1),
+        (try_begin),
+          (gt, "$random_quest_no", 0),
+          (quest_slot_eq, "$random_quest_no", slot_quest_target_center, ":center_no"),
+          (assign, ":continue", 0),
+        (try_end),
+        (eq, ":continue", 1),
         # only if prosperity / cattle / sheep are all low
         (le, ":prosperity", 15),
         (le, ":num_cattle", 15),
