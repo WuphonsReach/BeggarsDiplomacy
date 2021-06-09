@@ -31963,7 +31963,7 @@ scripts = [
             (troop_slot_eq, "trp_player", slot_troop_betrothed, ":cur_troop"), #player spouse goes in position of honor
             (assign, ":lady_meets_visitors", 0), #She is already in the place of honor
             (try_begin), #SB : primary spouse
-                (ge, "$cheat_mode", DPLMC_DEBUG_MIN),
+                (ge, "$cheat_mode", DPLMC_DEBUG_NEVER),
                 (str_store_troop_name, s4, ":cur_troop"),
                 (display_message, "str_s4_is_present_at_the_center_and_in_place_of_honor"),
             (try_end),
@@ -31972,7 +31972,7 @@ scripts = [
             (troop_slot_eq, ":cur_troop", slot_troop_betrothed, "trp_player"),
             (assign, ":lady_meets_visitors", 1),
             (try_begin), #SB : secondary spouse, normally shadowed due to above behaviour
-                (ge, "$cheat_mode", DPLMC_DEBUG_MIN),
+                (ge, "$cheat_mode", DPLMC_DEBUG_NEVER),
                 (str_store_troop_name, s4, ":cur_troop"),
                 (display_message, "str_s4_is_present_at_the_center_and_is_married"),
             (try_end),
@@ -31984,7 +31984,7 @@ scripts = [
 
 
             (try_begin),
-                (ge, "$cheat_mode", DPLMC_DEBUG_MIN),
+                (ge, "$cheat_mode", DPLMC_DEBUG_NEVER),
                 (str_store_troop_name, s4, ":cur_troop"),
                 (try_begin), #SB : distinguish between refugee and prisoner
                   (troop_slot_eq, ":cur_troop", slot_troop_prisoner_of_party, ":center_no"),
@@ -32004,7 +32004,7 @@ scripts = [
                 (assign, ":lady_meets_visitors", 0),
 
                 (try_begin),
-                    (ge, "$cheat_mode", DPLMC_DEBUG_MIN),
+                    (ge, "$cheat_mode", DPLMC_DEBUG_NEVER),
                     (str_store_troop_name, s4, ":cur_troop"),
                     (display_message, "str_s4_is_present_at_the_center_and_not_attending_the_feast"),
                 (try_end),
@@ -32012,7 +32012,7 @@ scripts = [
                 (assign, ":lady_meets_visitors", 1),
 
                 (try_begin),
-                    (ge, "$cheat_mode", DPLMC_DEBUG_MIN),
+                    (ge, "$cheat_mode", DPLMC_DEBUG_NEVER),
                     (str_store_troop_name, s4, ":cur_troop"),
                     (display_message, "str_s4_is_present_at_the_center_and_is_married"),
                 (try_end),
@@ -32024,7 +32024,7 @@ scripts = [
 			(assign, ":lady_meets_visitors", 1),
 
 			(try_begin),
-				(ge, "$cheat_mode", DPLMC_DEBUG_MIN),
+				(ge, "$cheat_mode", DPLMC_DEBUG_NEVER),
 				(str_store_troop_name, s4, ":cur_troop"),
 				(display_message, "@{!}DEBUG -- {s4} is present at the center and is attending the feast"),
 			(try_end),
@@ -32034,7 +32034,7 @@ scripts = [
 			(assign, ":lady_meets_visitors", 0),
 
 			(try_begin),
-				(ge, "$cheat_mode", DPLMC_DEBUG_MIN),
+				(ge, "$cheat_mode", DPLMC_DEBUG_NEVER),
 				(str_store_troop_name, s4, ":cur_troop"),
 				(display_message, "@{!}DEBUG -- {s4} is present at the center and is awaiting the player in private"),
 			(try_end),
@@ -32046,14 +32046,14 @@ scripts = [
 			(assign, ":lady_meets_visitors", 1),
 
 			(try_begin),
-				(ge, "$cheat_mode", DPLMC_DEBUG_MIN),
+				(ge, "$cheat_mode", DPLMC_DEBUG_NEVER),
 				(str_store_troop_name, s4, ":cur_troop"),
 				(display_message, "@{!}DEBUG -- {s4} is_present_at_the_center_and_is_allowed_to_meet_the_player"),
 			(try_end),
 
 		(else_try),
 			(try_begin),
-				(ge, "$cheat_mode", DPLMC_DEBUG_MIN),
+				(ge, "$cheat_mode", DPLMC_DEBUG_NEVER),
 				(str_store_troop_name, s4, ":cur_troop"),
 				(display_message, "@{!}DEBUG -- {s4}is_present_at_the_center_and_is_not_allowed_to_meet_the_player"),
 			(try_end),
