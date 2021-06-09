@@ -8930,6 +8930,66 @@ scripts = [
     (try_end),
   (try_end),
 
+  # Villages with obvious scenery that implies extra products
+
+  #"village_3", "Azgad" - med grain, small flax, small pigs
+  (call_script, "script_dplmc_add_random_production", "p_village_3", slot_center_acres_grain, 2000, 3500, -1),
+  (call_script, "script_dplmc_add_random_production", "p_village_3", slot_center_acres_flax, 300, 600, -1),
+  (call_script, "script_dplmc_add_random_production", "p_village_3", slot_center_head_pigs, 5, 10, -1),
+
+  #"village_16","Shapeshte" - (nothing special), snowy
+
+  #"village_18","Ulburban" (nothing special), snowy
+
+  #"village_19","Hanun" snowy, small river with nets, hills, nothing special
+
+  #"village_20","Uslum" - nothing special, snowy, hills, lumber
+
+  #"village_21","Bazeck" - river, hills, snowy, nothing special
+
+  #"village_34","Ehlerdah" - small vineyard/cabbage, hilly
+  (call_script, "script_dplmc_add_random_production", "p_village_34", slot_center_household_gardens, 1, 2, -1),
+  (call_script, "script_dplmc_add_random_production", "p_village_34", slot_center_acres_vineyard, 200, 400, -1),
+  (call_script, "script_dplmc_add_random_production", "p_village_34", slot_center_head_sheep, 10, 20, -1),
+  (call_script, "script_dplmc_divide_production_by", "p_village_34", slot_center_acres_grain, 3),
+
+  #"village_44","Peshmi" - small vineyard/cabbage
+  (call_script, "script_dplmc_add_random_production", "p_village_44", slot_center_household_gardens, 1, 2, -1),
+  (call_script, "script_dplmc_add_random_production", "p_village_44", slot_center_acres_vineyard, 200, 400, -1),
+
+  #"village_49","Tismirr" - (nothing special, snowy, hills, maybe lumber)
+
+  #"village_50","Karindi" - snowy, flax/grain, lumber, 
+  (call_script, "script_dplmc_add_random_production", "p_village_50", slot_center_acres_flax, 300, 600, -1),
+
+  #"village_57","Ushkuru" - small cabbage, fruit trees, small grapes, small flax
+  (call_script, "script_dplmc_add_random_production", "p_village_57", slot_center_household_gardens, 1, 2, -1),
+  (call_script, "script_dplmc_add_random_production", "p_village_57", slot_center_acres_vineyard, 200, 400, -1),
+  (call_script, "script_dplmc_add_random_production", "p_village_57", slot_center_acres_flax, 300, 600, -1),
+  (call_script, "script_dplmc_add_random_production", "p_village_57", slot_center_acres_fruit_trees, 300, 600, -1),
+
+  #"village_58","Vezin" - river, small pigs, chicken, cabbage - medium fish
+  (call_script, "script_dplmc_add_random_production", "p_village_58", slot_center_head_pigs, 4, 10, -1),
+  (call_script, "script_dplmc_add_random_production", "p_village_58", slot_center_head_chicken, 4, 10, -1),
+  (call_script, "script_dplmc_add_random_production", "p_village_58", slot_center_household_gardens, 1, 3, -1),
+
+  #"village_77","Rizi" - cabbage, pigs, furs, flax, small honey
+  (call_script, "script_dplmc_add_random_production", "p_village_77", slot_center_household_gardens, 3, 6, -1),
+  (call_script, "script_dplmc_add_random_production", "p_village_77", slot_center_head_pigs, 5, 10, -1),
+  (call_script, "script_dplmc_add_random_production", "p_village_77", slot_center_fur_traps, 4, 8, -1),
+  (call_script, "script_dplmc_add_random_production", "p_village_77", slot_center_acres_flax, 500, 900, -1),
+  (call_script, "script_dplmc_add_random_production", "p_village_77", slot_center_apiaries, 3, 5, -1),
+
+  #"village_86","Slezkh" - snowy, nestled in hills, lumber, nothing special
+
+  #"village_94","Mazigh" - has obvious grain/grapes/cabbage
+  (call_script, "script_dplmc_add_random_production", "p_village_94", slot_center_household_gardens, 2, 4, -1),
+  (call_script, "script_dplmc_add_random_production", "p_village_94", slot_center_acres_grain, 1500, 3000, -1),
+  (call_script, "script_dplmc_add_random_production", "p_village_94", slot_center_acres_vineyard, 600, 800, -1),
+
+  #"village_97","Sekhtem" - obviious vineyards
+  (call_script, "script_dplmc_add_random_production", "p_village_97", slot_center_acres_vineyard, 600, 800, -1),
+
   #Ocean and river villages, new map
   (call_script, "script_dplmc_add_random_production", "p_village_1", slot_center_fishing_fleet, 8, 15, 0), #Yaragar
   (call_script, "script_dplmc_add_random_production", "p_village_3", slot_center_fishing_fleet, 8, 18, 1), #Azgad
@@ -8938,10 +8998,12 @@ scripts = [
   (call_script, "script_dplmc_add_random_production", "p_village_8", slot_center_fishing_fleet, 10, 20, -1), #Haen
   (call_script, "script_dplmc_add_random_production", "p_village_9", slot_center_fishing_fleet, 10, 15, 0), #Buvran
 
-  (call_script, "script_dplmc_add_random_production", "p_village_9", slot_center_fishing_fleet, 10, 18, 0), #Uslum
-  (call_script, "script_dplmc_add_random_production", "p_village_9", slot_center_fishing_fleet, 8, 15, -1), #Bazeck
-  (call_script, "script_dplmc_add_random_production", "p_village_9", slot_center_fishing_fleet, 8, 15, -1), #Ilvia
-  (call_script, "script_dplmc_add_random_production", "p_village_9", slot_center_fishing_fleet, 8, 15, -1), #Glunmar
+  (call_script, "script_dplmc_add_random_production", "p_village_19", slot_center_fishing_fleet, 3, 8, -1), #Hanun
+
+  (call_script, "script_dplmc_add_random_production", "p_village_20", slot_center_fishing_fleet, 10, 18, 0), #Uslum
+  (call_script, "script_dplmc_add_random_production", "p_village_21", slot_center_fishing_fleet, 8, 15, -1), #Bazeck
+  (call_script, "script_dplmc_add_random_production", "p_village_23", slot_center_fishing_fleet, 8, 15, -1), #Ilvia
+  (call_script, "script_dplmc_add_random_production", "p_village_27", slot_center_fishing_fleet, 8, 15, -1), #Glunmar
 
   (call_script, "script_dplmc_add_random_production", "p_village_30", slot_center_fishing_fleet, 10, 20, 1), #Ruvar
   (call_script, "script_dplmc_add_random_production", "p_village_31", slot_center_fishing_fleet, 6, 12, 0), #Ambean
@@ -8953,6 +9015,7 @@ scripts = [
   (call_script, "script_dplmc_add_random_production", "p_village_51", slot_center_fishing_fleet, 8, 16, 0), #Jelbegi
   (call_script, "script_dplmc_add_random_production", "p_village_53", slot_center_fishing_fleet, 10, 25, 1), #Balanli
   (call_script, "script_dplmc_add_random_production", "p_village_56", slot_center_fishing_fleet, 10, 16, 0), #Fenada
+  (call_script, "script_dplmc_add_random_production", "p_village_58", slot_center_fishing_fleet, 12, 18, -1), #Vezin
 
   (call_script, "script_dplmc_add_random_production", "p_village_66", slot_center_fishing_fleet, 8, 20, 1), #Fisdnar
   (call_script, "script_dplmc_add_random_production", "p_village_68", slot_center_fishing_fleet, 8, 16, -1), #Ibdeles
