@@ -1,4 +1,4 @@
-1355
+1364
 qstr_Breaking_camp... Breaking_camp...
 qstr_Removing_disguise... Removing_disguise...
 qstr_{s17}_has_{reg17}_de {s17}_has_{reg17}_denars
@@ -1354,3 +1354,12 @@ qstr_{!}CHARITY:_Boost_{s91 {!}CHARITY:_Boost_{s91}_prosperity_by_+{reg90}_({reg
 qstr_{!}{s21}/{s20}:_{reg20 {!}{s21}/{s20}:_{reg20}-{reg21}={reg22}_(mag:{reg23}_T:{reg24})_price:_{reg90}->{reg91}->{reg92}->{reg99}
 qstr_{!}CLEANSED:_{s90}_p {!}CLEANSED:_{s90}_prosp_{reg91}_cattle_{reg93}_sheep_{reg95}
 qstr_{!}{s21}:_Converted_ {!}{s21}:_Converted_{reg20}_gold_into_+{reg21}_prosperity.
+qstr_{s11}_gave_you_a_fake {s11}_gave_you_a_fake_letter_to_fool_{s13}_into_banishing_{reg3?her:his}_vassal_{s16}.__You_are_to_go_near_{s14},_give_the_letter_to_one_of_your_{s15}_and_send_{reg4?her:him}_into_the_town_as_a_messenger,_believing_{reg4?her:his}_orders_to_be_genuine.
+qstr_Then_take_it_with_my Then_take_it,_with_my_eternal_thanks._You_are_a_noble_{man/woman}.__I_will_never_forget_that_you_helped_me_in_my_time_of_need.
+qstr_Forgive_me_{playerna Forgive_me,_{playername},_but_I_must_insist_you_accept_it.__The_money_means_little_to_me,_and_I_owe_you_so_much.__Here,_take_it,_and_let_us_speak_no_more_of_this.
+qstr_Guildmaster_of_{s4}_g Guildmaster_of_{s4}_gave_you_{reg12}_denars_to_pay_the_ransom_of_a_girl_kidnapped_by_bandits.__You_are_to_meet_the_bandits_near_{s3}_and_pay_them_the_ransom_fee.__After_that_you_are_to_bring_the_girl_back_to_{s4}.
+qstr_Guildmaster_of_{s4}_pr Guildmaster_of_{s4}_promised_you_{reg12}_denars_if_you_can_make_sure_that_{s12}_and_{s13}_no_longer_pose_a_threat_to_a_peace_settlement_between_{s15}_and_{s14}.__In_order_to_do_that,_you_must_either_convince_them_or_make_sure_they_fall_captive_and_remain_so_until_a_peace_agreement_is_made.
+qstr_{reg20?We_mostly_prod {reg20?We_mostly_produce_{s5}_here:We_don't_produce_much_here_these_days}.__If_you_would_like_to_learn_more,_you_can_speak_with_our_{reg4?guildmaster:village_elder}._He_is_nearby,_right_over_there.
+qstr_You_are_challenging_m You_are_challenging_me_to_a_duel?_How_droll!_As_you_wish,_{playername},_it_will_be_good_sport_to_bash_your_head_in.
+qstr_{s11}_gave_you_a_fake_ {s11}_gave_you_a_fake_letter_to_fool_{s13}_into_banishing_{reg3?her:his}_vassal_{s16}.__You_are_to_go_near_{s14},_give_the_letter_to_one_of_your_{s15}_and_send_{reg4?her:him}_into_the_town_as_a_messenger,__believing_{reg4?her:his}_orders_to_be_genuine.
+qstr_{playername}_what_a_ {playername},_what_a_dear_{man/woman}_you_are,__but_I_will_not_allow_you_to_refuse_this._I_owe_you_far_more_than_I_can_say,__and_I_am_sure_you_can_put_this_money_to_far_better_use_than_I.
