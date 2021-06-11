@@ -46202,7 +46202,9 @@ scripts = [
 			(else_try),
 				(eq, ":faction_object", "fac_player_supporters_faction"),
 				(str_store_string, s39, "str_your_followers"),
-			(else_try), #bandits
+			(else_try), #bandits (only if the identified roll is zero)
+        (store_random_in_range, ":bandits_identified", 0, 4),
+        (eq, ":bandits_identified", 0),
 				(assign, ":last_bandit_party_found", ":assailants_known"),
 				(assign, ":last_bandit_party_origin", ":origin"),
 				(assign, ":last_bandit_party_destination", ":destination"),
