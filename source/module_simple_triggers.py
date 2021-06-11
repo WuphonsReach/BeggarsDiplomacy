@@ -3202,7 +3202,11 @@ simple_triggers = [
       (troop_inventory_slot_get_item_amount, ":cur_amount", "trp_player", ":cur_slot"),
       (val_add, ":available_food_qty", ":cur_amount"),
     (try_end),
-    (store_div, ":days_until_starvation", ":available_food_qty", ":daily_consumption"),
+    (assign, ":days_until_starvation", 0),
+    (try_begin),
+      (gt, ":daily_consumption", 0),
+      (store_div, ":days_until_starvation", ":available_food_qty", ":daily_consumption"),
+    (try_end),
 
     (try_begin),
       (eq, "$cheat_mode", DPLMC_DEBUG_NEVER),
@@ -3272,7 +3276,9 @@ simple_triggers = [
          (try_begin), # SB : spoilage, objection
            (eq, ":modifier", imod_rotten),
            (troop_inventory_slot_get_item_amount, ":amount", "trp_player", ":i_slot"),
+           (ge, ":amount", 0),
            (troop_inventory_slot_get_item_max_amount, ":max", "trp_player", ":i_slot"),
+           (ge, ":max", 0),
            (store_sub, ":amount", ":max", ":amount"), #get amount consumed already
            (val_mul, ":amount", 100),
            (val_div, ":amount", ":max"),
