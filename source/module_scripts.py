@@ -9057,12 +9057,12 @@ scripts = [
     (try_end),
   (try_end),
 
-  #Initialize pastureland
+  #Initialize pastureland - this is just a starting point for livestock capacity, acres of grain also matters
   (try_for_range, ":center", centers_begin, centers_end),
     (party_get_slot, ":head_cattle", ":center", slot_center_head_cattle),
-    (store_mul, ":cattle_acres", ":head_cattle", 4),
+    (store_mul, ":cattle_acres", ":head_cattle", 6),
     (party_get_slot, ":head_sheep", ":center", slot_center_head_sheep),
-    (store_mul, ":sheep_acres", ":head_sheep", 2),
+    (store_mul, ":sheep_acres", ":head_sheep", 3),
 
     (store_add, ":num_acres", ":cattle_acres", ":sheep_acres"),
     (val_mul, ":num_acres", 6),

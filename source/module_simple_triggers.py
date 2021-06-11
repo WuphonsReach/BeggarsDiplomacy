@@ -1971,112 +1971,140 @@ simple_triggers = [
       (try_end),
     ]),
 
-  # Refresh number of cattle in villages
-  (24 * 7,
+  # Refresh number of cattle/sheep in villages (1/7 chance per day)
+  (24,
   [
     (try_for_range, ":village_no", centers_begin, centers_end),
       (neg|is_between, ":village_no", castles_begin, castles_end),
+      (store_random_in_range, ":random", 0, 7),
+      (eq, ":random", 0),
 
       (party_get_slot, ":num_cattle", ":village_no", slot_center_head_cattle),
       (party_get_slot, ":num_sheep", ":village_no", slot_center_head_sheep),
-      (party_get_slot, ":num_acres", ":village_no", slot_center_acres_pasture),
-	    (val_max, ":num_acres", 1),
 
-	    (store_mul, ":grazing_capacity", ":num_cattle", 600), # 6 acres/cattle
-	    (store_mul, ":sheep_addition", ":num_sheep", 300), # 3 acres/sheep
-	    (val_add, ":grazing_capacity", ":sheep_addition"),
-	    (val_div, ":grazing_capacity", ":num_acres"), # result is % capacity (100 = at maximum sustainable capacity)
+      (party_get_slot, ":acres_pasture", ":village_no", slot_center_acres_pasture),
+	    (val_max, ":acres_pasture", 0),
+      (party_get_slot, ":acres_grain", ":village_no", slot_center_acres_grain),
+      (val_div, ":acres_grain", 100),
+	    (val_max, ":acres_grain", 0),
 
-      (try_begin),
-        (ge, "$cheat_mode", DPLMC_DEBUG_NEVER),
-        (store_distance_to_party_from_party, ":debug_dist_to_main_party", "p_main_party", ":village_no"),
-        (le, ":debug_dist_to_main_party", 8), # limit debug output to towns within range of the player (otherwise too chatty)
-        (str_store_party_name, s20, ":village_no"),
-        (assign, reg20, ":num_acres"),
-        (assign, reg21, ":num_cattle"),
-        (assign, reg22, ":num_sheep"),
-        (assign, reg23, ":grazing_capacity"),
-        (display_message, "@{!}Grazing: {s20}: {reg21} cattle {reg22} sheep on {reg20} acres at {reg23} capacity"),
-      (end_try),
+      (store_div, ":sheep_capacity_pasture", ":acres_pasture", 6),
+      (store_div, ":sheep_capacity_grain", ":acres_grain", 18),
+      (store_add, ":sheep_capacity", ":sheep_capacity_pasture", ":sheep_capacity_grain"),
+      (store_mul, ":sheep_grazing_capacity", ":num_sheep", 100), # 120 sheep -> 12000
+      (val_div, ":sheep_grazing_capacity", ":sheep_capacity"), # capacity is 100 -> 12000/100 = 120%
+
+      (store_div, ":cattle_capacity_pasture", ":acres_pasture", 16),
+      (store_div, ":cattle_capacity_grain", ":acres_grain", 8),
+      (store_add, ":cattle_capacity", ":cattle_capacity_pasture", ":cattle_capacity_grain"),
+      (store_mul, ":cattle_grazing_capacity", ":num_cattle", 100), # 200 cattle -> 20000
+      (val_div, ":cattle_grazing_capacity", ":cattle_capacity"), # capacity is 300 -> 20000/300 = 66%
 
       (store_random_in_range, ":random_no", 0, 100),
       (try_begin), #Disaster
-        (eq, ":random_no", 0),#1% chance of epidemic - should happen once every two years
-        (val_min, ":num_cattle", 10),
-
         (try_begin),
-#          (eq, "$cheat_mode", 1),
-#          (str_store_party_name, s1, ":village_no"),
-#          (display_message, "@{!}Cattle in {s1} are exterminated due to famine."),
-           ##diplomacy start+ Add display message for the player's own fiefs
-		   #(store_distance_to_party_from_party, ":dist", "p_main_party", ":village_no"),
-		   #(this_or_next|lt, ":dist", 30),
-	          (gt, "$g_player_chamberlain", 0),
-		   (party_slot_eq, ":village_no", slot_town_lord, "trp_player"),
-		   (party_get_slot, reg4, ":village_no", slot_center_head_cattle),
-		   (val_sub, reg4, ":num_cattle"),
-		   (gt, reg4, 0),
-		   (str_store_party_name_link, s4, ":village_no"),
-		   (display_log_message, "@A livestock epidemic has killed {reg4} cattle in {s4}."),
-		   ##diplomacy end+
+          (eq, ":random_no", 0), #1% chance of epidemic - should happen once every two years
+          (val_min, ":num_cattle", 5),
+          (this_or_next|gt, "$g_player_chamberlain", 0),
+          (ge, "$cheat_mode", DPLMC_DEBUG_MIN),
+  		    (this_or_next|party_slot_eq, ":village_no", slot_town_lord, "trp_player"),
+          (ge, "$cheat_mode", DPLMC_DEBUG_MIN),
+	  	    (party_get_slot, reg4, ":village_no", slot_center_head_cattle),
+		      (val_sub, reg4, ":num_cattle"),
+		      (gt, reg4, 0),
+          (str_store_party_name_link, s4, ":village_no"),
+		      (display_log_message, "@A livestock epidemic has killed {reg4} cattle in {s4}."),
+          (store_div, ":loss_of_prosperity", reg4, 5),
+          (val_add, ":loss_of_prosperity", 1),
+          (val_max, ":loss_of_prosperity", 1),
+          (val_mul, ":loss_of_prosperity", -1),
+          (call_script, "script_change_center_prosperity", ":village_no", ":loss_of_prosperity"),
         (try_end),
+        (try_begin),
+          (eq, ":random_no", 1), #1% chance of epidemic - should happen once every two years
+          (val_min, ":num_sheep", 5),
+          (this_or_next|gt, "$g_player_chamberlain", 0),
+          (ge, "$cheat_mode", DPLMC_DEBUG_MIN),
+  		    (this_or_next|party_slot_eq, ":village_no", slot_town_lord, "trp_player"),
+          (ge, "$cheat_mode", DPLMC_DEBUG_MIN),
+	  	    (party_get_slot, reg4, ":village_no", slot_center_head_sheep),
+		      (val_sub, reg4, ":num_sheep"),
+		      (gt, reg4, 0),
+          (str_store_party_name_link, s4, ":village_no"),
+		      (display_log_message, "@A livestock epidemic has killed {reg4} sheep in {s4}."),
+          (store_div, ":loss_of_prosperity", reg4, 8),
+          (val_add, ":loss_of_prosperity", 1),
+          (val_max, ":loss_of_prosperity", 1),
+          (val_mul, ":loss_of_prosperity", -1),
+          (call_script, "script_change_center_prosperity", ":village_no", ":loss_of_prosperity"),
+        (try_end),
+      (try_end),
 
-      (else_try), #Overgrazing
-	    (gt, ":grazing_capacity", 100),
+      # cattle pop
+      (try_begin),
+        (lt, ":num_cattle", 5),
+        (gt, ":cattle_capacity", 5),
+        (store_random_in_range, ":add_cattle", 1, 6),
+        (val_add, ":num_cattle", ":add_cattle"),
+      (try_end),
+      (try_begin), #Overgrazing (-10%)
+        (gt, ":cattle_grazing_capacity", 100),
+        (val_mul, ":num_cattle", 90),
+        (val_div, ":num_cattle", 100),
+      (else_try), #superb grazing (+25%)
+        (lt, ":cattle_grazing_capacity", 30),
+        (val_mul, ":num_cattle", 125),
+        (val_div, ":num_cattle", 100),
+      (else_try), #very good grazing (+12%)
+        (lt, ":cattle_grazing_capacity", 60),
+        (val_mul, ":num_cattle", 112),
+        (val_div, ":num_cattle", 100),
+      (else_try), # +6%
+        (val_mul, ":num_cattle", 106),
+        (val_div, ":num_cattle", 100),
+      (try_end),
+      (party_set_slot, ":village_no", slot_center_head_cattle, ":num_cattle"),
 
-         (val_mul, ":num_sheep", 90), #10% decrease at number of cattles
-         (val_div, ":num_sheep", 100),
-
-         (val_mul, ":num_cattle", 90), #10% decrease at number of sheeps
-         (val_div, ":num_cattle", 100),
-
-       (else_try), #superb grazing
-         (lt, ":grazing_capacity", 30),
-
-         (val_mul, ":num_cattle", 120), #20% increase at number of cattles
-         (val_div, ":num_cattle", 100),
-         (val_add, ":num_cattle", 1),
-
-         (val_mul, ":num_sheep", 120), #20% increase at number of sheeps
-         (val_div, ":num_sheep", 100),
-         (val_add, ":num_sheep", 1),
-
-       (else_try), #very good grazing
-         (lt, ":grazing_capacity", 60),
-
-         (val_mul, ":num_cattle", 110), #10% increase at number of cattles
-         (val_div, ":num_cattle", 100),
-		(val_add, ":num_cattle", 1),
-
-         (val_mul, ":num_sheep", 110), #10% increase at number of sheeps
-         (val_div, ":num_sheep", 100),
-		(val_add, ":num_sheep", 1),
-
-     (else_try), #good grazing
-	    (lt, ":grazing_capacity", 100),
-         (lt, ":random_no", 50),
-
-         (val_mul, ":num_cattle", 105), #5% increase at number of cattles
-         (val_div, ":num_cattle", 100),
-         (try_begin), #if very low number of cattles and there is good grazing then increase number of cattles also by one
-           (le, ":num_cattle", 20),
-			(val_add, ":num_cattle", 1),
-		(try_end),
-
-         (val_mul, ":num_sheep", 105), #5% increase at number of sheeps
-         (val_div, ":num_sheep", 100),
-         (try_begin), #if very low number of sheeps and there is good grazing then increase number of sheeps also by one
-           (le, ":num_sheep", 20),
-			(val_add, ":num_sheep", 1),
-		(try_end),
-
-
-     (try_end),
-
-     (party_set_slot, ":village_no", slot_center_head_cattle, ":num_cattle"),
-     (party_set_slot, ":village_no", slot_center_head_sheep, ":num_sheep"),
+      # sheep pop
+      (try_begin),
+        (lt, ":num_sheep", 5),
+        (gt, ":sheep_capacity", 5),
+        (store_random_in_range, ":add_sheep", 1, 6),
+        (val_add, ":num_sheep", ":add_sheep"),
+      (try_end),
+      (try_begin), #Overgrazing (-10%)
+        (gt, ":sheep_grazing_capacity", 100),
+        (val_mul, ":num_sheep", 90),
+        (val_div, ":num_sheep", 100),
+      (else_try), #superb grazing (+25%)
+        (lt, ":sheep_grazing_capacity", 30),
+        (val_mul, ":num_sheep", 125),
+        (val_div, ":num_sheep", 100),
+      (else_try), #very good grazing (+12%)
+        (lt, ":sheep_grazing_capacity", 60),
+        (val_mul, ":num_sheep", 112),
+        (val_div, ":num_sheep", 100),
+      (else_try), # +6%
+        (val_mul, ":num_sheep", 106),
+        (val_div, ":num_sheep", 100),
+      (try_end),
+      (party_set_slot, ":village_no", slot_center_head_sheep, ":num_sheep"),
+  
+      (try_begin),
+        (ge, "$cheat_mode", DPLMC_DEBUG_EXPERIMENTAL),
+        (store_distance_to_party_from_party, ":debug_dist_to_main_party", "p_main_party", ":village_no"),
+        (le, ":debug_dist_to_main_party", 20), # limit debug output to range (limits debug chatter)
+        (str_store_party_name, s20, ":village_no"),
+        (assign, reg21, ":num_cattle"),
+        (assign, reg22, ":cattle_capacity"),
+        (assign, reg23, ":cattle_grazing_capacity"),
+        (assign, reg24, ":num_sheep"),
+        (assign, reg25, ":sheep_capacity"),
+        (assign, reg26, ":sheep_grazing_capacity"),
+        (display_message, "@{!}LIVESTOCK: {s20}: {reg21}/{reg22} ({reg23} pct) cattle, {reg24}/{reg25} ({reg26} pct) sheep."),
+      (end_try),
     (try_end),
-    ]),
+  ]),
 
    #Accumulate taxes
    (24 * 7,
