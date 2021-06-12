@@ -46401,6 +46401,8 @@ scripts = [
 
 		(str_store_string, s39, "str_unknown_assailants"),
 		(assign, ":assailants_known", -1),
+    (assign, ":last_bandit_party_found", ":assailants_known"),
+
 		(try_begin),
 			(party_is_active, ":actor"),
 			(store_faction_of_party, ":actor_faction", ":actor"),

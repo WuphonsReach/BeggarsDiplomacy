@@ -41154,8 +41154,9 @@ I suppose there are plenty of bounty hunters around to get the job done . . .", 
     (assign, ":destination", reg2),
     (assign, ":hours_ago", reg3),
 
-    # Bandits must have been identified
+    # Bandits must have been identified and be active
     (gt, "$g_bandit_party_for_bounty", 0),
+    (party_is_active, "$g_bandit_party_for_bounty"),
     # Bandits must not be far away from here some caravan routes are longer 
     # (for example, Wercheg doesn't care about desert bandits)
     (store_distance_to_party_from_party, ":dist_to_main_party", "p_main_party", "$g_bandit_party_for_bounty"),
