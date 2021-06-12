@@ -1,4 +1,4 @@
-1368
+1347
 qstr_Breaking_camp... Breaking_camp...
 qstr_Removing_disguise... Removing_disguise...
 qstr_{s17}_has_{reg17}_de {s17}_has_{reg17}_denars
@@ -6,12 +6,13 @@ qstr_{!}{s3}_commander_of {!}{s3}_commander_of_party_#{reg4}_which_is_not_his_tr
 qstr_{!}_Commanded_party_ {!}_Commanded_party_#{reg4}_is_{s3},_troop_leaded_party_#{reg5}_is_{s65}
 qstr_Morale_for_{s9}_troo Morale_for_{s9}_troops:_{reg6}
 qstr_{!}Hire_reinforcemen {!}Hire_reinforcements_for_{s11}_from_{s12}_for_{reg11}_denars.
-qstr_{!}PROVOCATION_TEST: {!}PROVOCATION-TEST:_{s91}_->_{s92}_status:_{reg90}_days:_{reg91}
+qstr_{!}PROVOCATION_TEST: {!}PROVOCATION-TEST:_{s91}_vs_{s92}_status:_{reg90}_days:_{reg91}
 qstr_{!}DEBUG____Doing_po {!}DEBUG_--_Doing_political_calculations_for_{s9}
 qstr_{!}DEBUG___{s4}_fact {!}DEBUG_-_{s4}_faction_changed_in_defection
 qstr_{s5}_has_decided_to_ {s5}_has_decided_to_grant_{s4}_to_another_lord_of_the_{s7}.
-qstr_{!}Grazing:_{s20}:_{ {!}Grazing:_{s20}:_{reg21}_cattle_{reg22}_sheep_on_{reg20}_acres_at_{reg23}_capacity
 qstr_A_livestock_epidemic A_livestock_epidemic_has_killed_{reg4}_cattle_in_{s4}.
+qstr_A_livestock_epidemic_ A_livestock_epidemic_has_killed_{reg4}_sheep_in_{s4}.
+qstr_{!}LIVESTOCK:_{s20}: {!}LIVESTOCK:_{s20}:_{reg21}/{reg22}_({reg23}_pct)_cattle,_{reg24}/{reg25}_({reg26}_pct)_sheep.
 qstr_{!}DEBUG_:_tax_rate_ {!}DEBUG_:_tax_rate_in_{s6}:_{reg0}
 qstr_{!}DEBUG_:_accumulat {!}DEBUG_:_accumulated_rents__in_{s6}:_{reg0}
 qstr_{!}DEBUG_:_rent_chan {!}DEBUG_:_rent_change_in_{s6}:_{reg0}__in_{s6}
@@ -51,12 +52,14 @@ qstr_{!}DEBUG___{s4}_facti {!}DEBUG_-_{s4}_faction_changed_from_slot_troop_chang
 qstr_{s1}_has_switched_fr {s1}_has_switched_from_{s2}_to_{s3}.
 qstr_{!}DEBUG_:_{s2}_is_b {!}DEBUG_:_{s2}_is_besieged_by_{s3}
 qstr_{!}DEBUG___Checking_ {!}DEBUG_-_Checking_fire_at_{s4}_for_{s5}_-_current_time_{reg3},_last_nearby_fire_{reg4}
-qstr_{!}CHARITY:_Boost_{s {!}CHARITY:_Boost_{s91}_prosperity_by_+{reg90}_({reg91}->{reg92}),_paid_for_by_{s90}_(balance_{reg93}_denars).
+qstr_{!}CHARITY:_Boost_{s {!}CHARITY:_Boost_{s91}_prosperity_by_+{reg90}_({reg91}->{reg92}),_paid_for_by_{s90}_({reg93}g).
 qstr_{!}CHARITY:_Boost_{s9 {!}CHARITY:_Boost_{s91}_prosperity_by_+{reg90}_({reg91}->{reg92}).
 qstr_{!}WALLED:_{s90}__st {!}WALLED:_{s90}_(str:_{reg93})_was_given_{reg91}_denars_by_{s91}_for_a_total_wealth_of_{reg92}.
 qstr_{!}WALLED:_{s90}__str {!}WALLED:_{s90}_(str:_{reg93})_was_given_{reg91}_denars_for_a_total_wealth_of_{reg92}.
 qstr_{!}CARAVAN_DIVERTED: {!}CARAVAN_DIVERTED:_{s92}_caravan:_{s90}->{s91}
+qstr_{!}CLEANSED:_{s90}_p {!}CLEANSED:_{s90}_prosp_{reg91}_cattle_{reg93}_sheep_{reg95}
 qstr_{!}INFESTED:_{s90}_p {!}INFESTED:_{s90}_prosp_{reg91}->{reg92}_cattle_{reg93}->{reg94}_sheep_{reg95}->{reg96}
+qstr_{!}{s21}:_Converted_ {!}{s21}:_Converted_{reg20}_gold_into_+{reg21}_prosperity.
 qstr_Your_recruiter_who_w Your_recruiter_who_was_commissioned_to_hire_{reg10}_recruits_for_{s13}_has_been_defeated!
 qstr_{s13}_has_been_taken {s13}_has_been_taken_by_the_enemy_and_your_commissioned_recruiter_has_vanished_without_a_trace!
 qstr_ERROR_IN_THE_RECRUIT ERROR_IN_THE_RECRUITER_KIT_SIMPLE_TRIGGERS!
@@ -232,7 +235,7 @@ qstr_{!}DEBUG___liege_sco {!}DEBUG_-_liege_score_{reg0}_vs_player_score_{reg1}
 qstr_{!}DEBUG_:_result_fo {!}DEBUG_:_result_for_political_is_{reg3}
 qstr_{!}DEBUG_:_result_for {!}DEBUG_:_result_for_new_liege_:_{reg31}
 qstr_{!}DEBUG_:_result_for_ {!}DEBUG_:_result_for_old_liege_:_{reg32}
-qstr_You_are_challenging_ You_are_challenging_me_to_a_duel?_How_droll!As_you_wish,_{playername},_it_will_be_good_sport_to_bash_your_head_in.
+qstr_You_are_challenging_ You_are_challenging_me_to_a_duel?_How_droll!_As_you_wish,_{playername},_it_will_be_good_sport_to_bash_your_head_in.
 qstr_{s16}_and_{s17} {s16}_and_{s17}
 qstr_{!}{s16}_{s17} {!}{s16},_{s17}
 qstr_Very_well_I_will_ac Very_well,_I_will_accept_you_back_into_my_ranks,_if_you're_ready_to_swear_your_solemn_oath_once_more.
@@ -263,13 +266,13 @@ qstr_{s11}_asked_you_to_f {s11}_asked_you_to_follow_the_spy_that_will_leave_{s12
 qstr_{s11}_asked_you_to_c {s11}_asked_you_to_capture_a_lord_from_{s13},_any_lord,_and_then_drag_your_victim_back_to_{s11}_for_safekeeping.
 qstr_{s9}_asked_you_to_le {s9}_asked_you_to_lend_your_companion_{s3}_to_{reg65?him:her}_for_a_week.
 qstr_{s9}_asked_you_to_col {s9}_asked_you_to_collect_the_debt_of_{reg4}_denars_{s3}_owes_to_{reg65?her:him}._{s3}_was_at_{s4}_when_you_were_given_this_quest.
-qstr_{s11}_gave_you_a_fak {s11}_gave_you_a_fake_letter_to_fool_{s13}_into_banishing_{reg3?her:his}_vassal_{s16}._You_are_to_go_near_{s14},_give_the_letter_to_one_of_your_{s15}_and_send_{reg4?her:him}_into_the_town_as_a_messenger,_believing_{reg4?her:his}_orders_to_be_genuine.
+qstr_{s11}_gave_you_a_fak {s11}_gave_you_a_fake_letter_to_fool_{s13}_into_banishing_{reg3?her:his}_vassal_{s16}.__You_are_to_go_near_{s14},_give_the_letter_to_one_of_your_{s15}_and_send_{reg4?her:him}_into_the_town_as_a_messenger,__believing_{reg4?her:his}_orders_to_be_genuine.
 qstr_{s9}_has_requested_y {s9}_has_requested_you_to_bring_{reg65?her:him}_{reg1}_{s3}_as_prisoners.
 qstr_Lend_your_experience Lend_your_experienced_surgeon_{s3}_to_{s1}.
 qstr_{!}DEBUG____{reg4}_h {!}DEBUG_--_{reg4}_hours_since_last_feast_for_{s4}
-qstr_Then_take_it_with_m Then_take_it,_with_my_eternal_thanks._You_are_a_noble_{man/woman}._I_will_never_forget_that_you_helped_me_in_my_time_of_need.
-qstr_Forgive_me_{playern Forgive_me,_{playername},_but_I_must_insist_you_accept_it._The_money_means_little_to_me,_and_I_owe_you_so_much._Here,_take_it,_and_let_us_speak_no_more_of_this.
-qstr_{playername}_what_a {playername},_what_a_dear_{man/woman}_you_are,_but_I_will_not_allow_you_to_refuse_this._I_owe_you_far_more_than_I_can_say,_and_I_am_sure_you_can_put_this_money_to_far_better_use_than_I.
+qstr_Then_take_it_with_m Then_take_it,_with_my_eternal_thanks._You_are_a_noble_{man/woman}.__I_will_never_forget_that_you_helped_me_in_my_time_of_need.
+qstr_Forgive_me_{playern Forgive_me,_{playername},_but_I_must_insist_you_accept_it.__The_money_means_little_to_me,_and_I_owe_you_so_much.__Here,_take_it,_and_let_us_speak_no_more_of_this.
+qstr_{playername}_what_a {playername},_what_a_dear_{man/woman}_you_are,__but_I_will_not_allow_you_to_refuse_this._I_owe_you_far_more_than_I_can_say,__and_I_am_sure_you_can_put_this_money_to_far_better_use_than_I.
 qstr_{s11}_asked_you_to_r {s11}_asked_you_to_rescue_{reg65?her:his}_{s17},_{s13},_from_{s14}_by_switching_clothes_and_taking_{reg4?her:his}_place_in_prison.
 qstr_{s11}_asked_you_to_re {s11}_asked_you_to_rescue_{reg65?her:his}_{s17},_{s13},_from_{s14}.
 qstr_{s11}_asked_you_to_d {s11}_asked_you_to_deliver_a_message_to_{s13},_who_is_imprisoned_at_{s14}.
@@ -292,8 +295,8 @@ qstr_{s9}_of_{s3}_asked_y {s9}_of_{s3}_asked_you_to_deliver_{reg5}_units_({reg6}
 qstr_{s9}_of_{s3}_asked_yo {s9}_of_{s3}_asked_you_to_deliver_{reg5}_units_of_{s6}_to_the_merchant's_store_in_{s4}_in_7_days.
 qstr_Escort_the_merchant_ Escort_the_merchant_caravan_to_the_town_of_{s8}.
 qstr_Merchant_{s9}_of_{s4 Merchant_{s9}_of_{s4}_asked_you_to_hunt_down_the_troublesome_bandits_in_the_vicinity_of_the_town.
-qstr_Guildmaster_of_{s4}_ Guildmaster_of_{s4}_gave_you_{reg12}_denars_to_pay_the_ransom_of_a_girl_kidnapped_by_bandits._You_are_to_meet_the_bandits_near_{s3}_and_pay_them_the_ransom_fee._After_that_you_are_to_bring_the_girl_back_to_{s4}.
-qstr_Guildmaster_of_{s4}_p Guildmaster_of_{s4}_promised_you_{reg12}_denars_if_you_can_make_sure_that_{s12}_and_{s13}_no_longer_pose_a_threat_to_a_peace_settlement_between_{s15}_and_{s14}._In_order_to_do_that,_you_must_either_convince_them_or_make_sure_they_fall_captive_and_remain_so_until_a_peace_agreement_is_made.
+qstr_Guildmaster_of_{s4}_ Guildmaster_of_{s4}_gave_you_{reg12}_denars_to_pay_the_ransom_of_a_girl_kidnapped_by_bandits.__You_are_to_meet_the_bandits_near_{s3}_and_pay_them_the_ransom_fee.__After_that_you_are_to_bring_the_girl_back_to_{s4}.
+qstr_Guildmaster_of_{s4}_p Guildmaster_of_{s4}_promised_you_{reg12}_denars_if_you_can_make_sure_that_{s12}_and_{s13}_no_longer_pose_a_threat_to_a_peace_settlement_between_{s15}_and_{s14}.__In_order_to_do_that,_you_must_either_convince_them_or_make_sure_they_fall_captive_and_remain_so_until_a_peace_agreement_is_made.
 qstr_The_Guildmaster_of_{s The_Guildmaster_of_{s14}_has_asked_you_to_deal_with_a_group_of_bandits_terrorising_the_streets_of_{s14}._They_only_come_out_at_night,_and_only_attack_lone_travellers_on_the_streets.
 qstr_Guildmaster_of_{s10} Guildmaster_of_{s10}_asked_you_to_move_a_cattle_herd_to_{s13}._You_will_earn_{reg8}_denars_in_return.
 qstr_{reg4?She:He}_is_not {reg4?She:He}_is_not_commanding_any_soldiers_at_the_moment.
@@ -311,7 +314,7 @@ qstr_{s6}_Our_{reg4?town: {s6}_Our_{reg4?town:village}_and_the_surrounding_lands
 qstr_{s6}_Our_{reg4?town:v {s6}_Our_{reg4?town:village}_and_the_surrounding_lands_belong_to_{s7}_of_{s8}.
 qstr_{s3}_and_{s5} {s3}_and_{s5}
 qstr_{!}{s3}_{s5} {!}{s3},_{s5}
-qstr_{reg20?We_mostly_pro {reg20?We_mostly_produce_{s5}_here:We_don't_produce_much_here_these_days}._If_you_would_like_to_learn_more,_you_can_speak_with_our_{reg4?guildmaster:village_elder}._He_is_nearby,_right_over_there.
+qstr_{reg20?We_mostly_pro {reg20?We_mostly_produce_{s5}_here:We_don't_produce_much_here_these_days}.__If_you_would_like_to_learn_more,_you_can_speak_with_our_{reg4?guildmaster:village_elder}._He_is_nearby,_right_over_there.
 qstr_Current Current
 qstr_Court_Guard Court_Guard
 qstr_Prison_Guard Prison_Guard
@@ -406,7 +409,7 @@ qstr_Win_Battle Win_Battle
 qstr_Lose_Battle Lose_Battle
 qstr_{!}_{s61} {!}_{s61}
 qstr_{!}DEBUG____ERROR:_M {!}DEBUG_--_ERROR:_More_than_15_trade_routes_are_given_for_{s1}.
-qstr_{!}{s21}/{s20}:_{reg {!}{s21}/{s20}:_{reg20}-{reg21}={reg22}_({reg23}_mag)_price:_{reg24}->{reg25}->{reg26}
+qstr_{!}{s21}/{s20}:_{reg {!}{s21}/{s20}:_{reg20}-{reg21}={reg22}_(mag:{reg23}_T:{reg24})_price:_{reg90}->{reg91}->{reg92}->{reg99}
 qstr_{!}DEBUG_DMTT__{s91} {!}DEBUG-DMTT_({s91}_{s90}):_{s93}_({reg93})_->_{s92}_({reg92})
 qstr_{!}_DEBUG_loot_playe {!}_DEBUG_loot_player_items:_g_player_surrenders_=_{reg0},_merciful_=_{reg1}
 qstr_{!}{s4}_is_sent_to_{ {!}{s4}_is_sent_to_{s5}_after_defeat
@@ -453,7 +456,6 @@ qstr_{!}DEBUG____{s4}_awa {!}DEBUG_--_{s4}_awarded_to_{s5}
 qstr_{!}RESTOCK:_{s21}__{ {!}RESTOCK:_{s21}_({s20}):_Village_goods_merchant
 qstr_{!}{s20}:_{reg21}_ne {!}{s20}:_{reg21}_net-prod_{reg23}_price-factor_{reg22}_probability
 qstr_{!}RESTOCK:_{s21}__{s {!}RESTOCK:_{s21}_({s20}):_{reg21}_APF_{reg24}_prosp_{reg23}_goods_{reg22}_base-prod_{reg25}_slots
-qstr_{!}Converted_{reg20} {!}Converted_{reg20}_gold_into_+{reg21}_prosperity.
 qstr__Being_Raided_ (Being_Raided)
 qstr__Deserted_ (Deserted)
 qstr__Looted_ (Looted)
@@ -614,7 +616,6 @@ qstr_{!}DEBUG:_Prosperity_ {!}DEBUG:_Prosperity_changes_from_caravan_trades:_{re
 qstr_{!}DEBUG:_Prosperity_c {!}DEBUG:_Prosperity_changes_from_farmer_trades:_{reg9}
 qstr_{!}DEBUG:_Prosperity_ch {!}DEBUG:_Prosperity_changes_from_looted_villages:_{reg7}
 qstr_{!}DEBUG:_Prosperity_cha {!}DEBUG:_Prosperity_changes_from_sieges:_{reg8}
-qstr_{!}DEBUG:_Theoretica {!}DEBUG:_Theoretical_prosperity_changes_from_convergence:_{reg10}
 qstr_{s4}_looks_upset. {s4}_looks_upset.
 qstr_your_party your_party
 qstr_{reg0?One_of_your_pr {reg0?One_of_your_prisoners,_:}{s1}_of_{s3}_has_escaped_from_captivity!
@@ -1278,6 +1279,7 @@ qstr_^Villages__{reg20}_:^{ ^Villages_({reg20}):^{s51}^^Prices_at_village_(min/a
 qstr_^Towns__{reg20}_:^{s ^Towns_({reg20}):^{s51}^^Prices_at_town_(min/avg/max_for_nearby_towns):
 qstr_^Villages__{reg20}_:^^ ^Villages_({reg20}):^^Prices_at_village_(min/avg/max_for_all_villages):
 qstr_^Towns__{reg20}_:^^P ^Towns_({reg20}):^^Prices_at_town_(min/avg/max_for_all_towns):
+qstr_{s59}:_{reg90} {s59}:_{reg90}
 qstr_However_{reg3?You_a However,_{reg3?You_are:{s1}_is}_unable_to_find_any_trade_goods_that_would_bring_a_profit.
 qstr_^Buying_{s4}_here_fo ^Buying_{s4}_here_for_{reg7}_denars_and_selling_it_at_{s5}_would_bring_a_profit_of_{reg6}_denars_per_item.{s3}
 qstr_{reg3?You_find:{s1}_ {reg3?You_find:{s1}_finds}_out_the_following:^{s3}
@@ -1293,7 +1295,8 @@ qstr_The_training_went_pe The_training_went_perfectly.
 qstr_{s13}_asked_you_to_r {s13}_asked_you_to_report_to_{reg4?her:him}_with_at_least_{reg13}_troops.
 qstr_{s13}_ordered_you_to {s13}_ordered_you_to_join_the_assault_against_{s14}.
 qstr_There_has_been_an_al There_has_been_an_alleged_border_incident:_{s9}
-qstr_{!}PROVOCATION:_{s91 {!}PROVOCATION:_{s91}_({reg91}:{reg92}d)_->_{s92}_({reg93}:{reg94}d)_
+qstr_{!}CASUS_BELLI:_{s92 {!}CASUS-BELLI:_{s92}_({reg90}d)_->_{s91}
+qstr_{!}TRUCE_PROVOCATION {!}TRUCE-PROVOCATION:_{s91}_vs_{s92}_({reg91}_->_{reg92}_days)_
 qstr_{!}{s11}{s12} {!}{s11}{s12}
 qstr_{!}DEBUG____Hours_si {!}DEBUG_--_Hours_since_last_feast_started:_{reg4}
 qstr_^^Note_that_so_long_ ^^Note_that_so_long_as_you_remain_marshal,_the_lords_of_the_realm_will_be_expecting_you_to_lead_them_on_campaign._So,_if_you_are_awaiting_a_feast,_either_for_a_wedding_or_for_other_purposes,_you_may_wish_to_resign_the_marshalship_by_speaking_to_your_liege.
@@ -1343,27 +1346,3 @@ qstr_As_a_hunter_provisi As_a_hunter,_provisions_and_raw_goods_are_expected_as_w
 qstr_As_a_caravan_guard_ As_a_caravan_guard,_you_will_be_able_to_bear_weapons_but_bring_only_a_few_personal_belongings.
 qstr_As_a_merchant_you_w As_a_merchant,_you_will_be_able_to_bring_any_assortment_of_goods.
 qstr_As_a_bard_you_will_ As_a_bard,_you_will_be_allowed_some_personal_possessions_and_your_instrument.
-qstr_{!}CASUS_BELLI:_{s91 {!}CASUS-BELLI:_{s91}_({reg91}:{reg92}d)_->_{s92}_({reg93}:{reg94}d)_
-qstr_{!}TRUCE_PROVOCATION {!}TRUCE-PROVOCATION:_{s91}_->_{s92}_({reg91}_->_{reg92}_days)_
-qstr_{!}PROVOCATION_TEST:_ {!}PROVOCATION-TEST:_{s91}_vs_{s92}_status:_{reg90}_days:_{reg91}
-qstr_{!}CASUS_BELLI:_{s92 {!}CASUS-BELLI:_{s92}_({reg90}d)_->_{s91}
-qstr_{!}TRUCE_PROVOCATION: {!}TRUCE-PROVOCATION:_{s91}_vs_{s92}_({reg91}_->_{reg92}_days)_
-qstr_{s59}:_{reg90} {s59}:_{reg90}
-qstr_{!}{s21}/{s20}:_{reg2 {!}{s21}/{s20}:_{reg20}-{reg21}={reg22}_({reg23}_mag)_price:_{reg24}->{reg27}->{reg25}->{reg26}
-qstr_{!}CHARITY:_Boost_{s91 {!}CHARITY:_Boost_{s91}_prosperity_by_+{reg90}_({reg91}->{reg92}),_paid_for_by_{s90}_({reg93}g).
-qstr_{!}{s21}/{s20}:_{reg20 {!}{s21}/{s20}:_{reg20}-{reg21}={reg22}_(mag:{reg23}_T:{reg24})_price:_{reg90}->{reg91}->{reg92}->{reg99}
-qstr_{!}CLEANSED:_{s90}_p {!}CLEANSED:_{s90}_prosp_{reg91}_cattle_{reg93}_sheep_{reg95}
-qstr_{!}{s21}:_Converted_ {!}{s21}:_Converted_{reg20}_gold_into_+{reg21}_prosperity.
-qstr_{s11}_gave_you_a_fake {s11}_gave_you_a_fake_letter_to_fool_{s13}_into_banishing_{reg3?her:his}_vassal_{s16}.__You_are_to_go_near_{s14},_give_the_letter_to_one_of_your_{s15}_and_send_{reg4?her:him}_into_the_town_as_a_messenger,_believing_{reg4?her:his}_orders_to_be_genuine.
-qstr_Then_take_it_with_my Then_take_it,_with_my_eternal_thanks._You_are_a_noble_{man/woman}.__I_will_never_forget_that_you_helped_me_in_my_time_of_need.
-qstr_Forgive_me_{playerna Forgive_me,_{playername},_but_I_must_insist_you_accept_it.__The_money_means_little_to_me,_and_I_owe_you_so_much.__Here,_take_it,_and_let_us_speak_no_more_of_this.
-qstr_Guildmaster_of_{s4}_g Guildmaster_of_{s4}_gave_you_{reg12}_denars_to_pay_the_ransom_of_a_girl_kidnapped_by_bandits.__You_are_to_meet_the_bandits_near_{s3}_and_pay_them_the_ransom_fee.__After_that_you_are_to_bring_the_girl_back_to_{s4}.
-qstr_Guildmaster_of_{s4}_pr Guildmaster_of_{s4}_promised_you_{reg12}_denars_if_you_can_make_sure_that_{s12}_and_{s13}_no_longer_pose_a_threat_to_a_peace_settlement_between_{s15}_and_{s14}.__In_order_to_do_that,_you_must_either_convince_them_or_make_sure_they_fall_captive_and_remain_so_until_a_peace_agreement_is_made.
-qstr_{reg20?We_mostly_prod {reg20?We_mostly_produce_{s5}_here:We_don't_produce_much_here_these_days}.__If_you_would_like_to_learn_more,_you_can_speak_with_our_{reg4?guildmaster:village_elder}._He_is_nearby,_right_over_there.
-qstr_You_are_challenging_m You_are_challenging_me_to_a_duel?_How_droll!_As_you_wish,_{playername},_it_will_be_good_sport_to_bash_your_head_in.
-qstr_{s11}_gave_you_a_fake_ {s11}_gave_you_a_fake_letter_to_fool_{s13}_into_banishing_{reg3?her:his}_vassal_{s16}.__You_are_to_go_near_{s14},_give_the_letter_to_one_of_your_{s15}_and_send_{reg4?her:him}_into_the_town_as_a_messenger,__believing_{reg4?her:his}_orders_to_be_genuine.
-qstr_{playername}_what_a_ {playername},_what_a_dear_{man/woman}_you_are,__but_I_will_not_allow_you_to_refuse_this._I_owe_you_far_more_than_I_can_say,__and_I_am_sure_you_can_put_this_money_to_far_better_use_than_I.
-qstr_A_livestock_epidemic_ A_livestock_epidemic_has_killed_{reg4}_sheep_in_{s4}.
-qstr_{!}LIVESTOCK:_{s20}: {!}LIVESTOCK:_{s20}:_{reg21}/{reg22}_({reg23})_cattle,_{reg24}/{reg25}_({reg26})_sheep.
-qstr_{!}LIVESTOCK:_{s20}:_ {!}LIVESTOCK:_{s20}:_{reg21}/{reg22}_({reg23}%)_cattle,_{reg24}/{reg25}_({reg26}%)_sheep.
-qstr_{!}LIVESTOCK:_{s20}:_{ {!}LIVESTOCK:_{s20}:_{reg21}/{reg22}_({reg23}_pct)_cattle,_{reg24}/{reg25}_({reg26}_pct)_sheep.
