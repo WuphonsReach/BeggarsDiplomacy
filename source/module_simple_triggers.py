@@ -1974,8 +1974,9 @@ simple_triggers = [
   # Refresh number of cattle/sheep in villages (1/7 chance per day)
   (24,
   [
-    (try_for_range, ":village_no", centers_begin, centers_end),
+    (try_for_range, ":village_no", villages_begin, villages_end),
       (neg|is_between, ":village_no", castles_begin, castles_end),
+      (neg|is_between, ":village_no", towns_begin, towns_end),
       (store_random_in_range, ":random", 0, 7),
       (eq, ":random", 0),
 
