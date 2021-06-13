@@ -7879,7 +7879,7 @@ scripts = [
     (item_set_slot, "itm_raw_silk", slot_item_production_string, "str_mulberry_groves"),
     (item_set_slot, "itm_raw_silk", slot_item_base_price, 675),
 
-    (item_set_slot, "itm_raw_silk", slot_item_production_slot, slot_center_kirmiz_farms),
+    (item_set_slot, "itm_raw_dyes", slot_item_production_slot, slot_center_kirmiz_farms),
 	  (item_set_slot, "itm_raw_dyes", slot_item_production_string, "str_kirmiz_farms"),
 	  (item_set_slot, "itm_raw_dyes", slot_item_base_price, 320),
 
