@@ -1938,24 +1938,24 @@ simple_triggers = [
    (9,
    [
       (try_for_range, ":village_no", villages_begin, villages_end),
-        # randomly update them about every 4 days on average (was exactly every 7 days)
+        # randomly update them about every 3 days on average (was exactly every 7 days)
         (store_random_in_range, ":random_percent", 0, 100),
         (try_begin),
-          (le, ":random_percent", 9),
+          (le, ":random_percent", 12),
           (call_script, "script_refresh_village_merchant_inventory", ":village_no"),
         (try_end),
       (try_end),
 
       (try_for_range,":cur_center", towns_begin, towns_end),
-        # randomly update them about every 3 days on average (was exactly every 7 days)
+        # randomly update them about every 5 days on average (was exactly every 7 days)
         (store_random_in_range, ":random_percent", 0, 100),
         # besieged towns get a bonus (to update more frequently)
         (try_begin),
           (party_slot_ge, ":cur_center", slot_center_is_besieged_by, 0),
-          (val_sub, ":random_percent", 12),
+          (val_sub, ":random_percent", 14),
         (try_end),
         (try_begin),
-          (le, ":random_percent", 12),
+          (le, ":random_percent", 7),
           (call_script, "script_refresh_town_goods_merchant_inventory", ":cur_center"),
         (try_end),
       (try_end),
