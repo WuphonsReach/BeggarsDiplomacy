@@ -26704,12 +26704,12 @@ scripts = [
 
       # calculate the merchant's total inventory slots to stock
       # base is adjusted by prosperity
-      # 00 -> 9
-      # 25 -> 13
-      # 50 -> 18
-      # 75 -> 22
-      # 99 -> 26
-      (assign, ":number_of_slots_to_stock", 18),
+      # 00 -> 12
+      # 25 -> 18
+      # 50 -> 24
+      # 75 -> 30
+      # 99 -> 35
+      (assign, ":number_of_slots_to_stock", 24),
       (store_add, ":center_prosperity_multiplier", ":center_prosperity", 50),
       (val_mul, ":number_of_slots_to_stock", ":center_prosperity_multiplier"),
       (val_div, ":number_of_slots_to_stock", 100),
@@ -26726,14 +26726,14 @@ scripts = [
         (this_or_next|eq, ":svs", svs_deserted),
         (this_or_next|eq, ":svs", svs_being_raided),
         (eq, ":svs", svs_looted),
-        (val_div, ":number_of_slots_to_stock", 6),
+        (val_div, ":number_of_slots_to_stock", 8),
       (else_try),
         (party_slot_ge, ":cur_center", slot_village_infested_by_bandits, 1),
-        (val_div, ":number_of_slots_to_stock", 3),
+        (val_div, ":number_of_slots_to_stock", 4),
       (try_end),
 
       # hard clamp of the number of slots to stock with goods
-      (val_clamp, ":number_of_slots_to_stock", 0, 37),
+      (val_clamp, ":number_of_slots_to_stock", 0, 43),
 
       (try_begin),
         (ge, "$cheat_mode", DPLMC_DEBUG_MIN),
