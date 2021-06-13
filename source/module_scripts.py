@@ -7691,9 +7691,9 @@ scripts = [
     (item_set_slot, "itm_leatherwork", slot_item_rural_demand, 10),
     (item_set_slot, "itm_leatherwork", slot_item_desert_demand, 16),
 
-	  (item_set_slot, "itm_raw_flax", slot_item_urban_demand, 0),
-	  (item_set_slot, "itm_raw_flax", slot_item_rural_demand, 0),
-	  (item_set_slot, "itm_raw_flax", slot_item_desert_demand, 0),
+	  (item_set_slot, "itm_raw_flax", slot_item_urban_demand, 3),
+	  (item_set_slot, "itm_raw_flax", slot_item_rural_demand, 3),
+	  (item_set_slot, "itm_raw_flax", slot_item_desert_demand, 3),
 
 	  (item_set_slot, "itm_linen", slot_item_urban_demand, 24),
 	  (item_set_slot, "itm_linen", slot_item_rural_demand, 15),
