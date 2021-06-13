@@ -9395,41 +9395,6 @@ scripts = [
   (call_script, "script_dplmc_add_random_production", "p_village_110", slot_center_acres_flax, 200, 400, -1),
   (call_script, "script_dplmc_add_random_production", "p_village_110", slot_center_silk_farms, 200, 400, -1),
 
-#-----------------------------------------
-  (call_script, "script_dplmc_add_random_production", "p_village_1", slot_center_fishing_fleet, 8, 15, 0), #Yaragar
-  (call_script, "script_dplmc_add_random_production", "p_village_19", slot_center_fishing_fleet, 3, 8, -1), #Hanun
-  (call_script, "script_dplmc_add_random_production", "p_village_27", slot_center_fishing_fleet, 8, 15, -1), #Glunmar
-  (call_script, "script_dplmc_add_random_production", "p_village_53", slot_center_fishing_fleet, 10, 25, 1), #Balanli
-  (call_script, "script_dplmc_add_random_production", "p_village_64", slot_center_fishing_fleet, 6, 10, -1), #Serindiar
-  (call_script, "script_dplmc_add_random_production", "p_village_79", slot_center_fishing_fleet, 8, 16, -1), #Istiniar
-
-  #determining village productions which are bounded by castle by nearby village productions which are bounded by a town.
-  (try_for_range, ":village_no", villages_begin, villages_end),
-    (party_get_slot, ":bound_center", ":village_no", slot_village_bound_center),
-    (is_between, ":bound_center", castles_begin, castles_end),
-
-    (try_for_range, ":cur_production_source", slot_production_sources_begin, slot_production_sources_end),
-
-      (assign, ":total_averaged_production", 0),
-      (try_for_range, ":effected_village_no", villages_begin, villages_end),
-        (party_get_slot, ":bound_center", ":effected_village_no", slot_village_bound_center),
-        (is_between, ":bound_center", towns_begin, towns_end),
-
-        (store_distance_to_party_from_party, ":dist", ":village_no", ":effected_village_no"),
-        (le, ":dist", 72),
-
-        (party_get_slot, ":production", ":village_no", ":cur_production_source"),
-
-        (store_add, ":dist_plus_24", ":dist", 24),
-        (store_mul, ":production_mul_12", ":production", 12),
-        (store_div, ":averaged_production", ":production_mul_12", ":dist_plus_24"), #if close (12/24=1/2) else (12/96=1/8)
-        (val_div, ":averaged_production", 2), #if close (1/4) else (1/16)
-        (val_add, ":total_averaged_production", ":averaged_production"),
-      (try_end),
-      (party_set_slot, ":village_no", ":cur_production_source", ":total_averaged_production"),
-    (try_end),
-  (try_end),
-
   #Initialize pastureland - this is just a starting point for livestock capacity, acres of grain also matters
   (try_for_range, ":center", centers_begin, centers_end),
     (party_get_slot, ":head_cattle", ":center", slot_center_head_cattle),
