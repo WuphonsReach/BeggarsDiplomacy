@@ -28389,20 +28389,19 @@ scripts = [
 			(troop_get_slot, ":love_interest_town", ":love_interest", slot_troop_cur_center),
 			(eq, ":center_no", ":love_interest_town"),
 
-      # Attempts occur every 7 hours (assuming calculate_troop_ai) if the
-      # lord is in a center with a love interest.
-      # - 14% of attempts lead to meeting with the lady, but lord tries again in 7 hours.
-      # - 20% of the time, lord will give up waiting for this week.
+      # Attempts occur every 7 hours (assuming calculate_troop_ai) if the lord is in a center with a love interest.
+      # - 12% of attempts lead to meeting with the lady, but lord will try again in 7 hours on failure.
+      # - 12% of the time, lord will give up waiting for this week.
       # Both outcomes set ":hours_since_last_courtship".
       (try_begin),
         # only court sometimes (slows down the courtship process)
-        (store_random_in_range, ":random", 0, 7), 
+        (store_random_in_range, ":random", 0, 8), 
         (eq, ":random", 0),
 			  (call_script, "script_courtship_event_troop_court_lady", ":troop_no", ":love_interest"),
 			  (party_set_slot, ":led_party", slot_party_leader_last_courted, ":current_time"),
       (else_try),
         # patience roll - chance to give up this attempt at courting
-        (store_random_in_range, ":random", 0, 5), 
+        (store_random_in_range, ":random", 0, 8), 
         (eq, ":random", 0),
 			  (party_set_slot, ":led_party", slot_party_leader_last_courted, ":current_time"),
         (try_begin),
