@@ -16757,21 +16757,32 @@ scripts = [
           (val_div, ":magnitude_of_change", 5),
         (try_end),
         # downward magnitude (impact) is 0..15 (0..10 for towns)
-        (store_mul, ":target_price_factor", ":magnitude_of_change", 25),
+        (store_mul, ":target_price_factor", ":magnitude_of_change", 21),
         (store_sub, ":target_price_factor", average_price_factor, ":target_price_factor"),
       (else_try),
         (lt, ":net_production", 0), # shortfall, increase the price-factor
         # mag is 0..20 (15..45 if besieged)
-        (store_mul, ":target_price_factor", ":magnitude_of_change", 35),
+        (store_mul, ":target_price_factor", ":magnitude_of_change", 28),
         (store_add, ":target_price_factor", average_price_factor, ":target_price_factor"),
       (try_end),
-      # Target price factor is adjusted by +5% (towns) or -10% (villages)
+
+      # Target price factor is adjusted based on prosperity
+      (party_get_slot, ":prosperity", ":center_no", slot_town_prosperity),
       (try_begin),
         (is_between, ":center_no", towns_begin, towns_end),
-        (val_mul, ":target_price_factor", 105),
+        (store_mul, ":offset", 5, ":prosperity"), # 35*5/75 = 2, 50*5/75= 3
+        (val_div, ":offset", 75), # target prosperity
+        (val_clamp, ":offset", 0, 6),
+        (val_add, ":offset", 100), # base price factor (towns are more expensive)
+        (val_mul, ":target_price_factor", ":offset"),
         (val_div, ":target_price_factor", 100),
       (else_try),
-        (val_mul, ":target_price_factor", 90),
+        (is_between, ":center_no", towns_begin, towns_end),
+        (store_mul, ":offset", 5, ":prosperity"), # 35*5/80=2, 50*5/80=3
+        (val_div, ":offset", 80), # target prosperity
+        (val_clamp, ":offset", 0, 6),
+        (val_add, ":offset", 90), # base price factor (villages discount a bit)
+        (val_mul, ":target_price_factor", ":offset"),
         (val_div, ":target_price_factor", 100),
       (try_end),
       (store_random_in_range, ":randomize_target_price_factor", -15, 16),
@@ -16838,12 +16849,12 @@ scripts = [
       (try_end),
       (try_begin),
         (gt, ":market_avg_price_difference", 0),
-        (val_div, ":market_avg_price_difference", 8),
+        (val_div, ":market_avg_price_difference", 6),
         (val_max, ":market_avg_price_difference", 1),
         (store_random_in_range, ":market_avg_price_difference", 0, ":market_avg_price_difference"),
       (else_try),
         (lt, ":market_avg_price_difference", 0),
-        (val_div, ":market_avg_price_difference", 12),
+        (val_div, ":market_avg_price_difference", 9),
         (val_min, ":market_avg_price_difference", -1),
         (store_random_in_range, ":market_avg_price_difference", ":market_avg_price_difference", 0),
       (try_end),
