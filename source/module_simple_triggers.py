@@ -1990,13 +1990,13 @@ simple_triggers = [
 	    (val_max, ":acres_grain", 0),
 
       (store_div, ":sheep_capacity_pasture", ":acres_pasture", 6),
-      (store_div, ":sheep_capacity_grain", ":acres_grain", 18),
+      (store_div, ":sheep_capacity_grain", ":acres_grain", 30),
       (store_add, ":sheep_capacity", ":sheep_capacity_pasture", ":sheep_capacity_grain"),
       (store_mul, ":sheep_grazing_capacity", ":num_sheep", 100), # 120 sheep -> 12000
       (val_div, ":sheep_grazing_capacity", ":sheep_capacity"), # capacity is 100 -> 12000/100 = 120%
 
-      (store_div, ":cattle_capacity_pasture", ":acres_pasture", 16),
-      (store_div, ":cattle_capacity_grain", ":acres_grain", 8),
+      (store_div, ":cattle_capacity_pasture", ":acres_pasture", 18),
+      (store_div, ":cattle_capacity_grain", ":acres_grain", 12),
       (store_add, ":cattle_capacity", ":cattle_capacity_pasture", ":cattle_capacity_grain"),
       (store_mul, ":cattle_grazing_capacity", ":num_cattle", 100), # 200 cattle -> 20000
       (val_div, ":cattle_grazing_capacity", ":cattle_capacity"), # capacity is 300 -> 20000/300 = 66%
