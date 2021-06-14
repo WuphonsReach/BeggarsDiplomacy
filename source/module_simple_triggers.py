@@ -2008,7 +2008,8 @@ simple_triggers = [
       (try_begin), #Disaster
         (try_begin),
           (eq, ":random_no", 0), #1% chance of epidemic - should happen once every two years
-          (val_min, ":num_cattle", 5),
+          (store_random_in_range, ":num_cattle", 0, ":num_cattle"),
+          (store_random_in_range, ":num_cattle", 0, ":num_cattle"),
           (this_or_next|gt, "$g_player_chamberlain", 0),
           (ge, "$cheat_mode", DPLMC_DEBUG_MIN),
   		    (this_or_next|party_slot_eq, ":village_no", slot_town_lord, "trp_player"),
@@ -2026,7 +2027,8 @@ simple_triggers = [
         (try_end),
         (try_begin),
           (eq, ":random_no", 1), #1% chance of epidemic - should happen once every two years
-          (val_min, ":num_sheep", 5),
+          (store_random_in_range, ":num_sheep", 0, ":num_sheep"),
+          (store_random_in_range, ":num_sheep", 0, ":num_sheep"),
           (this_or_next|gt, "$g_player_chamberlain", 0),
           (ge, "$cheat_mode", DPLMC_DEBUG_MIN),
   		    (this_or_next|party_slot_eq, ":village_no", slot_town_lord, "trp_player"),
