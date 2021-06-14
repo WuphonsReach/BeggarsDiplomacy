@@ -5408,7 +5408,7 @@ simple_triggers = [
         (try_begin),
           (ge, "$cheat_mode", DPLMC_DEBUG_MIN),
           (store_distance_to_party_from_party, ":debug_dist_to_main_party", "p_main_party", ":center_no"),
-          (le, ":debug_dist_to_main_party", 100), # limit debug output to towns within range of the player
+          (le, ":debug_dist_to_main_party", 25), # limit debug output to towns within range of the player
           (str_store_party_name, s91, ":center_no"),
           (assign, reg90, ":boost"),
           (assign, reg91, ":old_prosperity"),
