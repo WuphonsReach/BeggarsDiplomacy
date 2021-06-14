@@ -33451,7 +33451,7 @@ scripts = [
 
       (try_begin), # charge everyone after a while
         (neq, ":battle_tactic", 0),
-        (ge, ":mission_time", 300),
+        (ge, ":mission_time", 180),
         (assign, ":battle_tactic", 0),
         (team_give_order, ":team_no", grc_everyone, mordr_charge),
         (team_get_leader, ":ai_leader", ":team_no"),
