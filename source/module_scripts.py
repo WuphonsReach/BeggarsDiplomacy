@@ -7748,7 +7748,7 @@ scripts = [
     (item_set_slot, "itm_ale", slot_item_input_number, 3),
     (item_set_slot, "itm_ale", slot_item_output_per_run, 2),
     (item_set_slot, "itm_ale", slot_item_overhead_per_run, 80),
-    (item_set_slot, "itm_ale", slot_item_base_price, 230),
+    (item_set_slot, "itm_ale", slot_item_base_price, 250),
     (item_set_slot, "itm_ale", slot_item_enterprise_building_cost, 2500),
 
     (item_set_slot, "itm_wine", slot_item_production_slot, slot_center_wine_presses),
