@@ -5194,8 +5194,7 @@ simple_triggers = [
 ]),
   
   # VILLAGE CHARITY - randomly boost villages with low prosperity
-  # a 50% chance every 12 hours to gain 1..4 points of prosperity, 
-  # then there is a second roll against prosperity
+  # a chance chance every 12 hours to gain 1..4 points of prosperity
   #  0 prosp = 40% chance
   # 10 prosp = 30% chance 
   # 20 prosp = 20% chance
@@ -5213,9 +5212,6 @@ simple_triggers = [
 
       # only for low-prosperity villages
       (lt, ":old_prosperity", 35), 
-      # only 50% chance for any village
-      (store_random_in_range, ":chance", 0, 100),
-      (lt, ":chance", 50), 
       # percent chance to boost prosperity (lower prosperity gives higher odds)
       (store_random_in_range, ":random", -60, 40),
       (ge, ":random", ":old_prosperity"), 
@@ -5259,7 +5255,7 @@ simple_triggers = [
         (try_begin),
           (ge, "$cheat_mode", DPLMC_DEBUG_MIN),
           (store_distance_to_party_from_party, ":debug_dist_to_main_party", "p_main_party", ":center_no"),
-          (le, ":debug_dist_to_main_party", 5), # limit debug output to towns within range of the player
+          (le, ":debug_dist_to_main_party", 15), # limit debug output to towns within range of the player
           (str_store_party_name, s91, ":center_no"),
           (assign, reg90, ":boost"),
           (assign, reg91, ":old_prosperity"),
