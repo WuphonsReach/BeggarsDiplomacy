@@ -21162,12 +21162,12 @@ scripts = [
 			(assign, ":quest_xp_reward", 1500),
 			(assign, ":quest_gold_reward", 1000),
 
-	    (else_try),
+    (else_try),
 			(eq, ":result", "qst_destroy_bandit_lair"),
 			(assign, ":quest_target_party", ":relevant_party"),
-			(assign ,":quest_expiration_days", 60),
-			(assign, ":quest_xp_reward", 3000),
-			(assign, ":quest_gold_reward", 1500),
+			(assign ,":quest_expiration_days", 21),
+			(assign, ":quest_xp_reward", 1200),
+			(assign, ":quest_gold_reward", 600),
 
 		#KINGDOM LADY OR KINGDOM HERO QUESTS
 		(else_try),
