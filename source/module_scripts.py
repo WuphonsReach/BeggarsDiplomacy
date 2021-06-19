@@ -26683,14 +26683,14 @@ scripts = [
 
         # base probability is net production amount
         (assign, ":probability", ":cur_center_net_production"),
-        (val_clamp, ":probability", 0, 6),
+        (val_clamp, ":probability", 0, 7),
         (val_mul, ":probability", 25),
 
         # price (above a certain price value) is a negative to probability
         (store_mul, ":price_floor", ":center_prosperity", 2),
-        (val_add, ":price_floor", 150),
-        (store_mul, ":price_cap", ":center_prosperity", 10),
-        (val_add, ":price_cap", 1500),
+        (val_add, ":price_floor", 250),
+        (store_mul, ":price_cap", ":center_prosperity", 12),
+        (val_add, ":price_cap", 2500),
         (val_max, ":cur_good_base_price", ":price_floor"), # treat everything under this as equal probability
         (store_div, ":inverse_base_price", ":price_cap", ":cur_good_base_price"),
         (val_max, ":inverse_base_price", 1), 
