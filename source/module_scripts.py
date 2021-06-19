@@ -41389,7 +41389,7 @@ scripts = [
 
         # usually spawn a new looter around the town
         (try_begin),
-          (store_random_in_range, ":random_no", 0, 3),
+          (store_random_in_range, ":random_no", 0, 2),
           (eq, ":random_no", 0),
           (set_spawn_radius, 25),
           (spawn_around_party, ":spawn_point", "pt_looters"),
