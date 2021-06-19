@@ -16211,8 +16211,13 @@ scripts = [
 
   #script_game_get_item_extra_text:
   # This script is called from the game engine when an item's properties are displayed.
-  # INPUT: arg1 = item_no, arg2 = extra_text_id (this can be between 0-7 (7 included)), arg3 = item_modifier
-  # OUTPUT: result_string = item extra text, trigger_result = text color (0 for default)
+  # INPUT: 
+  #   arg1 = item_no
+  #   arg2 = extra_text_id (this can be between 0-7 (7 included)) 
+  #   arg3 = item_modifier
+  # OUTPUT: 
+  #   result_string = item extra text, 
+  #   trigger_result = text color (0 for default)
   ("game_get_item_extra_text",
     [
       (store_script_param, ":item_no", 1),
