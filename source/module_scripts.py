@@ -21150,17 +21150,17 @@ scripts = [
 			(assign, ":quest_target_faction", ":relevant_faction"),
 
 			(assign ,":quest_expiration_days", 30),
-			(assign, ":quest_xp_reward", 1500),
-			(assign, ":quest_gold_reward", 1000),
+			(assign, ":quest_xp_reward", 2500),
+			(assign, ":quest_gold_reward", 1500),
 
 		#KINGDOM LORD QUESTS
 		(else_try),
-	        (eq, ":result", "qst_cause_provocation"),
+      (eq, ":result", "qst_cause_provocation"),
 			(assign, ":quest_target_faction", ":relevant_faction"),
-	        (assign, ":quest_expiration_days", 30),
-	        (assign, ":quest_dont_give_again_period", 100),
-			(assign, ":quest_xp_reward", 1500),
-			(assign, ":quest_gold_reward", 1000),
+      (assign, ":quest_expiration_days", 30),
+      (assign, ":quest_dont_give_again_period", 80),
+			(assign, ":quest_xp_reward", 5000),
+			(assign, ":quest_gold_reward", 2500),
 
     (else_try),
 			(eq, ":result", "qst_destroy_bandit_lair"),
