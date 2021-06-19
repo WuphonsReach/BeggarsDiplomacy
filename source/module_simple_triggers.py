@@ -3155,22 +3155,29 @@ simple_triggers = [
     ]),
 
   # Consuming food at every N hours, see also the script: consume_food
-  # Vanilla rule: Your party will eat every 14 hours, with every unit of food quantity feeding 3 troops.
+  # Vanilla rule: Your party will eat every 14 hours, 
+  # with every unit of food quantity feeding 3 troops.
   (12,
    [
     (eq, "$g_player_is_captive", 0), # no food consumption while player is captive
     (eq, "$g_infinite_camping", 0), # not infinite camping
 
-    (party_get_num_companion_stacks, ":num_stacks","p_main_party"),
-    (assign, ":num_men", 0),
-    (try_for_range, ":i_stack", 0, ":num_stacks"),
-      (party_stack_get_size, ":stack_size","p_main_party",":i_stack"),
-      (val_add, ":num_men", ":stack_size"),
-    (try_end),
+    (store_party_size_wo_prisoners, ":num_men", "p_main_party"),
+    (store_party_size, ":party_size", "p_main_party"),
+    (party_get_num_prisoners, ":num_prisoners", "p_main_party"),
     (val_max, ":num_men", 1),
-    (store_mul, ":daily_consumption", ":num_men", 2), # two meals per day
-    (val_div, ":daily_consumption", 3), # every unit of food feeds 3 troops
-    (store_div, ":food_units_needed", ":num_men", 3), # food units needed per meal
+    (val_max, ":num_prisoners", 0),
+
+    (store_mul, ":troop_daily_consumption", ":num_men", 2), # two meals per day
+    (val_div, ":troop_daily_consumption", 3), # every unit of food feeds 3 troops
+    (store_div, ":troop_units_needed", ":troop_daily_consumption", 2), # per meal
+
+    (store_mul, ":prisoner_daily_consumption", ":num_prisoners", 2), # two meals per day
+    (val_div, ":prisoner_daily_consumption", 6), # every unit of food feeds 6 prisoners
+    (store_div, ":prisoner_units_needed", ":prisoner_daily_consumption", 2), # per meal
+
+    (store_add, ":daily_consumption", ":troop_daily_consumption", ":prisoner_daily_consumption"),
+    (store_add, ":food_units_needed", ":troop_units_needed", ":prisoner_units_needed"),
 
     (try_begin),
       (assign, ":number_of_foods_player_has", 0),
