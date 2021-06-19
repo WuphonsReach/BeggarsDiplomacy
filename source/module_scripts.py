@@ -41469,6 +41469,8 @@ scripts = [
           (store_troop_faction, ":faction_no", ":troop_no"),
           (faction_get_slot, ":tier_1_troop", ":faction_no", slot_faction_tier_1_troop),
           
+          #TODO: Make a roll here for mixed-level parties, larger parties, dangerous parties
+
           (store_character_level, ":level", "trp_player"),
           (store_mul, ":max_number_to_add", ":level", 2),
           (val_add, ":max_number_to_add", 11),
