@@ -75472,8 +75472,8 @@ Born at {s43}^Contact in {s44} of the {s45}.^\
         (val_mul, ":probability", 25),
 
         # price (above a certain price value) is a negative to probability
-        (val_max, ":cur_good_base_price", 400), # treat everything under this as equal probability
-        (store_div, ":inverse_base_price", 3000, ":cur_good_base_price"),
+        (val_max, ":cur_good_base_price", 450), # treat everything under this as equal probability
+        (store_div, ":inverse_base_price", 4800, ":cur_good_base_price"),
         (val_max, ":inverse_base_price", 1), 
         (val_mul, ":probability", ":inverse_base_price"),
         (val_max, ":probability", 1),
