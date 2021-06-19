@@ -82,7 +82,7 @@ party_templates = [
   ("messenger_party","Messenger",icon_flagbearer_b|pf_show_faction,0,fac_commoners,merchant_personality,[]),
   ("raider_party","Raiders",icon_gray_knight|carries_goods(16)|pf_quest_party,0,fac_commoners,bandit_personality,[]),
   ("raider_captives","Raider Captives",0,0,fac_commoners,0,[(trp_peasant_woman,6,30,pmf_is_prisoner)]),
-  ("kingdom_caravan_party","Caravan",icon_mule|carries_goods(25)|pf_show_faction,0,fac_commoners,merchant_personality,[(trp_caravan_master,1,1),(trp_caravan_guard,12,40)]),
+  ("kingdom_caravan_party","Caravan",icon_mule|carries_goods(25)|pf_show_faction,0,fac_commoners,merchant_personality,[(trp_caravan_master,1,1),(trp_caravan_guard,15,25)]),
   ("prisoner_train_party","Prisoner Train",icon_gray_knight|carries_goods(5)|pf_show_faction,0,fac_commoners,merchant_personality,[]),
   ("default_prisoners","Default Prisoners",icon_vaegir_knight,0,fac_commoners,0,[(trp_bandit,5,10,pmf_is_prisoner)]),
 
@@ -171,8 +171,8 @@ party_templates = [
    ##diplomacy end
 
 # Parties added to kingdom caravans
-  ("caravan_civilians","Caravan Civilians",icon_peasant|carries_goods(5),0,fac_commoners,merchant_personality,[(trp_farmer,0,4),(trp_peasant_woman,0,2),(trp_follower_woman,0,1)]),
-  ("caravan_guards","Caravan Guards",icon_gray_knight|carries_goods(2),0,fac_commoners,soldier_personality,[(trp_caravan_guard,0,10)]),
-  ("female_mercenaries","Mercenaries",icon_gray_knight|carries_goods(2),0,fac_commoners,soldier_personality,[(trp_hunter_woman,0,2),(trp_fighter_woman,0,3),(trp_sword_sister,0,4)]),
-  ("male_mercenaries","Mercenaries",icon_gray_knight|carries_goods(2),0,fac_commoners,soldier_personality,[(trp_mercenary_crossbowman,0,2),(trp_mercenary_swordsman,0,3),(trp_mercenary_horseman,0,4)]),
+  ("caravan_civilians","Caravan Civilians",icon_peasant|carries_goods(6),0,fac_commoners,merchant_personality,[(trp_farmer,0,6),(trp_peasant_woman,0,2),(trp_follower_woman,0,1)]),
+  ("caravan_guards","Caravan Guards",icon_gray_knight|carries_goods(4),0,fac_commoners,soldier_personality,[(trp_caravan_guard,0,8)]),
+  ("female_mercenaries","Mercenaries",icon_gray_knight|carries_goods(2),0,fac_commoners,soldier_personality,[(trp_hunter_woman,0,2),(trp_fighter_woman,0,2),(trp_sword_sister,0,3)]),
+  ("male_mercenaries","Mercenaries",icon_gray_knight|carries_goods(2),0,fac_commoners,soldier_personality,[(trp_mercenary_crossbowman,0,2),(trp_mercenary_swordsman,0,2),(trp_mercenary_horseman,0,3)]),
 ]

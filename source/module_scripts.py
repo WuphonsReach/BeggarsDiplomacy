@@ -26484,7 +26484,7 @@ scripts = [
           (val_add, ":reinforcement_b_count", 1),
           (store_random_in_range, ":reinforcement_count", 0, ":reinforcement_b_count"),  
           (try_for_range, ":reinforce_party", 0, ":reinforcement_count"),
-          (party_add_template, ":result", ":reinforcements_b"),
+            (party_add_template, ":result", ":reinforcements_b"),
           (try_end),
           
           # add male_mercenaries - starting at level 12
