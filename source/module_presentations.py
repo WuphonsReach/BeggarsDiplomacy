@@ -8669,7 +8669,6 @@ presentations = [
             (eq, "$g_presentation_state", rename_kingdom),
             (try_begin),
               (store_and, ":color_set", "$players_kingdom_name_set", rename_kingdom),
-              # (this_or_next|ge, "$cheat_mode", 1),
               (eq, ":color_set", 0),
               (troop_get_slot, ":banner", "$g_player_troop", slot_troop_banner_scene_prop),
               (gt, ":banner", 0),
@@ -13148,7 +13147,7 @@ presentations = [
 			(val_sub, ":current_index", ":impact_on_price"),
 			(party_set_slot, ":center_no", ":item_slot_no",":current_index"),
 
-			(gt, "$cheat_mode", 0),
+			(ge, "$cheat_mode", DPLMC_DEBUG_NEVER),
 			(str_store_troop_name, s3, ":craftsman_troop"),
 			(assign, reg3, ":outputs_added_to_warehouse"),
 			(display_message, "@{!}DEBUG -- Adding {reg3} items to {s3}"),
@@ -13382,8 +13381,11 @@ presentations = [
         (position_set_y, pos1, 900),
         (overlay_set_size, reg1, pos1),
         #SB : colorize by faction
-        (faction_get_color, ":color", "$players_kingdom"),
-        (overlay_set_color, reg1, ":color"),
+        # Note: Colorizing by faction doesn't work well for Vaegir/Sarranid colors
+        # We could apply "|tf_with_outline" to the create_text_overlay above, but 
+        # that looks odd and out of place (unless we do all the numeric values?).
+        #(faction_get_color, ":color", "$players_kingdom"),
+        #(overlay_set_color, reg1, ":color"),
         (position_set_x, pos1, 500),
         (position_set_y, pos1, ":cur_y"),
         (overlay_set_position, reg1, pos1),
@@ -15189,6 +15191,13 @@ presentations = [
         (position_set_y, pos1, 1500),
     (overlay_set_size, reg1, pos1),
 
+        (store_current_hours, ":hours"),
+        (call_script, "script_game_get_date_text", 0, ":hours"),
+        (create_text_overlay, reg1, s1, tf_left_align),
+        (position_set_x, pos1, 60), # Higher, means more toward the right
+        (position_set_y, pos1, 50), # Higher, means more toward the top
+        (overlay_set_position, reg1, pos1),
+
     # Back to menu - graphical button
     (create_game_button_overlay, reg1, "@_Return to menu_"),
     (position_set_x, pos1, 500),
@@ -15257,9 +15266,9 @@ presentations = [
           (val_add, ":x_poshl", 90),
 
           (try_begin),
-            (eq, "$cheat_mode", 1),
+            (ge, "$cheat_mode", DPLMC_DEBUG_MIN),
             (assign, reg20, ":count"),
-            (display_message, "@{!}DEBUG - Drawing line {reg20}"),
+            #(display_message, "@{!}DEBUG - Drawing line {reg20}"),
           (try_end),
         (try_end),
 
@@ -18786,44 +18795,47 @@ presentations = [
                     (troop_set_slot, "trp_temp_array_c", ":num_options", reg0),
                     (val_add, ":num_options", 1),
                     
-						## CHEAT MENU
+          ## CHEAT MENU
 					(create_text_overlay, reg0, "@Cheat Mode:", tf_vertical_align_center),
-                    (troop_set_slot, "trp_temp_array_a", ":num_options", reg0),
+          (troop_set_slot, "trp_temp_array_a", ":num_options", reg0),
 					(position_set_y, pos1, ":texts_y"),
 					(overlay_set_position, reg0, pos1),
 					(val_sub, ":texts_y", ":y_increment"),
-					# (assign, "$adv_diplomacy_texts_cheat_menu", reg0),
-
-					# (create_check_box_overlay, reg0, "mesh_checkbox_off", "mesh_checkbox_on"),
-                    # (troop_set_slot, "trp_temp_array_b", ":num_options", reg0),
-					# (position_set_y, pos2, ":inputs_y"),
-					# (overlay_set_position, reg0, pos2),
-					# (val_sub, ":inputs_y", ":y_increment"),
-					# (assign, "$g_presentation_obj_admin_panel_8", reg0),
-
-                    #Native has bunch of message modes (up to 4) but they're not useful
-					(create_check_box_overlay, reg0, "mesh_checkbox_off", "mesh_checkbox_on"),
-                    (troop_set_slot, "trp_temp_array_b", ":num_options", reg0),
+					
+          (create_combo_button_overlay, reg0),
+					(position_set_x, pos2, 485),
+					(val_sub, ":inputs_y", 8),
 					(position_set_y, pos2, ":inputs_y"),
 					(overlay_set_position, reg0, pos2),
+					(overlay_set_size, reg0, pos5),
+          # add items in reverse order to what you want displayed
+          (overlay_add_item, reg0, "str_dplmc_cheat_setting_debug_experimental"),
+          (overlay_add_item, reg0, "str_dplmc_cheat_setting_debug_politics"),
+					(overlay_add_item, reg0, "str_dplmc_cheat_setting_debug_military"),
+					(overlay_add_item, reg0, "str_dplmc_cheat_setting_debug_economy"),
+          (overlay_add_item, reg0, "str_dplmc_cheat_setting_debug"),
+          (overlay_add_item, reg0, "str_dplmc_setting_on"),
+          (overlay_add_item, reg0, "str_dplmc_setting_off"),
+					(position_set_x, pos2, 450),
+					(val_add, ":inputs_y", 8),
 					(val_sub, ":inputs_y", ":y_increment"),
-					# (assign, "$g_presentation_obj_admin_panel_8", reg0),
-                    
-                    (try_begin),
-                      (gt, "$cheat_mode", 0),
-                      (assign, ":actual_input_value", 1),
-                    (else_try),
-                      (assign, ":actual_input_value", 0),
-                    (try_end),
-                    (overlay_set_val, reg0, ":actual_input_value"),
-                    (set_container_overlay, -1),
-                    (create_mesh_overlay, reg0, "mesh_pic_cattle"),
-                    (set_container_overlay, ":container"),
-                    (overlay_set_position, reg0, pos3),
-                    (overlay_set_size, reg0, pos4),
-#                    (overlay_set_alpha, reg0, 0),
-                    (troop_set_slot, "trp_temp_array_c", ":num_options", reg0),
-                    (val_add, ":num_options", 1),
+          (troop_set_slot, "trp_temp_array_b", ":num_options", reg0),
+
+          (store_sub, ":actual_input_value", DPLMC_CHEAT_MAX, "$cheat_mode"),
+          (try_begin), # any values out of range result in DPLMC_CHEAT_DISABLED
+            (this_or_next|lt, ":actual_input_value", DPLMC_CHEAT_DISABLED),
+            (gt, ":actual_input_value", DPLMC_CHEAT_MAX),
+            (assign, ":actual_input_value", DPLMC_CHEAT_DISABLED),
+          (try_end),
+          (overlay_set_val, reg0, ":actual_input_value"),
+
+          (set_container_overlay, -1),
+          (create_mesh_overlay, reg0, "mesh_pic_payment"),
+          (set_container_overlay, ":container"),
+          (overlay_set_position, reg0, pos3),
+          (overlay_set_size, reg0, pos4),
+          (troop_set_slot, "trp_temp_array_c", ":num_options", reg0),
+          (val_add, ":num_options", 1),
 
            # DA: HOLD GROUND WHEN ENTERING BATTLE
 					(create_text_overlay, reg0, "@Hold ground when entering battle:", tf_vertical_align_center),
@@ -19131,9 +19143,11 @@ presentations = [
                         # (eq, ":object", "$g_presentation_obj_admin_panel_5"),
                         (assign, "$g_dplmc_player_disguise", ":value"),
                         (assign, "$sneaked_into_town", disguise_none), #so as to not proc trigger
+
                     (else_try), ## CHEATS MENU
                         (troop_slot_eq, "trp_temp_array_b", 11, ":object"),
-                        (assign, "$cheat_mode", ":value"),
+                        (store_sub, "$cheat_mode", DPLMC_CHEAT_MAX, ":value"),
+
                     (else_try), ## HOLD GROUND
                         (troop_slot_eq, "trp_temp_array_b", 12, ":object"),
                         (assign, "$g_dplmc_holdground_entering_battle", ":value"),

@@ -1,5 +1,5 @@
 stringsfile version 1
-3834
+3844
 str_no_string NO_STRING!
 str_empty_string _
 str_yes Yes.
@@ -284,7 +284,7 @@ str_oasis_village_alt_prosperity_40 Men_and_women_are_busy_tending_the_palm_grov
 str_oasis_village_alt_prosperity_60 The_palm_groves_and_orchards_are_humming_with_activity._Farmers_call_to_each_other_cheerfully_from_the_tops_of_the_trees,_where_they_pollinate_the_date_fruit._The_creak_of_wooden_pumps,_the_bellowing_of_draft_animals,_and_the_rush_of_flowing_water_speak_of_an_irrigation_system_that_is_thriving_under_the_villagers'_attention.
 str_oasis_village_alt_prosperity_80 The_palm_groves_are_humming_with_activity,_as_farmers_load_up_a_bumper_crop_of_dates_for_sale_to_the_market._Men_and_women_are_hard_at_work_digging_new_wells_and_canals,_to_bring_additional_land_under_irrigation.
 str_acres_grain acres_of_grainfields
-str_acres_orchard acres_of_orchards_and_vineyards
+str_acres_vineyard acres_of_vineyards
 str_acres_oasis acres_of_irrigated_oasis_gardens
 str_looms looms
 str_boats boats
@@ -2075,7 +2075,7 @@ str_betrothed betrothed
 str_s40_s39_s2_reg0 {!}{s40},_{s39}_({s2},_{reg0})
 str_other_relations_s40_ Other_relations:_{s40}^
 str_relation_with_liege_reg0_ Relation_with_liege:_{reg0}^
-str_sense_of_security_military_reg1_court_position_reg3_ Sense_of_security:_military_{reg1},_court_position_{reg3}^
+str_sense_of_security_military_reg1_court_position_reg3_ ^Sense_of_security:_military_{reg1},_court_position_{reg3}^
 str_s46s45s44s48 {!}{s46}{s45}{s44}{s48}
 str_political_details_s47_ Political_details:^{s47}^
 str_checking_volunteer_availability_script {!}Checking_volunteer_availability_script
@@ -2536,7 +2536,7 @@ str_roughlooking_character_not_found Rough-looking_character_not_found
 str__however_you_have_sufficiently_distinguished_yourself_to_be_invited_to_attend_the_ongoing_feast_in_the_lords_castle ._However,_you_have_sufficiently_distinguished_yourself_to_be_invited_to_attend_the_ongoing_feast_in_the_lord's_castle.
 str_s8_you_are_also_invited_to_attend_the_ongoing_feast_in_the_castle {s8}._You_are_also_invited_to_attend_the_ongoing_feast_in_the_castle.
 str___hardship_index_reg0_avg_towns_reg1_avg_villages_reg2__ {!}^^Hardship_index:_{reg0},_avg_towns:_{reg1},_avg_villages:_{reg2}^^
-str___s3_price_=_reg4_calradian_average_reg6_capital_reg11_s4_base_reg1modified_by_raw_material_reg2modified_by_prosperity_reg3_calradian_average_production_base_reg5_total_reg12_consumed_reg7used_as_raw_material_reg8modified_total_reg9_calradian_consumption_base_reg10_total_reg13s1_ {!}^^{s3}^Price_=_{reg4}_(Calradian_average_{reg6})^Capital:_{reg11}_{s4}^Base_{reg1}/modified_by_raw_material_{reg2}/modified_by_prosperity_{reg3}^(Calradian_average_production,_base_{reg5},_total_{reg12}).^Consumed_{reg7}/used_as_raw_material_{reg8}/modified_total_{reg9}^(Calradian_consumption,_base:_{reg10},_total:_{reg13}){s1}^
+str_dplmc_price_and_production {!}^^{s3}_({reg11}_{s4})^Price_=_{reg4}_(global_avg_{reg6})^{s20}^{s21}^(global_avg_prod,_base_{reg5}_->_{reg12})^{s22}^(global_consumption:_avg_{reg10}_->_{reg13}){s1}^
 str_s11_unfortunately_s12_was_wounded_and_had_to_be_left_behind {s11}_Unfortunately,_{s12}_was_wounded_and_had_to_be_left_behind.
 str_s11_also_s12_was_wounded_and_had_to_be_left_behind {s11}_Also,_{s12}_was_wounded_and_had_to_be_left_behind.
 str_trial_influences_s17s_relation_with_s18_by_reg3 {!}Trial_influences_{s17}'s_relation_with_{s18}_by_{reg3}
@@ -3792,6 +3792,16 @@ str_dplmc_reputation_benefactor It_is_widely_known_that_{s46}_is_a_friend_of_the
 str_dplmc_reputation_custodian It_is_believed_that_{s46}_is_a_wise_investor.
 str_s4_is_at_s5_but_reg4_he_she_is_held_as_a_prisoner_at_s13_dungeon {s4}_is_at_{s5},_but_{reg4?she:he}_is_being_held_as_a_prisoner_in_the_{s13}'s_dungeon
 str_i_dont_know_where_s4_is I_don't_know_where_{s4}_is
+str_dplmc_cheat_setting_debug Debug
+str_dplmc_cheat_setting_debug_economy Debug_Economy
+str_dplmc_cheat_setting_debug_military Debug_Military
+str_dplmc_cheat_setting_debug_politics Debug_Politics
+str_dplmc_cheat_setting_debug_experimental Debug_Experiments
+str_acres_fruit_trees acres_of_fruit_trees
+str_kirmiz_farms acres_of_kirmiz_plots
+str_head_pigs pig_pens
+str_head_chicken chicken_coops
+str_dplmc_s50_newline_s51 {!}{s50}^{s51}
 str_skl_trade Trade
 str_skl_leadership Leadership
 str_skl_prisoner_management Prisoner_Management

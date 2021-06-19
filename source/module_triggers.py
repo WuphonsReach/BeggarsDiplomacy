@@ -35,9 +35,7 @@ triggers = [
 
 # Refresh Merchants
   (0.0, 0, 168.0, [],
-  [
-    (call_script, "script_refresh_center_inventories"),
-                     ]),
+  []),
 
 # Refresh Armor sellers
   (0.0, 0, 168.0, [],
@@ -117,7 +115,7 @@ triggers = [
 			(store_distance_to_party_from_party, ":distance", ":party", ":bandit_party"),
 			(lt, ":distance", ":spot_range"),
 			(try_begin),
-				(eq, "$cheat_mode", 1),
+				(ge, "$cheat_mode", DPLMC_DEBUG_NEVER),
 				(str_store_party_name, s4, ":party"),
 				(display_message, "@{!}DEBUG -- Wanted bandits spotted by {s4}"),
 			(try_end),
@@ -1291,7 +1289,7 @@ triggers = [
 
             (troop_set_slot, ":pretender", slot_troop_cur_center, ":town"),
             (try_begin), #SB : cheat mode
-              (eq, "$cheat_mode", 1),
+              (ge, "$cheat_mode", DPLMC_DEBUG_NEVER),
               (str_store_troop_name_link, 4, ":pretender"),
               (str_store_party_name_link, 5, ":town"),
               (display_message, "@{!}{s4} is in {s5}"),
@@ -1432,7 +1430,7 @@ triggers = [
 				(str_store_troop_name, s4, ":other_npc"),
 
 				(try_begin),
-					(eq, "$cheat_mode", 1),
+					(ge, "$cheat_mode", DPLMC_DEBUG_MIN),
 					(display_message, "str_s4_ready_to_voice_objection_to_s3s_mission_if_in_party"),
 				(try_end),
 			(try_end),
@@ -1523,7 +1521,7 @@ triggers = [
                 (troop_get_slot, ":days_on_mission", ":npc", slot_troop_days_on_mission),
 
                 (try_begin), #debug
-                    (eq, "$cheat_mode", 1),
+                    (ge, "$cheat_mode", DPLMC_DEBUG_MIN),
                     (str_store_troop_name, s10, ":npc"),
                     (assign, reg0, ":days_on_mission"),
                     (display_message, "@Checking rejoin of {s10} days on mission: {reg0}"),
@@ -1612,7 +1610,7 @@ triggers = [
     (eq, ":has_fief", 1),
 
     (try_begin), #debug
-      (eq, "$cheat_mode", 1),
+      (ge, "$cheat_mode", DPLMC_DEBUG_MIN),
       (assign, reg0, "$g_player_chamberlain"),
       (display_message, "@{!}DEBUG : chamberlain: {reg0}"),
     (try_end),
@@ -1646,7 +1644,7 @@ triggers = [
     (eq, ":has_fief", 1),
 
     (try_begin), #debug
-      (eq, "$cheat_mode", 1),
+      (ge, "$cheat_mode", DPLMC_DEBUG_MIN),
       (assign, reg0, "$g_player_constable"),
       (display_message, "@{!}DEBUG : constable: {reg0}"),
     (try_end),
@@ -1681,7 +1679,7 @@ triggers = [
     (eq, ":has_fief", 1),
 
     (try_begin), #debug
-      (eq, "$cheat_mode", 1),
+      (ge, "$cheat_mode", DPLMC_DEBUG_MIN),
       (assign, reg0, "$g_player_chancellor"),
       (display_message, "@{!}DEBUG : chancellor: {reg0}"),
     (try_end),

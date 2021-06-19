@@ -1,4 +1,10 @@
 #!/bin/bash
+
+echo ""
+echo ""
+echo "------------------------------------------- COMPILE -------------------------------------------"
+echo ""
+
 python2 compile.py
 
 # Adjust the following as needed based on where you keep your copy of Mount & Blade: Warband.

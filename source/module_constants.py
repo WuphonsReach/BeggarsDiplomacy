@@ -241,15 +241,15 @@ slot_faction_sum_advice_about_factions_end			= 160
 dplmc_treaty_truce_days_initial    = 60
 dplmc_treaty_truce_days_expire     =  0
 
-#Trade treaties convert to truces after 20 days.
+#Trade treaties convert to truces after expiration
 dplmc_treaty_trade_days_initial    = 120
 dplmc_treaty_trade_days_expire     = dplmc_treaty_truce_days_initial
 
-#Defensive alliances convert to trade treaties after 20 days.
+#Defensive alliances convert to trade treaties after expiration
 dplmc_treaty_defense_days_initial  = 180
 dplmc_treaty_defense_days_expire   = dplmc_treaty_trade_days_initial
 
-#Alliances convert to defensive alliances after 20 days.
+#Alliances convert to defensive alliances after expiration
 dplmc_treaty_alliance_days_initial = 240
 dplmc_treaty_alliance_days_expire  = dplmc_treaty_defense_days_initial
 
@@ -259,6 +259,12 @@ dplmc_treaty_truce_days_half_done = (dplmc_treaty_truce_days_initial + dplmc_tre
 dplmc_treaty_trade_days_half_done = (dplmc_treaty_trade_days_initial + dplmc_treaty_trade_days_expire) // 2
 dplmc_treaty_defense_days_half_done = (dplmc_treaty_defense_days_initial + dplmc_treaty_defense_days_expire) // 2
 dplmc_treaty_alliance_days_half_done = (dplmc_treaty_alliance_days_initial + dplmc_treaty_alliance_days_expire) // 2
+
+# provocation period is (N x base) where N = 1..3
+dplmc_treaty_provocation_base = dplmc_treaty_truce_days_half_done // 2
+
+# villages will never sell their last N cattle
+dplmc_village_cattle_reserve = 5
 
 ##diplomacy end+
 
@@ -538,7 +544,9 @@ slot_center_head_sheep			= 206 #sausages, wool
 slot_center_head_horses		 	= 207 #horses can be a trade item used in tracking but which are never offered for sale
 
 slot_center_acres_pasture       = 208 #pasture area for grazing of cattles and sheeps, if this value is high then number of cattles and sheeps increase faster
-slot_production_sources_begin = 209
+
+slot_production_sources_begin = 209 # START OF PRODUCTION SOURCES
+
 slot_center_acres_grain			= 209 #grain
 slot_center_acres_olives        = 210 #olives
 slot_center_acres_vineyard		= 211 #fruit
@@ -569,8 +577,13 @@ slot_center_smithies			= 229 #tools
 slot_center_tanneries			= 230 #leatherwork
 slot_center_shipyards			= 231 #naval stores - uses timber, pitch, and linen
 
-slot_center_household_gardens   = 232 #cabbages
-slot_production_sources_end = 233
+slot_center_household_gardens       = 232 #cabbages
+slot_center_acres_fruit_trees   = 233 #fruit
+
+slot_production_sources_end = 235 # one more then the last production source
+
+slot_center_head_chicken            = 238 #drives chicken production
+slot_center_head_pigs               = 239 #drives pork production
 
 #all spice comes overland to Tulga
 #all dyes come by sea to Jelkala
@@ -1523,8 +1536,18 @@ companions_end = kings_begin
 
 active_npcs_begin = "trp_npc1"
 active_npcs_end = kingdom_ladies_begin
-#"active_npcs_begin replaces kingdom_heroes_begin to allow for companions to become lords. Includes anyone who may at some point lead their own party: the original kingdom heroes, companions who may become kingdom heroes, and pretenders. (slto_kingdom_hero as an occupation means that you lead a party on the map. Pretenders have the occupation "slto_inactive_pretender", even if they are part of a player's party, until they have their own independent party)
-#If you're a modder and you don't want to go through and switch every kingdom_heroes to active_npcs, simply define a constant: kingdom_heroes_begin = active_npcs_begin., and kingdom_heroes_end = active_npcs_end. I haven't tested for that, but I think it should work.
+#"active_npcs_begin replaces kingdom_heroes_begin to allow for companions to become lords. 
+# Includes anyone who may at some point lead their own party: 
+#   the original kingdom heroes, 
+#   companions who may become kingdom heroes, 
+#   and pretenders. 
+# (slto_kingdom_hero as an occupation means that you lead a party on the map. 
+# Pretenders have the occupation "slto_inactive_pretender", even if they are 
+# part of a player's party, until they have their own independent party)
+#If you're a modder and you don't want to go through and switch every 
+# kingdom_heroes to active_npcs, simply define a constant: 
+# kingdom_heroes_begin = active_npcs_begin., and kingdom_heroes_end = active_npcs_end. 
+# I haven't tested for that, but I think it should work.
 
 active_npcs_including_player_begin = "trp_kingdom_heroes_including_player_begin"
 original_kingdom_heroes_begin = "trp_kingdom_1_lord"
@@ -1964,7 +1987,7 @@ arena_grand_prize = 250
 
 
 #Additions
-price_adjustment = 25 #the percent by which a trade at a center alters price
+price_adjustment = 25 #the percent by which a trade at a center alters price (based on 1000, so 25 = 2.5%)
 
 fire_duration = 4 #fires takes 4 hours
 
@@ -2362,6 +2385,18 @@ DPLMC_FACTION_STANDING_DEPENDENT = 20
 DPLMC_FACTION_STANDING_MEMBER = 10#includes mercenaries
 DPLMC_FACTION_STANDING_PETITIONER = 5
 DPLMC_FACTION_STANDING_UNAFFILIATED = 0
+
+DPLMC_CHEAT_DISABLED = 0
+DPLMC_CHEAT_YES = 1
+DPLMC_DEBUG_MIN = 2 # for always-display messages use: (ge, "$cheat_mode", DPLMC_DEBUG_MIN)
+# messages for specific categories, use: (eq, "$cheat_mode", DPLMC_DEBUG_ECONOMY)
+# use "this_or_next" if a message is for multiple categories
+DPLMC_DEBUG_ECONOMY = 3 
+DPLMC_DEBUG_MILITARY = 4
+DPLMC_DEBUG_POLITICS = 5
+DPLMC_DEBUG_EXPERIMENTAL = 6
+DPLMC_CHEAT_MAX = DPLMC_DEBUG_EXPERIMENTAL
+DPLMC_DEBUG_NEVER = 999
 
 ##INVASION/CAPTAIN COOP
 

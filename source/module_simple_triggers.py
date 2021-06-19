@@ -6,15 +6,12 @@ from header_skills import *
 from header_triggers import *
 from header_troops import *
 from header_music import *
-##diplomacy start+
 from header_terrain_types import *
+from module_constants import *
 from module_factions import dplmc_factions_end
 from ID_info_pages import ip_morale
-##diplomacy end+
-
-from module_constants import *
-
 from compiler import *
+
 ####################################################################################################################
 # Simple triggers are the alternative to old style triggers. They do not preserve state, and thus simpler to maintain.
 #
@@ -201,32 +198,13 @@ simple_triggers = [
    [
        (map_free),
        (call_script, "script_music_set_situation_with_culture", mtf_sit_travel),
-        ]),
+    ]),
 
-        #SB : change this block
-    (1,
-    [
-      # #escort caravan quest auto dialog trigger, moved to menu while auto-entering towns
-      # (try_begin),
-        # (eq, "$caravan_escort_state", 1),
-        # (party_is_active, "$caravan_escort_party_id"),
-
-        # (store_distance_to_party_from_party, ":caravan_distance_to_destination","$caravan_escort_destination_town","$caravan_escort_party_id"),
-        # (lt, ":caravan_distance_to_destination", 2),
-
-        # (store_distance_to_party_from_party, ":caravan_distance_to_player","p_main_party","$caravan_escort_party_id"),
-        # (lt, ":caravan_distance_to_player", 5),
-
-        # (assign, "$talk_context", tc_party_encounter),
-        # (assign, "$g_encountered_party", "$caravan_escort_party_id"),
-        # (party_stack_get_troop_id, ":caravan_leader", "$caravan_escort_party_id", 0),
-        # (party_stack_get_troop_dna, ":caravan_leader_dna", "$caravan_escort_party_id", 0),
-
-        # (start_map_conversation, ":caravan_leader", ":caravan_leader_dna"),
-      # (try_end),
-      #SB : debug block
-      (try_begin),
-        (ge, "$cheat_mode", 1),
+  (1,
+  [
+      (try_begin), # note that $g_talk_troop can be -1
+        (ge, "$g_talk_troop", 0),
+        (ge, "$cheat_mode", DPLMC_DEBUG_MIN),
         (troop_is_hero, "$g_talk_troop"),
         (str_store_troop_name, s17, "$g_talk_troop"),
         (troop_get_slot, reg17, "$g_talk_troop", slot_troop_wealth),
@@ -287,7 +265,7 @@ simple_triggers = [
 
  (2, #Error check for multiple parties on the map
 	[
-	(eq, "$cheat_mode", 1),
+	(ge, "$cheat_mode", DPLMC_DEBUG_MIN),
 	(assign, ":debug_menu_noted", 0),
 	(try_for_parties, ":party_no"),
 		(gt, ":party_no", "p_spawn_points_end"),
@@ -544,47 +522,50 @@ simple_triggers = [
 
 #Party AI: pruning some of the prisoners in each center (once a week)
   (24*7,
-   [
-   #SB : save g_talk_troop
-       (assign, ":save_talk_troop", "$g_talk_troop"),
-       (assign, "$g_talk_troop", ransom_brokers_begin), #to get the right price
-       (try_for_range, ":center_no", centers_begin, centers_end),
-         (party_get_num_prisoner_stacks, ":num_prisoner_stacks",":center_no"),
-         (try_for_range_backwards, ":stack_no", 0, ":num_prisoner_stacks"),
-           (party_prisoner_stack_get_troop_id, ":stack_troop",":center_no",":stack_no"),
-           (neg|troop_is_hero, ":stack_troop"),
-           (party_prisoner_stack_get_size, ":stack_size",":center_no",":stack_no"),
-           (store_random_in_range, ":rand_no", 0, 40),
-           (val_mul, ":stack_size", ":rand_no"),
-           (val_div, ":stack_size", 100),
-           (party_remove_prisoners, ":center_no", ":stack_troop", ":stack_size"),
-		   ##diplomacy start+ add prisoner value to center wealth
-		   (try_begin),
-		      (ge, "$g_dplmc_gold_changes", DPLMC_GOLD_CHANGES_HIGH),#must be explicitly enabled
-			  (ge, ":center_no", 1),
-			  (this_or_next|party_slot_eq, ":center_no", slot_party_type, spt_town),
-				(party_slot_eq, ":center_no", slot_party_type, spt_castle),
-			  (party_slot_ge, ":center_no", slot_town_lord, 1),#"wealth" isn't used for player garrisons
-			  (party_get_slot, ":cur_wealth", ":center_no", slot_town_wealth),
-			  (lt, ":cur_wealth", 6000),
-              #SB : calculate real prisoner price
-              (call_script, "script_game_get_prisoner_price", ":stack_troop"),
-			  (store_mul, ":ransom_profits", ":stack_size", reg0),#a fraction of what it could be sold for (50 would be a rule of thumb)
-              (val_div, ":ransom_profits", 10),
-              #SB : ransom broker doubles profit
-              (try_begin),
-                (party_slot_ge, ":center_no", slot_center_ransom_broker, ransom_brokers_begin),
-                (val_mul, ":ransom_profits", 5),
-                (val_div, ":ransom_profits", 2),
-              (try_end),
-			  (val_add, ":cur_wealth", ":ransom_profits"),
-			  (party_set_slot, ":center_no", slot_town_wealth, ":cur_wealth"),
-		   (try_end),
-		   ##diplomacy end+
-         (try_end),
-       (try_end),
-       (assign, "$g_talk_troop", ":save_talk_troop"),
-    ]),
+  [
+    #SB : save g_talk_troop
+    #NOTE: g_talk_troop has to be saved off, because it's used in game_get_prisoner_price
+    # which only gives back the correct price if you are talking to the ransom broker.
+    # If game_get_prisoner_price was changed to take in a 2nd argument, that workaround
+    # would no longer be needed.
+    (assign, ":save_talk_troop", "$g_talk_troop"),
+    (assign, "$g_talk_troop", ransom_brokers_begin), #to get the right price
+    (try_for_range, ":center_no", centers_begin, centers_end),
+      (party_get_num_prisoner_stacks, ":num_prisoner_stacks",":center_no"),
+      (try_for_range_backwards, ":stack_no", 0, ":num_prisoner_stacks"),
+        (party_prisoner_stack_get_troop_id, ":stack_troop",":center_no",":stack_no"),
+        (neg|troop_is_hero, ":stack_troop"),
+        (party_prisoner_stack_get_size, ":stack_size",":center_no",":stack_no"),
+        (try_begin),
+          (gt, ":stack_size", 5), # only do partial sale if the stack is large
+          (store_random_in_range, ":rand_no", 0, 40),
+          (val_mul, ":stack_size", ":rand_no"),
+          (val_div, ":stack_size", 100),
+        (try_end),
+        (party_remove_prisoners, ":center_no", ":stack_troop", ":stack_size"),
+        (try_begin),
+          (ge, "$g_dplmc_gold_changes", DPLMC_GOLD_CHANGES_HIGH),#must be explicitly enabled
+          (ge, ":center_no", 1),
+          (this_or_next|party_slot_eq, ":center_no", slot_party_type, spt_town),
+          (party_slot_eq, ":center_no", slot_party_type, spt_castle),
+          (party_slot_ge, ":center_no", slot_town_lord, 1),#"wealth" isn't used for player garrisons
+          (party_get_slot, ":cur_wealth", ":center_no", slot_town_wealth),
+          (lt, ":cur_wealth", 6000),
+          (call_script, "script_game_get_prisoner_price", ":stack_troop"),
+          (store_mul, ":ransom_profits", ":stack_size", reg0),#a fraction of what it could be sold for (50 would be a rule of thumb)
+          (val_div, ":ransom_profits", 10),
+          (try_begin),
+            (party_slot_ge, ":center_no", slot_center_ransom_broker, ransom_brokers_begin),
+            (val_mul, ":ransom_profits", 5),
+            (val_div, ":ransom_profits", 2),
+          (try_end),
+          (val_add, ":cur_wealth", ":ransom_profits"),
+          (party_set_slot, ":center_no", slot_town_wealth, ":cur_wealth"),
+        (try_end),
+      (try_end),
+    (try_end),
+    (assign, "$g_talk_troop", ":save_talk_troop"),
+  ]),
 
   #Adding net incomes to heroes (once a week)
   #Increasing debts to heroes by 1% (once a week)
@@ -667,9 +648,9 @@ simple_triggers = [
 	   ##diplomacy end+
     ]),
 
-  #Hiring men with hero wealths (once a day)
-  #Hiring men with center wealths (once a day)
-  (24,
+  #Hiring men with hero wealths (2x a day)
+  #Hiring men with center wealths (2x a day)
+  (12,
    [
    #SB : move this unscoped variable up
      (options_get_campaign_ai, ":reduce_campaign_ai"),
@@ -830,6 +811,15 @@ simple_triggers = [
             (party_set_ai_object,":result", ":center_no"),
             (party_set_flags, ":result", pf_default_behavior, 1),
           (try_end),
+          (try_begin),
+            (ge, "$cheat_mode", DPLMC_DEBUG_EXPERIMENTAL),
+            (store_distance_to_party_from_party, ":debug_dist_to_main_party", "p_main_party", ":center_no"),
+            (le, ":debug_dist_to_main_party", 10),
+            (str_store_party_name, s11, ":center_no"),
+            (str_store_party_name, s12, ":village_reinforcements"),
+            (assign, reg11, ":reinforcement_cost"),
+            (display_message, "@{!}Hire reinforcements for {s11} from {s12} for {reg11} denars."),
+          (try_end),
           (val_sub, ":cur_wealth", ":reinforcement_cost"),
           (val_sub, ":num_hiring_rounds", 1),
         (try_end),
@@ -844,44 +834,40 @@ simple_triggers = [
         (party_set_slot, ":center_no", slot_town_wealth, ":cur_wealth"),
       (try_end),
 
-     #this is moved up from below , from a 24 x 15 slot to a 24 slot
-     (try_for_range, ":center_no", centers_begin, centers_end),
-       #(neg|is_between, ":center_no", castles_begin, castles_end),
-       (store_random_in_range, ":random", 0, 30),
-       (le, ":random", 10),
-	   
-       (call_script, "script_get_center_ideal_prosperity", ":center_no"),
-       (assign, ":ideal_prosperity", reg0),
-       (party_get_slot, ":prosperity", ":center_no", slot_town_prosperity),
-       (try_begin),
-	     (eq, ":random", 0), #with 3% probability it will gain +10/-10 prosperity even it has higher prosperity than its ideal prosperity.
-         (try_begin),
-           (store_random_in_range, ":random", 0, 2),
-           (try_begin),
-             (eq, ":random", 0),
-             (neg|is_between, ":center_no", castles_begin, castles_end), #castles always gain positive prosperity from surprise income to balance their prosperity.
-             (call_script, "script_change_center_prosperity", ":center_no", -10),
-             (val_add, "$newglob_total_prosperity_from_convergence", -10),
-           (else_try),     
-             (call_script, "script_change_center_prosperity", ":center_no", 10),
-             (val_add, "$newglob_total_prosperity_from_convergence", 10),
-           (try_end),
-         (try_end),
-       (else_try),
-         (gt, ":prosperity", ":ideal_prosperity"),
-         (call_script, "script_change_center_prosperity", ":center_no", -1),
-         (val_add, "$newglob_total_prosperity_from_convergence", -1),
-       (else_try),
-         (lt, ":prosperity", ":ideal_prosperity"),
-         (call_script, "script_change_center_prosperity", ":center_no", 1),
-         (val_add, "$newglob_total_prosperity_from_convergence", 1),
-       (try_end),
-     (try_end),
     ]),
 
-  #Converging center prosperity to ideal prosperity once in every 15 days
-  (24*15,
-   []),
+  # Converging center prosperity to ideal prosperity once/day, 
+  # 8% chance per cycle.  The CHARITY triggers do something
+  # similar, but only for low prosperity centers.
+  (23,
+  [
+    (try_for_range, ":center_no", centers_begin, centers_end),
+      #(neg|is_between, ":center_no", castles_begin, castles_end),
+      (store_random_in_range, ":random", 0, 100),
+      (le, ":random", 8),
+    
+      (call_script, "script_get_center_ideal_prosperity", ":center_no"),
+      (assign, ":ideal_prosperity", reg0),
+      (party_get_slot, ":prosperity", ":center_no", slot_town_prosperity),
+      (try_begin),
+        (store_random_in_range, ":big_boost_chance", 0, 6),
+        (eq, ":big_boost_chance", 0),
+        (try_begin),
+          (gt, ":prosperity", ":ideal_prosperity"),
+          (neg|is_between, ":center_no", castles_begin, castles_end), #castles always gain positive prosperity from surprise income to balance their prosperity.
+          (call_script, "script_change_center_prosperity", ":center_no", -5),
+        (else_try),     
+          (call_script, "script_change_center_prosperity", ":center_no", 5),
+        (try_end),
+      (else_try),
+        (gt, ":prosperity", ":ideal_prosperity"),
+        (call_script, "script_change_center_prosperity", ":center_no", -1),
+      (else_try),
+        (lt, ":prosperity", ":ideal_prosperity"),
+        (call_script, "script_change_center_prosperity", ":center_no", 1),
+      (try_end),
+    (try_end),
+  ]),
 
   #Checking if the troops are resting at a half payment point
   (6,
@@ -921,22 +907,32 @@ simple_triggers = [
 		(neq, ":acting_faction", ":target_faction"),
 
 		(call_script, "script_diplomacy_faction_get_diplomatic_status_with_faction", ":target_faction", ":acting_faction"),
-		(eq, reg0, 0),
+    # reg0 -- TRUCE/TREATY = 1, PEACE = 0, CASUS BELLI = -1, WAR = -2
+    (assign, ":diplo_status_with_faction", reg0),
+    (assign, ":diplo_status_duration", reg1),
+    (try_begin),
+			(ge, "$cheat_mode", DPLMC_DEBUG_EXPERIMENTAL),
+      (str_store_faction_name, s91, ":acting_faction"),
+      (str_store_faction_name, s92, ":target_faction"),
+			(assign, reg90, ":diplo_status_with_faction"),
+      (assign, reg91, ":diplo_status_duration"),
+			(display_message, "@{!}PROVOCATION-TEST: {s91} vs {s92} status: {reg90} days: {reg91}"),
+		(try_end),
+    # Must be at peace, or have a truce
+		(this_or_next|eq, ":diplo_status_with_faction", 0),
+    (eq, ":diplo_status_with_faction", 1),
+    (le, ":diplo_status_duration", dplmc_treaty_truce_days_initial),
 
+    (store_random_in_range, ":random", 0, 2),
 		(try_begin),
-			(party_slot_eq, ":acting_village", slot_center_original_faction, ":target_faction"),
-
-			(call_script, "script_add_notification_menu", "mnu_notification_border_incident", ":acting_village", -1),
-		(else_try),
+      (eq, ":random", 0),
+			(this_or_next|party_slot_eq, ":acting_village", slot_center_original_faction, ":target_faction"),
 			(party_slot_eq, ":acting_village", slot_center_ex_faction, ":target_faction"),
-
 			(call_script, "script_add_notification_menu", "mnu_notification_border_incident", ":acting_village", -1),
-
 		(else_try),
-			(set_fixed_point_multiplier, 1),
 			(store_distance_to_party_from_party, ":distance", ":acting_village", ":target_village"),
+      #The two villages must be relatively close
 			(lt, ":distance", 25),
-
 			(call_script, "script_add_notification_menu", "mnu_notification_border_incident", ":acting_village", ":target_village"),
 		(try_end),
    (try_end),
@@ -992,7 +988,9 @@ simple_triggers = [
 					(lt, ":relation", 0),
 					(faction_set_slot, ":faction_1", ":slot_provocation_days", 0),
 				(else_try), #Provocation expires
-					(eq, ":provocation_days", 1),
+          # Must be at peace in order to have casus belli that is counting down
+		      (eq, ":diplo_status_with_faction", 0),
+          (eq, ":provocation_days", 1),
 					(call_script, "script_add_notification_menu", "mnu_notification_casus_belli_expired", ":faction_1", ":faction_2"),
 					(faction_set_slot, ":faction_1", ":slot_provocation_days", 0),
 				(else_try),
@@ -1305,7 +1303,7 @@ simple_triggers = [
 		(try_end),
 
 		(try_begin),
-			(eq, "$cheat_mode", 1),
+			(eq, "$cheat_mode", DPLMC_DEBUG_POLITICS),
 			(str_store_troop_name, s9, ":troop_no"),
 			(display_message, "@{!}DEBUG -- Doing political calculations for {s9}"),
 		(try_end),
@@ -1432,7 +1430,7 @@ simple_triggers = [
                 (str_store_faction_name_link, s3, ":faction"),
                 (call_script, "script_change_troop_faction", ":troop_no", ":new_faction"),
                 (try_begin),
-                  (ge, "$cheat_mode", 1),
+                  (eq, "$cheat_mode", DPLMC_DEBUG_POLITICS),
                   (str_store_troop_name, s4, ":troop_no"),
                   (display_message, "@{!}DEBUG - {s4} faction changed in defection"),
                 (try_end),
@@ -1443,7 +1441,7 @@ simple_triggers = [
                 (faction_get_color, ":color", ":new_faction"),
                 (display_log_message, s4, ":color"),
                 (try_begin),
-                  (eq, "$cheat_mode", 1),
+                  (eq, "$cheat_mode", DPLMC_DEBUG_POLITICS),
                   (this_or_next|eq, ":new_faction", "$players_kingdom"),
                   (eq, ":faction", "$players_kingdom"),
                   (call_script, "script_add_notification_menu", "mnu_notification_lord_defects", ":troop_no", ":faction"),
@@ -1939,11 +1937,30 @@ simple_triggers = [
      (try_end),
     ]),
 
-  # Refresh merchant inventories
-   (168,
+  # Refresh merchant inventories (villages and goods merchants)
+   (9,
    [
       (try_for_range, ":village_no", villages_begin, villages_end),
-        (call_script, "script_refresh_village_merchant_inventory", ":village_no"),
+        # randomly update them about every 3 days on average (was exactly every 7 days)
+        (store_random_in_range, ":random_percent", 0, 100),
+        (try_begin),
+          (le, ":random_percent", 12),
+          (call_script, "script_refresh_village_merchant_inventory", ":village_no"),
+        (try_end),
+      (try_end),
+
+      (try_for_range,":cur_center", towns_begin, towns_end),
+        # randomly update them about every 5 days on average (was exactly every 7 days)
+        (store_random_in_range, ":random_percent", 0, 100),
+        # besieged towns get a bonus (to update more frequently)
+        (try_begin),
+          (party_slot_ge, ":cur_center", slot_center_is_besieged_by, 0),
+          (val_sub, ":random_percent", 14),
+        (try_end),
+        (try_begin),
+          (le, ":random_percent", 7),
+          (call_script, "script_refresh_town_goods_merchant_inventory", ":cur_center"),
+        (try_end),
       (try_end),
     ]),
 
@@ -1957,106 +1974,143 @@ simple_triggers = [
       (try_end),
     ]),
 
-  # Refresh number of cattle in villages
-  (24 * 7,
-   [
-     (try_for_range, ":village_no", centers_begin, centers_end),
-	  (neg|is_between, ":village_no", castles_begin, castles_end),
+  # Refresh number of cattle/sheep in villages (1/7 chance per day)
+  (24,
+  [
+    (try_for_range, ":village_no", villages_begin, villages_end),
+      (neg|is_between, ":village_no", castles_begin, castles_end),
+      (neg|is_between, ":village_no", towns_begin, towns_end),
+      (store_random_in_range, ":random", 0, 7),
+      (eq, ":random", 0),
+
       (party_get_slot, ":num_cattle", ":village_no", slot_center_head_cattle),
       (party_get_slot, ":num_sheep", ":village_no", slot_center_head_sheep),
-      (party_get_slot, ":num_acres", ":village_no", slot_center_acres_pasture),
-	  (val_max, ":num_acres", 1),
 
-	  (store_mul, ":grazing_capacity", ":num_cattle", 400),
-	  (store_mul, ":sheep_addition", ":num_sheep", 200),
-	  (val_add, ":grazing_capacity", ":sheep_addition"),
-	  (val_div, ":grazing_capacity", ":num_acres"),
-	  (try_begin),
-		(eq, "$cheat_mode", 1),
-	    (assign, reg4, ":grazing_capacity"),
-		(str_store_party_name, s4, ":village_no"),
-	    #(display_message, "@{!}DEBUG -- Herd adjustment: {s4} at {reg4}% of grazing capacity"),
-	  (try_end),
+      (party_get_slot, ":acres_pasture", ":village_no", slot_center_acres_pasture),
+	    (val_max, ":acres_pasture", 0),
+      (party_get_slot, ":acres_grain", ":village_no", slot_center_acres_grain),
+      (val_div, ":acres_grain", 100),
+	    (val_max, ":acres_grain", 0),
 
+      (store_div, ":sheep_capacity_pasture", ":acres_pasture", 6),
+      (store_div, ":sheep_capacity_grain", ":acres_grain", 30),
+      (store_add, ":sheep_capacity", ":sheep_capacity_pasture", ":sheep_capacity_grain"),
+      (store_mul, ":sheep_grazing_capacity", ":num_sheep", 100), # 120 sheep -> 12000
+      (val_div, ":sheep_grazing_capacity", ":sheep_capacity"), # capacity is 100 -> 12000/100 = 120%
+
+      (store_div, ":cattle_capacity_pasture", ":acres_pasture", 18),
+      (store_div, ":cattle_capacity_grain", ":acres_grain", 12),
+      (store_add, ":cattle_capacity", ":cattle_capacity_pasture", ":cattle_capacity_grain"),
+      (store_mul, ":cattle_grazing_capacity", ":num_cattle", 100), # 200 cattle -> 20000
+      (val_div, ":cattle_grazing_capacity", ":cattle_capacity"), # capacity is 300 -> 20000/300 = 66%
 
       (store_random_in_range, ":random_no", 0, 100),
       (try_begin), #Disaster
-        (eq, ":random_no", 0),#1% chance of epidemic - should happen once every two years
-        (val_min, ":num_cattle", 10),
-
         (try_begin),
-#          (eq, "$cheat_mode", 1),
-#          (str_store_party_name, s1, ":village_no"),
-#          (display_message, "@{!}Cattle in {s1} are exterminated due to famine."),
-           ##diplomacy start+ Add display message for the player's own fiefs
-		   #(store_distance_to_party_from_party, ":dist", "p_main_party", ":village_no"),
-		   #(this_or_next|lt, ":dist", 30),
-	          (gt, "$g_player_chamberlain", 0),
-		   (party_slot_eq, ":village_no", slot_town_lord, "trp_player"),
-		   (party_get_slot, reg4, ":village_no", slot_center_head_cattle),
-		   (val_sub, reg4, ":num_cattle"),
-		   (gt, reg4, 0),
-		   (str_store_party_name_link, s4, ":village_no"),
-		   (display_log_message, "@A livestock epidemic has killed {reg4} cattle in {s4}."),
-		   ##diplomacy end+
+          (eq, ":random_no", 0), #1% chance of epidemic - should happen once every two years
+          (store_random_in_range, ":num_cattle", 0, ":num_cattle"),
+          (store_random_in_range, ":num_cattle", 0, ":num_cattle"),
+          (this_or_next|gt, "$g_player_chamberlain", 0),
+          (ge, "$cheat_mode", DPLMC_DEBUG_MIN),
+  		    (this_or_next|party_slot_eq, ":village_no", slot_town_lord, "trp_player"),
+          (ge, "$cheat_mode", DPLMC_DEBUG_MIN),
+	  	    (party_get_slot, reg4, ":village_no", slot_center_head_cattle),
+		      (val_sub, reg4, ":num_cattle"),
+		      (gt, reg4, 0),
+          (str_store_party_name_link, s4, ":village_no"),
+		      (display_log_message, "@A livestock epidemic has killed {reg4} cattle in {s4}."),
+          (store_div, ":loss_of_prosperity", reg4, 5),
+          (val_add, ":loss_of_prosperity", 1),
+          (val_max, ":loss_of_prosperity", 1),
+          (val_mul, ":loss_of_prosperity", -1),
+          (call_script, "script_change_center_prosperity", ":village_no", ":loss_of_prosperity"),
         (try_end),
+        (try_begin),
+          (eq, ":random_no", 1), #1% chance of epidemic - should happen once every two years
+          (store_random_in_range, ":num_sheep", 0, ":num_sheep"),
+          (store_random_in_range, ":num_sheep", 0, ":num_sheep"),
+          (this_or_next|gt, "$g_player_chamberlain", 0),
+          (ge, "$cheat_mode", DPLMC_DEBUG_MIN),
+  		    (this_or_next|party_slot_eq, ":village_no", slot_town_lord, "trp_player"),
+          (ge, "$cheat_mode", DPLMC_DEBUG_MIN),
+	  	    (party_get_slot, reg4, ":village_no", slot_center_head_sheep),
+		      (val_sub, reg4, ":num_sheep"),
+		      (gt, reg4, 0),
+          (str_store_party_name_link, s4, ":village_no"),
+		      (display_log_message, "@A livestock epidemic has killed {reg4} sheep in {s4}."),
+          (store_div, ":loss_of_prosperity", reg4, 8),
+          (val_add, ":loss_of_prosperity", 1),
+          (val_max, ":loss_of_prosperity", 1),
+          (val_mul, ":loss_of_prosperity", -1),
+          (call_script, "script_change_center_prosperity", ":village_no", ":loss_of_prosperity"),
+        (try_end),
+      (try_end),
 
-      (else_try), #Overgrazing
-	    (gt, ":grazing_capacity", 100),
+      # cattle pop
+      (try_begin),
+        (lt, ":num_cattle", 5),
+        (gt, ":cattle_capacity", 5),
+        (store_random_in_range, ":add_cattle", 1, 6),
+        (val_add, ":num_cattle", ":add_cattle"),
+      (try_end),
+      (try_begin), #Overgrazing (-10%)
+        (gt, ":cattle_grazing_capacity", 100),
+        (val_mul, ":num_cattle", 90),
+        (val_div, ":num_cattle", 100),
+      (else_try), #superb grazing (+25%)
+        (lt, ":cattle_grazing_capacity", 30),
+        (val_mul, ":num_cattle", 125),
+        (val_div, ":num_cattle", 100),
+      (else_try), #very good grazing (+12%)
+        (lt, ":cattle_grazing_capacity", 60),
+        (val_mul, ":num_cattle", 112),
+        (val_div, ":num_cattle", 100),
+      (else_try), # +6%
+        (val_mul, ":num_cattle", 106),
+        (val_div, ":num_cattle", 100),
+      (try_end),
+      (party_set_slot, ":village_no", slot_center_head_cattle, ":num_cattle"),
 
-         (val_mul, ":num_sheep", 90), #10% decrease at number of cattles
-         (val_div, ":num_sheep", 100),
-
-         (val_mul, ":num_cattle", 90), #10% decrease at number of sheeps
-         (val_div, ":num_cattle", 100),
-
-       (else_try), #superb grazing
-         (lt, ":grazing_capacity", 30),
-
-         (val_mul, ":num_cattle", 120), #20% increase at number of cattles
-         (val_div, ":num_cattle", 100),
-         (val_add, ":num_cattle", 1),
-
-         (val_mul, ":num_sheep", 120), #20% increase at number of sheeps
-         (val_div, ":num_sheep", 100),
-         (val_add, ":num_sheep", 1),
-
-       (else_try), #very good grazing
-         (lt, ":grazing_capacity", 60),
-
-         (val_mul, ":num_cattle", 110), #10% increase at number of cattles
-         (val_div, ":num_cattle", 100),
-		(val_add, ":num_cattle", 1),
-
-         (val_mul, ":num_sheep", 110), #10% increase at number of sheeps
-         (val_div, ":num_sheep", 100),
-		(val_add, ":num_sheep", 1),
-
-     (else_try), #good grazing
-	    (lt, ":grazing_capacity", 100),
-         (lt, ":random_no", 50),
-
-         (val_mul, ":num_cattle", 105), #5% increase at number of cattles
-         (val_div, ":num_cattle", 100),
-         (try_begin), #if very low number of cattles and there is good grazing then increase number of cattles also by one
-           (le, ":num_cattle", 20),
-			(val_add, ":num_cattle", 1),
-		(try_end),
-
-         (val_mul, ":num_sheep", 105), #5% increase at number of sheeps
-         (val_div, ":num_sheep", 100),
-         (try_begin), #if very low number of sheeps and there is good grazing then increase number of sheeps also by one
-           (le, ":num_sheep", 20),
-			(val_add, ":num_sheep", 1),
-		(try_end),
-
-
-     (try_end),
-
-     (party_set_slot, ":village_no", slot_center_head_cattle, ":num_cattle"),
-     (party_set_slot, ":village_no", slot_center_head_sheep, ":num_sheep"),
+      # sheep pop
+      (try_begin),
+        (lt, ":num_sheep", 5),
+        (gt, ":sheep_capacity", 5),
+        (store_random_in_range, ":add_sheep", 1, 6),
+        (val_add, ":num_sheep", ":add_sheep"),
+      (try_end),
+      (try_begin), #Overgrazing (-10%)
+        (gt, ":sheep_grazing_capacity", 100),
+        (val_mul, ":num_sheep", 90),
+        (val_div, ":num_sheep", 100),
+      (else_try), #superb grazing (+25%)
+        (lt, ":sheep_grazing_capacity", 30),
+        (val_mul, ":num_sheep", 125),
+        (val_div, ":num_sheep", 100),
+      (else_try), #very good grazing (+12%)
+        (lt, ":sheep_grazing_capacity", 60),
+        (val_mul, ":num_sheep", 112),
+        (val_div, ":num_sheep", 100),
+      (else_try), # +6%
+        (val_mul, ":num_sheep", 106),
+        (val_div, ":num_sheep", 100),
+      (try_end),
+      (party_set_slot, ":village_no", slot_center_head_sheep, ":num_sheep"),
+  
+      (try_begin),
+        (ge, "$cheat_mode", DPLMC_DEBUG_EXPERIMENTAL),
+        (store_distance_to_party_from_party, ":debug_dist_to_main_party", "p_main_party", ":village_no"),
+        (le, ":debug_dist_to_main_party", 20), # limit debug output to range (limits debug chatter)
+        (str_store_party_name, s20, ":village_no"),
+        (assign, reg21, ":num_cattle"),
+        (assign, reg22, ":cattle_capacity"),
+        (assign, reg23, ":cattle_grazing_capacity"),
+        (assign, reg24, ":num_sheep"),
+        (assign, reg25, ":sheep_capacity"),
+        (assign, reg26, ":sheep_grazing_capacity"),
+        (display_message, "@{!}LIVESTOCK: {s20}: {reg21}/{reg22} ({reg23} pct) cattle, {reg24}/{reg25} ({reg26} pct) sheep."),
+      (end_try),
     (try_end),
-    ]),
+  ]),
 
    #Accumulate taxes
    (24 * 7,
@@ -2099,10 +2153,10 @@ simple_triggers = [
             (try_end),
           (else_try),
             (party_slot_eq, ":center_no", slot_party_type, spt_castle),
-            (assign, ":cur_rents", 1200),
+            (assign, ":cur_rents", 1800),
           (else_try),
             (party_slot_eq, ":center_no", slot_party_type, spt_town),
-            (assign, ":cur_rents", 2400),
+            (assign, ":cur_rents", 3000),
           (try_end),
 
           (party_get_slot, ":prosperity", ":center_no", slot_town_prosperity), #prosperty changes between 0..100
@@ -2140,7 +2194,7 @@ simple_triggers = [
             (val_div, ":rent_change", 100),
 
             (try_begin), #debug
-              (eq, "$cheat_mode", 1),
+              (eq, "$cheat_mode", DPLMC_DEBUG_ECONOMY),
               (assign, reg0, ":tax_rate"),
               (display_message, "@{!}DEBUG : tax rate in {s6}: {reg0}"),
               (assign, reg0, ":accumulated_rents"),
@@ -2160,7 +2214,7 @@ simple_triggers = [
               (val_mul, ":tax_rate", 2),
 
               (try_begin), #debug
-                (eq, "$cheat_mode", 1),
+                (eq, "$cheat_mode", DPLMC_DEBUG_ECONOMY),
                 (assign, reg0, ":tax_rate"),
                 (display_message, "@{!}DEBUG : tax rate after modi in {s6}: {reg0}"),
               (try_end),
@@ -2173,7 +2227,7 @@ simple_triggers = [
                 (party_get_slot, ":center_relation", ":center_no", slot_center_player_relation),
 
                 (try_begin), #debug
-                  (eq, "$cheat_mode", 1),
+                  (ge, "$cheat_mode", DPLMC_DEBUG_MIN),
                   (assign, reg0, ":center_relation"),
                   (display_message, "@{!}DEBUG : center relation: {reg0}"),
                 (try_end),
@@ -2307,6 +2361,8 @@ simple_triggers = [
 			##diplomacy end+
 			(troop_slot_ge, "trp_player", slot_troop_renown, dplmc_command_renown_limit), #SB : const / 2
 			(troop_slot_ge, ":npc", slot_troop_woman_to_woman_string, 1),
+      (store_random_in_range, ":random_no", 0, 100),
+      (lt, ":random_no", 5), # slow down the rate that advice is given
 			(assign, "$npc_with_sisterly_advice", ":npc"),
 		(try_end),
 	 (else_try),
@@ -2564,7 +2620,7 @@ simple_triggers = [
            (is_between, ":cur_faction", kingdoms_begin, kingdoms_end),
            (faction_slot_eq, ":cur_faction", slot_faction_state, sfs_active),
            (try_begin),
-             (eq, "$cheat_mode", 2),
+             (eq, "$cheat_mode", DPLMC_DEBUG_MILITARY),
              (str_store_troop_name, s4, ":troop_no"),
              (display_message, "str_debug__attempting_to_spawn_s4"),
            (try_end),
@@ -2573,7 +2629,7 @@ simple_triggers = [
            (assign, ":center_no", reg0),
 
            (try_begin),
-             (eq, "$cheat_mode", 2),
+             (eq, "$cheat_mode", DPLMC_DEBUG_MILITARY),
              (str_store_party_name, s7, ":center_no"),
              (str_store_troop_name, s0, ":troop_no"),
              (display_message, "str_debug__s0_is_spawning_around_party__s7"),
@@ -2623,28 +2679,31 @@ simple_triggers = [
 ##    ]),
 
   # Spawn village farmer parties
-  (24,
+  (2,
    [
-       (try_for_range, ":village_no", villages_begin, villages_end),
-         (party_slot_eq, ":village_no", slot_village_state, svs_normal),
-         (party_get_slot, ":farmer_party", ":village_no", slot_village_farmer_party),
-         (this_or_next|eq, ":farmer_party", 0),
-         (neg|party_is_active, ":farmer_party"),
-         (store_random_in_range, ":random_no", 0, 100),
-         (lt, ":random_no", 60),
-         (call_script, "script_create_village_farmer_party", ":village_no"),
-         (party_set_slot, ":village_no", slot_village_farmer_party, reg0),
-#         (str_store_party_name, s1, ":village_no"),
-#         (display_message, "@Village farmers created at {s1}."),
-       (try_end),
+      (neg|is_currently_night), # only spawn farmers during the day
+      (try_for_range, ":village_no", villages_begin, villages_end),
+        (party_slot_eq, ":village_no", slot_village_state, svs_normal), # must not be looted, being raided, etc.
+        (party_slot_eq, ":village_no", slot_village_infested_by_bandits, 0), # must not be infested
+        (party_get_slot, ":farmer_party", ":village_no", slot_village_farmer_party),
+        (this_or_next|eq, ":farmer_party", 0),
+        (neg|party_is_active, ":farmer_party"),
+        (store_random_in_range, ":random_no", 0, 100),
+        (lt, ":random_no", 20), # spread out spawns across the day
+        (call_script, "script_create_village_farmer_party", ":village_no"),
+        (party_set_slot, ":village_no", slot_village_farmer_party, reg0),
+      (try_end),
     ]),
 
 
-   (72,
+   (8,
    [
-  # Updating trade good prices according to the productions
-       (call_script, "script_update_trade_good_prices"),
- # Updating player odds
+      # Updating trade good prices according to the productions
+      # Only some centers get processed each cycle
+      (call_script, "script_update_trade_good_prices"),
+ 
+      # TODO: Move this to another trigger (it was probably daily/weekly before)
+      # Updating player odds
        (try_for_range, ":cur_center", centers_begin, centers_end),
          (party_get_slot, ":player_odds", ":cur_center", slot_town_player_odds),
          (try_begin),
@@ -2663,15 +2722,26 @@ simple_triggers = [
     ]),
 
 
-  #Troop AI: Merchants thinking
-  (8,
+  #Troop AI: Caravan Merchants thinking about leaving the town
+  # Frequency is low (1h) because only some caravans process each cycle
+  (1,
    [
+     (neg|is_currently_night), # only spawn during the day
        (game_get_reduce_campaign_ai, ":reduce_campaign_ai"), #SB : moved this up top
        (val_sub, ":reduce_campaign_ai", 1),
        (val_mul, ":reduce_campaign_ai", 10), #pre-calculate amount
+       
        (try_for_parties, ":party_no"),
          (party_slot_eq, ":party_no", slot_party_type, spt_kingdom_caravan),
          (party_is_in_any_town, ":party_no"),
+
+        (assign, ":continue_flag", 1),
+        (try_begin),
+          (store_random_in_range, ":random_continue", 0, 100),
+          (ge, ":random_continue", 12), # chance they leave, helps with blobbing 
+          (assign, ":continue_flag", 0),
+        (try_end),
+        (eq, ":continue_flag", 1),
 
          (store_faction_of_party, ":merchant_faction", ":party_no"),
          (faction_get_slot, ":num_towns", ":merchant_faction", slot_faction_num_towns),
@@ -2688,27 +2758,9 @@ simple_triggers = [
              (eq, ":merchant_faction", "$players_kingdom"),
              (val_add, ":tariff_succeed_limit", ":reduce_campaign_ai"),
            (try_end),
-           # (try_begin),
-             # (party_slot_eq, ":cur_center", slot_town_lord, "trp_player"),
-
-             # # (game_get_reduce_campaign_ai, ":reduce_campaign_ai"),
-             # (try_begin),
-               # (eq, ":reduce_campaign_ai", 0), #hard (less money from tariffs)
-               # (assign, ":tariff_succeed_limit", 35),
-             # (else_try),
-               # (eq, ":reduce_campaign_ai", 1), #medium (normal money from tariffs)
-               # (assign, ":tariff_succeed_limit", 45),
-             # (else_try),
-               # (eq, ":reduce_campaign_ai", 2), #easy (more money from tariffs)
-               # (assign, ":tariff_succeed_limit", 60),
-             # (try_end),
-           # (else_try),
-             # (assign, ":tariff_succeed_limit", 45),
-           # (try_end),
 
            (lt, ":random_no", ":tariff_succeed_limit"),
 
-           #SB : todo queue caravans so they don't blob together, obvious if same destination
            (assign, ":can_leave", 1),
            (try_begin),
              (is_between, ":cur_center", walled_centers_begin, walled_centers_end),
@@ -2772,21 +2824,27 @@ simple_triggers = [
     ]),
 
   #Troop AI: Village farmers thinking
-  (8,
+  (2,
    [
-       (try_for_parties, ":party_no"),
-         (party_slot_eq, ":party_no", slot_party_type, spt_village_farmer),
-         (party_is_in_any_town, ":party_no"),
-         (party_get_slot, ":home_center", ":party_no", slot_party_home_center),
-         (party_get_cur_town, ":cur_center", ":party_no"),
+     (neg|is_currently_night), # only spawn farmers during the day
+      (try_for_parties, ":party_no"),
+        (party_slot_eq, ":party_no", slot_party_type, spt_village_farmer),
+        (party_is_in_any_town, ":party_no"),
+        (party_get_slot, ":home_center", ":party_no", slot_party_home_center),
+        (party_get_cur_town, ":cur_center", ":party_no"),
 
-         (assign, ":can_leave", 1),
-         (try_begin),
-           (is_between, ":cur_center", walled_centers_begin, walled_centers_end),
-           (neg|party_slot_eq, ":cur_center", slot_center_is_besieged_by, -1),
-           (assign, ":can_leave", 0),
-         (try_end),
-         (eq, ":can_leave", 1),
+        (assign, ":can_leave", 1),
+        (try_begin),
+          (is_between, ":cur_center", walled_centers_begin, walled_centers_end),
+          (neg|party_slot_eq, ":cur_center", slot_center_is_besieged_by, -1),
+          (assign, ":can_leave", 0),
+        (try_end),
+        (try_begin),
+          (store_random_in_range, ":random_can_leave", 0, 100),
+          (ge, ":random_can_leave", 20), # chance that they will leave, reduce all leaving at same hour
+          (assign, ":can_leave", 0),
+        (try_end), 
+        (eq, ":can_leave", 1),
 
          (try_begin),
            (eq, ":cur_center", ":home_center"),
@@ -2863,8 +2921,9 @@ simple_triggers = [
           (assign,":accumulated_tariffs", 0),
         (try_end),
 	     ##diplomacy end
+
 			 (try_begin),
-				(ge, "$cheat_mode", 3),
+				(eq, "$cheat_mode", DPLMC_DEBUG_ECONOMY),
 				(assign, reg4, ":tariffs_generated"),
 				(str_store_party_name, s4, ":cur_ai_object"),
 				(assign, reg5, ":accumulated_tariffs"),
@@ -2886,7 +2945,7 @@ simple_triggers = [
                (store_random_in_range, ":rand", 0, 100),
                (lt, ":rand", 5), #was 35
                (call_script, "script_change_center_prosperity", ":home_center", 1),
-			   (val_add, "$newglob_total_prosperity_from_village_trade", 1),
+			         (val_add, "$newglob_total_prosperity_from_village_trade", 1),
              (try_end),
            (try_end),
 
@@ -3095,22 +3154,30 @@ simple_triggers = [
      (try_end),
     ]),
 
-  # Consuming food at every 14 hours
-  (14,
+  # Consuming food at every N hours, see also the script: consume_food
+  # Vanilla rule: Your party will eat every 14 hours, 
+  # with every unit of food quantity feeding 3 troops.
+  (12,
    [
-    (eq, "$g_player_is_captive", 0),
-    (party_get_num_companion_stacks, ":num_stacks","p_main_party"),
-    (assign, ":num_men", 0),
-    (try_for_range, ":i_stack", 0, ":num_stacks"),
-      (party_stack_get_size, ":stack_size","p_main_party",":i_stack"),
-      (val_add, ":num_men", ":stack_size"),
-    (try_end),
-    (val_div, ":num_men", 3),
+    (eq, "$g_player_is_captive", 0), # no food consumption while player is captive
+    (eq, "$g_infinite_camping", 0), # not infinite camping
+
+    (store_party_size_wo_prisoners, ":num_men", "p_main_party"),
+    (store_party_size, ":party_size", "p_main_party"),
+    (party_get_num_prisoners, ":num_prisoners", "p_main_party"),
     (val_max, ":num_men", 1),
-    # (try_begin), #SB : val_max
-      # (eq, ":num_men", 0),
-      # (val_add, ":num_men", 1),
-    # (try_end),
+    (val_max, ":num_prisoners", 0),
+
+    (store_mul, ":troop_daily_consumption", ":num_men", 2), # two meals per day
+    (val_div, ":troop_daily_consumption", 3), # every unit of food feeds 3 troops
+    (store_div, ":troop_units_needed", ":troop_daily_consumption", 2), # per meal
+
+    (store_mul, ":prisoner_daily_consumption", ":num_prisoners", 2), # two meals per day
+    (val_div, ":prisoner_daily_consumption", 6), # every unit of food feeds 6 prisoners
+    (store_div, ":prisoner_units_needed", ":prisoner_daily_consumption", 2), # per meal
+
+    (store_add, ":daily_consumption", ":troop_daily_consumption", ":prisoner_daily_consumption"),
+    (store_add, ":food_units_needed", ":troop_units_needed", ":prisoner_units_needed"),
 
     (try_begin),
       (assign, ":number_of_foods_player_has", 0),
@@ -3124,49 +3191,92 @@ simple_triggers = [
       (try_end),
     (try_end),
 
-    # #SB : pre-calculate consumption amount for qst_deliver_wine items, although as with deliver_grain we might not care
-    # (try_begin),
-      # (check_quest_active,"qst_deliver_wine"),
-      # (quest_get_slot, ":quest_target_item", "qst_deliver_wine", slot_quest_target_item),
-      # (quest_get_slot, ":quest_target_amount", "qst_deliver_wine", slot_quest_target_amount),
-      # (assign, ":quest_amount", 0),
-      # (troop_get_inventory_capacity, ":capacity", "trp_player"),
-      # (try_for_range, ":cur_slot", 10, ":capacity"),
-        # (troop_get_inventory_slot, ":cur_item", "trp_player", ":cur_slot"),
-        # (eq, ":cur_item", ":quest_target_item"),
-        # (troop_inventory_slot_get_item_amount, ":cur_amount", "trp_player", ":cur_slot"),
-        # (val_add, ":quest_amount", ":cur_amount"),
-      # (try_end),
-    # (try_end),
-    (assign, ":consumption_amount", ":num_men"),
-    (assign, ":no_food_displayed", 0),
-    (try_for_range, ":unused", 0, ":consumption_amount"),
-      (assign, ":available_food", 0),
-      (try_for_range, ":cur_food", food_begin, food_end),
-        (item_set_slot, ":cur_food", slot_item_is_checked, 0),
-        (call_script, "script_cf_player_has_item_without_modifier", ":cur_food", imod_rotten),
-        (val_add, ":available_food", 1),
-      (try_end),
-      (try_begin),
-        (gt, ":available_food", 0),
-        (store_random_in_range, ":selected_food", 0, ":available_food"),
-        (call_script, "script_consume_food", ":selected_food"),
-      (else_try),
-        (eq, ":no_food_displayed", 0),
-        (display_message, "@Party has nothing to eat!", message_defeated), #SB : same colour const
-        (call_script, "script_change_player_party_morale", -3),
-        (assign, ":no_food_displayed", 1),
-#NPC companion changes begin
-        (try_begin),
-          (gt, ":num_men", 1), #SB : easier check
-            # (call_script, "script_party_count_fit_regulars", "p_main_party"),
-            # (gt, reg0, 0),
-          (call_script, "script_objectionable_action", tmt_egalitarian, "str_men_hungry"),
-        (try_end),
-#NPC companion changes end
+    (try_begin), # this also helps the consumption algorithm down below avoid having non-zero food_units_needed at the end
+      (gt, ":num_men", 10), # only grumble if party size > 10
+      (try_begin), 
+        (le, ":number_of_foods_player_has", 3),
+        (display_message, "@Your party is grumbling about the lack of variety in their diet."),
+        (call_script, "script_change_player_party_morale", -1),
       (try_end),
     (try_end),
-    ]),
+
+    (assign, ":available_food_qty", 0),
+    (troop_get_inventory_capacity, ":capacity", "trp_player"),
+    (try_for_range, ":cur_slot", 0, ":capacity"),
+      (item_set_slot, ":cur_slot", slot_item_is_checked, 0), #de-flag all items in all slots
+
+      #TODO: Figure out if a slot item is for the deliver ale/wine/food quest and flag it
+
+      # add up food item      
+      (troop_get_inventory_slot, ":cur_item", "trp_player", ":cur_slot"),
+      (is_between, ":cur_item", food_begin, food_end), # must be food
+      (troop_get_inventory_slot_modifier, ":item_modifier", "trp_player", ":cur_slot"),
+      (neq, ":item_modifier", imod_rotten), # not rotten
+      (troop_inventory_slot_get_item_amount, ":cur_amount", "trp_player", ":cur_slot"),
+      (val_add, ":available_food_qty", ":cur_amount"),
+    (try_end),
+    (assign, ":days_until_starvation", 0),
+    (try_begin),
+      (gt, ":daily_consumption", 0),
+      (store_div, ":days_until_starvation", ":available_food_qty", ":daily_consumption"),
+    (try_end),
+
+    (try_begin),
+      (ge, "$cheat_mode", DPLMC_DEBUG_EXPERIMENTAL),
+      (assign, reg10, ":available_food_qty"),
+      (assign, reg11, ":daily_consumption"),
+      (assign, reg12, ":days_until_starvation"),
+      #(assign, reg17, ":num_men"),
+      #(assign, reg18, ":party_size"),
+      #(assign, reg19, ":num_prisoners"),
+      #(display_message, "@{!}FOOD-PARTY-SIZE: num_men={reg17}, store_party_size={reg18}, party_get_num_prisoners={reg19}"),
+      (display_message, "@{!}Food available is {reg10}, daily consumption is {reg11}, days of food is {reg12}."),
+    (try_end),
+
+    (try_begin), # warn the player before they run out of food, increase penalties as stocks run lower
+      (gt, ":num_men", 1),
+      (try_begin),
+        (le, ":days_until_starvation", 0),
+        (display_message, "@Party has nothing to eat!", message_defeated),
+        (call_script, "script_change_player_party_morale", -5),
+        (call_script, "script_objectionable_action", tmt_egalitarian, "str_men_hungry"),
+      (else_try),
+        (le, ":days_until_starvation", 1),
+        (display_message, "@Your party is almost out of food."),
+        (call_script, "script_change_player_party_morale", -3),
+      (else_try),
+        (le, ":days_until_starvation", 2),
+        (display_message, "@Your party is running very low on food."),
+        (call_script, "script_change_player_party_morale", -2),
+      (else_try),
+        (le, ":days_until_starvation", 3),
+        (display_message, "@Your party is running low on food."),
+        (call_script, "script_change_player_party_morale", -1),
+      (else_try),
+        (le, ":days_until_starvation", 5),
+        (display_message, "@Your party is running low on food."),
+      (try_end),
+    (try_end),
+
+    # this approach means troops start skipping meals as food variety goes down
+    # it's still unlikely, given that we try to use about 7 food units per attempt
+    # plus we loop through each party member, when only 1 in 3 (or 1 in 6) consumes a food unit
+    (try_for_range, ":unused", 0, ":party_size"),
+      (gt, ":food_units_needed", 0),
+      (store_random_in_range, ":consume_amount", 3, 12), # units per attempt (3-11)
+      (val_min, ":consume_amount", ":food_units_needed"),
+      (store_random_in_range, ":candidate_food", food_begin, food_end),
+      (call_script, "script_consume_food", ":candidate_food", ":consume_amount"),
+      (val_sub, ":food_units_needed", reg0),
+    (try_end),
+
+    (try_begin),
+      (ge, "$cheat_mode", DPLMC_DEBUG_EXPERIMENTAL),
+      (gt, ":food_units_needed", 0),
+      (assign, reg10, ":food_units_needed"),
+      (display_message, "@{!}Failed to feed everyone, food_units_needed {reg10}"),
+    (try_end),
+  ]),
 
   # Setting item modifiers for food
   (24,
@@ -3190,7 +3300,9 @@ simple_triggers = [
          (try_begin), # SB : spoilage, objection
            (eq, ":modifier", imod_rotten),
            (troop_inventory_slot_get_item_amount, ":amount", "trp_player", ":i_slot"),
+           (ge, ":amount", 0),
            (troop_inventory_slot_get_item_max_amount, ":max", "trp_player", ":i_slot"),
+           (ge, ":max", 0),
            (store_sub, ":amount", ":max", ":amount"), #get amount consumed already
            (val_mul, ":amount", 100),
            (val_div, ":amount", ":max"),
@@ -3243,27 +3355,34 @@ simple_triggers = [
 
  #Update how good a target player is for bandits
   (2,
-   [
-       (store_troop_gold, ":total_value", "trp_player"),
-       (store_div, ":bandit_attraction", ":total_value", (10000/100)), #10000 gold = excellent_target
+  [
+      (store_troop_gold, ":total_value", "trp_player"),
+      (troop_get_inventory_capacity, ":inv_size", "trp_player"),
+      (try_for_range, ":i_slot", 0, ":inv_size"),
+        (troop_get_inventory_slot, ":item_id", "trp_player", ":i_slot"),
+        (ge, ":item_id", 0),
+        (try_begin),
+          (is_between, ":item_id", trade_goods_begin, trade_goods_end),
+          (store_item_value, ":item_value", ":item_id"),
+          (val_add, ":total_value", ":item_value"),
+        (try_end),
+      (try_end),
+      (assign, ":bandit_attraction", ":total_value"), # could be 1000g, could be 500000g
 
-       (troop_get_inventory_capacity, ":inv_size", "trp_player"),
-       (try_for_range, ":i_slot", 0, ":inv_size"),
-         (troop_get_inventory_slot, ":item_id", "trp_player", ":i_slot"),
-         (ge, ":item_id", 0),
-         (try_begin),
-           (is_between, ":item_id", trade_goods_begin, trade_goods_end),
-           (store_item_value, ":item_value", ":item_id"),
-           (val_add, ":total_value", ":item_value"),
-         (try_end),
-       (try_end),
-       (val_clamp, ":bandit_attraction", 0, 100),
-       #SB : disallow bandit attraction while raiding villages so they don't join on the "side" of villagers
-       (try_begin),
-         (is_between, "$g_player_raiding_village", villages_begin, villages_end),
-         (assign, ":bandit_attraction", 0),
-       (try_end),
-       (party_set_bandit_attraction, "p_main_party", ":bandit_attraction"),
+      (call_script, "script_party_count_members_with_full_health","p_main_party"),
+      (assign, ":player_party_size", reg0),
+      (val_clamp, ":player_party_size", 1, 200),
+
+      (val_div, ":bandit_attraction", ":player_party_size"), #scores: 10000/25=400, 10000/80=125, 50000/40=1250, 250000/120=2083
+      (val_div, ":bandit_attraction", 30),
+      (val_clamp, ":bandit_attraction", 0, 100),
+      
+      (try_begin), # disallow bandit attraction while raiding villages so they don't join on the "side" of villagers
+        (is_between, "$g_player_raiding_village", villages_begin, villages_end),
+        (assign, ":bandit_attraction", 0),
+      (try_end),
+
+      (party_set_bandit_attraction, "p_main_party", ":bandit_attraction"),
     ]),
 
 
@@ -3534,7 +3653,9 @@ simple_triggers = [
           (assign, ":bandit_troop", reg0),
           (party_set_slot, ":center_no", slot_center_has_bandits, ":bandit_troop"),
           (try_begin),
-            (eq, "$cheat_mode", 1),
+            (ge, "$cheat_mode", DPLMC_DEBUG_NEVER),
+            (store_distance_to_party_from_party, ":debug_dist_to_main_party", "p_main_party", ":center_no"),
+            (le, ":debug_dist_to_main_party", 90),
             (str_store_party_name, s1, ":center_no"),
             (str_store_troop_name_plural, s2, ":bandit_troop"),
             (display_message, "@{!}{s1} is infested by {s2} (at night)."),
@@ -3551,7 +3672,9 @@ simple_triggers = [
           (lt, ":random_no", ":random_chance"),
           (party_set_slot, ":center_no", slot_center_has_bandits, 0),
           (try_begin),
-            (eq, "$cheat_mode", 1),
+            (ge, "$cheat_mode", DPLMC_DEBUG_NEVER),
+            (store_distance_to_party_from_party, ":debug_dist_to_main_party", "p_main_party", ":center_no"),
+            (le, ":debug_dist_to_main_party", 90),
             (str_store_party_name, s1, ":center_no"),
             (display_message, "@{s1} is no longer infested by bandits (at night)."),
           (try_end),
@@ -3579,7 +3702,7 @@ simple_triggers = [
       (store_random_in_range, ":random_days", 12, 15),
       (party_set_slot, ":random_town", slot_town_has_tournament, ":random_days"),
       (try_begin),
-        (eq, "$cheat_mode", 1),
+        (ge, "$cheat_mode", DPLMC_DEBUG_MIN),
         (str_store_party_name, s1, ":random_town"),
         (display_message, "@{!}{s1} is holding a tournament."),
       (try_end),
@@ -3725,9 +3848,10 @@ simple_triggers = [
     ]),
 
   # Spawn some bandits.
-  (36,
+  (13,
    [
        (call_script, "script_spawn_bandits"),
+
        #SB : clean up looters a bit, especially ones running away       
        (try_for_parties, ":party_no"),
          (party_is_active, ":party_no"),
@@ -4299,7 +4423,7 @@ simple_triggers = [
              (try_begin),
                (faction_slot_eq, "$players_kingdom", slot_faction_ai_state, sfai_attacking_center),
                (gt, ":passed_time", 120),#5 days
-               (store_random_in_range, ":quest_target_amount", 5, 10),
+               (store_random_in_range, ":quest_target_amount", 4, 9),
                (assign, ":result","qst_deliver_cattle_to_army"),
                (quest_set_slot, ":result", slot_quest_target_amount, ":quest_target_amount"),
                (quest_set_slot, ":result", slot_quest_expiration_days, 10),
@@ -4481,7 +4605,8 @@ simple_triggers = [
      (assign, ":trainer_skill", reg0),
      (store_sub, ":needed_hours", 20, ":trainer_skill"),
      (val_mul, ":needed_hours", 3),
-     (val_div, ":needed_hours", 5),
+     (val_div, ":needed_hours", 10),
+     (val_add, ":needed_hours", 3),
      (ge, "$qst_train_peasants_against_bandits_num_hours_trained", ":needed_hours"),
      (assign, "$qst_train_peasants_against_bandits_num_hours_trained", 0),
      (rest_for_hours, 0, 0, 0), #stop resting
@@ -4802,7 +4927,7 @@ simple_triggers = [
       (eq, ":continue", 1),
 
 		(try_begin),
-			(ge, "$cheat_mode", 1),
+			(eq, "$cheat_mode", DPLMC_DEBUG_POLITICS),
 			(str_store_troop_name, s4, ":troop_no"),
 			(display_message, "@{!}DEBUG - {s4} faction changed from slot_troop_change_to_faction"),
 		(try_end),
@@ -4830,14 +4955,14 @@ simple_triggers = [
 
 (1,
    [
-     (eq, "$cheat_mode", 1),
+     (eq, "$cheat_mode", DPLMC_DEBUG_MILITARY),
      (try_for_range, ":center_no", centers_begin, centers_end),
        (party_get_battle_opponent, ":besieger_party", ":center_no"),
        (try_begin),
          (gt, ":besieger_party", 0),
          (str_store_party_name, s2, ":center_no"),
          (str_store_party_name, s3, ":besieger_party"),
-         (display_message, "@{!}DEBUG : {s2} is besieging by {s3}"),
+         (display_message, "@{!}DEBUG : {s2} is besieged by {s3}"),
        (try_end),
      (try_end),
      ]),
@@ -4993,50 +5118,47 @@ simple_triggers = [
    ]),
 
   (1,
-   [
-     (try_begin),
-       (eq, "$g_player_is_captive", 1),
-       (neg|party_is_active, "$capturer_party"),
-       (rest_for_hours, 0, 0, 0),
-     (try_end),
+  [
+    (try_begin),
+      (eq, "$g_player_is_captive", 1),
+      (neg|party_is_active, "$capturer_party"),
+      (rest_for_hours, 0, 0, 0),
+    (try_end),
 
-     ##diplomacy begin
-      #seems to be a native bug
-     (is_between, "$next_center_will_be_fired", villages_begin, villages_end),
-     ##diplomacy end
-     (assign, ":village_no", "$next_center_will_be_fired"),
-     (party_get_slot, ":is_there_already_fire", ":village_no", slot_village_smoke_added),
-     (eq, ":is_there_already_fire", 0),
+    (is_between, "$next_center_will_be_fired", villages_begin, villages_end),
+    (assign, ":village_no", "$next_center_will_be_fired"),
 
+    (party_get_slot, ":is_there_already_fire", ":village_no", slot_village_smoke_added),
+    (eq, ":is_there_already_fire", 0),
 
-     (try_begin),
-       (party_get_slot, ":bound_center", ":village_no", slot_village_bound_center),
-       (party_get_slot, ":last_nearby_fire_time", ":bound_center", slot_town_last_nearby_fire_time),
-       (store_current_hours, ":cur_hours"),
+    (try_begin),
+      (party_get_slot, ":bound_center", ":village_no", slot_village_bound_center),
+      (party_get_slot, ":last_nearby_fire_time", ":bound_center", slot_town_last_nearby_fire_time),
+      (store_current_hours, ":cur_hours"),
 
-	   (try_begin),
-		(eq, "$cheat_mode", 1),
-		(is_between, ":village_no", centers_begin, centers_end),
-		(is_between, ":bound_center", centers_begin, centers_end),
-		(str_store_party_name, s4, ":village_no"),
-		(str_store_party_name, s5, ":bound_center"),
-		(store_current_hours, reg3),
+      (try_begin),
+        (ge, "$cheat_mode", DPLMC_DEBUG_MIN),
+        (is_between, ":village_no", centers_begin, centers_end),
+        (is_between, ":bound_center", centers_begin, centers_end),
+        (str_store_party_name, s4, ":village_no"),
+        (str_store_party_name, s5, ":bound_center"),
+        (store_current_hours, reg3),
         (party_get_slot, reg4, ":bound_center", slot_town_last_nearby_fire_time),
-		(display_message, "@{!}DEBUG - Checking fire at {s4} for {s5} - current time {reg3}, last nearby fire {reg4}"),
-	   (try_end),
+        (display_message, "@{!}DEBUG - Checking fire at {s4} for {s5} - current time {reg3}, last nearby fire {reg4}"),
+      (try_end),
 
-
-       (eq, ":cur_hours", ":last_nearby_fire_time"),
-       (party_add_particle_system, ":village_no", "psys_map_village_fire"),
-       (party_add_particle_system, ":village_no", "psys_map_village_fire_smoke"),
-     (else_try),
-       (store_add, ":last_nearby_fire_finish_time", ":last_nearby_fire_time", fire_duration),
-       (eq, ":last_nearby_fire_finish_time", ":cur_hours"),
-       (party_clear_particle_systems, ":village_no"),
-     (try_end),
-
-
-   ]),
+      # the hour has arrived to start the burn
+      (eq, ":cur_hours", ":last_nearby_fire_time"),
+      (party_add_particle_system, ":village_no", "psys_map_village_fire"),
+      (party_add_particle_system, ":village_no", "psys_map_village_fire_smoke"),
+    (else_try),
+      # the time has passed, put out the fire
+      (store_add, ":last_nearby_fire_finish_time", ":last_nearby_fire_time", fire_duration),
+      (ge, ":cur_hours", ":last_nearby_fire_finish_time"),
+      (party_clear_particle_systems, ":village_no"),
+      (assign, "$next_center_will_be_fired", -1),
+    (try_end),
+  ]),
 
   (24,
    [
@@ -5080,52 +5202,453 @@ simple_triggers = [
       (party_set_slot, ":town", slot_center_player_enterprise_days_until_complete, ":days_to_completion"),
     (try_end),
     ]),
+
 (24,
+[
+  # Setting food bonuses in every 24 hours again and again because of a bug 
+  # (we could not find its reason) which decreases especially 
+  # slot_item_food_bonus slots of items to 0.
+  (call_script, "script_initialize_food_morale_bonuses"),
+]),
+  
+  # VILLAGE CHARITY - randomly boost villages with low prosperity
+  # a chance chance every 12 hours to gain 1..4 points of prosperity
+  #  0 prosp = 40% chance
+  # 10 prosp = 30% chance 
+  # 20 prosp = 20% chance
+  # 30 prosp = 10% chance
+  # 40 prosp = 0% chance
+  # this helps looted/pillaged villages get back up to ~35 prosperity faster
+  # yes, it's a bit of a hack, but makes villages more resilient
+  (11,
    [
-      # Setting food bonuses in every 6 hours again and again because of a bug (we could not find its reason) which decreases especially slot_item_food_bonus slots of items to 0.
-      #Staples
-      (item_set_slot, "itm_bread", slot_item_food_bonus, 8), #brought up from 4
-      (item_set_slot, "itm_grain", slot_item_food_bonus, 2), #new - can be boiled as porridge
-      
-      #Fat sources - preserved
-      (item_set_slot, "itm_smoked_fish", slot_item_food_bonus, 4),
-      (item_set_slot, "itm_dried_meat", slot_item_food_bonus, 5),
-      (item_set_slot, "itm_cheese", slot_item_food_bonus, 5),
-      (item_set_slot, "itm_sausages", slot_item_food_bonus, 5),
-      (item_set_slot, "itm_butter", slot_item_food_bonus, 4), #brought down from 8
+    (ge, "$g_dplmc_gold_changes", DPLMC_GOLD_CHANGES_LOW),
+    (try_for_range, ":center_no", villages_begin, villages_end),
+      (party_slot_eq, ":center_no", slot_village_state, svs_normal), # must not be looted, being raided, etc.
+      (party_slot_eq, ":center_no", slot_village_infested_by_bandits, 0), # must not be infested
+      (party_get_slot, ":old_prosperity", ":center_no", slot_town_prosperity),
 
-      #Fat sources - perishable
-      (item_set_slot, "itm_chicken", slot_item_food_bonus, 8), #brought up from 7
-      (item_set_slot, "itm_cattle_meat", slot_item_food_bonus, 7), #brought down from 7
-      (item_set_slot, "itm_pork", slot_item_food_bonus, 6), #brought down from 6
-      
-      #Produce
-      (item_set_slot, "itm_raw_olives", slot_item_food_bonus, 1),
-      (item_set_slot, "itm_cabbages", slot_item_food_bonus, 2),
-      (item_set_slot, "itm_raw_grapes", slot_item_food_bonus, 3),
-      (item_set_slot, "itm_apples", slot_item_food_bonus, 4), #brought down from 5
+      # only for low-prosperity villages
+      (lt, ":old_prosperity", 35), 
+      # percent chance to boost prosperity (lower prosperity gives higher odds)
+      (store_random_in_range, ":random", -60, 40),
+      (ge, ":random", ":old_prosperity"), 
 
-      #Sweet items
-      (item_set_slot, "itm_raw_date_fruit", slot_item_food_bonus, 4), #brought down from 8
-      (item_set_slot, "itm_honey", slot_item_food_bonus, 6), #brought down from 12
-      
-      (item_set_slot, "itm_wine", slot_item_food_bonus, 5),
-      (item_set_slot, "itm_ale", slot_item_food_bonus, 4),
+      (assign, ":boost", 1), # standard free boost is +1 point
+      (try_begin),
+        # attempt to pay for it
+        # TODO: Figure out how this could/should work for the player's villages
+        (assign, ":paid_for_by_party", -1),
+        (try_begin),
+          (neg|party_slot_eq, ":center_no", slot_town_lord, "trp_player"),
+          (party_get_slot, ":center_lord", ":center_no", slot_town_lord),
+          (is_between, ":center_lord", active_npcs_begin, active_npcs_end),
+          # pay for it from the fief's lord's purse
+          (troop_get_slot, ":center_lord_wealth", ":center_lord", slot_troop_wealth),
+          (ge, ":center_lord_wealth", 10000), # lord has > N denars
+          (val_sub, ":center_lord_wealth", 800),
+          (troop_set_slot, ":center_lord", slot_troop_wealth, ":center_lord_wealth"),
+          (assign, ":paid_party_new_wealth", ":center_lord_wealth"),
+          (assign, ":paid_for_by_party", ":center_lord"),
+          (store_random_in_range, ":boost", 3, 5), # 3..4
+        (else_try),
+          (neg|party_slot_eq, ":center_no", slot_town_lord, "trp_player"),
+          (store_faction_of_party, ":center_faction", ":center_no"),
+          (is_between, ":center_faction", npc_kingdoms_begin, kingdoms_end),
+          (faction_get_slot, ":faction_leader", ":center_faction", slot_faction_leader),
+          (is_between, ":faction_leader", active_npcs_begin, active_npcs_end),
+          # pay for it from the faction leader's purse
+          (troop_get_slot, ":faction_leader_wealth", ":faction_leader", slot_troop_wealth),
+          (ge, ":faction_leader_wealth", 25000), # lord has > N denars
+          (val_sub, ":faction_leader_wealth", 600),
+          (troop_set_slot, ":faction_leader", slot_troop_wealth, ":faction_leader_wealth"),
+          (assign, ":paid_party_new_wealth", ":faction_leader_wealth"),
+          (assign, ":paid_for_by_party", ":faction_leader"),
+          (store_random_in_range, ":boost", 2, 4), # 2..3
+        (try_end),
+
+        (call_script, "script_change_center_prosperity", ":center_no", ":boost"),
+        (party_get_slot, ":new_prosperity", ":center_no", slot_town_prosperity),
+
+        (try_begin),
+          (ge, "$cheat_mode", DPLMC_DEBUG_MIN),
+          (store_distance_to_party_from_party, ":debug_dist_to_main_party", "p_main_party", ":center_no"),
+          (le, ":debug_dist_to_main_party", 15), # limit debug output to towns within range of the player
+          (str_store_party_name, s91, ":center_no"),
+          (assign, reg90, ":boost"),
+          (assign, reg91, ":old_prosperity"),
+          (assign, reg92, ":new_prosperity"),
+          (assign, reg93, ":paid_party_new_wealth"),
+          (try_begin),
+            (is_between, ":paid_for_by_party", active_npcs_begin, active_npcs_end),
+            (str_store_troop_name, s90, ":paid_for_by_party"),
+            (display_message, "@{!}CHARITY: Boost {s91} prosperity by +{reg90} ({reg91}->{reg92}), paid for by {s90} ({reg93}g)."),
+          (else_try),
+            (display_message, "@{!}CHARITY: Boost {s91} prosperity by +{reg90} ({reg91}->{reg92})."),
+          (try_end),
+        (end_try),
+      (try_end),
+    (try_end),
    ]),
+
+  # walled centers get a bit of random wealth if they are under-strength so that they can hire reinforcements
+  # goal is to not have zero-levels of troops for too long (maybe the king hired the reinforcements?)
+  # when the player is the one sieging, the walled center starts off with zero troops and the player constantly has
+  # to sacrifice their troops to not have the walled center sit empty for days and days
+  # see: reinforcement_cost_easy
+  # TODO: Offer the player a chance to purchase reinforcements from nearby villages as an alternative approach?
+  (6,
+   [
+    (ge, "$g_dplmc_gold_changes", DPLMC_GOLD_CHANGES_MEDIUM),
+
+    (assign, ":gold", reinforcement_cost_easy),
+    (assign, ":target_gold", reinforcement_cost_easy),
+    (val_mul, ":target_gold", 5),
+
+    (try_for_range, ":center_no", walled_centers_begin, walled_centers_end),
+      (party_get_slot, ":cur_wealth", ":center_no", slot_town_wealth),
+      (lt, ":cur_wealth", ":target_gold"),
+      (party_get_slot, ":center_strength", ":center_no", slot_party_cached_strength),
+      (lt, ":center_strength", 400), # roughly, strength = 10x the number of troops (give or take 30-50%)
+      (store_random_in_range, ":random", 0, 100),
+      (lt, ":random", 25), # percent chance        
+
+      # attempt to pay for it
+      # TODO: Figure out how this could/should work for the player's walled centers
+      (assign, ":paid_for_by_party", -1),
+      (try_begin),
+        (neg|party_slot_eq, ":center_no", slot_town_lord, "trp_player"),
+        (party_get_slot, ":center_lord", ":center_no", slot_town_lord),
+        (is_between, ":center_lord", active_npcs_begin, active_npcs_end),
+        # pay for it from the fief's lord's purse
+        (troop_get_slot, ":center_lord_wealth", ":center_lord", slot_troop_wealth),
+        (ge, ":center_lord_wealth", 15000), # lord has > N denars
+        (val_sub, ":center_lord_wealth", ":gold"),
+        (troop_set_slot, ":center_lord", slot_troop_wealth, ":center_lord_wealth"),
+        (assign, ":paid_party_new_wealth", ":center_lord_wealth"),
+        (assign, ":paid_for_by_party", ":center_lord"),
+      (else_try),
+        (neg|party_slot_eq, ":center_no", slot_town_lord, "trp_player"),
+        (store_faction_of_party, ":center_faction", ":center_no"),
+        (is_between, ":center_faction", npc_kingdoms_begin, kingdoms_end),
+        (faction_get_slot, ":faction_leader", ":center_faction", slot_faction_leader),
+        (is_between, ":faction_leader", active_npcs_begin, active_npcs_end),
+        # pay for it from the faction leader's purse
+        (troop_get_slot, ":faction_leader_wealth", ":faction_leader", slot_troop_wealth),
+        (ge, ":faction_leader_wealth", 25000), # lord has > N denars
+        (val_sub, ":faction_leader_wealth", ":gold"),
+        (troop_set_slot, ":faction_leader", slot_troop_wealth, ":faction_leader_wealth"),
+        (assign, ":paid_party_new_wealth", ":faction_leader_wealth"),
+        (assign, ":paid_for_by_party", ":faction_leader"),
+      (try_end),
+
+      (val_add, ":cur_wealth", ":gold"),
+      (party_set_slot, ":center_no", slot_town_wealth, ":cur_wealth"),
+
+      (try_begin),
+        (ge, "$cheat_mode", DPLMC_DEBUG_EXPERIMENTAL),
+        (store_distance_to_party_from_party, ":debug_dist_to_main_party", "p_main_party", ":center_no"),
+        (le, ":debug_dist_to_main_party", 15), # limit debug output to towns within range of the player
+        (str_store_party_name, s90, ":center_no"),
+        (assign, reg91, ":gold"),
+        (assign, reg92, ":cur_wealth"),
+        (assign, reg93, ":center_strength"),
+        (try_begin),
+          (is_between, ":paid_for_by_party", active_npcs_begin, active_npcs_end),
+          (str_store_troop_name, s91, ":paid_for_by_party"),
+          (display_message, "@{!}WALLED: {s90} (str: {reg93}) was given {reg91} denars by {s91} for a total wealth of {reg92}."),
+        (else_try),
+          (display_message, "@{!}WALLED: {s90} (str: {reg93}) was given {reg91} denars for a total wealth of {reg92}."),
+        (try_end),
+      (try_end),
+
+    (try_end),
+   ]),
+
+  # TOWN CHARITY - randomly boost towns with low prosperity
+  # a 50% chance every 13 hours to gain 1..4 points of prosperity, 
+  # then there is a second roll against prosperity
+  #  0 prosp = 30% chance
+  # 10 prosp = 20% chance 
+  # 20 prosp = 10% chance
+  # 30 prosp = 0% chance
+  # this helps looted/pillaged towns get back up to ~25 prosperity faster
+  # yes, it's a bit of a hack, but makes towns more resilient
+  (13,
+   [
+    (ge, "$g_dplmc_gold_changes", DPLMC_GOLD_CHANGES_LOW),
+    (try_for_range, ":center_no", towns_begin, towns_end),
+      (party_slot_eq, ":center_no", slot_center_is_besieged_by, -1), # not besieged
+      (party_get_slot, ":old_prosperity", ":center_no", slot_town_prosperity),
+
+      # only for low-prosperity towns
+      (lt, ":old_prosperity", 25), 
+      # percent chance to boost prosperity (lower prosperity gives higher odds)
+      (store_random_in_range, ":random", -70, 30),
+      (ge, ":random", ":old_prosperity"), 
+
+      (assign, ":boost", 1), # standard free boost is +1 point
+      (try_begin),
+        # attempt to pay for it
+        # TODO: Figure out how this could/should work for the player's villages
+        (assign, ":paid_for_by_party", -1),
+        (try_begin),
+          (neg|party_slot_eq, ":center_no", slot_town_lord, "trp_player"),
+          (party_get_slot, ":center_lord", ":center_no", slot_town_lord),
+          (is_between, ":center_lord", active_npcs_begin, active_npcs_end),
+          # pay for it from the fief's lord's purse
+          (troop_get_slot, ":center_lord_wealth", ":center_lord", slot_troop_wealth),
+          (ge, ":center_lord_wealth", 20000), # lord has > N denars
+          (val_sub, ":center_lord_wealth", 2500),
+          (troop_set_slot, ":center_lord", slot_troop_wealth, ":center_lord_wealth"),
+          (assign, ":paid_party_new_wealth", ":center_lord_wealth"),
+          (assign, ":paid_for_by_party", ":center_lord"),
+          (store_random_in_range, ":boost", 3, 5), # 3..4
+        (else_try),
+          (neg|party_slot_eq, ":center_no", slot_town_lord, "trp_player"),
+          (store_faction_of_party, ":center_faction", ":center_no"),
+          (is_between, ":center_faction", npc_kingdoms_begin, kingdoms_end),
+          (faction_get_slot, ":faction_leader", ":center_faction", slot_faction_leader),
+          (is_between, ":faction_leader", active_npcs_begin, active_npcs_end),
+          # pay for it from the faction leader's purse
+          (troop_get_slot, ":faction_leader_wealth", ":faction_leader", slot_troop_wealth),
+          (ge, ":faction_leader_wealth", 30000), # lord has > N denars
+          (val_sub, ":faction_leader_wealth", 1500),
+          (troop_set_slot, ":faction_leader", slot_troop_wealth, ":faction_leader_wealth"),
+          (assign, ":paid_party_new_wealth", ":faction_leader_wealth"),
+          (assign, ":paid_for_by_party", ":faction_leader"),
+          (store_random_in_range, ":boost", 2, 4), # 2..3
+        (try_end),
+
+        (call_script, "script_change_center_prosperity", ":center_no", ":boost"),
+        (party_get_slot, ":new_prosperity", ":center_no", slot_town_prosperity),
+
+        (try_begin),
+          (ge, "$cheat_mode", DPLMC_DEBUG_MIN),
+          (store_distance_to_party_from_party, ":debug_dist_to_main_party", "p_main_party", ":center_no"),
+          (le, ":debug_dist_to_main_party", 25), # limit debug output to towns within range of the player
+          (str_store_party_name, s91, ":center_no"),
+          (assign, reg90, ":boost"),
+          (assign, reg91, ":old_prosperity"),
+          (assign, reg92, ":new_prosperity"),
+          (assign, reg93, ":paid_party_new_wealth"),
+          (try_begin),
+            (is_between, ":paid_for_by_party", active_npcs_begin, active_npcs_end),
+            (str_store_troop_name, s90, ":paid_for_by_party"),
+            (display_message, "@{!}CHARITY: Boost {s91} prosperity by +{reg90} ({reg91}->{reg92}), paid for by {s90} ({reg93}g)."),
+          (else_try),
+            (display_message, "@{!}CHARITY: Boost {s91} prosperity by +{reg90} ({reg91}->{reg92})."),
+          (try_end),
+        (end_try),
+      (try_end),
+    (try_end),
+   ]),
+
+  # Merchant caravans will re-evalulate their target town if it is besieged, or changes
+  # to hostile ownership during the trip time.  This cleans up the situation where you'll
+  # have a bunch of caravans ping-ponging on the outskirts of town during a siege.
+  (11,
+  [
+    (try_for_parties, ":party_no"),
+      (party_slot_eq, ":party_no", slot_party_type, spt_kingdom_caravan),
+      (neg|party_is_in_any_town, ":party_no"),
+
+      (get_party_ai_object, ":target_center", ":party_no"),
+      (is_between, ":target_center", towns_begin, towns_end),
+      (store_faction_of_party, ":merchant_faction", ":party_no"),
+
+      # get merchant relation with town's faction
+      (store_faction_of_party, ":target_faction", ":target_center"),
+      (store_relation, ":reln", ":target_faction", ":merchant_faction"),
+
+      # get siege status
+      (party_get_slot, ":besieger", ":target_center", slot_center_is_besieged_by),
+
+      (this_or_next|lt, ":reln", 0), # now at war
+      (gt, ":besieger", 0), # is under siege
+
+      (store_random_in_range, ":random_no", 0, 100),
+      (lt, ":random_no", 33), # % chance of redirection
+
+      # divert to the nearest safe & friendly town
+      (assign, ":new_target_center", -1),
+      (assign, ":lowest_distance_score", 99999),
+      (try_for_range, ":new_town_id", towns_begin, towns_end),
+        (neg|eq, ":new_town_id", ":target_center"),
+        (store_random_in_range, ":distance_random_no", 0, 100),
+        (lt, ":distance_random_no", 50), # % chance of using this town
+
+        # be at peace with candidate town's faction
+        (store_faction_of_party, ":new_town_faction", ":new_town_id"),
+        (store_relation, ":new_reln", ":new_town_faction", ":merchant_faction"),
+        (ge, ":new_reln", 0),
+        # new candidate is not besieged
+        (party_get_slot, ":new_besieger", ":new_town_id", slot_center_is_besieged_by),
+        (le, ":new_besieger", 0),
+
+        # calculate distance, but fuzz the score up/down a bit
+        (store_distance_to_party_from_party, ":new_town_distance", ":party_no", ":new_town_id"),
+        (store_random_in_range, ":randomize_score", 80, 121),
+        (val_mul, ":new_town_distance", ":randomize_score"),
+        (val_div, ":new_town_distance", 100),
+
+        (lt, ":new_town_distance", ":lowest_distance_score"),
+        (assign, ":new_target_center", ":new_town_id"),
+        (assign, ":lowest_distance_score", ":new_town_distance"),
+      (try_end),
+
+      (try_begin),
+        (is_between, ":new_target_center", towns_begin, towns_end),
+        (party_set_ai_object, ":party_no", ":new_target_center"),
+        (party_set_slot, ":party_no", slot_party_ai_object, ":new_target_center"),
+        
+        (try_begin),
+          (ge, "$cheat_mode", DPLMC_DEBUG_EXPERIMENTAL),
+          (store_distance_to_party_from_party, ":debug_dist_to_main_party", "p_main_party", ":party_no"),
+          (le, ":debug_dist_to_main_party", 80),
+          (str_store_party_name, s90, ":target_center"), # original town
+          (str_store_party_name, s91, ":new_target_center"), # original town
+          (str_store_faction_name, s92, ":merchant_faction"),
+          (display_message, "@{!}CARAVAN DIVERTED: {s92} caravan: {s90}->{s91}"),
+        (try_end),
+      (try_end),
+
+    (try_end),
+  ]),
+
+  (25,
+  [
+    # infested villages lose prosperity per cycle, average of 3/day
+    # they also lose cattle/sheep at a rate of 3-4/day on average
+    # cattle/sheep will grow back over time (based on slot_center_acres_pasture)
+    (try_for_range, ":center_no", villages_begin, villages_end),
+      # only look at infested villages
+      (party_slot_ge, ":center_no", slot_village_infested_by_bandits, 1),
+
+      # get the information for the village
+      (party_get_slot, ":prosperity", ":center_no", slot_town_prosperity),
+      (assign, reg91, ":prosperity"),
+      (party_get_slot, ":num_cattle", ":center_no", slot_center_head_cattle),
+      (assign, reg93, ":num_cattle"),
+      (party_get_slot, ":num_sheep", ":center_no", slot_center_head_sheep),
+      (assign, reg95, ":num_sheep"),
+      
+      (try_begin), # attempt to de-infest the village
+        # (there are other events that will clear the infestation)
+        # only if the player does not have an active quest for the center
+        (assign, ":continue", 1),
+        (try_begin),
+          (gt, "$random_quest_no", 0),
+          (quest_slot_eq, "$random_quest_no", slot_quest_target_center, ":center_no"),
+          (assign, ":continue", 0),
+        (try_end),
+        (eq, ":continue", 1),
+        # only if prosperity / cattle / sheep are all low
+        (le, ":prosperity", 20),
+        (le, ":num_cattle", 10),
+        (le, ":num_sheep", 20),
+        # roll for cleaning
+        (store_random_in_range, ":cleaning_crew_roll", 0, 6),
+        (eq, ":cleaning_crew_roll", 0),
+        (party_set_slot, ":center_no", slot_village_infested_by_bandits, 0),
+        (try_begin),
+          (ge, "$cheat_mode", DPLMC_DEBUG_EXPERIMENTAL),
+          (store_distance_to_party_from_party, ":debug_dist_to_main_party", "p_main_party", ":center_no"),
+          (le, ":debug_dist_to_main_party", 120),
+          (str_store_party_name, s90, ":center_no"),
+          (display_message, "@{!}CLEANSED: {s90} prosp {reg91} cattle {reg93} sheep {reg95}"),
+        (try_end),
+      (try_end),
+
+      # check whether still infested
+      (party_slot_ge, ":center_no", slot_village_infested_by_bandits, 1),
+      
+      (store_random_in_range, ":loss_of_prosperity", -5, 0), # [-5,-1] (avg -3)
+      (call_script, "script_change_center_prosperity", ":center_no", ":loss_of_prosperity"),
+      (party_get_slot, reg92, ":center_no", slot_town_prosperity),
+
+      (store_random_in_range, ":cattle_loss", 0, 7), # 0..6 (avg 3)
+      (val_sub, ":num_cattle", ":cattle_loss"),
+      (val_max, ":num_cattle", 0),
+      (party_set_slot, ":center_no", slot_center_head_cattle, ":num_cattle"),
+      (assign, reg94, ":num_cattle"),
+
+      (store_random_in_range, ":sheep_loss", 0, 9), # 0..8 (avg 4)
+      (val_sub, ":num_sheep", ":sheep_loss"),
+      (val_max, ":num_sheep", 0),
+      (party_set_slot, ":center_no", slot_center_head_sheep, ":num_sheep"),
+      (assign, reg96, ":num_sheep"),
+
+      (try_begin),
+        (ge, "$cheat_mode", DPLMC_DEBUG_EXPERIMENTAL),
+        (store_distance_to_party_from_party, ":debug_dist_to_main_party", "p_main_party", ":center_no"),
+        (le, ":debug_dist_to_main_party", 60),
+        (str_store_party_name, s90, ":center_no"),
+        (display_message, "@{!}INFESTED: {s90} prosp {reg91}->{reg92} cattle {reg93}->{reg94} sheep {reg95}->{reg96}"),
+      (try_end),
+    (try_end),
+  ]),
+
+  # DEBUG -- refresh some of the initialization things
   (24,
-   []),
+   [
+     # only fire when player is close to village_66 (Fisdnar)
+    (store_distance_to_party_from_party, ":debug_dist_to_main_party", "p_main_party", "p_village_66"),
+    (le, ":debug_dist_to_main_party", 15),
+
+    (this_or_next|eq, "$cheat_mode", DPLMC_DEBUG_EXPERIMENTAL),
+    (eq, "$g_infinite_camping", 1),
+
+    (call_script, "script_initialize_item_info"),
+    (call_script, "script_initialize_economic_information"),
+    (call_script, "script_initialize_trade_routes"),
+   ]),
+
+  # VILLAGE ELDER GOLD -> PROSPERITY
+  # The village elder will invest any excess gold into the village's
+  # prosperity each day.  This rewards the player (through higher prosperity)
+  # for visiting villages and purchasing food/supplies.  
   (24,
-   []),
-  (24,
-   []),
-  (24,
-   []),
-  (24,
-   []),
-  (24,
-   []),
-  (24,
-   []),
+  [
+    (try_for_range, ":center_no", villages_begin, villages_end),
+      (party_slot_eq, ":center_no", slot_village_state, svs_normal), # must not be looted, being raided, etc.
+      (party_slot_eq, ":center_no", slot_village_infested_by_bandits, 0), # must not be infested
+
+      (party_get_slot, ":merchant_troop", ":center_no", slot_town_elder),
+      (store_troop_gold, ":gold",":merchant_troop"),
+
+      # the cost per point increases as prosperity increases
+      (party_get_slot, ":gold_per_point", ":center_no", slot_town_prosperity),
+      (val_div, ":gold_per_point", 10),
+      (val_max, ":gold_per_point", 1),
+      (val_mul, ":gold_per_point", 100), # 100..900 per point
+      (val_add, ":gold_per_point", 50), # 150..950 per point
+
+      (try_begin),
+        # elders like to keep a gold reserve
+        (val_sub, ":gold", 200), 
+        (val_max, ":gold", 0),
+        (gt, ":gold", 0),
+        # calculate number of possible prosperity points
+        (store_div, ":prosperity_added", ":gold", ":gold_per_point"),
+        (val_max, ":prosperity_added", 0),
+        (gt, ":prosperity_added", 0),
+        (store_mul, ":gold_removed", ":prosperity_added", ":gold_per_point"),
+        (troop_remove_gold, ":merchant_troop", ":gold_removed"),
+        (call_script, "script_change_center_prosperity", ":center_no", ":prosperity_added"),
+        (try_begin),
+          (ge, "$cheat_mode", DPLMC_DEBUG_MIN),
+          (store_distance_to_party_from_party, ":debug_dist_to_main_party", "p_main_party", ":center_no"),
+          (le, ":debug_dist_to_main_party", 30), # limit debug output to within range of player
+          (assign, reg20, ":gold_removed"),
+          (assign, reg21, ":prosperity_added"),
+          (str_store_party_name, s21, ":center_no"),
+          (display_message, "@{!}{s21}: Converted {reg20} gold into +{reg21} prosperity."),
+        (try_end),
+      (try_end),
+    (try_end),
+  ]),
+
   (24,
    []),
   (24,
@@ -5414,7 +5937,7 @@ simple_triggers = [
       (str_store_party_name, s15,":target_party"),
 
       (try_begin), #debug
-        (eq, "$cheat_mode", 1),
+        (ge, "$cheat_mode", DPLMC_DEBUG_MIN),
         (assign, reg0, ":distance_to_target"),
         (display_message, "@Distance between {s14} and {s15}: {reg0}"),
       (try_end),
@@ -5609,7 +6132,7 @@ simple_triggers = [
 		(try_end),
 
 		(try_begin),
-			(ge, "$cheat_mode", 1),
+			(ge, "$cheat_mode", DPLMC_DEBUG_MIN),
 			(assign, reg0, ":gift_value_factor"),
 			(store_mul, reg1, ":gift_value", ":gift_value_factor"),
 			(val_add, reg1, 50),
@@ -5697,7 +6220,7 @@ simple_triggers = [
       (str_store_party_name, s15,":target_party"),
 
       (try_begin), #debug
-        (eq, "$cheat_mode", 1),
+        (ge, "$cheat_mode", DPLMC_DEBUG_MIN),
         (assign, reg0, ":distance_to_target"),
         (display_message, "@Distance between {s14} and {s15}: {reg0}"),
       (try_end),
@@ -5757,7 +6280,7 @@ simple_triggers = [
           (str_store_troop_name, s13, ":party_leader"),
 
           (try_begin), #debug
-            (eq, "$cheat_mode", 1),
+            (ge, "$cheat_mode", DPLMC_DEBUG_MIN),
             (display_log_message, "@Your messenger reached {s13}.", 0x00FF00),
             (assign, "$g_talk_troop", ":party_leader"), #debug
           (try_end),
@@ -5776,7 +6299,7 @@ simple_triggers = [
 
 
             (try_begin), #debug
-              (eq, "$cheat_mode", 1),
+              (ge, "$cheat_mode", DPLMC_DEBUG_MIN),
               (display_message, "@{s14}"), #debug
             (try_end),
 
@@ -6016,7 +6539,7 @@ simple_triggers = [
            #Remove patrols above the maximum number allowed.
            (ge, ":count", ":max_patrols"),
            (try_begin),
-              (ge, "$cheat_mode", 1),
+              (ge, "$cheat_mode", DPLMC_DEBUG_MIN),
               (str_store_faction_name, s4, ":kingdom"),
               (str_store_party_name, s5, ":party_no"),
               (display_message, "@{!}DEBUG - Removed {s5} because {s4} cannot support that many patrols"),
@@ -6219,7 +6742,7 @@ simple_triggers = [
 	 ##nested diplomacy end+
 
     (try_begin),
-      (eq, "$cheat_mode", 1),
+      (eq, "$cheat_mode", DPLMC_DEBUG_POLITICS),
       (str_store_faction_name, s9, ":kingdom"),
       (assign, reg1, ":centralization"),
       (display_message, "@{!}DEBUG - centralization {reg1}"),
@@ -6254,7 +6777,7 @@ simple_triggers = [
         (store_random_in_range, ":change", -1, 2),
 
         (try_begin),
-          (eq, "$cheat_mode", 1),
+          (eq, "$cheat_mode", DPLMC_DEBUG_POLITICS),
           (str_store_faction_name, s12, ":kingdom"),
           (assign, reg1, ":change"),
           (assign, reg2, ":random"),
@@ -6319,7 +6842,7 @@ simple_triggers = [
         (neq, ":relation_change", 0),
 
         (try_begin),
-          (eq, "$cheat_mode", 1),
+          (eq, "$cheat_mode", DPLMC_DEBUG_POLITICS),
           (str_store_faction_name, s9, ":kingdom"),
           (assign, reg1, ":relation_change"),
           (display_message, "@{!}DEBUG - relation_change =  {reg1} for {s9}"),
@@ -6467,7 +6990,7 @@ simple_triggers = [
 		 #no lord found
 		 (eq, ":chosen_lord", -1),
 		 (try_begin),
-			(ge, "$cheat_mode", 1),
+			(ge, "$cheat_mode", DPLMC_DEBUG_MIN),
 			(display_message, "@{!}DEBUG - no eligible lords in exile"),
 		 (try_end),
 	    (else_try),
@@ -6476,7 +6999,7 @@ simple_triggers = [
 			(store_random_in_range, ":random", 0, 256),
 			(ge, ":random", 128),
 			(try_begin),
-				(ge, "$cheat_mode", 1),
+				(ge, "$cheat_mode", DPLMC_DEBUG_MIN),
 				(assign, reg0, ":num_exiles"),
 				(display_message, "@{!}DEBUG - {reg0} lords found in exile; randomly decided not to try to return anyone."),
 			(try_end),
@@ -6484,7 +7007,7 @@ simple_triggers = [
 		 #found a lord
 		 (neq, ":chosen_lord", -1),
 		 (try_begin),
-			(ge, "$cheat_mode", 1),
+			(ge, "$cheat_mode", DPLMC_DEBUG_MIN),
 			(str_store_troop_name, s4, ":chosen_lord"),
 			(assign, reg0, ":best_score"),
 			(assign, reg1, ":num_exiles"),
@@ -6503,7 +7026,7 @@ simple_triggers = [
 		 (try_end),
 		 (try_begin),
 		   (neg|is_between, ":new_faction", kingdoms_begin, kingdoms_end),
-			(ge, "$cheat_mode", 1),
+			(ge, "$cheat_mode", DPLMC_DEBUG_MIN),
 			(str_store_troop_name, s4, ":chosen_lord"),
 			(display_message, "@{!}DEBUG - {s4} found no faction to return to!"),
 		 (try_end),
@@ -6523,7 +7046,7 @@ simple_triggers = [
 			(try_end),
 			(gt, ":num_inactive", 1),
 			(try_begin),
-				(ge, "$cheat_mode", 1),
+				(ge, "$cheat_mode", DPLMC_DEBUG_MIN),
 				(assign, reg0, ":num_inactive"),
 				(display_message, "@{!}DEBUG - Not returning a lord to the player's kingdom, since there are already {reg0} lords waiting for their petitions to be heard."),
 			(try_end),

@@ -481,7 +481,7 @@ strings = [
 
 
   ("acres_grain",       "acres of grainfields"),
-  ("acres_orchard",     "acres of orchards and vineyards"),
+  ("acres_vineyard",     "acres of vineyards"),
   ("acres_oasis",       "acres of irrigated oasis gardens"),
 
 
@@ -2958,7 +2958,7 @@ We apologize sincerely if you contributed your suggestions and feedback but were
   ("s40_s39_s2_reg0", "{!}{s40}, {s39} ({s2}, {reg0})"),
   ("other_relations_s40_", "Other relations: {s40}^"),
   ("relation_with_liege_reg0_", "Relation with liege: {reg0}^"),
-  ("sense_of_security_military_reg1_court_position_reg3_", "Sense of security: military {reg1}, court position {reg3}^"),
+  ("sense_of_security_military_reg1_court_position_reg3_", "^Sense of security: military {reg1}, court position {reg3}^"),
   ("s46s45s44s48", "{!}{s46}{s45}{s44}{s48}"),
   ("political_details_s47_", "Political details:^{s47}^"),
   ("checking_volunteer_availability_script", "{!}Checking volunteer availability script"),
@@ -3476,7 +3476,7 @@ We apologize sincerely if you contributed your suggestions and feedback but were
   ("_however_you_have_sufficiently_distinguished_yourself_to_be_invited_to_attend_the_ongoing_feast_in_the_lords_castle", ". However, you have sufficiently distinguished yourself to be invited to attend the ongoing feast in the lord's castle."),
   ("s8_you_are_also_invited_to_attend_the_ongoing_feast_in_the_castle", "{s8}. You are also invited to attend the ongoing feast in the castle."),
   ("__hardship_index_reg0_avg_towns_reg1_avg_villages_reg2__", "{!}^^Hardship index: {reg0}, avg towns: {reg1}, avg villages: {reg2}^^"),
-  ("__s3_price_=_reg4_calradian_average_reg6_capital_reg11_s4_base_reg1modified_by_raw_material_reg2modified_by_prosperity_reg3_calradian_average_production_base_reg5_total_reg12_consumed_reg7used_as_raw_material_reg8modified_total_reg9_calradian_consumption_base_reg10_total_reg13s1_", "{!}^^{s3}^Price = {reg4} (Calradian average {reg6})^Capital: {reg11} {s4}^Base {reg1}/modified by raw material {reg2}/modified by prosperity {reg3}^(Calradian average production, base {reg5}, total {reg12}).^Consumed {reg7}/used as raw material {reg8}/modified total {reg9}^(Calradian consumption, base: {reg10}, total: {reg13}){s1}^"),
+  ("dplmc_price_and_production", "{!}^^{s3} ({reg11} {s4})^Price = {reg4} (global avg {reg6})^{s20}^{s21}^(global avg prod, base {reg5} -> {reg12})^{s22}^(global consumption: avg {reg10} -> {reg13}){s1}^"),
   ("s11_unfortunately_s12_was_wounded_and_had_to_be_left_behind", "{s11} Unfortunately, {s12} was wounded and had to be left behind."),
   ("s11_also_s12_was_wounded_and_had_to_be_left_behind", "{s11} Also, {s12} was wounded and had to be left behind."),
   ("trial_influences_s17s_relation_with_s18_by_reg3", "{!}Trial influences {s17}'s relation with {s18} by {reg3}"),
@@ -5154,6 +5154,19 @@ Only you know exactly what caused you to give up your old life and become an adv
 
   ("s4_is_at_s5_but_reg4_he_she_is_held_as_a_prisoner_at_s13_dungeon", "{s4} is at {s5}, but {reg4?she:he} is being held as a prisoner in the {s13}'s dungeon"),
   ("i_dont_know_where_s4_is", "I don't know where {s4} is"),
+
+  ("dplmc_cheat_setting_debug", "Debug"),
+  ("dplmc_cheat_setting_debug_economy", "Debug Economy"),
+  ("dplmc_cheat_setting_debug_military", "Debug Military"),
+  ("dplmc_cheat_setting_debug_politics", "Debug Politics"),
+  ("dplmc_cheat_setting_debug_experimental", "Debug Experiments"),
+
+  ("acres_fruit_trees",   "acres of fruit trees"),
+  ("kirmiz_farms",        "acres of kirmiz plots"),
+  ("head_pigs",           "pig pens"),
+  ("head_chicken",        "chicken coops"),
+
+  ("dplmc_s50_newline_s51", "{!}{s50}^{s51}"),
 
 #utility for skill names
 ]+[
