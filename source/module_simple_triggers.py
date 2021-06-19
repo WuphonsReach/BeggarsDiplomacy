@@ -4423,7 +4423,7 @@ simple_triggers = [
              (try_begin),
                (faction_slot_eq, "$players_kingdom", slot_faction_ai_state, sfai_attacking_center),
                (gt, ":passed_time", 120),#5 days
-               (store_random_in_range, ":quest_target_amount", 5, 10),
+               (store_random_in_range, ":quest_target_amount", 4, 9),
                (assign, ":result","qst_deliver_cattle_to_army"),
                (quest_set_slot, ":result", slot_quest_target_amount, ":quest_target_amount"),
                (quest_set_slot, ":result", slot_quest_expiration_days, 10),
