@@ -41490,7 +41490,7 @@ scripts = [
       # SPAWN BANDIT LAIRS
       # Old logic was guaranteed respawn attempt every 36h, 
       # but not all attempts succeeded (4.7 attempts/week).
-      # New logic is ~13 cycles/week, 20% attempt per cycle (2.6 attempts/week).
+      # New logic is ~13 cycles/week, 15% attempt per cycle (1.9 attempts/week).
       # This is much slower than the old code, making elimination of
       # the bandit lairs have more of an impact. 
       (try_for_range, ":bandit_template", bandit_party_templates_begin, bandit_party_templates_end), #SB : template range
@@ -41507,9 +41507,9 @@ scripts = [
           # give it a higher chance and cut down the spawn radius
           (eq, ":bandit_template", "pt_sea_raiders"),
           (set_spawn_radius, 18),
-          (val_sub, ":spawn_lair_chance", 10),
+          (val_sub, ":spawn_lair_chance", 8),
         (try_end),
-        (le, ":spawn_lair_chance", 20), # % per cycle to attempt respawn of the lair
+        (le, ":spawn_lair_chance", 15), # % per cycle to attempt respawn of the lair
 
         (party_template_get_slot, ":bandit_lair_template", ":bandit_template", slot_party_template_lair_type),
         (party_template_get_slot, ":bandit_lair_template_spawnpoint", ":bandit_template", slot_party_template_lair_spawnpoint),
