@@ -5322,7 +5322,7 @@ simple_triggers = [
         (is_between, ":center_lord", active_npcs_begin, active_npcs_end),
         # pay for it from the fief's lord's purse
         (troop_get_slot, ":center_lord_wealth", ":center_lord", slot_troop_wealth),
-        (ge, ":center_lord_wealth", 10000), # lord has > N denars
+        (ge, ":center_lord_wealth", 15000), # lord has > N denars
         (val_sub, ":center_lord_wealth", ":gold"),
         (troop_set_slot, ":center_lord", slot_troop_wealth, ":center_lord_wealth"),
         (assign, ":paid_party_new_wealth", ":center_lord_wealth"),
@@ -5399,7 +5399,7 @@ simple_triggers = [
           # pay for it from the fief's lord's purse
           (troop_get_slot, ":center_lord_wealth", ":center_lord", slot_troop_wealth),
           (ge, ":center_lord_wealth", 20000), # lord has > N denars
-          (val_sub, ":center_lord_wealth", 2000),
+          (val_sub, ":center_lord_wealth", 2500),
           (troop_set_slot, ":center_lord", slot_troop_wealth, ":center_lord_wealth"),
           (assign, ":paid_party_new_wealth", ":center_lord_wealth"),
           (assign, ":paid_for_by_party", ":center_lord"),
@@ -5413,7 +5413,7 @@ simple_triggers = [
           # pay for it from the faction leader's purse
           (troop_get_slot, ":faction_leader_wealth", ":faction_leader", slot_troop_wealth),
           (ge, ":faction_leader_wealth", 30000), # lord has > N denars
-          (val_sub, ":faction_leader_wealth", 1200),
+          (val_sub, ":faction_leader_wealth", 1500),
           (troop_set_slot, ":faction_leader", slot_troop_wealth, ":faction_leader_wealth"),
           (assign, ":paid_party_new_wealth", ":faction_leader_wealth"),
           (assign, ":paid_for_by_party", ":faction_leader"),
