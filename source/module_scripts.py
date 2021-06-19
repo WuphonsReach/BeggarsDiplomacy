@@ -22760,8 +22760,8 @@ scripts = [
 
 			(try_for_range, ":town_no", towns_begin, towns_end),
 				(store_distance_to_party_from_party, ":distance", ":bandit_lair", ":town_no"), # lair distances are usually in the 150-350 range
-        (store_random_in_range, ":random_scaling", 0, 400), # randomize the distance by +0% to +40%
-        (val_add, ":random_scaling", 1000), # multiply by 1000-1300 then divide by 1000
+        (store_random_in_range, ":random_scaling", 0, 500), # randomize the distance by +0% to +50%
+        (val_add, ":random_scaling", 1000), # multiply by 1000-1500 then divide by 1000
         (val_mul, ":distance", ":random_scaling"),
         (val_div, ":distance", 1000),
 				(lt, ":distance", ":score_to_beat"),
