@@ -5519,7 +5519,7 @@ simple_triggers = [
   (25,
   [
     # infested villages lose prosperity per cycle, average of 3/day
-    # they also lose cattle/sheep at a rate of 3/day on average
+    # they also lose cattle/sheep at a rate of 3-4/day on average
     # cattle/sheep will grow back over time (based on slot_center_acres_pasture)
     (try_for_range, ":center_no", villages_begin, villages_end),
       # only look at infested villages
@@ -5534,6 +5534,7 @@ simple_triggers = [
       (assign, reg95, ":num_sheep"),
       
       (try_begin), # attempt to de-infest the village
+        # (there are other events that will clear the infestation)
         # only if the player does not have an active quest for the center
         (assign, ":continue", 1),
         (try_begin),
@@ -5543,9 +5544,9 @@ simple_triggers = [
         (try_end),
         (eq, ":continue", 1),
         # only if prosperity / cattle / sheep are all low
-        (le, ":prosperity", 15),
-        (le, ":num_cattle", 15),
-        (le, ":num_sheep", 15),
+        (le, ":prosperity", 20),
+        (le, ":num_cattle", 10),
+        (le, ":num_sheep", 20),
         # roll for cleaning
         (store_random_in_range, ":cleaning_crew_roll", 0, 6),
         (eq, ":cleaning_crew_roll", 0),
@@ -5566,13 +5567,13 @@ simple_triggers = [
       (call_script, "script_change_center_prosperity", ":center_no", ":loss_of_prosperity"),
       (party_get_slot, reg92, ":center_no", slot_town_prosperity),
 
-      (store_random_in_range, ":cattle_loss", 0, 7), # 0..8 (avg 3)
+      (store_random_in_range, ":cattle_loss", 0, 7), # 0..6 (avg 3)
       (val_sub, ":num_cattle", ":cattle_loss"),
       (val_max, ":num_cattle", 0),
       (party_set_slot, ":center_no", slot_center_head_cattle, ":num_cattle"),
       (assign, reg94, ":num_cattle"),
 
-      (store_random_in_range, ":sheep_loss", 0, 7), # 0..8 (avg 3)
+      (store_random_in_range, ":sheep_loss", 0, 9), # 0..8 (avg 4)
       (val_sub, ":num_sheep", ":sheep_loss"),
       (val_max, ":num_sheep", 0),
       (party_set_slot, ":center_no", slot_center_head_sheep, ":num_sheep"),
@@ -5581,7 +5582,7 @@ simple_triggers = [
       (try_begin),
         (ge, "$cheat_mode", DPLMC_DEBUG_EXPERIMENTAL),
         (store_distance_to_party_from_party, ":debug_dist_to_main_party", "p_main_party", ":center_no"),
-        (le, ":debug_dist_to_main_party", 120),
+        (le, ":debug_dist_to_main_party", 60),
         (str_store_party_name, s90, ":center_no"),
         (display_message, "@{!}INFESTED: {s90} prosp {reg91}->{reg92} cattle {reg93}->{reg94} sheep {reg95}->{reg96}"),
       (try_end),
