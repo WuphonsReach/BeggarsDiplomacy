@@ -5604,23 +5604,30 @@ simple_triggers = [
 
       (party_get_slot, ":merchant_troop", ":center_no", slot_town_elder),
       (store_troop_gold, ":gold",":merchant_troop"),
+
+      # the cost per point increases as prosperity increases
+      (party_get_slot, ":gold_per_point", ":center_no", slot_town_prosperity),
+      (val_div, ":gold_per_point", 10),
+      (val_max, ":gold_per_point", 1),
+      (val_mul, ":gold_per_point", 100), # 100..900 per point
+      (val_add, ":gold_per_point", 50), # 150..950 per point
+
       (try_begin),
         # elders like to keep a gold reserve
-        (val_sub, ":gold", 150), 
+        (val_sub, ":gold", 200), 
         (val_max, ":gold", 0),
         (gt, ":gold", 0),
-        # calculate number of possible prosperity points, but always subtract one
-        (store_div, ":prosperity_added", ":gold", 300),
-        (val_sub, ":prosperity_added", 1),
+        # calculate number of possible prosperity points
+        (store_div, ":prosperity_added", ":gold", ":gold_per_point"),
         (val_max, ":prosperity_added", 0),
         (gt, ":prosperity_added", 0),
-        (store_mul, ":gold_removed", ":prosperity_added", 300),
+        (store_mul, ":gold_removed", ":prosperity_added", ":gold_per_point"),
         (troop_remove_gold, ":merchant_troop", ":gold_removed"),
         (call_script, "script_change_center_prosperity", ":center_no", ":prosperity_added"),
         (try_begin),
           (ge, "$cheat_mode", DPLMC_DEBUG_MIN),
           (store_distance_to_party_from_party, ":debug_dist_to_main_party", "p_main_party", ":center_no"),
-          (le, ":debug_dist_to_main_party", 20), # limit debug output to within range of player
+          (le, ":debug_dist_to_main_party", 30), # limit debug output to within range of player
           (assign, reg20, ":gold_removed"),
           (assign, reg21, ":prosperity_added"),
           (str_store_party_name, s21, ":center_no"),
