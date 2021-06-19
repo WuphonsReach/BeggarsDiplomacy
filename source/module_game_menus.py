@@ -17558,6 +17558,40 @@ also excluded.^^You can change some settings here freely.",
         (assign, reg92, ":treaty_duration"),
         (display_message, "@{!}TRUCE-PROVOCATION: {s91} vs {s92} ({reg91} -> {reg92} days) "),
       (try_end),
+    (else_try),
+      # the two factions have a TREATY
+      (eq, ":acting_diplomatic_status", 1),
+      (eq, ":target_diplomatic_status", 1),
+      # and that treaty is a TRADE TREATY (based on days left)
+      (is_between, ":acting_diplomatic_duration", dplmc_treaty_trade_days_initial, dplmc_treaty_trade_days_expire),
+      (is_between, ":target_diplomatic_duration", dplmc_treaty_trade_days_initial, dplmc_treaty_trade_days_expire),
+      # the two sides should be equal values, but be accepting of problems
+      (assign, ":treaty_duration", ":acting_diplomatic_duration"),
+      (val_max, ":treaty_duration", ":target_diplomatic_duration"),
+      (val_sub, ":treaty_duration", dplmc_treaty_trade_days_initial),
+      (assign, ":original_treaty_duration", ":treaty_duration"),
+      # cut the truce in half
+      (val_div, ":treaty_duration", 2),
+      # must be at least 2+ days left on the truce
+      (gt, ":treaty_duration", 2),
+      (val_add, ":treaty_duration", dplmc_treaty_trade_days_initial),
+
+      #Update the treaty duration
+      (store_add, ":truce_slot", ":acting_faction", slot_faction_truce_days_with_factions_begin),
+  		(val_sub, ":truce_slot", kingdoms_begin),
+      (faction_set_slot, ":target_faction", ":truce_slot", ":treaty_duration"),
+      (store_add, ":truce_slot", ":target_faction", slot_faction_truce_days_with_factions_begin),
+      (val_sub, ":truce_slot", kingdoms_begin),
+      (faction_set_slot, ":acting_faction", ":truce_slot", ":treaty_duration"),
+
+      (try_begin),
+        (ge, "$cheat_mode", DPLMC_DEBUG_EXPERIMENTAL),
+        (str_store_faction_name, s91, ":acting_faction"),
+        (str_store_faction_name, s92, ":target_faction"),
+        (assign, reg91, ":original_treaty_duration"),
+        (assign, reg92, ":treaty_duration"),
+        (display_message, "@{!}TRADE-PROVOCATION: {s91} vs {s92} ({reg91} -> {reg92} days) "),
+      (try_end),
     (try_end),
   ],
   [
