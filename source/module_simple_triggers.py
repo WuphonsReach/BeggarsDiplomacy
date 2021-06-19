@@ -3222,10 +3222,14 @@ simple_triggers = [
     (try_end),
 
     (try_begin),
-      (eq, "$cheat_mode", DPLMC_DEBUG_NEVER),
+      (ge, "$cheat_mode", DPLMC_DEBUG_EXPERIMENTAL),
       (assign, reg10, ":available_food_qty"),
       (assign, reg11, ":daily_consumption"),
       (assign, reg12, ":days_until_starvation"),
+      #(assign, reg17, ":num_men"),
+      #(assign, reg18, ":party_size"),
+      #(assign, reg19, ":num_prisoners"),
+      #(display_message, "@{!}FOOD-PARTY-SIZE: num_men={reg17}, store_party_size={reg18}, party_get_num_prisoners={reg19}"),
       (display_message, "@{!}Food available is {reg10}, daily consumption is {reg11}, days of food is {reg12}."),
     (try_end),
 
@@ -3237,9 +3241,17 @@ simple_triggers = [
         (call_script, "script_change_player_party_morale", -5),
         (call_script, "script_objectionable_action", tmt_egalitarian, "str_men_hungry"),
       (else_try),
-        (le, ":days_until_starvation", 3),
+        (le, ":days_until_starvation", 1),
+        (display_message, "@Your party is almost out of food."),
+        (call_script, "script_change_player_party_morale", -3),
+      (else_try),
+        (le, ":days_until_starvation", 2),
         (display_message, "@Your party is running very low on food."),
         (call_script, "script_change_player_party_morale", -2),
+      (else_try),
+        (le, ":days_until_starvation", 3),
+        (display_message, "@Your party is running low on food."),
+        (call_script, "script_change_player_party_morale", -1),
       (else_try),
         (le, ":days_until_starvation", 5),
         (display_message, "@Your party is running low on food."),
@@ -3247,11 +3259,11 @@ simple_triggers = [
     (try_end),
 
     # this approach means troops start skipping meals as food variety goes down
-    # it's still unlikely, given that we try to use about 10 food units per attempt
-    (store_mul, ":feed_attempts", ":num_men", 1),
-    (try_for_range, ":unused", 0, ":feed_attempts"),
+    # it's still unlikely, given that we try to use about 7 food units per attempt
+    # plus we loop through each party member, when only 1 in 3 (or 1 in 6) consumes a food unit
+    (try_for_range, ":unused", 0, ":party_size"),
       (gt, ":food_units_needed", 0),
-      (store_random_in_range, ":consume_amount", 5, 16), # units per attempt (5-15)
+      (store_random_in_range, ":consume_amount", 3, 12), # units per attempt (3-11)
       (val_min, ":consume_amount", ":food_units_needed"),
       (store_random_in_range, ":candidate_food", food_begin, food_end),
       (call_script, "script_consume_food", ":candidate_food", ":consume_amount"),
@@ -3259,12 +3271,11 @@ simple_triggers = [
     (try_end),
 
     (try_begin),
-      (eq, "$cheat_mode", DPLMC_DEBUG_EXPERIMENTAL),
+      (ge, "$cheat_mode", DPLMC_DEBUG_EXPERIMENTAL),
       (gt, ":food_units_needed", 0),
       (assign, reg10, ":food_units_needed"),
       (display_message, "@{!}Failed to feed everyone, food_units_needed {reg10}"),
     (try_end),
-
   ]),
 
   # Setting item modifiers for food
