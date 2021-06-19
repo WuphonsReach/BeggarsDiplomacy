@@ -1,4 +1,4 @@
-1347
+1351
 qstr_Breaking_camp... Breaking_camp...
 qstr_Removing_disguise... Removing_disguise...
 qstr_{s17}_has_{reg17}_de {s17}_has_{reg17}_denars
@@ -1346,3 +1346,7 @@ qstr_As_a_hunter_provisi As_a_hunter,_provisions_and_raw_goods_are_expected_as_w
 qstr_As_a_caravan_guard_ As_a_caravan_guard,_you_will_be_able_to_bear_weapons_but_bring_only_a_few_personal_belongings.
 qstr_As_a_merchant_you_w As_a_merchant,_you_will_be_able_to_bring_any_assortment_of_goods.
 qstr_As_a_bard_you_will_ As_a_bard,_you_will_be_allowed_some_personal_possessions_and_your_instrument.
+qstr_{!}TRADE_PROVOCATION {!}TRADE-PROVOCATION:_{s91}_vs_{s92}_({reg91}_->_{reg92}_days)_
+qstr_{!}num_men={reg17}_ {!}num_men={reg17},_store_party_size={reg18},_party_get_num_prisoners={reg19}
+qstr_Your_party_is_almost Your_party_is_almost_out_of_food.
+qstr_{!}FOOD:_num_men={re {!}FOOD:_num_men={reg17},_store_party_size={reg18},_party_get_num_prisoners={reg19}

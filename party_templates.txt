@@ -30,7 +30,7 @@ pt_patrol_party Patrol 562949957615618 0 1 137 -1 -1 -1 -1 -1 -1
 pt_messenger_party Messenger 4194309 0 1 7 -1 -1 -1 -1 -1 -1 
 pt_raider_party Raiders 4503599627632642 0 1 312 -1 -1 -1 -1 -1 -1 
 pt_raider_captives Raider_Captives 0 0 1 0 133 6 30 1 -1 -1 -1 -1 -1 
-pt_kingdom_caravan_party Caravan 7036874421960741 0 1 7 134 1 1 0 28 12 40 0 -1 -1 -1 -1 
+pt_kingdom_caravan_party Caravan 7036874421960741 0 1 7 134 1 1 0 28 15 25 0 -1 -1 -1 -1 
 pt_prisoner_train_party Prisoner_Train 1407374887747586 0 1 7 -1 -1 -1 -1 -1 -1 
 pt_default_prisoners Default_Prisoners 3 0 1 0 114 5 10 1 -1 -1 -1 -1 -1 
 pt_routed_warriors Routed_Enemies 3 0 1 137 -1 -1 -1 -1 -1 -1 
@@ -66,7 +66,7 @@ pt_leaded_looters Band_of_robbers 2251799813947401 0 3 312 926 1 1 0 113 3 3 0 -
 pt_dplmc_spouse Your_spouse 71303179 0 3 7 -1 -1 -1 -1 -1 -1 
 pt_dplmc_gift_caravan Your_Caravan 7036874421960741 0 1 11 134 1 1 0 28 5 25 0 -1 -1 -1 -1 
 pt_dplmc_recruiter Recruiter 4194309 0 3 7 1077 1 1 0 -1 -1 -1 -1 -1 
-pt_caravan_civilians Caravan_Civilians 1407374883553286 0 1 7 25 0 4 0 133 0 2 0 128 0 1 0 -1 -1 -1 
-pt_caravan_guards Caravan_Guards 562949953421314 0 1 137 28 0 10 0 -1 -1 -1 -1 -1 
-pt_female_mercenaries Mercenaries 562949953421314 0 1 137 129 0 2 0 130 0 3 0 131 0 4 0 -1 -1 -1 
-pt_male_mercenaries Mercenaries 562949953421314 0 1 137 31 0 2 0 29 0 3 0 32 0 4 0 -1 -1 -1 
+pt_caravan_civilians Caravan_Civilians 1688849860263942 0 1 7 25 0 6 0 133 0 2 0 128 0 1 0 -1 -1 -1 
+pt_caravan_guards Caravan_Guards 1125899906842626 0 1 137 28 0 8 0 -1 -1 -1 -1 -1 
+pt_female_mercenaries Mercenaries 562949953421314 0 1 137 129 0 2 0 130 0 2 0 131 0 3 0 -1 -1 -1 
+pt_male_mercenaries Mercenaries 562949953421314 0 1 137 31 0 2 0 29 0 2 0 32 0 3 0 -1 -1 -1 
