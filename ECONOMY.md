@@ -22,6 +22,7 @@ Mount & Blade: Warband separates the concept of what an item costs from how the 
 The price factor is stored as a value between 100 (minimum_price_factor) and 10000 (maximum_price_factor) with 1000 (average_price_factor) considered to be the base.  A value of 1000 should be looked at as a value of 1.000 (three decimal places), 2000 = 2.0, 500 = 0.5, etc.  
 
     Base price = 340 denars
+
     Price factor of: 
      500 = 170 denars
     1000 = 340 denars
@@ -50,12 +51,13 @@ Villages and towns have a mix of raw resources and industries that convert those
 
 ### Local Market
 
-All villages are assigned to a nearby town as their "market town".  This relationship determines which town the farmers will leave for and return from every day or two.  If a village is "bound" to a castle, that farmer may have to travel a long ways to get to the nearest market town for the faction.  If a faction has villages, but no towns, then villages will use the nearest friendly town as their market town.
+All villages are assigned to a nearby town as their "market town".  This relationship determines which town the farmers will leave for and return from every day or two.  The collection of villages plus the market town combine to form a local market.
 
+If a village is "bound" to a castle, that farmer may have to travel a long ways to get to the nearest market town for the faction.  If a faction has castles, but no towns, then villages will use the nearest friendly town as their market town.
 
-
-
-
+Villages exchange price factors with the market town periodically.  In a perfectly static world, the town and villages would eventually settle around a certain price factor for each good.
 
 ### Caravans
+
+Caravans move price factors (not goods) between towns.  When a caravan leaves the town, the town's price factors are adjusted by the caravan's origin before arriving at the town.  The caravan then picks up this town's price factors to carry to the next town.
 
