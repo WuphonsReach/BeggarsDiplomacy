@@ -121,6 +121,7 @@ scripts = [
       (try_end),
       ##diplomacy end+
 
+      (call_script, "script_initialize_dplmc_preferences_defaults"),
       (call_script, "script_initialize_banner_info"),
       (call_script, "script_initialize_food_morale_bonuses"),
       (call_script, "script_initialize_item_info"),
@@ -75905,6 +75906,13 @@ Born at {s43}^Contact in {s44} of the {s45}.^\
       (assign, ":avg_center_price_index", average_price_factor),
     (try_end),
     (assign, reg0, ":avg_center_price_index"),
+  ]),
+
+  # Set Diplomacy preferences to the default values
+  ("initialize_dplmc_preferences_defaults",
+  [
+    (assign, "$g_dplmc_ai_changes", DPLMC_AI_CHANGES_HIGH),
+    (assign, "$g_dplmc_gold_changes", DPLMC_GOLD_CHANGES_HIGH),
   ]),
 
     # #script_cf_dplmc_disguise_evaluate_contraband
