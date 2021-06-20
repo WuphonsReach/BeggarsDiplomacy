@@ -401,27 +401,27 @@ scripts = [
         (party_set_slot,":castle_no", slot_center_is_besieged_by, -1),
       (try_end),
 
-# Set which castles need to be attacked with siege towers.
-      (party_set_slot,"p_town_13", slot_center_siege_with_belfry, 1),
-      (party_set_slot,"p_town_16", slot_center_siege_with_belfry, 1),
+      # Set which towns/castles need to be attacked with siege towers.
+      (party_set_slot,"p_town_13", slot_center_siege_with_belfry, 1), #Rivacheg
+      (party_set_slot,"p_town_16", slot_center_siege_with_belfry, 1), #Dhirim
 
-      (party_set_slot,"p_castle_1", slot_center_siege_with_belfry, 1),
-      (party_set_slot,"p_castle_2", slot_center_siege_with_belfry, 1),
-      (party_set_slot,"p_castle_4", slot_center_siege_with_belfry, 1),
-      (party_set_slot,"p_castle_7", slot_center_siege_with_belfry, 1),
-      (party_set_slot,"p_castle_8", slot_center_siege_with_belfry, 1),
-      (party_set_slot,"p_castle_9", slot_center_siege_with_belfry, 1),
-      (party_set_slot,"p_castle_11", slot_center_siege_with_belfry, 1),
-      (party_set_slot,"p_castle_13", slot_center_siege_with_belfry, 1),
-      (party_set_slot,"p_castle_21", slot_center_siege_with_belfry, 1),
-      (party_set_slot,"p_castle_25", slot_center_siege_with_belfry, 1),
-      (party_set_slot,"p_castle_34", slot_center_siege_with_belfry, 1),
-      (party_set_slot,"p_castle_35", slot_center_siege_with_belfry, 1),
-      (party_set_slot,"p_castle_38", slot_center_siege_with_belfry, 1),
-      (party_set_slot,"p_castle_40", slot_center_siege_with_belfry, 1),
-      (party_set_slot,"p_castle_41", slot_center_siege_with_belfry, 1),
-      (party_set_slot,"p_castle_42", slot_center_siege_with_belfry, 1),
-      (party_set_slot,"p_castle_43", slot_center_siege_with_belfry, 1),
+      (party_set_slot,"p_castle_1", slot_center_siege_with_belfry, 1), #Culmarr_Castle
+      (party_set_slot,"p_castle_2", slot_center_siege_with_belfry, 1), #Malayurg_Castle
+      (party_set_slot,"p_castle_4", slot_center_siege_with_belfry, 1), #Radoghir_Castle
+      (party_set_slot,"p_castle_7", slot_center_siege_with_belfry, 1), #Sungetche_Castle
+      (party_set_slot,"p_castle_8", slot_center_siege_with_belfry, 1), #Jeirbe_Castle (Training Field)
+      (party_set_slot,"p_castle_9", slot_center_siege_with_belfry, 1), #Jamiche_Castle (Training Field?)
+      (party_set_slot,"p_castle_11", slot_center_siege_with_belfry, 1), #Curin_Castle
+      (party_set_slot,"p_castle_13", slot_center_siege_with_belfry, 1), #Kelredan_Castle(Training Field)
+      (party_set_slot,"p_castle_21", slot_center_siege_with_belfry, 1), #Ibdeles_Castle
+      (party_set_slot,"p_castle_25", slot_center_siege_with_belfry, 1), #Ryibelet_Castle
+      (party_set_slot,"p_castle_34", slot_center_siege_with_belfry, 1), #Hrus_Castle
+      (party_set_slot,"p_castle_35", slot_center_siege_with_belfry, 1), #Haringoth_Castle (Training Field)
+      (party_set_slot,"p_castle_38", slot_center_siege_with_belfry, 1), #Tulbuk_Castle
+      (party_set_slot,"p_castle_40", slot_center_siege_with_belfry, 1), #Uhhun_Castle
+      (party_set_slot,"p_castle_41", slot_center_siege_with_belfry, 1), #Jameyyed_Castle
+      (party_set_slot,"p_castle_42", slot_center_siege_with_belfry, 1), #Teramma_Castle
+      (party_set_slot,"p_castle_43", slot_center_siege_with_belfry, 1), #Sharwa_Castle
 
 	  # Villages characters
       (try_for_range, ":village_no", villages_begin, villages_end),
