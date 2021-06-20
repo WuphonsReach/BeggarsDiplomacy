@@ -75116,10 +75116,17 @@ Born at {s43}^Contact in {s44} of the {s45}.^\
         (eq, ":reduce_campaign_ai", 0), #hard
         (assign, ":needed", 2),
         (assign, ":ratio", 5),
+        (try_begin),
+          (ge, "$g_dplmc_gold_changes", DPLMC_GOLD_CHANGES_MEDIUM),
+          (assign, ":needed", 4),
+        (try_end),
       (else_try),
         (eq, ":reduce_campaign_ai", 1), #medium
         (assign, ":needed", 4),
-        (assign, ":ratio", 4),
+        (try_begin),
+          (ge, "$g_dplmc_gold_changes", DPLMC_GOLD_CHANGES_MEDIUM),
+          (assign, ":needed", 5),
+        (try_end),
       (else_try),
         (eq, ":reduce_campaign_ai", 2), #easy
         (assign, ":needed", 6),
@@ -75130,7 +75137,7 @@ Born at {s43}^Contact in {s44} of the {s45}.^\
         (try_begin), #SB : small boost for capital
           (is_between, "$g_player_court", walled_centers_begin, walled_centers_end),
           (store_and, ":has_capital", "$players_kingdom_name_set", rename_center), #check if it's "court" or "capital"
-          (val_add, ":needed", ":has_capital"),
+          (val_add, ":needed", 2),
         (try_end),
         (try_begin),
           (troop_get_slot, ":spouse", "trp_player", slot_troop_spouse),
@@ -75145,7 +75152,13 @@ Born at {s43}^Contact in {s44} of the {s45}.^\
       
       (store_sub, ":ratio_lost", ":num_owned", ":needed"),
       (val_mul, ":ratio_lost", ":ratio"),
-      (val_min, ":ratio_lost", 65),
+      
+      (try_begin),
+        (ge, "$g_dplmc_gold_changes", DPLMC_GOLD_CHANGES_MEDIUM),
+        (val_min, ":ratio_lost", 35),
+      (else_try),
+        (val_min, ":ratio_lost", 65),
+      (try_end),
       (try_begin),
         (gt, "$g_player_chamberlain", 0),
         (assign, ":percent", 10),
