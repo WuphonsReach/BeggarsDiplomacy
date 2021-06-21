@@ -16830,9 +16830,9 @@ scripts = [
     (try_end),
   ]),
 
-  #script_update_trade_good_price_for_party
-  # updates 18% of the trade goods at a center per pass
-  # this works out to each trade good being updated every ~2 days
+  #script_update_trade_good_price_for_party (every 8 hours)
+  # updates 11% of the trade goods at a center per pass
+  # this works out to each trade good being updated every ~3 days
   # INPUT: arg1 = party_no
   ("update_trade_good_price_for_party",
   [
@@ -16841,11 +16841,11 @@ scripts = [
     (try_for_range, ":cur_good", trade_goods_begin, trade_goods_end),
       (store_random_in_range, ":chance_of_adjustment", 0, 100),
       (try_begin),
-        # besieged towns update 3x more frequently
+        # besieged towns update more frequently
         (party_slot_ge, ":center_no", slot_center_is_besieged_by, 0), # is besieged
-        (val_sub, ":chance_of_adjustment", 36), # this N should be a multiple of the "(lt)" check
+        (val_sub, ":chance_of_adjustment", 11), # this N should be a multiple of the "(lt)" check
       (try_end),
-      (lt, ":chance_of_adjustment", 18), # 18% of goods per center get adjusted each pass
+      (lt, ":chance_of_adjustment", 11), # % of goods per center get adjusted each pass
 
       (store_sub, ":cur_good_price_slot", ":cur_good", trade_goods_begin),
       (val_add, ":cur_good_price_slot", slot_town_trade_good_prices_begin),
@@ -16969,19 +16969,20 @@ scripts = [
         (is_between, ":center_no", towns_begin, towns_end),
         (store_mul, ":offset", 5, ":prosperity"), # 35*5/75 = 2, 50*5/75= 3
         (val_div, ":offset", 75), # target prosperity
-        (val_clamp, ":offset", 0, 6),
-        (val_add, ":offset", 100), # base price factor (towns are more expensive)
+        (val_clamp, ":offset", 0, 9),
+        (val_add, ":offset", 102), # base price factor (towns are more expensive)
         (val_mul, ":target_price_factor", ":offset"),
         (val_div, ":target_price_factor", 100),
       (else_try),
         (is_between, ":center_no", towns_begin, towns_end),
         (store_mul, ":offset", 5, ":prosperity"), # 35*5/80=2, 50*5/80=3
         (val_div, ":offset", 80), # target prosperity
-        (val_clamp, ":offset", 0, 6),
-        (val_add, ":offset", 90), # base price factor (villages discount a bit)
+        (val_clamp, ":offset", 0, 8),
+        (val_add, ":offset", 85), # base price factor (villages discount a bit)
         (val_mul, ":target_price_factor", ":offset"),
         (val_div, ":target_price_factor", 100),
       (try_end),
+
       (store_random_in_range, ":randomize_target_price_factor", -15, 16),
       (val_add, ":target_price_factor", ":randomize_target_price_factor"),
 
@@ -16997,7 +16998,7 @@ scripts = [
       (else_try),
         (lt, ":target_difference", 0),
         (store_random_in_range, ":target_change", ":target_difference", 0),
-        (val_min, ":target_change", -20),
+        (val_min, ":target_change", -30),
         (val_div, ":target_change", 5),
       (try_end),
       (val_add, ":cur_price", ":target_change"),
@@ -17046,12 +17047,12 @@ scripts = [
       (try_end),
       (try_begin),
         (gt, ":market_avg_price_difference", 0),
-        (val_div, ":market_avg_price_difference", 6),
+        (val_div, ":market_avg_price_difference", 5),
         (val_max, ":market_avg_price_difference", 1),
         (store_random_in_range, ":market_avg_price_difference", 0, ":market_avg_price_difference"),
       (else_try),
         (lt, ":market_avg_price_difference", 0),
-        (val_div, ":market_avg_price_difference", 9),
+        (val_div, ":market_avg_price_difference", 7),
         (val_min, ":market_avg_price_difference", -1),
         (store_random_in_range, ":market_avg_price_difference", ":market_avg_price_difference", 0),
       (try_end),
