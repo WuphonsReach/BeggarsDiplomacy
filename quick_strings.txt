@@ -1,4 +1,4 @@
-1351
+1352
 qstr_Breaking_camp... Breaking_camp...
 qstr_Removing_disguise... Removing_disguise...
 qstr_{s17}_has_{reg17}_de {s17}_has_{reg17}_denars
@@ -1350,3 +1350,4 @@ qstr_{!}TRADE_PROVOCATION {!}TRADE-PROVOCATION:_{s91}_vs_{s92}_({reg91}_->_{reg9
 qstr_{!}num_men={reg17}_ {!}num_men={reg17},_store_party_size={reg18},_party_get_num_prisoners={reg19}
 qstr_Your_party_is_almost Your_party_is_almost_out_of_food.
 qstr_{!}FOOD:_num_men={re {!}FOOD:_num_men={reg17},_store_party_size={reg18},_party_get_num_prisoners={reg19}
+qstr_{!}HERO_AI:_{s30}_/_ {!}HERO-AI:_{s30}_/_{s31}
