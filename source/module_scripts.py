@@ -9137,15 +9137,16 @@ scripts = [
   (call_script, "script_dplmc_add_random_production", "p_village_34", slot_center_acres_vineyard, 200, 400, -1),
   (call_script, "script_dplmc_add_random_production", "p_village_34", slot_center_head_sheep, 10, 20, -1),
 
-  #"village_35","Fearichen" - coastal, bread, pottery, cabbage, silk, fruit, ships, wood
+  #"village_35","Fearichen" - coastal, bread, pottery, cabbage, silk, fruit, ships, wood, sheep
   (call_script, "script_dplmc_add_random_production", "p_village_35", slot_center_fishing_fleet, 20, 30, 0),
-  (call_script, "script_dplmc_add_random_production", "p_village_35", slot_center_mills, 4, 6, -1),
-  (call_script, "script_dplmc_add_random_production", "p_village_35", slot_center_household_gardens, 1, 3, -1),
-  (call_script, "script_dplmc_add_random_production", "p_village_35", slot_center_acres_grain, 3000, 5000, -1),
-  (call_script, "script_dplmc_add_random_production", "p_village_35", slot_center_acres_flax, 250, 500, -1),
-  (call_script, "script_dplmc_add_random_production", "p_village_35", slot_center_pottery_kilns, 1, 2, -1),
-  (call_script, "script_dplmc_add_random_production", "p_village_35", slot_center_silk_farms, 200, 400, -1),
-  (call_script, "script_dplmc_add_random_production", "p_village_35", slot_center_acres_fruit_trees, 200, 400, -1),
+  (call_script, "script_dplmc_add_random_production", "p_village_35", slot_center_mills, 4, 7, -1),
+  (call_script, "script_dplmc_add_random_production", "p_village_35", slot_center_household_gardens, 2, 4, -1),
+  (call_script, "script_dplmc_add_random_production", "p_village_35", slot_center_acres_grain, 3500, 5000, -1),
+  (call_script, "script_dplmc_add_random_production", "p_village_35", slot_center_acres_flax, 350, 600, -1),
+  (call_script, "script_dplmc_add_random_production", "p_village_35", slot_center_pottery_kilns, 1, 3, -1),
+  (call_script, "script_dplmc_add_random_production", "p_village_35", slot_center_silk_farms, 300, 500, -1),
+  (call_script, "script_dplmc_add_random_production", "p_village_35", slot_center_acres_fruit_trees, 300, 450, -1),
+  (call_script, "script_dplmc_add_random_production", "p_village_35", slot_center_head_sheep, 10, 20, -1),
 
   #"village_36","Jayek" - green, hills, small cabbage, medium grain
   (call_script, "script_dplmc_add_random_production", "p_village_36", slot_center_household_gardens, 1, 2, -1),
