@@ -904,7 +904,7 @@ simple_triggers = [
    [
    (call_script, "script_randomly_start_war_peace_new", 1),
 
-   (try_begin),
+   (try_begin), # check for border incident
 		(store_random_in_range, ":acting_village", villages_begin, villages_end),
 		(store_random_in_range, ":target_village", villages_begin, villages_end),
 		(store_faction_of_party, ":acting_faction", ":acting_village"),
@@ -924,10 +924,10 @@ simple_triggers = [
       (assign, reg91, ":diplo_status_duration"),
 			(display_message, "@{!}PROVOCATION-TEST: {s91} vs {s92} status: {reg90} days: {reg91}"),
 		(try_end),
-    # Must be at peace, or have a truce
+    # Must be at peace, or have a truce/treaty
 		(this_or_next|eq, ":diplo_status_with_faction", 0),
     (eq, ":diplo_status_with_faction", 1),
-    (le, ":diplo_status_duration", dplmc_treaty_truce_days_initial),
+    (le, ":diplo_status_duration", dplmc_treaty_trade_days_initial), # truce or trade treaty
 
     (store_random_in_range, ":random", 0, 2),
 		(try_begin),
