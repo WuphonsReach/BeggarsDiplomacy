@@ -20761,9 +20761,9 @@ scripts = [
           (val_mul, ":price_dif", 2),
         (try_end),
         # fuzzy the price difference
-        (store_random_in_range, ":price_diff_fuzzing", 800, 1200),
+        (store_random_in_range, ":price_diff_fuzzing", 80, 120),
         (val_mul, ":price_dif", ":price_diff_fuzzing"),
-        (val_div, ":price_dif", 1000),
+        (val_div, ":price_dif", 100),
         (val_add, ":cur_town_score", ":price_dif"),
       (try_end),
 
@@ -20772,12 +20772,14 @@ scripts = [
         (gt, ":cur_town_profit_count", 0),
         (val_div, ":cur_town_score", ":cur_town_profit_count"),
         #clamp score so that it matters, but is not asymptotic towards super-profit routes
-        (val_clamp, ":cur_town_score", 81, 324),
+        (val_clamp, ":cur_town_score", 49, 289),
         #taking sqrt() also helps tone things down
         (convert_to_fixed_point, ":cur_town_score"),
         (store_sqrt, ":cur_town_score", ":cur_town_score"),
         (convert_from_fixed_point, ":cur_town_score"),
-        # town score is now always 9..18
+        # town score is now always 7..17
+        (store_random_in_range, ":cur_town_score_fuzzing", -3, 4),
+        (val_add, ":cur_town_score", ":cur_town_score_fuzzing"),
         (val_mul, ":cur_town_score", 100), # 900..1800
       (try_end),
 
@@ -20820,8 +20822,10 @@ scripts = [
           #It will take time to buy and sell once reaching our destination: halving
           #the distance doesn't double the expected profit per month.
           #most towns are ~100 units away, map is ~300-320 across
-          (val_div, ":dist", 60), # dist -> 0..5
-          (val_add, ":dist", 3), # dist -> 3..8
+          (val_div, ":dist", 50), # dist -> 0..6
+          (val_add, ":dist", 3), # dist -> 3..9
+          (store_random_in_range, ":dist_fuzzing", -2, 3),
+          (val_add, ":dist", ":dist_fuzzing"),
           (val_max, ":dist", 1),
           (val_div, ":cur_town_score", ":dist"),
         (try_end),
