@@ -847,7 +847,7 @@ simple_triggers = [
         (le, ":prosperity", 40),
         (val_sub, ":random", 20),
       (try_end),
-      (le, ":random", 10),
+      (le, ":random", 20),
     
       (call_script, "script_get_center_ideal_prosperity", ":center_no"),
       (assign, ":ideal_prosperity", reg0),
@@ -856,7 +856,7 @@ simple_triggers = [
         (eq, ":big_boost_chance", 0),
         (try_begin),
           (gt, ":prosperity", ":ideal_prosperity"),
-          (neg|is_between, ":center_no", castles_begin, castles_end), #castles always gain positive prosperity from surprise income to balance their prosperity.
+          (neg|is_between, ":center_no", castles_begin, castles_end), 
           (store_random_in_range, ":negative_big_boost", -7, 0),
           (call_script, "script_change_center_prosperity", ":center_no", ":negative_big_boost"),
         (else_try),     
