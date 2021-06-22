@@ -58769,35 +58769,6 @@ scripts = [
 		(assign, reg0, ":estimate"),
 	]),
 
-   #script_calculate_castle_prosperities_by_using_its_villages
- 	(
-	"calculate_castle_prosperities_by_using_its_villages", #This is called from within decide_faction_ai, or from
-	[
-	  (try_for_range, ":cur_castle", castles_begin, castles_end),
-	    (assign, ":total_prosperity", 0),
-	    (assign, ":total_villages", 0),
-
-	    (try_for_range, ":cur_village", villages_begin, villages_end),
-	      (party_get_slot, ":bound_center", ":cur_village", slot_village_bound_center),
-	      (eq, ":cur_castle", ":bound_center"),
-
-	      (party_get_slot, ":village_prosperity", ":cur_village", slot_town_prosperity),
-
-	      (val_add, ":total_prosperity", ":village_prosperity"),
-	      (val_add, ":total_villages", 1),
-	    (try_end),
-
-	    (try_begin),
-	      (gt, ":total_villages", 0), #SB : div by zero
-	      (store_div, ":castle_prosperity", ":total_prosperity", ":total_villages"),
-	    (else_try),
-	      (assign, ":castle_prosperity", 50),
-	    (try_end),
-
-	    (party_set_slot, ":cur_castle", slot_town_prosperity, ":castle_prosperity"),
-	  (try_end),
-	]),
-
    #script_initialize_tavern_variables
    (
    "initialize_tavern_variables",
@@ -75739,8 +75710,6 @@ Born at {s43}^Contact in {s44} of the {s45}.^\
       (val_clamp, ":prosperity", 0, 100),
       (party_set_slot, ":center_no", slot_town_prosperity, ":prosperity"),
     (try_end),
-
-    (call_script, "script_calculate_castle_prosperities_by_using_its_villages"),
   ]),
 
   # script_dplmc_center_get_total_village_production
