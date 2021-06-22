@@ -787,3 +787,4 @@ script_initialize_town_village_goods_merchant_inventories = 785
 script_initialize_food_morale_bonuses = 786
 script_dplmc_center_get_price_factor_index = 787
 script_initialize_dplmc_preferences_defaults = 788
+script_dplmc_get_owned_center_points = 789

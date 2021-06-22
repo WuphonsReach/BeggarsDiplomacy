@@ -27302,11 +27302,18 @@ scripts = [
 				  (val_sub, ":gold_lost_by_lord", ":x"),
 				  (val_max, ":gold_lost_by_lord", 0),
 				  #Remove the remainder (if any) from the player's treasury
+          #But lessen the loss based on how many centers the player owns.
+          #The assumption is that the player is smart enough not to leave 100% of their
+          #treasury in some poorly defended village.
 				  (store_troop_gold, ":x", "trp_household_possessions"),
+          (call_script, "script_dplmc_get_owned_center_points", "trp_player"),
+          (assign, ":x_divisor", reg1), # weighted center count
+          (val_max, ":x_divisor", 1),
+          (val_div, ":x", ":x_divisor"),
 				  (val_min, ":gold_lost_by_lord", ":x"),
 				  (ge, ":gold_lost_by_lord", 1),
 				  (call_script, "script_dplmc_withdraw_from_treasury", ":gold_lost_by_lord"),
-               (try_end),
+          (try_end),
 			   ##diplomacy end+
 
           # mark village as looted
@@ -76004,6 +76011,36 @@ Born at {s43}^Contact in {s44} of the {s45}.^\
   [
     (assign, "$g_dplmc_ai_changes", DPLMC_AI_CHANGES_HIGH),
     (assign, "$g_dplmc_gold_changes", DPLMC_GOLD_CHANGES_HIGH),
+  ]),
+
+  # calculate the number of centers that a troop (lord) owns
+  # input:
+  #   arg1: troop number (e.g. "trp_player")
+  # output:
+  #   reg0: raw count of centers (villages, castles, towns)
+  #   reg1: weighted count (town=4, castle=2, village=1)
+  ("dplmc_get_owned_center_points",
+  [
+    (store_script_param_1, ":troop_no"),
+
+    (assign, ":num_owned_centers", 0),
+    (assign, ":num_owned_weighted_centers", 0),
+    (try_for_range, ":center_no", centers_begin, centers_end),
+      (party_slot_eq, ":center_no", slot_town_lord, "trp_player"),
+      (val_add, ":num_owned_centers", 1),
+      (try_begin),
+        (party_slot_eq, ":center_no", slot_party_type, spt_town),
+        (val_add, ":num_owned_weighted_centers", 4),
+      (else_try),
+        (party_slot_eq, ":center_no", slot_party_type, spt_castle),
+        (val_add, ":num_owned_weighted_centers", 2),
+      (else_try),
+        (val_add, ":num_owned_weighted_centers", 1),
+      (try_end),
+    (try_end),
+
+    (assign, reg0, ":num_owned_centers"),
+    (assign, reg1, ":num_owned_weighted_centers"),
   ]),
 
     # #script_cf_dplmc_disguise_evaluate_contraband
