@@ -42057,6 +42057,20 @@ scripts = [
         (party_slot_eq, ":center_no", slot_center_has_fish_pond, 1),
         (val_add, ":ideal", 10),
       (try_end),
+    (else_try),
+      # Castles tend towards nearby villages (of any faction)
+      # The assumption is an informal network with surrounding villages
+      (is_between, ":center_no", castles_begin, castles_end),
+      (assign, ":ideal", 65),
+      (assign, ":counter", 1),
+      (try_for_range, ":village_no", villages_begin, villages_end),
+        (party_get_slot, ":prosperity", ":village_no", slot_town_prosperity),
+        (store_distance_to_party_from_party, ":village_distance", ":center_no", ":village_no"),
+        (le, ":village_distance", 15),
+        (val_add, ":ideal", ":prosperity"),
+        (val_add, ":counter", 1),
+      (try_end),
+      (val_div, ":ideal", ":counter"),
     (try_end),
 
     #TODO: Consider adding bonus/malus values based on other attributes
