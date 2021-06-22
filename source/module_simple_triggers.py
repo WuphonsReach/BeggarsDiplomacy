@@ -2159,10 +2159,10 @@ simple_triggers = [
             (try_end),
           (else_try),
             (party_slot_eq, ":center_no", slot_party_type, spt_castle),
-            (assign, ":cur_rents", 1800),
+            (assign, ":cur_rents", 2400),
           (else_try),
             (party_slot_eq, ":center_no", slot_party_type, spt_town),
-            (assign, ":cur_rents", 3000),
+            (assign, ":cur_rents", 4800),
           (try_end),
 
           (party_get_slot, ":prosperity", ":center_no", slot_town_prosperity), #prosperty changes between 0..100
