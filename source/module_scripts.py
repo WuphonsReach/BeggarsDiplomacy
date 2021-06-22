@@ -75706,8 +75706,7 @@ Born at {s43}^Contact in {s44} of the {s45}.^\
   [
     #Initialize prosperity based on final prices
     (try_for_range, ":center_no", centers_begin, centers_end),
-      (neg|is_between, ":center_no", castles_begin, castles_end),
-      (store_random_in_range, ":random_prosperity_adder", -20, 20),
+      (store_random_in_range, ":random_prosperity_adder", -40, 10),
       (call_script, "script_get_center_ideal_prosperity", ":center_no"),
       (assign, ":prosperity", reg0),
       (val_add, ":prosperity", ":random_prosperity_adder"),
