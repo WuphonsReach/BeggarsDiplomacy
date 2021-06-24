@@ -2172,17 +2172,27 @@ simple_triggers = [
               (assign, ":cur_rents", 1200),
             (try_end),
           (else_try),
+            # It's hard to get castles above 40-60 prosperity right now.
+            # That makes this value reasonable, as you might only get 60-80% of the value.
+            # But the castle also gets rents from the nearest village.
             (party_slot_eq, ":center_no", slot_party_type, spt_castle),
-            (assign, ":cur_rents", 2400),
+            (assign, ":cur_rents", 3600),
           (else_try),
             (party_slot_eq, ":center_no", slot_party_type, spt_town),
-            (assign, ":cur_rents", 4800),
+            (assign, ":cur_rents", 5000),
           (try_end),
 
+          # calculate rent (based on prosperity)
+          # 00 = 0+20/100 = 20%
+          # 20 = 20+20/100 = 40%
+          # 40 = 40+20/100 = 60%
+          # 60 = 60+20/100 = 80%
+          # 80 = 80+20/100 = 100%
+          # 99 = 99+20/100 = 119%
           (party_get_slot, ":prosperity", ":center_no", slot_town_prosperity), #prosperty changes between 0..100
-          (store_add, ":multiplier", 20, ":prosperity"), #multiplier changes between 20..120
+          (store_add, ":multiplier", 20, ":prosperity"),
           (val_mul, ":cur_rents", ":multiplier"),
-          (val_div, ":cur_rents", 120),#Prosperity of 100 gives the default values
+          (val_div, ":cur_rents", 100),
 
           (try_begin),
             (party_slot_eq, ":center_no", slot_town_lord, "trp_player"),
