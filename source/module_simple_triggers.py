@@ -844,10 +844,11 @@ simple_triggers = [
       (party_get_slot, ":prosperity", ":center_no", slot_town_prosperity),
       (store_random_in_range, ":random", 0, 100),
       (try_begin),
-        (le, ":prosperity", 40),
+        (this_or_next|ge, ":prosperity", 85), # high-prosperity more often
+        (le, ":prosperity", 30), # increase processing for low-prosperity centers
         (val_sub, ":random", 20),
       (try_end),
-      (le, ":random", 20),
+      (le, ":random", 20), # default is only a small percentage every N hours
     
       (call_script, "script_get_center_ideal_prosperity", ":center_no"),
       (assign, ":ideal_prosperity", reg0),
@@ -856,6 +857,7 @@ simple_triggers = [
         (eq, ":big_boost_chance", 0),
         (try_begin),
           (gt, ":prosperity", ":ideal_prosperity"),
+          # castles never take a big tumble in prosperity
           (neg|is_between, ":center_no", castles_begin, castles_end), 
           (store_random_in_range, ":negative_big_boost", -7, 0),
           (call_script, "script_change_center_prosperity", ":center_no", ":negative_big_boost"),
@@ -871,6 +873,18 @@ simple_triggers = [
         (lt, ":prosperity", ":ideal_prosperity"),
         (store_random_in_range, ":boost", 0, 3),
         (call_script, "script_change_center_prosperity", ":center_no", ":boost"),
+      (try_end),
+
+      (try_begin), #debug
+        (ge, "$cheat_mode", DPLMC_DEBUG_MIN),
+        (store_distance_to_party_from_party, ":debug_dist_to_main_party", "p_main_party", ":center_no"),
+        (le, ":debug_dist_to_main_party", 50),
+        (party_get_slot, ":new_prosperity", ":center_no", slot_town_prosperity),
+        (str_store_party_name, s20, ":center_no"),
+        (assign, reg20, ":prosperity"),
+        (assign, reg21, ":new_prosperity"),
+        (assign, reg22, ":ideal_prosperity"),
+        (display_message, "@{!}CONVERGE: {s20} ({reg22}) {reg20} -> {reg21}"),
       (try_end),
     (try_end),
   ]),
