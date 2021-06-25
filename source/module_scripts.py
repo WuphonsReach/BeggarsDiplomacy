@@ -42054,13 +42054,15 @@ scripts = [
   [
     (store_script_param, ":center_no", 1),
     (assign, ":ideal", 75),
+
     (try_begin),
       (is_between, ":center_no", villages_begin, villages_end),
       (assign, ":ideal", 65),
       (try_begin),
-        (party_slot_eq, ":center_no", slot_center_has_fish_pond, 1),
+        (party_slot_eq, ":center_no", slot_center_has_fish_pond, 1), # village has mill built
         (val_add, ":ideal", 10),
       (try_end),
+    
     (else_try),
       # Castles tend towards nearby villages (of any faction)
       # The assumption is an informal network with surrounding villages
@@ -42068,18 +42070,29 @@ scripts = [
       (assign, ":ideal", 65),
       (assign, ":counter", 1),
       (try_for_range, ":village_no", villages_begin, villages_end),
-        (party_get_slot, ":prosperity", ":village_no", slot_town_prosperity),
+        (party_get_slot, ":village_prosperity", ":village_no", slot_town_prosperity),
         (store_distance_to_party_from_party, ":village_distance", ":center_no", ":village_no"),
         (le, ":village_distance", 15),
-        (val_add, ":ideal", ":prosperity"),
+        (val_add, ":ideal", ":village_prosperity"),
         (val_add, ":counter", 1),
       (try_end),
+      # Castles also look at nearby towns, with 3x the weight of a village
+      (try_for_range, ":town_no", towns_begin, towns_end),
+        (party_get_slot, ":town_prosperity", ":town_no", slot_town_prosperity),
+        (store_distance_to_party_from_party, ":town_distance", ":center_no", ":town_no"),
+        (le, ":town_distance", 15),
+        (val_mul, ":town_prosperity", 3),
+        (val_add, ":ideal", ":town_prosperity"),
+        (val_add, ":counter", 3),
+      (try_end),
       (val_div, ":ideal", ":counter"),
+      (val_add, ":ideal", 10),
+    
     (try_end),
 
     #TODO: Consider adding bonus/malus values based on other attributes
 
-    (val_max, ":ideal", 0),
+    (val_clamp, ":ideal", 0, 100),
     (assign, reg0, ":ideal"),
   ]),
 
