@@ -51698,6 +51698,7 @@ scripts = [
           (store_faction_of_troop, ":lord_faction", ":lord"),
           (eq, ":lord_faction", ":faction_no"),
           (troop_get_slot, ":led_party", ":lord", slot_troop_leaded_party),
+          (ge, ":led_party", 0), # make sure the lord still has a party
           (party_is_active, ":led_party"),
           (val_add, ":total_vassals", 1),
 
@@ -52741,7 +52742,7 @@ scripts = [
 			(lt, ":distance", ":score_to_beat"),
 			(assign, ":center_to_visit", ":love_interest_center"),
 			(assign, ":score_to_beat", ":distance"),
-        (try_end),
+    (try_end),
 
 		(gt, ":center_to_visit", -1),
 
@@ -52763,11 +52764,10 @@ scripts = [
 		(gt, ":aggressiveness", 40),
 
 		(try_for_range, ":center_to_patrol", centers_begin, centers_end), #find closest center that has spotted enemies.
-            (store_faction_of_party, ":center_faction", ":center_to_patrol"),
-            (eq, ":center_faction", ":faction_no"),
+      (store_faction_of_party, ":center_faction", ":center_to_patrol"),
+      (eq, ":center_faction", ":faction_no"),
 			(party_slot_ge, ":center_to_patrol", slot_center_last_spotted_enemy, 0),
 
-			#new - begin
 			(party_get_slot, ":sortie_strength", ":center_to_patrol", slot_center_sortie_strength),
 			(party_get_slot, ":enemy_strength", ":center_to_patrol", slot_center_sortie_enemy_strength),
 			(store_mul, ":enemy_strength_mul_14_div_10", ":enemy_strength", 14),
@@ -52778,15 +52778,14 @@ scripts = [
 			(gt, ":sortie_strength", ":enemy_strength_mul_14_div_10"),
 
 			(ge, ":party_strength", 100),
-			#new - end
 
 			(party_get_slot, reg17, ":center_to_patrol", slot_town_lord),
 			(call_script, "script_troop_get_relation_with_troop", reg17, ":troop_no"),
 
 			(this_or_next|eq, ":troop_reputation", lrep_upstanding),
-				(gt, reg0, -5),
+      (gt, reg0, -5),
 
-            (store_distance_to_party_from_party, ":distance", ":party_no", ":center_to_patrol"),
+      (store_distance_to_party_from_party, ":distance", ":party_no", ":center_to_patrol"),
 			(lt, ":distance", ":score_to_beat"),
 
 			(assign, ":target_center", ":center_to_patrol"),
@@ -52922,9 +52921,9 @@ scripts = [
 		(display_message, "str_debug__s10_decides_s14_faction_ai_s15"),
 	(try_end),
 
-    (assign, reg0, ":action"),
+  (assign, reg0, ":action"),
 	(assign, reg1, ":object"),
-	]),
+]),
 
 	#script_npc_decision_checklist_troop_follow_or_not
     # INPUT: troop_no
