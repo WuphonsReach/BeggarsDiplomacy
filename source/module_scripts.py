@@ -62499,6 +62499,7 @@ scripts = [
       (eq, ":size", 3),
       (party_add_template, ":spawned_party", ":party_template_c"),
       (party_add_template, ":spawned_party", ":party_template_c"),
+      (party_add_template, ":spawned_party", ":party_template_c"),
       #SB : personality change
       (party_set_aggressiveness, ":spawned_party", 7),
       (party_set_courage, ":spawned_party", 11),
@@ -62506,7 +62507,7 @@ scripts = [
       (store_add, ":aggressiveness", ":size", 8),
       (party_set_aggressiveness, ":spawned_party", ":aggressiveness"),
       (val_add, ":size", 1),
-      (val_mul, ":size", 2),
+      (val_mul, ":size", 4),
       (try_for_range, ":cur_i", 0, ":size"),
         (store_random_in_range, ":random", 0, 3),
         (try_begin),
