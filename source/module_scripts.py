@@ -25725,6 +25725,7 @@ scripts = [
      (try_for_parties, ":party_no"),
        (assign, ":garrison_troop", 0),
        (try_begin),
+         (this_or_next|party_slot_eq, ":party_no", slot_party_type, spt_patrol),
          (this_or_next|party_slot_eq, ":party_no", slot_party_type, spt_town),
          (party_slot_eq, ":party_no", slot_party_type, spt_castle),
          (party_slot_eq, ":party_no", slot_town_lord, "trp_player"),
