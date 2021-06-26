@@ -10146,7 +10146,7 @@ TOTAL:  {reg5}"),
         [
           (party_slot_eq, "$current_town", slot_village_state, svs_normal),
           (neg|party_slot_ge, "$current_town", slot_village_infested_by_bandits, 1),
-          (party_slot_ge, "$current_town", slot_center_player_relation, 0), #relationship check, non-negative
+          (party_slot_ge, "$current_town", slot_center_player_relation, 1), #relationship check, non-negative
           (check_quest_active, "qst_hunt_down_fugitive"),
           (quest_slot_eq, "qst_hunt_down_fugitive", slot_quest_target_center, "$current_town"),
           (neg|check_quest_concluded, "qst_hunt_down_fugitive"), #SB : other condition
