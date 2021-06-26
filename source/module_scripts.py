@@ -121,6 +121,7 @@ scripts = [
       (try_end),
       ##diplomacy end+
 
+      (call_script, "script_initialize_dplmc_preferences_defaults"),
       (call_script, "script_initialize_banner_info"),
       (call_script, "script_initialize_food_morale_bonuses"),
       (call_script, "script_initialize_item_info"),
@@ -400,27 +401,27 @@ scripts = [
         (party_set_slot,":castle_no", slot_center_is_besieged_by, -1),
       (try_end),
 
-# Set which castles need to be attacked with siege towers.
-      (party_set_slot,"p_town_13", slot_center_siege_with_belfry, 1),
-      (party_set_slot,"p_town_16", slot_center_siege_with_belfry, 1),
+      # Set which towns/castles need to be attacked with siege towers.
+      (party_set_slot,"p_town_13", slot_center_siege_with_belfry, 1), #Rivacheg
+      (party_set_slot,"p_town_16", slot_center_siege_with_belfry, 1), #Dhirim
 
-      (party_set_slot,"p_castle_1", slot_center_siege_with_belfry, 1),
-      (party_set_slot,"p_castle_2", slot_center_siege_with_belfry, 1),
-      (party_set_slot,"p_castle_4", slot_center_siege_with_belfry, 1),
-      (party_set_slot,"p_castle_7", slot_center_siege_with_belfry, 1),
-      (party_set_slot,"p_castle_8", slot_center_siege_with_belfry, 1),
-      (party_set_slot,"p_castle_9", slot_center_siege_with_belfry, 1),
-      (party_set_slot,"p_castle_11", slot_center_siege_with_belfry, 1),
-      (party_set_slot,"p_castle_13", slot_center_siege_with_belfry, 1),
-      (party_set_slot,"p_castle_21", slot_center_siege_with_belfry, 1),
-      (party_set_slot,"p_castle_25", slot_center_siege_with_belfry, 1),
-      (party_set_slot,"p_castle_34", slot_center_siege_with_belfry, 1),
-      (party_set_slot,"p_castle_35", slot_center_siege_with_belfry, 1),
-      (party_set_slot,"p_castle_38", slot_center_siege_with_belfry, 1),
-      (party_set_slot,"p_castle_40", slot_center_siege_with_belfry, 1),
-      (party_set_slot,"p_castle_41", slot_center_siege_with_belfry, 1),
-      (party_set_slot,"p_castle_42", slot_center_siege_with_belfry, 1),
-      (party_set_slot,"p_castle_43", slot_center_siege_with_belfry, 1),
+      (party_set_slot,"p_castle_1", slot_center_siege_with_belfry, 1), #Culmarr_Castle
+      (party_set_slot,"p_castle_2", slot_center_siege_with_belfry, 1), #Malayurg_Castle
+      (party_set_slot,"p_castle_4", slot_center_siege_with_belfry, 1), #Radoghir_Castle
+      (party_set_slot,"p_castle_7", slot_center_siege_with_belfry, 1), #Sungetche_Castle
+      (party_set_slot,"p_castle_8", slot_center_siege_with_belfry, 1), #Jeirbe_Castle (Training Field)
+      (party_set_slot,"p_castle_9", slot_center_siege_with_belfry, 1), #Jamiche_Castle (Training Field?)
+      (party_set_slot,"p_castle_11", slot_center_siege_with_belfry, 1), #Curin_Castle
+      (party_set_slot,"p_castle_13", slot_center_siege_with_belfry, 1), #Kelredan_Castle(Training Field)
+      (party_set_slot,"p_castle_21", slot_center_siege_with_belfry, 1), #Ibdeles_Castle
+      (party_set_slot,"p_castle_25", slot_center_siege_with_belfry, 1), #Ryibelet_Castle
+      (party_set_slot,"p_castle_34", slot_center_siege_with_belfry, 1), #Hrus_Castle
+      (party_set_slot,"p_castle_35", slot_center_siege_with_belfry, 1), #Haringoth_Castle (Training Field)
+      (party_set_slot,"p_castle_38", slot_center_siege_with_belfry, 1), #Tulbuk_Castle
+      (party_set_slot,"p_castle_40", slot_center_siege_with_belfry, 1), #Uhhun_Castle
+      (party_set_slot,"p_castle_41", slot_center_siege_with_belfry, 1), #Jameyyed_Castle
+      (party_set_slot,"p_castle_42", slot_center_siege_with_belfry, 1), #Teramma_Castle
+      (party_set_slot,"p_castle_43", slot_center_siege_with_belfry, 1), #Sharwa_Castle
 
 	  # Villages characters
       (try_for_range, ":village_no", villages_begin, villages_end),
@@ -8740,7 +8741,7 @@ scripts = [
     #Khudan
     (else_try),
       (eq, "p_town_9", ":min_dist_town"),
-      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_iron_deposits, 4, 10, -1),
+      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_iron_deposits, 5, 10, -1),
       (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_fur_traps, 10, 16, 0),
       (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_acres_grain, 800, 1500, -1),
       (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_mills, 3, 6, -1),
@@ -8767,12 +8768,12 @@ scripts = [
     #Curaw
     (else_try),
       (eq, "p_town_11", ":min_dist_town"),
-      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_iron_deposits, 8, 15, -1),
-      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_acres_grain, 900, 2600, -1),
+      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_iron_deposits, 9, 15, -1),
+      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_acres_grain, 1100, 2600, -1),
       (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_mills, 3, 6, -1),
-      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_fur_traps, 5, 9, 0),
-      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_silk_farms, 100, 200, -1),
-      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_kirmiz_farms, 150, 400, -1),
+      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_fur_traps, 6, 10, 0),
+      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_silk_farms, 100, 400, -1),
+      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_kirmiz_farms, 150, 450, -1),
       (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_head_chicken, 12, 30, -1),
       (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_head_pigs, 8, 20, -1),
 
@@ -8783,7 +8784,7 @@ scripts = [
       (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_acres_vineyard, 700, 1200, -1),
       (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_acres_grain, 3000, 4000, 0),
       (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_mills, 4, 8, -1),
-      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_fur_traps, 5, 8, -1),
+      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_fur_traps, 6, 9, -1),
       (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_apiaries, 2, 6, -1),
       (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_household_gardens, 2, 5, 0),
       (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_salt_pans, 1, 4, -1),
@@ -8833,8 +8834,8 @@ scripts = [
       (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_head_sheep, 15, 25, -1),
       (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_head_chicken, 10, 20, -1),
       (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_head_pigs, 9, 15, -1),
-      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_fur_traps, 5, 9, -1),
-      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_iron_deposits, 4, 10, -1),
+      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_fur_traps, 6, 10, -1),
+      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_iron_deposits, 5, 10, -1),
 
     #Dhirim
     (else_try),
@@ -8852,8 +8853,8 @@ scripts = [
       (eq, "p_town_17", ":min_dist_town"),
       (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_acres_grain, 2400, 3800, -1),
       (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_mills, 4, 8, 0),
-      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_fur_traps, 5, 9, -1),
-      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_iron_deposits, 2, 8, -1),
+      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_fur_traps, 5, 10, -1),
+      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_iron_deposits, 3, 8, -1),
       (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_apiaries, 2, 5, 1),
       (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_acres_fruit_trees, 700, 1200, 1),
       (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_acres_vineyard, 250, 500, -1),
@@ -9051,15 +9052,15 @@ scripts = [
   (call_script, "script_dplmc_add_random_production", "p_village_23", slot_center_acres_flax, 500, 900, -1),
 
   #"village_24","Ruldi" - hills, windmill, iron, silk, grapes, cabbage, pottery, furs, flax/grain, chicken
-  (call_script, "script_dplmc_add_random_production", "p_village_24", slot_center_iron_deposits, 3, 6, -1),
-  (call_script, "script_dplmc_add_random_production", "p_village_24", slot_center_silk_farms, 200, 400, -1),
-  (call_script, "script_dplmc_add_random_production", "p_village_24", slot_center_household_gardens, 2, 3, -1),
+  (call_script, "script_dplmc_add_random_production", "p_village_24", slot_center_iron_deposits, 3, 9, -1),
+  (call_script, "script_dplmc_add_random_production", "p_village_24", slot_center_silk_farms, 200, 500, -1),
+  (call_script, "script_dplmc_add_random_production", "p_village_24", slot_center_household_gardens, 2, 4, -1),
   (call_script, "script_dplmc_add_random_production", "p_village_24", slot_center_acres_grain, 1600, 3200, -1),
-  (call_script, "script_dplmc_add_random_production", "p_village_24", slot_center_acres_flax, 300, 600, -1),
-  (call_script, "script_dplmc_add_random_production", "p_village_24", slot_center_acres_vineyard, 300, 500, -1),
-  (call_script, "script_dplmc_add_random_production", "p_village_24", slot_center_pottery_kilns, 1, 3, -1),
-  (call_script, "script_dplmc_add_random_production", "p_village_24", slot_center_fur_traps, 2, 4, -1),
-  (call_script, "script_dplmc_add_random_production", "p_village_24", slot_center_head_chicken, 8, 16, -1),
+  (call_script, "script_dplmc_add_random_production", "p_village_24", slot_center_acres_flax, 300, 900, -1),
+  (call_script, "script_dplmc_add_random_production", "p_village_24", slot_center_acres_vineyard, 300, 900, -1),
+  (call_script, "script_dplmc_add_random_production", "p_village_24", slot_center_pottery_kilns, 1, 5, -1),
+  (call_script, "script_dplmc_add_random_production", "p_village_24", slot_center_fur_traps, 2, 8, -1),
+  (call_script, "script_dplmc_add_random_production", "p_village_24", slot_center_head_chicken, 8, 24, -1),
 
   #"village_25","Dashbigha" - pottery, medium grain/flax, horses, lumber
   (call_script, "script_dplmc_add_random_production", "p_village_25", slot_center_pottery_kilns, 1, 2, -1),
@@ -9068,22 +9069,22 @@ scripts = [
 
   #"village_26","Pagundur" - modest, river, pigs, garden, flax/grain, ale, grapes, honey, furs, fruit, pottery
   (call_script, "script_dplmc_add_random_production", "p_village_26", slot_center_fishing_fleet, 5, 10, -1),
-  (call_script, "script_dplmc_add_random_production", "p_village_26", slot_center_head_pigs, 15, 30, -1),
-  (call_script, "script_dplmc_add_random_production", "p_village_26", slot_center_acres_vineyard, 400, 800, -1),
-  (call_script, "script_dplmc_add_random_production", "p_village_26", slot_center_acres_grain, 2500, 4000, -1),
-  (call_script, "script_dplmc_add_random_production", "p_village_26", slot_center_acres_flax, 400, 900, -1),
-  (call_script, "script_dplmc_add_random_production", "p_village_26", slot_center_breweries, 2, 4, -1),
-  (call_script, "script_dplmc_add_random_production", "p_village_26", slot_center_fur_traps, 3, 6, -1),
-  (call_script, "script_dplmc_add_random_production", "p_village_26", slot_center_apiaries, 3, 6, -1),
-  (call_script, "script_dplmc_add_random_production", "p_village_26", slot_center_acres_fruit_trees, 300, 500, -1),
-  (call_script, "script_dplmc_add_random_production", "p_village_26", slot_center_pottery_kilns, 1, 2, -1),
+  (call_script, "script_dplmc_add_random_production", "p_village_26", slot_center_head_pigs, 15, 35, -1),
+  (call_script, "script_dplmc_add_random_production", "p_village_26", slot_center_acres_vineyard, 400, 1200, -1),
+  (call_script, "script_dplmc_add_random_production", "p_village_26", slot_center_acres_grain, 2500, 5000, -1),
+  (call_script, "script_dplmc_add_random_production", "p_village_26", slot_center_acres_flax, 400, 1200, -1),
+  (call_script, "script_dplmc_add_random_production", "p_village_26", slot_center_breweries, 2, 5, -1),
+  (call_script, "script_dplmc_add_random_production", "p_village_26", slot_center_fur_traps, 3, 7, -1),
+  (call_script, "script_dplmc_add_random_production", "p_village_26", slot_center_apiaries, 3, 7, -1),
+  (call_script, "script_dplmc_add_random_production", "p_village_26", slot_center_acres_fruit_trees, 300, 800, -1),
+  (call_script, "script_dplmc_add_random_production", "p_village_26", slot_center_pottery_kilns, 1, 3, -1),
 
   #"village_27","Glunmar" - skulls on spikes, walled, garden, grapes, hides, fruit, bread
-  (call_script, "script_dplmc_add_random_production", "p_village_27", slot_center_household_gardens, 2, 3, -1),
+  (call_script, "script_dplmc_add_random_production", "p_village_27", slot_center_household_gardens, 2, 4, -1),
   (call_script, "script_dplmc_add_random_production", "p_village_27", slot_center_mills, 1, 3, -1),
-  (call_script, "script_dplmc_add_random_production", "p_village_27", slot_center_acres_fruit_trees, 300, 500, -1),
+  (call_script, "script_dplmc_add_random_production", "p_village_27", slot_center_acres_fruit_trees, 300, 600, -1),
   (call_script, "script_dplmc_add_random_production", "p_village_27", slot_center_acres_vineyard, 300, 600, -1),
-  (call_script, "script_dplmc_add_random_production", "p_village_27", slot_center_fur_traps, 4, 8, -1),
+  (call_script, "script_dplmc_add_random_production", "p_village_27", slot_center_fur_traps, 4, 10, -1),
 
   #"village_28","Tash_Kulun" - small, hilly, poor, grain
   (call_script, "script_dplmc_add_random_production", "p_village_28", slot_center_acres_grain, 2000, 4000, -1),
@@ -9136,15 +9137,16 @@ scripts = [
   (call_script, "script_dplmc_add_random_production", "p_village_34", slot_center_acres_vineyard, 200, 400, -1),
   (call_script, "script_dplmc_add_random_production", "p_village_34", slot_center_head_sheep, 10, 20, -1),
 
-  #"village_35","Fearichen" - coastal, bread, pottery, cabbage, silk, fruit, ships, wood
+  #"village_35","Fearichen" - coastal, bread, pottery, cabbage, silk, fruit, ships, wood, sheep
   (call_script, "script_dplmc_add_random_production", "p_village_35", slot_center_fishing_fleet, 20, 30, 0),
-  (call_script, "script_dplmc_add_random_production", "p_village_35", slot_center_mills, 4, 6, -1),
-  (call_script, "script_dplmc_add_random_production", "p_village_35", slot_center_household_gardens, 1, 3, -1),
-  (call_script, "script_dplmc_add_random_production", "p_village_35", slot_center_acres_grain, 3000, 5000, -1),
-  (call_script, "script_dplmc_add_random_production", "p_village_35", slot_center_acres_flax, 250, 500, -1),
-  (call_script, "script_dplmc_add_random_production", "p_village_35", slot_center_pottery_kilns, 1, 2, -1),
-  (call_script, "script_dplmc_add_random_production", "p_village_35", slot_center_silk_farms, 200, 400, -1),
-  (call_script, "script_dplmc_add_random_production", "p_village_35", slot_center_acres_fruit_trees, 200, 400, -1),
+  (call_script, "script_dplmc_add_random_production", "p_village_35", slot_center_mills, 4, 7, -1),
+  (call_script, "script_dplmc_add_random_production", "p_village_35", slot_center_household_gardens, 2, 4, -1),
+  (call_script, "script_dplmc_add_random_production", "p_village_35", slot_center_acres_grain, 3500, 5000, -1),
+  (call_script, "script_dplmc_add_random_production", "p_village_35", slot_center_acres_flax, 350, 600, -1),
+  (call_script, "script_dplmc_add_random_production", "p_village_35", slot_center_pottery_kilns, 1, 3, -1),
+  (call_script, "script_dplmc_add_random_production", "p_village_35", slot_center_silk_farms, 300, 500, -1),
+  (call_script, "script_dplmc_add_random_production", "p_village_35", slot_center_acres_fruit_trees, 300, 450, -1),
+  (call_script, "script_dplmc_add_random_production", "p_village_35", slot_center_head_sheep, 10, 20, -1),
 
   #"village_36","Jayek" - green, hills, small cabbage, medium grain
   (call_script, "script_dplmc_add_random_production", "p_village_36", slot_center_household_gardens, 1, 2, -1),
@@ -16828,9 +16830,9 @@ scripts = [
     (try_end),
   ]),
 
-  #script_update_trade_good_price_for_party
-  # updates 18% of the trade goods at a center per pass
-  # this works out to each trade good being updated every ~2 days
+  #script_update_trade_good_price_for_party (every 8 hours)
+  # updates 11% of the trade goods at a center per pass
+  # this works out to each trade good being updated every ~3 days
   # INPUT: arg1 = party_no
   ("update_trade_good_price_for_party",
   [
@@ -16839,11 +16841,11 @@ scripts = [
     (try_for_range, ":cur_good", trade_goods_begin, trade_goods_end),
       (store_random_in_range, ":chance_of_adjustment", 0, 100),
       (try_begin),
-        # besieged towns update 3x more frequently
+        # besieged towns update more frequently
         (party_slot_ge, ":center_no", slot_center_is_besieged_by, 0), # is besieged
-        (val_sub, ":chance_of_adjustment", 36), # this N should be a multiple of the "(lt)" check
+        (val_sub, ":chance_of_adjustment", 11), # this N should be a multiple of the "(lt)" check
       (try_end),
-      (lt, ":chance_of_adjustment", 18), # 18% of goods per center get adjusted each pass
+      (lt, ":chance_of_adjustment", 11), # % of goods per center get adjusted each pass
 
       (store_sub, ":cur_good_price_slot", ":cur_good", trade_goods_begin),
       (val_add, ":cur_good_price_slot", slot_town_trade_good_prices_begin),
@@ -16967,19 +16969,20 @@ scripts = [
         (is_between, ":center_no", towns_begin, towns_end),
         (store_mul, ":offset", 5, ":prosperity"), # 35*5/75 = 2, 50*5/75= 3
         (val_div, ":offset", 75), # target prosperity
-        (val_clamp, ":offset", 0, 6),
-        (val_add, ":offset", 100), # base price factor (towns are more expensive)
+        (val_clamp, ":offset", 0, 9),
+        (val_add, ":offset", 102), # base price factor (towns are more expensive)
         (val_mul, ":target_price_factor", ":offset"),
         (val_div, ":target_price_factor", 100),
       (else_try),
         (is_between, ":center_no", towns_begin, towns_end),
         (store_mul, ":offset", 5, ":prosperity"), # 35*5/80=2, 50*5/80=3
         (val_div, ":offset", 80), # target prosperity
-        (val_clamp, ":offset", 0, 6),
-        (val_add, ":offset", 90), # base price factor (villages discount a bit)
+        (val_clamp, ":offset", 0, 8),
+        (val_add, ":offset", 85), # base price factor (villages discount a bit)
         (val_mul, ":target_price_factor", ":offset"),
         (val_div, ":target_price_factor", 100),
       (try_end),
+
       (store_random_in_range, ":randomize_target_price_factor", -15, 16),
       (val_add, ":target_price_factor", ":randomize_target_price_factor"),
 
@@ -16995,7 +16998,7 @@ scripts = [
       (else_try),
         (lt, ":target_difference", 0),
         (store_random_in_range, ":target_change", ":target_difference", 0),
-        (val_min, ":target_change", -20),
+        (val_min, ":target_change", -30),
         (val_div, ":target_change", 5),
       (try_end),
       (val_add, ":cur_price", ":target_change"),
@@ -17044,12 +17047,12 @@ scripts = [
       (try_end),
       (try_begin),
         (gt, ":market_avg_price_difference", 0),
-        (val_div, ":market_avg_price_difference", 6),
+        (val_div, ":market_avg_price_difference", 5),
         (val_max, ":market_avg_price_difference", 1),
         (store_random_in_range, ":market_avg_price_difference", 0, ":market_avg_price_difference"),
       (else_try),
         (lt, ":market_avg_price_difference", 0),
-        (val_div, ":market_avg_price_difference", 9),
+        (val_div, ":market_avg_price_difference", 7),
         (val_min, ":market_avg_price_difference", -1),
         (store_random_in_range, ":market_avg_price_difference", ":market_avg_price_difference", 0),
       (try_end),
@@ -20758,9 +20761,9 @@ scripts = [
           (val_mul, ":price_dif", 2),
         (try_end),
         # fuzzy the price difference
-        (store_random_in_range, ":price_diff_fuzzing", 800, 1200),
+        (store_random_in_range, ":price_diff_fuzzing", 80, 120),
         (val_mul, ":price_dif", ":price_diff_fuzzing"),
-        (val_div, ":price_dif", 1000),
+        (val_div, ":price_dif", 100),
         (val_add, ":cur_town_score", ":price_dif"),
       (try_end),
 
@@ -20769,12 +20772,14 @@ scripts = [
         (gt, ":cur_town_profit_count", 0),
         (val_div, ":cur_town_score", ":cur_town_profit_count"),
         #clamp score so that it matters, but is not asymptotic towards super-profit routes
-        (val_clamp, ":cur_town_score", 81, 324),
+        (val_clamp, ":cur_town_score", 49, 289),
         #taking sqrt() also helps tone things down
         (convert_to_fixed_point, ":cur_town_score"),
         (store_sqrt, ":cur_town_score", ":cur_town_score"),
         (convert_from_fixed_point, ":cur_town_score"),
-        # town score is now always 9..18
+        # town score is now always 7..17
+        (store_random_in_range, ":cur_town_score_fuzzing", -3, 4),
+        (val_add, ":cur_town_score", ":cur_town_score_fuzzing"),
         (val_mul, ":cur_town_score", 100), # 900..1800
       (try_end),
 
@@ -20817,8 +20822,10 @@ scripts = [
           #It will take time to buy and sell once reaching our destination: halving
           #the distance doesn't double the expected profit per month.
           #most towns are ~100 units away, map is ~300-320 across
-          (val_div, ":dist", 60), # dist -> 0..5
-          (val_add, ":dist", 3), # dist -> 3..8
+          (val_div, ":dist", 50), # dist -> 0..6
+          (val_add, ":dist", 3), # dist -> 3..9
+          (store_random_in_range, ":dist_fuzzing", -2, 3),
+          (val_add, ":dist", ":dist_fuzzing"),
           (val_max, ":dist", 1),
           (val_div, ":cur_town_score", ":dist"),
         (try_end),
@@ -25718,6 +25725,7 @@ scripts = [
      (try_for_parties, ":party_no"),
        (assign, ":garrison_troop", 0),
        (try_begin),
+         (this_or_next|party_slot_eq, ":party_no", slot_party_type, spt_patrol),
          (this_or_next|party_slot_eq, ":party_no", slot_party_type, spt_town),
          (party_slot_eq, ":party_no", slot_party_type, spt_castle),
          (party_slot_eq, ":party_no", slot_town_lord, "trp_player"),
@@ -27299,11 +27307,18 @@ scripts = [
 				  (val_sub, ":gold_lost_by_lord", ":x"),
 				  (val_max, ":gold_lost_by_lord", 0),
 				  #Remove the remainder (if any) from the player's treasury
+          #But lessen the loss based on how many centers the player owns.
+          #The assumption is that the player is smart enough not to leave 100% of their
+          #treasury in some poorly defended village.
 				  (store_troop_gold, ":x", "trp_household_possessions"),
+          (call_script, "script_dplmc_get_owned_center_points", "trp_player"),
+          (assign, ":x_divisor", reg1), # weighted center count
+          (val_max, ":x_divisor", 1),
+          (val_div, ":x", ":x_divisor"),
 				  (val_min, ":gold_lost_by_lord", ":x"),
 				  (ge, ":gold_lost_by_lord", 1),
 				  (call_script, "script_dplmc_withdraw_from_treasury", ":gold_lost_by_lord"),
-               (try_end),
+          (try_end),
 			   ##diplomacy end+
 
           # mark village as looted
@@ -27357,6 +27372,7 @@ scripts = [
                (call_script, "script_faction_inflict_war_damage_on_faction", ":looter_faction", ":village_faction", 5),
              (try_end),
            (try_end),
+
          (else_try),
            (this_or_next|party_slot_eq, ":village_no", slot_village_state, svs_looted), #village is looted
            (party_slot_eq, ":village_no", slot_village_state, svs_deserted), #SB : village is deserted
@@ -28653,61 +28669,75 @@ scripts = [
   # Output: none
   #called from triggers
   ("process_hero_ai",
-    [
-      (store_script_param_1, ":troop_no"),
-      (troop_get_slot, ":party_no", ":troop_no", slot_troop_leaded_party),
+  [
+    (store_script_param_1, ":troop_no"),
+    (troop_get_slot, ":party_no", ":troop_no", slot_troop_leaded_party),
+
+    (try_begin),
+      (party_is_active, ":party_no"),
+      (store_faction_of_party, ":faction_no", ":party_no"),
+      (party_get_slot, ":ai_state", ":party_no", slot_party_ai_state),
+      (party_get_slot, ":ai_object", ":party_no", slot_party_ai_object),
+
+      (assign, ":is_debug", 0),
       (try_begin),
-        (party_is_active, ":party_no"),
-        (store_faction_of_party, ":faction_no", ":party_no"),
-        (party_get_slot, ":ai_state", ":party_no", slot_party_ai_state),
-        (party_get_slot, ":ai_object", ":party_no", slot_party_ai_object),
+        (eq, "$cheat_mode", DPLMC_DEBUG_POLITICS),
+        (eq, ":troop_no", "trp_knight_5_20"), #Reichsin
+        (str_store_troop_name, s30, ":troop_no"),
+        (str_store_party_name, s31, ":party_no"),
+        (display_message, "@{!}HERO-AI: {s30} / {s31}"),
+        (assign, ":is_debug", 1),
+      (try_end),
+
+      (try_begin),
+        (eq, ":ai_state", spai_besieging_center),
         (try_begin),
-          (eq, ":ai_state", spai_besieging_center),
+          (party_slot_eq, ":ai_object", slot_center_is_besieged_by, -1),
+          (store_distance_to_party_from_party, ":distance", ":party_no", ":ai_object"),
+          (lt, ":distance", 3),
           (try_begin),
-            (party_slot_eq, ":ai_object", slot_center_is_besieged_by, -1),
-            (store_distance_to_party_from_party, ":distance", ":party_no", ":ai_object"),
-            (lt, ":distance", 3),
-            (try_begin),
-              (party_slot_eq, ":party_no", slot_party_ai_state, spai_accompanying_army),
-              (party_get_slot, ":commander_party", ":party_no", slot_party_ai_object),
-              (party_set_slot, ":ai_object", slot_center_is_besieged_by, ":commander_party"),
-            (else_try),
-              (party_set_slot, ":ai_object", slot_center_is_besieged_by, ":party_no"),
-            (try_end),
-            (store_current_hours, ":cur_hours"),
-            (party_set_slot, ":ai_object", slot_center_siege_begin_hours, ":cur_hours"),
-
-
-            (try_begin),
-              (store_faction_of_party, ":ai_object_faction", ":ai_object"),
-				 ##diplomacy start+ Handle player is co-ruler of faction
-				 (assign, ":is_coruler", 0),
-				 (try_begin),
-					(eq, ":ai_object_faction", "$players_kingdom"),
-					(is_between, "$players_kingdom", npc_kingdoms_begin, npc_kingdoms_end),
-					(call_script, "script_dplmc_get_troop_standing_in_faction", "trp_player", "$players_kingdom"),
-					(ge, reg0, DPLMC_FACTION_STANDING_LEADER_SPOUSE),
-					(assign, ":is_coruler", 1),
-				 (try_end),
-				 (this_or_next|eq, ":is_coruler", 1),
-				 ##diplomacy end+
-              (this_or_next|party_slot_eq, ":ai_object", slot_town_lord, "trp_player"),
-              (eq, ":ai_object_faction", "fac_player_supporters_faction"),
-              (call_script, "script_add_notification_menu", "mnu_notification_center_under_siege", ":ai_object", ":troop_no"),
-            (try_end),
-            (str_store_party_name_link, s1, ":ai_object"),
-            (str_store_troop_name_link, s2, ":troop_no"),
-            (str_store_faction_name_link, s3, ":faction_no"),
-            #SB : store color of center object
-            (faction_get_color, ":color", ":ai_object_faction"),
-            (display_log_message, "@{s1} has been besieged by {s2} of {s3}.", ":color"),
-            (call_script, "script_village_set_state", ":ai_object", svs_under_siege),
-            (assign, "$g_recalculate_ais", 1),
+            (party_slot_eq, ":party_no", slot_party_ai_state, spai_accompanying_army),
+            (party_get_slot, ":commander_party", ":party_no", slot_party_ai_object),
+            (party_set_slot, ":ai_object", slot_center_is_besieged_by, ":commander_party"),
+          (else_try),
+            (party_set_slot, ":ai_object", slot_center_is_besieged_by, ":party_no"),
           (try_end),
-        (else_try),
-          (eq, ":ai_state", spai_raiding_around_center),
-          (party_slot_eq, ":party_no", slot_party_ai_substate, 0),
-          (assign, ":selected_village", 0),
+          (store_current_hours, ":cur_hours"),
+          (party_set_slot, ":ai_object", slot_center_siege_begin_hours, ":cur_hours"),
+          (try_begin),
+            (store_faction_of_party, ":ai_object_faction", ":ai_object"),
+            ##diplomacy start+ Handle player is co-ruler of faction
+            (assign, ":is_coruler", 0),
+            (try_begin),
+              (eq, ":ai_object_faction", "$players_kingdom"),
+              (is_between, "$players_kingdom", npc_kingdoms_begin, npc_kingdoms_end),
+              (call_script, "script_dplmc_get_troop_standing_in_faction", "trp_player", "$players_kingdom"),
+              (ge, reg0, DPLMC_FACTION_STANDING_LEADER_SPOUSE),
+              (assign, ":is_coruler", 1),
+            (try_end),
+            (this_or_next|eq, ":is_coruler", 1),
+            ##diplomacy end+
+            (this_or_next|party_slot_eq, ":ai_object", slot_town_lord, "trp_player"),
+            (eq, ":ai_object_faction", "fac_player_supporters_faction"),
+            (call_script, "script_add_notification_menu", "mnu_notification_center_under_siege", ":ai_object", ":troop_no"),
+          (try_end),
+          (str_store_party_name_link, s1, ":ai_object"),
+          (str_store_troop_name_link, s2, ":troop_no"),
+          (str_store_faction_name_link, s3, ":faction_no"),
+          #SB : store color of center object
+          (faction_get_color, ":color", ":ai_object_faction"),
+          (display_log_message, "@{s1} has been besieged by {s2} of {s3}.", ":color"),
+          (call_script, "script_village_set_state", ":ai_object", svs_under_siege),
+          (assign, "$g_recalculate_ais", 1),
+        (try_end),
+      (else_try),
+        (eq, ":ai_state", spai_raiding_around_center),
+        (party_slot_eq, ":party_no", slot_party_ai_substate, 0),
+        (assign, ":selected_village", 0),
+        # iterate villages forwards/backwards (helps randomize target selection)
+        (store_random_in_range, ":backwards", 0, 2),
+        (try_begin),
+          (eq, ":backwards", 0),
           (try_for_range, ":enemy_village_no", villages_begin, villages_end),
             (eq, ":selected_village", 0),
             (store_faction_of_party, ":enemy_village_faction", ":enemy_village_no"),
@@ -28724,94 +28754,112 @@ scripts = [
             #CHANGE STATE TO RAID THIS VILLAGE
             (assign, ":selected_village", ":enemy_village_no"),
           (try_end),
-          (try_begin),
+        (else_try),
+          (try_for_range_backwards, ":enemy_village_no", villages_begin, villages_end),
             (eq, ":selected_village", 0),
-            (is_between, ":ai_object", villages_begin, villages_end),
-            (assign, ":selected_village", ":ai_object"),
-          (try_end),
-          (try_begin),
-            (gt, ":selected_village", 0),
-            #SB : minimum of 15 in raiding party, although in process_village_raids we calculate actual ratio
-            (party_get_num_companions, ":num_troops", ":party_no"),
-            (ge, ":num_troops", 15), #about 2 party template of reinforcements
-            (call_script, "script_party_set_ai_state", ":party_no", spai_raiding_around_center, ":selected_village"),
+            (store_faction_of_party, ":enemy_village_faction", ":enemy_village_no"),
             (try_begin),
-              (faction_slot_eq, ":faction_no", slot_faction_marshall, ":troop_no"),
-              (faction_slot_eq, ":faction_no", slot_faction_ai_state, sfai_raiding_village),
-              (faction_set_slot, ":faction_no", slot_faction_ai_object, ":selected_village"),
-            (try_end),
-            (party_get_position, pos1, ":selected_village"),
-            (map_get_random_position_around_position, pos2, pos1, 1),
-            (party_set_ai_behavior, ":party_no", ai_bhvr_travel_to_point),
-            (party_set_ai_target_position, ":party_no", pos2),
-            (party_set_ai_object, ":party_no", ":selected_village"),
-            (party_set_slot, ":party_no", slot_party_ai_substate, 1),
-          (try_end),
-        (else_try),
-          (eq, ":ai_state", spai_raiding_around_center),#substate is 1
-          (try_begin),
-            (store_distance_to_party_from_party, ":distance", ":party_no", ":ai_object"),
-            (lt, ":distance", 2),
-            (try_begin),
-              (party_slot_eq, ":ai_object", slot_village_state, svs_normal),
-              (call_script, "script_village_set_state", ":ai_object", svs_being_raided),
-              (party_set_slot, ":ai_object", slot_village_raided_by, ":party_no"),
-              (try_begin),
-                (store_faction_of_party, ":village_faction", ":ai_object"),
-				 ##diplomacy start+ Handle player is co-ruler of faction
-				 (assign, ":is_coruler", 0),
-				 (try_begin),
-					(eq, ":village_faction", "$players_kingdom"),
-					(is_between, "$players_kingdom", npc_kingdoms_begin, npc_kingdoms_end),
-					(call_script, "script_dplmc_get_troop_standing_in_faction", "trp_player", "$players_kingdom"),
-					(ge, reg0, DPLMC_FACTION_STANDING_LEADER_SPOUSE),
-					(assign, ":is_coruler", 1),
-				 (try_end),
-				 (this_or_next|eq, ":is_coruler", 1),
-				 ##diplomacy end+
-                (this_or_next|party_slot_eq, ":ai_object", slot_town_lord, "trp_player"),
-                (eq, ":village_faction", "fac_player_supporters_faction"),
-                (store_distance_to_party_from_party, ":dist", "p_main_party", ":ai_object"),
-                (this_or_next|lt, ":dist", 30),
-                (party_slot_eq, ":ai_object", slot_center_has_messenger_post, 1),
-                (call_script, "script_add_notification_menu", "mnu_notification_village_raid_started", ":ai_object", ":troop_no"),
-              (try_end),
+              (party_slot_eq, ":enemy_village_no", slot_town_lord, "trp_player"),
+              (store_relation, ":reln", "fac_player_supporters_faction", ":faction_no"),
             (else_try),
-              (party_slot_eq, ":ai_object", slot_village_state, svs_being_raided),
-            (else_try),
-              #if anything other than being_raided leave
-              (party_set_slot, ":party_no", slot_party_ai_substate, 0),
+              (store_relation, ":reln", ":enemy_village_faction", ":faction_no"),
             (try_end),
+            (lt, ":reln", 0),
+            (store_distance_to_party_from_party, ":dist", ":enemy_village_no", ":party_no"),
+            (lt, ":dist", 15),
+            (party_slot_eq, ":enemy_village_no", slot_village_state, svs_normal), #village is not already raided
+            #CHANGE STATE TO RAID THIS VILLAGE
+            (assign, ":selected_village", ":enemy_village_no"),
           (try_end),
-        (else_try),
-          (eq, ":ai_state", spai_retreating_to_center),
-          (try_begin),
-            (party_get_battle_opponent, ":enemy_party", ":party_no"),
-            (ge, ":enemy_party", 0), #we are in a battle! we may be caught in a loop!
-            (call_script, "script_party_set_ai_state", ":party_no", spai_undefined, -1),
-            (party_set_flags, ":party_no", pf_default_behavior, 0),
-            (party_set_slot, ":party_no", slot_party_commander_party, -1),
-          (try_end),
-        (else_try),
-          (eq, ":ai_state", spai_patrolling_around_center),
-
-          (try_begin),
-            (party_slot_eq, ":party_no", slot_party_ai_substate, 0),
-            (store_distance_to_party_from_party, ":distance", ":party_no", ":ai_object"),
-            (lt, ":distance", 6),
-            (party_set_slot, ":party_no", slot_party_ai_substate, 1),
-
-	        (party_set_aggressiveness, ":party_no", 8),
-	        (party_set_courage, ":party_no", 8),
-	        (party_set_ai_initiative, ":party_no", 100),
-
-            (party_set_ai_behavior, ":party_no", ai_bhvr_patrol_party),
-            (party_set_ai_object, ":party_no", ":ai_object"),
-          (try_end),
-        (else_try),
-          (eq, ":ai_state", spai_holding_center),
         (try_end),
+        (try_begin),
+          (eq, ":selected_village", 0),
+          (is_between, ":ai_object", villages_begin, villages_end),
+          (assign, ":selected_village", ":ai_object"),
+        (try_end),
+        (try_begin),
+          (gt, ":selected_village", 0),
+          #SB : minimum of 15 in raiding party, although in process_village_raids we calculate actual ratio
+          (party_get_num_companions, ":num_troops", ":party_no"),
+          (ge, ":num_troops", 15), #about 2 party template of reinforcements
+          (call_script, "script_party_set_ai_state", ":party_no", spai_raiding_around_center, ":selected_village"),
+          (try_begin),
+            (faction_slot_eq, ":faction_no", slot_faction_marshall, ":troop_no"),
+            (faction_slot_eq, ":faction_no", slot_faction_ai_state, sfai_raiding_village),
+            (faction_set_slot, ":faction_no", slot_faction_ai_object, ":selected_village"),
+          (try_end),
+          (party_get_position, pos1, ":selected_village"),
+          (map_get_random_position_around_position, pos2, pos1, 1),
+          (party_set_ai_behavior, ":party_no", ai_bhvr_travel_to_point),
+          (party_set_ai_target_position, ":party_no", pos2),
+          (party_set_ai_object, ":party_no", ":selected_village"),
+          (party_set_slot, ":party_no", slot_party_ai_substate, 1),
+        (try_end),
+      (else_try),
+        (eq, ":ai_state", spai_raiding_around_center),#substate is 1
+        (try_begin),
+          (store_distance_to_party_from_party, ":distance", ":party_no", ":ai_object"),
+          (lt, ":distance", 2),
+          (try_begin),
+            (party_slot_eq, ":ai_object", slot_village_state, svs_normal),
+            (call_script, "script_village_set_state", ":ai_object", svs_being_raided),
+            (party_set_slot, ":ai_object", slot_village_raided_by, ":party_no"),
+            (try_begin),
+              (store_faction_of_party, ":village_faction", ":ai_object"),
+              ##diplomacy start+ Handle player is co-ruler of faction
+              (assign, ":is_coruler", 0),
+              (try_begin),
+                (eq, ":village_faction", "$players_kingdom"),
+                (is_between, "$players_kingdom", npc_kingdoms_begin, npc_kingdoms_end),
+                (call_script, "script_dplmc_get_troop_standing_in_faction", "trp_player", "$players_kingdom"),
+                (ge, reg0, DPLMC_FACTION_STANDING_LEADER_SPOUSE),
+                (assign, ":is_coruler", 1),
+              (try_end),
+              (this_or_next|eq, ":is_coruler", 1),
+              ##diplomacy end+
+              (this_or_next|party_slot_eq, ":ai_object", slot_town_lord, "trp_player"),
+              (eq, ":village_faction", "fac_player_supporters_faction"),
+              (store_distance_to_party_from_party, ":dist", "p_main_party", ":ai_object"),
+              (this_or_next|lt, ":dist", 30),
+              (party_slot_eq, ":ai_object", slot_center_has_messenger_post, 1),
+              (call_script, "script_add_notification_menu", "mnu_notification_village_raid_started", ":ai_object", ":troop_no"),
+            (try_end),
+          (else_try),
+            (party_slot_eq, ":ai_object", slot_village_state, svs_being_raided),
+          (else_try),
+            #if anything other than being_raided leave
+            (party_set_slot, ":party_no", slot_party_ai_substate, 0),
+          (try_end),
+        (try_end),
+      (else_try),
+        (eq, ":ai_state", spai_retreating_to_center),
+        (try_begin),
+          (party_get_battle_opponent, ":enemy_party", ":party_no"),
+          (ge, ":enemy_party", 0), #we are in a battle! we may be caught in a loop!
+          (call_script, "script_party_set_ai_state", ":party_no", spai_undefined, -1),
+          (party_set_flags, ":party_no", pf_default_behavior, 0),
+          (party_set_slot, ":party_no", slot_party_commander_party, -1),
+        (try_end),
+      (else_try),
+        (eq, ":ai_state", spai_patrolling_around_center),
+
+        (try_begin),
+          (party_slot_eq, ":party_no", slot_party_ai_substate, 0),
+          (store_distance_to_party_from_party, ":distance", ":party_no", ":ai_object"),
+          (lt, ":distance", 6),
+          (party_set_slot, ":party_no", slot_party_ai_substate, 1),
+
+        (party_set_aggressiveness, ":party_no", 8),
+        (party_set_courage, ":party_no", 8),
+        (party_set_ai_initiative, ":party_no", 100),
+
+          (party_set_ai_behavior, ":party_no", ai_bhvr_patrol_party),
+          (party_set_ai_object, ":party_no", ":ai_object"),
+        (try_end),
+      (else_try),
+        (eq, ":ai_state", spai_holding_center),
       (try_end),
+    (try_end),
   ]),
 
   # script_begin_assault_on_center
@@ -41782,7 +41830,7 @@ scripts = [
      (else_try),
        (eq, ":improvement_no", slot_center_has_fish_pond),
        (str_store_string, s0, "@Mill"),
-       (str_store_string, s1, "@A mill increases village prosperity by 5%."),
+       (str_store_string, s1, "@A mill increases village prosperity by 10%."),
        (assign, reg0, 6000),
      (else_try),
        (eq, ":improvement_no", slot_center_has_watch_tower),
@@ -41792,7 +41840,7 @@ scripts = [
      (else_try),
        (eq, ":improvement_no", slot_center_has_school),
        (str_store_string, s0, "@School"),
-       (str_store_string, s1, "@A shool increases the loyality of the villagers to you by +1 every month."),
+       (str_store_string, s1, "@A school increases the loyality of the villagers to you by +1 every month."),
        (assign, reg0, 9000),
      (else_try),
        (eq, ":improvement_no", slot_center_has_messenger_post),
@@ -42007,18 +42055,45 @@ scripts = [
   [
     (store_script_param, ":center_no", 1),
     (assign, ":ideal", 75),
+
     (try_begin),
       (is_between, ":center_no", villages_begin, villages_end),
       (assign, ":ideal", 65),
       (try_begin),
-        (party_slot_eq, ":center_no", slot_center_has_fish_pond, 1),
+        (party_slot_eq, ":center_no", slot_center_has_fish_pond, 1), # village has mill built
         (val_add, ":ideal", 10),
       (try_end),
+    
+    (else_try),
+      # Castles tend towards nearby villages (of any faction)
+      # The assumption is an informal network with surrounding villages
+      (is_between, ":center_no", castles_begin, castles_end),
+      (assign, ":ideal", 65),
+      (assign, ":counter", 1),
+      (try_for_range, ":village_no", villages_begin, villages_end),
+        (party_get_slot, ":village_prosperity", ":village_no", slot_town_prosperity),
+        (store_distance_to_party_from_party, ":village_distance", ":center_no", ":village_no"),
+        (le, ":village_distance", 15),
+        (val_add, ":ideal", ":village_prosperity"),
+        (val_add, ":counter", 1),
+      (try_end),
+      # Castles also look at nearby towns, with 3x the weight of a village
+      (try_for_range, ":town_no", towns_begin, towns_end),
+        (party_get_slot, ":town_prosperity", ":town_no", slot_town_prosperity),
+        (store_distance_to_party_from_party, ":town_distance", ":center_no", ":town_no"),
+        (le, ":town_distance", 15),
+        (val_mul, ":town_prosperity", 3),
+        (val_add, ":ideal", ":town_prosperity"),
+        (val_add, ":counter", 3),
+      (try_end),
+      (val_div, ":ideal", ":counter"),
+      (val_add, ":ideal", 10),
+    
     (try_end),
 
     #TODO: Consider adding bonus/malus values based on other attributes
 
-    (val_max, ":ideal", 0),
+    (val_clamp, ":ideal", 0, 100),
     (assign, reg0, ":ideal"),
   ]),
 
@@ -51637,6 +51712,7 @@ scripts = [
           (store_faction_of_troop, ":lord_faction", ":lord"),
           (eq, ":lord_faction", ":faction_no"),
           (troop_get_slot, ":led_party", ":lord", slot_troop_leaded_party),
+          (ge, ":led_party", 0), # make sure the lord still has a party
           (party_is_active, ":led_party"),
           (val_add, ":total_vassals", 1),
 
@@ -52422,6 +52498,8 @@ scripts = [
 	    (party_get_slot, ":town_lord", ":possible_target", slot_town_lord),
 	    (call_script, "script_troop_get_relation_with_troop", ":troop_no", ":town_lord"),
 	    (assign, ":village_score", reg0),
+      (store_random_in_range, ":relation_noise", -10, 10),
+      (val_add, ":village_score", ":relation_noise"),
 
 	    (lt, ":village_score", ":score_to_beat"),
 	    (assign, ":score_to_beat", ":village_score"),
@@ -52464,7 +52542,7 @@ scripts = [
 	  (eq, ":troop_reputation", lrep_quarrelsome),
 
 	  (troop_get_slot, ":wealth", ":troop_no", slot_troop_wealth),
-	  (lt, ":wealth", 500),
+	  (lt, ":wealth", 1500),
 
 	  (assign, ":score_to_beat", 0),
 	  (assign, ":target_village", -1),
@@ -52478,8 +52556,16 @@ scripts = [
 	    (party_slot_eq, ":possible_target", slot_village_state, svs_being_raided),
 
 	    (party_get_slot, reg17, ":possible_target", slot_town_prosperity),
+      (store_random_in_range, ":prosperity_random", 70, 130),
+      (val_mul, reg17, ":prosperity_random"),
+      (val_div, reg17, 100),
+
 	    (store_distance_to_party_from_party, ":distance", ":party_no", ":possible_target"),
-	    (val_sub, reg17, ":distance"),
+      (store_random_in_range, ":distance_random", 70, 130),
+      (val_mul, ":distance", ":distance_random"),
+      (val_div, ":distance", 100),
+      
+      (val_sub, reg17, ":distance"),
 
 	    (gt, reg17, ":score_to_beat"),
 	    (assign, ":score_to_beat", reg17),
@@ -52514,8 +52600,15 @@ scripts = [
 			(neg|party_slot_eq, ":possible_target", slot_village_state, svs_looted),
 			(party_get_slot, ":village_prosperity", ":possible_target", slot_town_prosperity),
 			(val_mul, ":village_prosperity", 2),
+      (store_random_in_range, ":prosperity_random", 80, 120),
+      (val_mul, ":village_prosperity", ":prosperity_random"),
+      (val_div, ":village_prosperity", 100),
 
 			(store_distance_to_party_from_party, ":distance", ":party_no", ":possible_target"),
+      (store_random_in_range, ":distance_random", 70, 130),
+      (val_mul, ":distance", ":distance_random"),
+      (val_div, ":distance", 100),
+
 			(val_sub, ":village_prosperity", ":distance"),
 			(gt, ":village_prosperity", ":score_to_beat"),
 
@@ -52632,6 +52725,7 @@ scripts = [
 			(str_store_string, s14, "str_i_wish_to_attend_the_feast_there"),
 			(str_store_string, s16, "str_there_is_a_feast_which_i_wish_to_attend"),
 		(try_end),
+
 	#A lady to court
 	(else_try),
 	  (eq, ":do_only_collecting_rents", 0),
@@ -52662,7 +52756,7 @@ scripts = [
 			(lt, ":distance", ":score_to_beat"),
 			(assign, ":center_to_visit", ":love_interest_center"),
 			(assign, ":score_to_beat", ":distance"),
-        (try_end),
+    (try_end),
 
 		(gt, ":center_to_visit", -1),
 
@@ -52684,11 +52778,10 @@ scripts = [
 		(gt, ":aggressiveness", 40),
 
 		(try_for_range, ":center_to_patrol", centers_begin, centers_end), #find closest center that has spotted enemies.
-            (store_faction_of_party, ":center_faction", ":center_to_patrol"),
-            (eq, ":center_faction", ":faction_no"),
+      (store_faction_of_party, ":center_faction", ":center_to_patrol"),
+      (eq, ":center_faction", ":faction_no"),
 			(party_slot_ge, ":center_to_patrol", slot_center_last_spotted_enemy, 0),
 
-			#new - begin
 			(party_get_slot, ":sortie_strength", ":center_to_patrol", slot_center_sortie_strength),
 			(party_get_slot, ":enemy_strength", ":center_to_patrol", slot_center_sortie_enemy_strength),
 			(store_mul, ":enemy_strength_mul_14_div_10", ":enemy_strength", 14),
@@ -52699,15 +52792,14 @@ scripts = [
 			(gt, ":sortie_strength", ":enemy_strength_mul_14_div_10"),
 
 			(ge, ":party_strength", 100),
-			#new - end
 
 			(party_get_slot, reg17, ":center_to_patrol", slot_town_lord),
 			(call_script, "script_troop_get_relation_with_troop", reg17, ":troop_no"),
 
 			(this_or_next|eq, ":troop_reputation", lrep_upstanding),
-				(gt, reg0, -5),
+      (gt, reg0, -5),
 
-            (store_distance_to_party_from_party, ":distance", ":party_no", ":center_to_patrol"),
+      (store_distance_to_party_from_party, ":distance", ":party_no", ":center_to_patrol"),
 			(lt, ":distance", ":score_to_beat"),
 
 			(assign, ":target_center", ":center_to_patrol"),
@@ -52843,9 +52935,9 @@ scripts = [
 		(display_message, "str_debug__s10_decides_s14_faction_ai_s15"),
 	(try_end),
 
-    (assign, reg0, ":action"),
+  (assign, reg0, ":action"),
 	(assign, reg1, ":object"),
-	]),
+]),
 
 	#script_npc_decision_checklist_troop_follow_or_not
     # INPUT: troop_no
@@ -58694,35 +58786,6 @@ scripts = [
 		(assign, reg0, ":estimate"),
 	]),
 
-   #script_calculate_castle_prosperities_by_using_its_villages
- 	(
-	"calculate_castle_prosperities_by_using_its_villages", #This is called from within decide_faction_ai, or from
-	[
-	  (try_for_range, ":cur_castle", castles_begin, castles_end),
-	    (assign, ":total_prosperity", 0),
-	    (assign, ":total_villages", 0),
-
-	    (try_for_range, ":cur_village", villages_begin, villages_end),
-	      (party_get_slot, ":bound_center", ":cur_village", slot_village_bound_center),
-	      (eq, ":cur_castle", ":bound_center"),
-
-	      (party_get_slot, ":village_prosperity", ":cur_village", slot_town_prosperity),
-
-	      (val_add, ":total_prosperity", ":village_prosperity"),
-	      (val_add, ":total_villages", 1),
-	    (try_end),
-
-	    (try_begin),
-	      (gt, ":total_villages", 0), #SB : div by zero
-	      (store_div, ":castle_prosperity", ":total_prosperity", ":total_villages"),
-	    (else_try),
-	      (assign, ":castle_prosperity", 50),
-	    (try_end),
-
-	    (party_set_slot, ":cur_castle", slot_town_prosperity, ":castle_prosperity"),
-	  (try_end),
-	]),
-
    #script_initialize_tavern_variables
    (
    "initialize_tavern_variables",
@@ -59131,13 +59194,21 @@ scripts = [
   # script_refresh_center_armories
   ("refresh_center_armories",
   [
-	  (reset_item_probabilities,100),
-	  (set_merchandise_modifier_quality,150),
 	  (try_for_range, ":cur_merchant", armor_merchants_begin, armor_merchants_end),
 		(store_sub, ":cur_town", ":cur_merchant", armor_merchants_begin),
 		(val_add, ":cur_town", towns_begin),
-		(troop_clear_inventory, ":cur_merchant"),
 		(party_get_slot, ":cur_faction", ":cur_town", slot_center_original_faction),
+
+    (assign, ":merchandise_modifier_quality", 150),
+    (try_begin),
+      (ge, "$g_dplmc_gold_changes", DPLMC_GOLD_CHANGES_HIGH),
+      (party_get_slot, ":merchandise_modifier_quality", ":cur_town", slot_town_prosperity),
+      (val_add, ":merchandise_modifier_quality", 100),
+    (try_end),
+	  (set_merchandise_modifier_quality, ":merchandise_modifier_quality"),
+
+	  (reset_item_probabilities, 100),
+		(troop_clear_inventory, ":cur_merchant"),
 		(troop_add_merchandise_with_faction, ":cur_merchant", ":cur_faction", itp_type_body_armor, 24),
 		(troop_add_merchandise_with_faction, ":cur_merchant", ":cur_faction", itp_type_head_armor, 16),
 		(troop_add_merchandise_with_faction, ":cur_merchant", ":cur_faction", itp_type_foot_armor, 8),
@@ -59177,25 +59248,33 @@ scripts = [
   # script_refresh_center_weaponsmiths
   ("refresh_center_weaponsmiths",
   [
-	  (reset_item_probabilities,100),
-	  (set_merchandise_modifier_quality,150),
     (try_for_range, ":cur_merchant", weapon_merchants_begin, weapon_merchants_end),
 	  (store_sub, ":cur_town", ":cur_merchant", weapon_merchants_begin),
-	    (val_add, ":cur_town", towns_begin),
+    (val_add, ":cur_town", towns_begin),
+
+    (assign, ":merchandise_modifier_quality", 150),
+    (try_begin),
+      (ge, "$g_dplmc_gold_changes", DPLMC_GOLD_CHANGES_HIGH),
+      (party_get_slot, ":merchandise_modifier_quality", ":cur_town", slot_town_prosperity),
+      (val_add, ":merchandise_modifier_quality", 100),
+    (try_end),
+	  (set_merchandise_modifier_quality, ":merchandise_modifier_quality"),
+
+	  (reset_item_probabilities, 100),
 	  (troop_clear_inventory, ":cur_merchant"),
-	    (party_get_slot, ":cur_faction", ":cur_town", slot_center_original_faction),
-      (troop_add_merchandise_with_faction, ":cur_merchant", ":cur_faction", itp_type_one_handed_wpn, 6),
-      (troop_add_merchandise_with_faction, ":cur_merchant", ":cur_faction", itp_type_two_handed_wpn, 5),
-      (troop_add_merchandise_with_faction, ":cur_merchant", ":cur_faction", itp_type_polearm, 6),
-      (troop_add_merchandise_with_faction, ":cur_merchant", ":cur_faction", itp_type_shield, 6),
-      (troop_add_merchandise_with_faction, ":cur_merchant", ":cur_faction", itp_type_bow, 5),
-      (troop_add_merchandise_with_faction, ":cur_merchant", ":cur_faction", itp_type_crossbow, 4),
-      (troop_add_merchandise_with_faction, ":cur_merchant", ":cur_faction", itp_type_thrown, 5),
-      (troop_add_merchandise_with_faction, ":cur_merchant", ":cur_faction", itp_type_arrows, 3),
-      (troop_add_merchandise_with_faction, ":cur_merchant", ":cur_faction", itp_type_bolts, 3),
-      (troop_ensure_inventory_space, ":cur_merchant", merchant_inventory_space),
-      (troop_sort_inventory, ":cur_merchant"),
-      (store_troop_gold, reg6, ":cur_merchant"),
+    (party_get_slot, ":cur_faction", ":cur_town", slot_center_original_faction),
+    (troop_add_merchandise_with_faction, ":cur_merchant", ":cur_faction", itp_type_one_handed_wpn, 6),
+    (troop_add_merchandise_with_faction, ":cur_merchant", ":cur_faction", itp_type_two_handed_wpn, 5),
+    (troop_add_merchandise_with_faction, ":cur_merchant", ":cur_faction", itp_type_polearm, 6),
+    (troop_add_merchandise_with_faction, ":cur_merchant", ":cur_faction", itp_type_shield, 6),
+    (troop_add_merchandise_with_faction, ":cur_merchant", ":cur_faction", itp_type_bow, 5),
+    (troop_add_merchandise_with_faction, ":cur_merchant", ":cur_faction", itp_type_crossbow, 4),
+    (troop_add_merchandise_with_faction, ":cur_merchant", ":cur_faction", itp_type_thrown, 5),
+    (troop_add_merchandise_with_faction, ":cur_merchant", ":cur_faction", itp_type_arrows, 3),
+    (troop_add_merchandise_with_faction, ":cur_merchant", ":cur_faction", itp_type_bolts, 3),
+    (troop_ensure_inventory_space, ":cur_merchant", merchant_inventory_space),
+    (troop_sort_inventory, ":cur_merchant"),
+    (store_troop_gold, reg6, ":cur_merchant"),
 
 	    ##diplomacy start+
 		#Option: scaling gold additions by the prosperity of the town.
@@ -59228,17 +59307,26 @@ scripts = [
   # script_refresh_center_stables
   ("refresh_center_stables",
   [
-      (reset_item_probabilities,100),
-      (set_merchandise_modifier_quality,150),
-      (try_for_range,":cur_merchant",horse_merchants_begin,horse_merchants_end),
+    (try_for_range,":cur_merchant",horse_merchants_begin,horse_merchants_end),
+    (store_sub, ":cur_town", ":cur_merchant", horse_merchants_begin),
+    (val_add, ":cur_town", towns_begin),
+    (party_get_slot, ":cur_faction", ":cur_town", slot_center_original_faction),
+
+    (assign, ":merchandise_modifier_quality", 150),
+    (try_begin),
+      (ge, "$g_dplmc_gold_changes", DPLMC_GOLD_CHANGES_HIGH),
+      (party_get_slot, ":merchandise_modifier_quality", ":cur_town", slot_town_prosperity),
+      (val_add, ":merchandise_modifier_quality", 100),
+    (try_end),
+	  (set_merchandise_modifier_quality, ":merchandise_modifier_quality"),
+
+    (reset_item_probabilities, 100),
 	  (troop_clear_inventory, ":cur_merchant"),
-      (store_sub, ":cur_town", ":cur_merchant", horse_merchants_begin),
-      (val_add, ":cur_town", towns_begin),
-      (party_get_slot, ":cur_faction", ":cur_town", slot_center_original_faction),
-      (troop_add_merchandise_with_faction,":cur_merchant", ":cur_faction",itp_type_horse,12),
-      (troop_ensure_inventory_space,":cur_merchant",65),
-      (troop_sort_inventory, ":cur_merchant"),
-      (store_troop_gold, ":cur_gold",":cur_merchant"),
+    (troop_add_merchandise_with_faction,":cur_merchant", ":cur_faction", itp_type_horse, 18),
+    (troop_ensure_inventory_space,":cur_merchant",60),
+    (troop_sort_inventory, ":cur_merchant"),
+    (store_troop_gold, ":cur_gold",":cur_merchant"),
+
 	##diplomacy start+
 	#Option: scaling gold additions by the prosperity of the town.
 	(try_begin),
@@ -62411,6 +62499,7 @@ scripts = [
       (eq, ":size", 3),
       (party_add_template, ":spawned_party", ":party_template_c"),
       (party_add_template, ":spawned_party", ":party_template_c"),
+      (party_add_template, ":spawned_party", ":party_template_c"),
       #SB : personality change
       (party_set_aggressiveness, ":spawned_party", 7),
       (party_set_courage, ":spawned_party", 11),
@@ -62418,7 +62507,7 @@ scripts = [
       (store_add, ":aggressiveness", ":size", 8),
       (party_set_aggressiveness, ":spawned_party", ":aggressiveness"),
       (val_add, ":size", 1),
-      (val_mul, ":size", 2),
+      (val_mul, ":size", 4),
       (try_for_range, ":cur_i", 0, ":size"),
         (store_random_in_range, ":random", 0, 3),
         (try_begin),
@@ -75090,10 +75179,17 @@ Born at {s43}^Contact in {s44} of the {s45}.^\
         (eq, ":reduce_campaign_ai", 0), #hard
         (assign, ":needed", 2),
         (assign, ":ratio", 5),
+        (try_begin),
+          (ge, "$g_dplmc_gold_changes", DPLMC_GOLD_CHANGES_MEDIUM),
+          (assign, ":needed", 4),
+        (try_end),
       (else_try),
         (eq, ":reduce_campaign_ai", 1), #medium
         (assign, ":needed", 4),
-        (assign, ":ratio", 4),
+        (try_begin),
+          (ge, "$g_dplmc_gold_changes", DPLMC_GOLD_CHANGES_MEDIUM),
+          (assign, ":needed", 5),
+        (try_end),
       (else_try),
         (eq, ":reduce_campaign_ai", 2), #easy
         (assign, ":needed", 6),
@@ -75104,7 +75200,7 @@ Born at {s43}^Contact in {s44} of the {s45}.^\
         (try_begin), #SB : small boost for capital
           (is_between, "$g_player_court", walled_centers_begin, walled_centers_end),
           (store_and, ":has_capital", "$players_kingdom_name_set", rename_center), #check if it's "court" or "capital"
-          (val_add, ":needed", ":has_capital"),
+          (val_add, ":needed", 2),
         (try_end),
         (try_begin),
           (troop_get_slot, ":spouse", "trp_player", slot_troop_spouse),
@@ -75119,7 +75215,13 @@ Born at {s43}^Contact in {s44} of the {s45}.^\
       
       (store_sub, ":ratio_lost", ":num_owned", ":needed"),
       (val_mul, ":ratio_lost", ":ratio"),
-      (val_min, ":ratio_lost", 65),
+      
+      (try_begin),
+        (ge, "$g_dplmc_gold_changes", DPLMC_GOLD_CHANGES_MEDIUM),
+        (val_min, ":ratio_lost", 35),
+      (else_try),
+        (val_min, ":ratio_lost", 65),
+      (try_end),
       (try_begin),
         (gt, "$g_player_chamberlain", 0),
         (assign, ":percent", 10),
@@ -75618,16 +75720,13 @@ Born at {s43}^Contact in {s44} of the {s45}.^\
   [
     #Initialize prosperity based on final prices
     (try_for_range, ":center_no", centers_begin, centers_end),
-      (neg|is_between, ":center_no", castles_begin, castles_end),
-      (store_random_in_range, ":random_prosperity_adder", -20, 20),
+      (store_random_in_range, ":random_prosperity_adder", -40, 10),
       (call_script, "script_get_center_ideal_prosperity", ":center_no"),
       (assign, ":prosperity", reg0),
       (val_add, ":prosperity", ":random_prosperity_adder"),
       (val_clamp, ":prosperity", 0, 100),
       (party_set_slot, ":center_no", slot_town_prosperity, ":prosperity"),
     (try_end),
-
-    (call_script, "script_calculate_castle_prosperities_by_using_its_villages"),
   ]),
 
   # script_dplmc_center_get_total_village_production
@@ -75905,6 +76004,43 @@ Born at {s43}^Contact in {s44} of the {s45}.^\
       (assign, ":avg_center_price_index", average_price_factor),
     (try_end),
     (assign, reg0, ":avg_center_price_index"),
+  ]),
+
+  # Set Diplomacy preferences to the default values
+  ("initialize_dplmc_preferences_defaults",
+  [
+    (assign, "$g_dplmc_ai_changes", DPLMC_AI_CHANGES_HIGH),
+    (assign, "$g_dplmc_gold_changes", DPLMC_GOLD_CHANGES_HIGH),
+  ]),
+
+  # calculate the number of centers that a troop (lord) owns
+  # input:
+  #   arg1: troop number (e.g. "trp_player")
+  # output:
+  #   reg0: raw count of centers (villages, castles, towns)
+  #   reg1: weighted count (town=4, castle=2, village=1)
+  ("dplmc_get_owned_center_points",
+  [
+    (store_script_param_1, ":troop_no"),
+
+    (assign, ":num_owned_centers", 0),
+    (assign, ":num_owned_weighted_centers", 0),
+    (try_for_range, ":center_no", centers_begin, centers_end),
+      (party_slot_eq, ":center_no", slot_town_lord, "trp_player"),
+      (val_add, ":num_owned_centers", 1),
+      (try_begin),
+        (party_slot_eq, ":center_no", slot_party_type, spt_town),
+        (val_add, ":num_owned_weighted_centers", 4),
+      (else_try),
+        (party_slot_eq, ":center_no", slot_party_type, spt_castle),
+        (val_add, ":num_owned_weighted_centers", 2),
+      (else_try),
+        (val_add, ":num_owned_weighted_centers", 1),
+      (try_end),
+    (try_end),
+
+    (assign, reg0, ":num_owned_centers"),
+    (assign, reg1, ":num_owned_weighted_centers"),
   ]),
 
     # #script_cf_dplmc_disguise_evaluate_contraband

@@ -1,16 +1,20 @@
 # BeggarsDiplomacy
 
-Mount &amp; Blade Warband: Diplomacy mod (Beggars fork of Diplado).  This works fine under the Linux version of Mount and Blade: Warband.  It probably works fine under Windows, but I have not tested it there.
+BeggarsDiplomacy is a mod for [Mount & Blade: Warband](https://store.steampowered.com/app/48700?snr=2_100100_100101_100103_apphubheader) that is based on the Diplomacy/DIPLADO mod fork.  
 
-The goal of BeggarsDiplomacy is to take the improvements from [Diplado develop](https://github.com/diegoami/Diplado/tree/develop) and go further.  Fixing any outstanding bugs and improving the game balance to be less grindy.  I have also attempt to add in comments in both the Python files and the commit history to help with future work, or explaining how a particular bug was fixed.
+The goal of BeggarsDiplomacy is to take the improvements from [DIPLADO develop](https://github.com/diegoami/Diplado/tree/develop) and go further.  Fixing any outstanding bugs and improving the game balance to be less grindy.  I have also attempt to add in comments in both the Python files and the commit history to help with future work, or explaining how a particular bug was fixed.  There are also small feature enhancements aimed at making the underlying systems more robust.
 
 ## Contents
 
 - [BeggarsDiplomacy](#beggarsdiplomacy)
   - [Contents](#contents)
-  - [Installing](#installing)
+  - [Features](#features)
+    - [Quality of Life](#quality-of-life)
+    - [Making Money](#making-money)
+    - [Balance](#balance)
+  - [Installation](#installation)
     - [Download](#download)
-    - [Installation](#installation)
+    - [Installing](#installing)
     - [Using the mod](#using-the-mod)
   - [Changes](#changes)
     - [DPLMC_AI_CHANGES_HIGH](#dplmc_ai_changes_high)
@@ -28,15 +32,43 @@ The goal of BeggarsDiplomacy is to take the improvements from [Diplado develop](
   - [Parentage](#parentage)
   - [Credits](#credits)
 
-## Installing
+## Features
+
+Almost all features listed here require that DPLMC_GOLD_CHANGES_HIGH and DPLMC_AI_CHANGES_HIGH be selected in the Diplomacy Preferences from the Camp menu.  "High" is now the default in BeggarsDiplomacy instead of "Low".  Other features / balance changes are always active.
+
+### Quality of Life
+
+- Cattle herds can be dragged across the map (following the player party) instead of driving them.  But you need to have enough hands in your party to handle the size of the herd.
+
+### Making Money
+
+In general, it is easier to make money in BeggarsDiplomacy but food is more expensive.
+
+- Trade good prices are higher, making moving goods between towns worthwhile.  Towns and villages also carry more inventory.
+- Town businesses that the player can invest in are more competitive with each other.  There are two to four good options in a town instead of only one.  The average net income for businesses is higher.  This is offset by requiring the player to raise relations with the town, plus the town's owner, plus the kingdom's liege.
+- Most quests reward more gold/denars and/or XP than before.
+- Taking prisoners is still a good source of income, as is loot from battles.
+- Bandit lairs and merchant caravans drop more goods as loot.
+- Towns, castles and villages pay out more in rent income, but only at higher levels of prosperity.
+- Kingdoms pay higher mercenary wages (depending on troop strength, renown, etc.).
+
+### Balance
+
+- Lords and lieges (kings/queens) are more stingy about letting you setup a business in a town that they control.
+- Some food is more expensive, but the morale bonuses have also been balanced a bit.
+- Patrols that the player hires are less expensive to maintain.
+
+## Installation
 
 You will need an installed copy of [Mount & Blade: Warband](https://store.steampowered.com/app/48700?snr=2_100100_100101_100103_apphubheader), but you do not need any DLC.  Diplomacy (et. al.) are mods based on the vanilla version.  
+
+This mod works fine under the Linux version.  It probably works fine under Windows, but I have not tested it there.
 
 ### Download
 
 See the [release archives](https://github.com/WuphonsReach/BeggarsDiplomacy/releases) and download the release that you want.
 
-### Installation
+### Installing
 
 1. Locate your "steam/steamapps/common/MountBlade Warband/Modules" directory.
 2. Make a copy of the "Native" folder and rename it.  I suggest naming it "BeggarsDiplomacy".
@@ -44,15 +76,15 @@ See the [release archives](https://github.com/WuphonsReach/BeggarsDiplomacy/rele
 
 ### Using the mod
 
-Use the Mount & Blade: Warband launcher to pick which module you wish to use.
+Use the [Mount & Blade: Warband](https://store.steampowered.com/app/48700?snr=2_100100_100101_100103_apphubheader) launcher to pick which module you wish to use.
 
 Alternately, you can locate the "last_module_warband" file (under ~/.mbwarband under Linux) and change it to the directory name where you installed the mod (e.g. "BeggarsDiplomacy").
 
 ## Changes
 
-Since this work is based on top of [DIPLADO](https://github.com/diegoami/Diplado/tree/develop) it includes all the fixes listed in the [Diplado README](https://github.com/diegoami/Diplado/tree/develop/README.md).
+Since this work is based on top of [DIPLADO](https://github.com/diegoami/Diplado/tree/develop) it includes all the fixes listed in the [DIPLADO README](https://github.com/diegoami/Diplado/tree/develop/README.md).
 
-Only changes made on top of [Diplado develop](https://github.com/diegoami/Diplado/tree/develop) are mentioned here.
+Only changes made on top of [DIPLADO develop](https://github.com/diegoami/Diplado/tree/develop) are mentioned here.
 
 ### DPLMC_AI_CHANGES_HIGH
 
@@ -86,7 +118,7 @@ Only changes made on top of [Diplado develop](https://github.com/diegoami/Diplad
 - The minimum amount of renown per battle is now 1 (up from zero).  This makes it slightly easier to maintain a higher renown against the renown decay.
 - Various quests now reward more XP; at least 100xp for all, with some offering a few hundred more experience.
 - Farmers and peasant women can now carry daggers and throwing knives.
-- Small tweaks to food morale values.  In general, keep foods in the 3-5 range.  Let bread be 8 (as it was in Diplado).  Foods that expire are now all in the 7-8 point range.
+- Small tweaks to food morale values.  In general, keep foods in the 3-5 range.  Let bread be 8 (as it was in DIPLADO).  Foods that expire are now all in the 7-8 point range.
 - The town market assessment screen will display the estimated "buy price" for the listed item in addition to the estimated profit amount.  This will make it easier to gauge the potential profit for hauling something to the far corners of Caladria.
 - The faction relations report now displays the game date in the lower-left corner.
 - Increase the map zoom distance so you can see more of Caladria.  Going past 260 or so for map_max_distance causes the map valleys to vanish at maximum zoom.  The value of 300 was definitely too much.

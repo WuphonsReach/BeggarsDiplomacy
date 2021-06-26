@@ -6,6 +6,7 @@ qstr_{!}{s3}_commander_of {!}{s3}_commander_of_party_#{reg4}_which_is_not_his_tr
 qstr_{!}_Commanded_party_ {!}_Commanded_party_#{reg4}_is_{s3},_troop_leaded_party_#{reg5}_is_{s65}
 qstr_Morale_for_{s9}_troo Morale_for_{s9}_troops:_{reg6}
 qstr_{!}Hire_reinforcemen {!}Hire_reinforcements_for_{s11}_from_{s12}_for_{reg11}_denars.
+qstr_{!}CONVERGE:_{s20}__ {!}CONVERGE:_{s20}_({reg22})_{reg20}_->_{reg21}
 qstr_{!}PROVOCATION_TEST: {!}PROVOCATION-TEST:_{s91}_vs_{s92}_status:_{reg90}_days:_{reg91}
 qstr_{!}DEBUG____Doing_po {!}DEBUG_--_Doing_political_calculations_for_{s9}
 qstr_{!}DEBUG___{s4}_fact {!}DEBUG_-_{s4}_faction_changed_in_defection
@@ -24,6 +25,7 @@ qstr_Your_party_is_spotte Your_party_is_spotted_by_{s1}.
 qstr_Your_party_is_grumbl Your_party_is_grumbling_about_the_lack_of_variety_in_their_diet.
 qstr_{!}Food_available_is {!}Food_available_is_{reg10},_daily_consumption_is_{reg11},_days_of_food_is_{reg12}.
 qstr_Party_has_nothing_to Party_has_nothing_to_eat!
+qstr_Your_party_is_almost Your_party_is_almost_out_of_food.
 qstr_Your_party_is_runnin Your_party_is_running_very_low_on_food.
 qstr_Your_party_is_running Your_party_is_running_low_on_food.
 qstr_{!}Failed_to_feed_ev {!}Failed_to_feed_everyone,_food_units_needed_{reg10}
@@ -485,6 +487,7 @@ qstr_{s10}_upgrades_{s3}{ {s10}_upgrades_{s3}{s11}_(costing_{s1})_in_{s4},_{reg0
 qstr_Assigned_class_{reg0 Assigned_class_{reg0}_to_{s1}
 qstr_{s1}_spends_time_in_ {s1}_spends_time_in_{s2},_{reg1}_->_{reg2}_denars
 qstr_{!}COURTING_SKIPPED: {!}COURTING-SKIPPED:_{s91}_->_{s93}
+qstr_{!}HERO_AI:_{s30}_/_ {!}HERO-AI:_{s30}_/_{s31}
 qstr_{s1}_has_been_besieg {s1}_has_been_besieged_by_{s2}_of_{s3}.
 qstr__{s1}__{s11}:_{s14} ({s1})_{s11}:_{s14}
 qstr_{s14}__{s21}_ {s14}_({s21})
@@ -599,11 +602,11 @@ qstr_{!}Failed_to_spawn_la {!}Failed_to_spawn_lair:_{s4}_(wrong_terrain/location
 qstr_Manor Manor
 qstr_A_manor_lets_you_res A_manor_lets_you_rest_at_the_village_and_pay_your_troops_half_wages_while_you_rest.
 qstr_Mill Mill
-qstr_A_mill_increases_vil A_mill_increases_village_prosperity_by_5%.
+qstr_A_mill_increases_vil A_mill_increases_village_prosperity_by_10%.
 qstr_Watch_Tower Watch_Tower
 qstr_A_watch_tower_lets_t A_watch_tower_lets_the_villagers_raise_alarm_earlier._The_time_it_takes_for_enemies_to_loot_the_village_increases_by_50%.
 qstr_School School
-qstr_A_shool_increases_th A_shool_increases_the_loyality_of_the_villagers_to_you_by_+1_every_month.
+qstr_A_school_increases_t A_school_increases_the_loyality_of_the_villagers_to_you_by_+1_every_month.
 qstr_Messenger_Post Messenger_Post
 qstr_A_messenger_post_let A_messenger_post_lets_the_inhabitants_send_you_a_message_whenever_enemies_are_nearby,_even_if_you_are_far_away_from_here.
 qstr_Prison_Tower Prison_Tower
@@ -1297,6 +1300,7 @@ qstr_{s13}_ordered_you_to {s13}_ordered_you_to_join_the_assault_against_{s14}.
 qstr_There_has_been_an_al There_has_been_an_alleged_border_incident:_{s9}
 qstr_{!}CASUS_BELLI:_{s92 {!}CASUS-BELLI:_{s92}_({reg90}d)_->_{s91}
 qstr_{!}TRUCE_PROVOCATION {!}TRUCE-PROVOCATION:_{s91}_vs_{s92}_({reg91}_->_{reg92}_days)_
+qstr_{!}TRADE_PROVOCATION {!}TRADE-PROVOCATION:_{s91}_vs_{s92}_({reg91}_->_{reg92}_days)_
 qstr_{!}{s11}{s12} {!}{s11}{s12}
 qstr_{!}DEBUG____Hours_si {!}DEBUG_--_Hours_since_last_feast_started:_{reg4}
 qstr_^^Note_that_so_long_ ^^Note_that_so_long_as_you_remain_marshal,_the_lords_of_the_realm_will_be_expecting_you_to_lead_them_on_campaign._So,_if_you_are_awaiting_a_feast,_either_for_a_wedding_or_for_other_purposes,_you_may_wish_to_resign_the_marshalship_by_speaking_to_your_liege.
@@ -1346,7 +1350,3 @@ qstr_As_a_hunter_provisi As_a_hunter,_provisions_and_raw_goods_are_expected_as_w
 qstr_As_a_caravan_guard_ As_a_caravan_guard,_you_will_be_able_to_bear_weapons_but_bring_only_a_few_personal_belongings.
 qstr_As_a_merchant_you_w As_a_merchant,_you_will_be_able_to_bring_any_assortment_of_goods.
 qstr_As_a_bard_you_will_ As_a_bard,_you_will_be_allowed_some_personal_possessions_and_your_instrument.
-qstr_{!}TRADE_PROVOCATION {!}TRADE-PROVOCATION:_{s91}_vs_{s92}_({reg91}_->_{reg92}_days)_
-qstr_{!}num_men={reg17}_ {!}num_men={reg17},_store_party_size={reg18},_party_get_num_prisoners={reg19}
-qstr_Your_party_is_almost Your_party_is_almost_out_of_food.
-qstr_{!}FOOD:_num_men={re {!}FOOD:_num_men={reg17},_store_party_size={reg18},_party_get_num_prisoners={reg19}

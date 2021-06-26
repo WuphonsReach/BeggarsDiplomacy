@@ -836,35 +836,55 @@ simple_triggers = [
 
     ]),
 
-  # Converging center prosperity to ideal prosperity once/day, 
-  # 8% chance per cycle.  The CHARITY triggers do something
-  # similar, but only for low prosperity centers.
-  (23,
+  # Converging center prosperity to ideal prosperity about once/day, 
+  # The CHARITY triggers do something similar, but only for low prosperity centers.
+  (29,
   [
     (try_for_range, ":center_no", centers_begin, centers_end),
-      #(neg|is_between, ":center_no", castles_begin, castles_end),
+      (party_get_slot, ":prosperity", ":center_no", slot_town_prosperity),
       (store_random_in_range, ":random", 0, 100),
-      (le, ":random", 8),
+      (try_begin),
+        (this_or_next|ge, ":prosperity", 85), # high-prosperity more often
+        (le, ":prosperity", 30), # increase processing for low-prosperity centers
+        (val_sub, ":random", 20),
+      (try_end),
+      (le, ":random", 20), # default is only a small percentage every N hours
     
       (call_script, "script_get_center_ideal_prosperity", ":center_no"),
       (assign, ":ideal_prosperity", reg0),
-      (party_get_slot, ":prosperity", ":center_no", slot_town_prosperity),
       (try_begin),
         (store_random_in_range, ":big_boost_chance", 0, 6),
         (eq, ":big_boost_chance", 0),
         (try_begin),
           (gt, ":prosperity", ":ideal_prosperity"),
-          (neg|is_between, ":center_no", castles_begin, castles_end), #castles always gain positive prosperity from surprise income to balance their prosperity.
-          (call_script, "script_change_center_prosperity", ":center_no", -5),
+          # castles never take a big tumble in prosperity
+          (neg|is_between, ":center_no", castles_begin, castles_end), 
+          (store_random_in_range, ":negative_big_boost", -7, 0),
+          (call_script, "script_change_center_prosperity", ":center_no", ":negative_big_boost"),
         (else_try),     
-          (call_script, "script_change_center_prosperity", ":center_no", 5),
+          (store_random_in_range, ":big_boost", 1, 6),
+          (call_script, "script_change_center_prosperity", ":center_no", ":big_boost"),
         (try_end),
       (else_try),
         (gt, ":prosperity", ":ideal_prosperity"),
-        (call_script, "script_change_center_prosperity", ":center_no", -1),
+        (store_random_in_range, ":negative_boost", -3, 1),
+        (call_script, "script_change_center_prosperity", ":center_no", ":negative_boost"),
       (else_try),
         (lt, ":prosperity", ":ideal_prosperity"),
-        (call_script, "script_change_center_prosperity", ":center_no", 1),
+        (store_random_in_range, ":boost", 0, 3),
+        (call_script, "script_change_center_prosperity", ":center_no", ":boost"),
+      (try_end),
+
+      (try_begin), #debug
+        (ge, "$cheat_mode", DPLMC_DEBUG_MIN),
+        (store_distance_to_party_from_party, ":debug_dist_to_main_party", "p_main_party", ":center_no"),
+        (le, ":debug_dist_to_main_party", 50),
+        (party_get_slot, ":new_prosperity", ":center_no", slot_town_prosperity),
+        (str_store_party_name, s20, ":center_no"),
+        (assign, reg20, ":prosperity"),
+        (assign, reg21, ":new_prosperity"),
+        (assign, reg22, ":ideal_prosperity"),
+        (display_message, "@{!}CONVERGE: {s20} ({reg22}) {reg20} -> {reg21}"),
       (try_end),
     (try_end),
   ]),
@@ -898,7 +918,7 @@ simple_triggers = [
    [
    (call_script, "script_randomly_start_war_peace_new", 1),
 
-   (try_begin),
+   (try_begin), # check for border incident
 		(store_random_in_range, ":acting_village", villages_begin, villages_end),
 		(store_random_in_range, ":target_village", villages_begin, villages_end),
 		(store_faction_of_party, ":acting_faction", ":acting_village"),
@@ -918,10 +938,10 @@ simple_triggers = [
       (assign, reg91, ":diplo_status_duration"),
 			(display_message, "@{!}PROVOCATION-TEST: {s91} vs {s92} status: {reg90} days: {reg91}"),
 		(try_end),
-    # Must be at peace, or have a truce
+    # Must be at peace, or have a truce/treaty
 		(this_or_next|eq, ":diplo_status_with_faction", 0),
     (eq, ":diplo_status_with_faction", 1),
-    (le, ":diplo_status_duration", dplmc_treaty_truce_days_initial),
+    (le, ":diplo_status_duration", dplmc_treaty_trade_days_initial), # truce or trade treaty
 
     (store_random_in_range, ":random", 0, 2),
 		(try_begin),
@@ -2152,17 +2172,27 @@ simple_triggers = [
               (assign, ":cur_rents", 1200),
             (try_end),
           (else_try),
+            # It's hard to get castles above 40-60 prosperity right now.
+            # That makes this value reasonable, as you might only get 60-80% of the value.
+            # But the castle also gets rents from the nearest village.
             (party_slot_eq, ":center_no", slot_party_type, spt_castle),
-            (assign, ":cur_rents", 1800),
+            (assign, ":cur_rents", 3200),
           (else_try),
             (party_slot_eq, ":center_no", slot_party_type, spt_town),
-            (assign, ":cur_rents", 3000),
+            (assign, ":cur_rents", 5000),
           (try_end),
 
+          # calculate rent (based on prosperity)
+          # 00 = 00+60/140 = 42%
+          # 20 = 20+60/140 = 57%
+          # 40 = 40+60/140 = 71%
+          # 60 = 60+60/140 = 85%
+          # 80 = 80+60/140 = 100%
+          # 99 = 99+60/140 = 113%
           (party_get_slot, ":prosperity", ":center_no", slot_town_prosperity), #prosperty changes between 0..100
-          (store_add, ":multiplier", 20, ":prosperity"), #multiplier changes between 20..120
+          (store_add, ":multiplier", 60, ":prosperity"),
           (val_mul, ":cur_rents", ":multiplier"),
-          (val_div, ":cur_rents", 120),#Prosperity of 100 gives the default values
+          (val_div, ":cur_rents", 140),
 
           (try_begin),
             (party_slot_eq, ":center_no", slot_town_lord, "trp_player"),
@@ -2361,8 +2391,8 @@ simple_triggers = [
 			##diplomacy end+
 			(troop_slot_ge, "trp_player", slot_troop_renown, dplmc_command_renown_limit), #SB : const / 2
 			(troop_slot_ge, ":npc", slot_troop_woman_to_woman_string, 1),
-      (store_random_in_range, ":random_no", 0, 100),
-      (lt, ":random_no", 5), # slow down the rate that advice is given
+      (store_random_in_range, ":random_no", 0, 10),
+      (eq, ":random_no", 0), # slow down the rate that advice is given
 			(assign, "$npc_with_sisterly_advice", ":npc"),
 		(try_end),
 	 (else_try),
@@ -5101,10 +5131,7 @@ simple_triggers = [
 
   (1,
    [
-     (call_script, "script_calculate_castle_prosperities_by_using_its_villages"),
-
      (store_add, ":fac_kingdom_6_plus_one", "fac_kingdom_6", 1),
-
      (try_for_range, ":faction_1", "fac_kingdom_1", ":fac_kingdom_6_plus_one"),
        (try_for_range, ":faction_2", "fac_kingdom_1", ":fac_kingdom_6_plus_one"),
          (store_relation, ":faction_relation", ":faction_1", ":faction_2"),
