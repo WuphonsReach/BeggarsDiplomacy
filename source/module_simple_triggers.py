@@ -2726,30 +2726,12 @@ simple_triggers = [
     ]),
 
 
-   (8,
-   [
-      # Updating trade good prices according to the productions
-      # Only some centers get processed each cycle
-      (call_script, "script_update_trade_good_prices"),
- 
-      # TODO: Move this to another trigger (it was probably daily/weekly before)
-      # Updating player odds
-       (try_for_range, ":cur_center", centers_begin, centers_end),
-         (party_get_slot, ":player_odds", ":cur_center", slot_town_player_odds),
-         (try_begin),
-           (gt, ":player_odds", 1000),
-           (val_mul, ":player_odds", 95),
-           (val_div, ":player_odds", 100),
-           (val_max, ":player_odds", 1000),
-         (else_try),
-           (lt, ":player_odds", 1000),
-           (val_mul, ":player_odds", 105),
-           (val_div, ":player_odds", 100),
-           (val_min, ":player_odds", 1000),
-         (try_end),
-         (party_set_slot, ":cur_center", slot_town_player_odds, ":player_odds"),
-       (try_end),
-    ]),
+  (8,
+  [
+    # Updating trade good prices according to the productions
+    # Only some centers get processed each cycle
+    (call_script, "script_update_trade_good_prices"),
+  ]),
 
 
   #Troop AI: Caravan Merchants thinking about leaving the town
@@ -3353,11 +3335,25 @@ simple_triggers = [
      (try_end),
     ]),
 
-  # Assigning lords to centers with no leaders
   (72,
-   [
-   #(call_script, "script_assign_lords_to_empty_centers"),
-    ]),
+  [
+  # Updating player odds
+    (try_for_range, ":cur_center", centers_begin, centers_end),
+      (party_get_slot, ":player_odds", ":cur_center", slot_town_player_odds),
+      (try_begin),
+        (gt, ":player_odds", 1000),
+        (val_mul, ":player_odds", 95),
+        (val_div, ":player_odds", 100),
+        (val_max, ":player_odds", 1000),
+      (else_try),
+        (lt, ":player_odds", 1000),
+        (val_mul, ":player_odds", 105),
+        (val_div, ":player_odds", 100),
+        (val_min, ":player_odds", 1000),
+      (try_end),
+      (party_set_slot, ":cur_center", slot_town_player_odds, ":player_odds"),
+    (try_end),
+  ]),
 
   # Updating player icon in every frame
   (0,
