@@ -51069,7 +51069,7 @@ scripts = [
 		#RESULTS
 		#Guardian forces lady to be betrothed to suitor now
 		(try_begin),
-			(lt, ":lady_suitor_relation", -30),
+			(lt, ":lady_suitor_relation", -35),
 			(this_or_next|troop_slot_eq, ":guardian", slot_lord_reputation_type, lrep_selfrighteous),
 			(this_or_next|troop_slot_eq, ":guardian", slot_lord_reputation_type, lrep_debauched),
 				(troop_slot_eq, ":guardian", slot_lord_reputation_type, lrep_quarrelsome),
@@ -51079,7 +51079,7 @@ scripts = [
 			(this_or_next|troop_slot_eq, ":suitor", slot_lord_reputation_type, lrep_debauched),
       (troop_slot_eq, ":suitor", slot_lord_reputation_type, lrep_quarrelsome),
 
-      (store_random_in_range, ":random", 0, 5), # roll for initiative
+      (store_random_in_range, ":random", 0, 4), # roll for initiative
 			(eq, ":random", 0),
 
 			(troop_slot_eq, ":suitor", slot_troop_betrothed, -1),
@@ -51112,14 +51112,14 @@ scripts = [
 
 		#A happy engagement, with parental blessing
 		(else_try),
-			(gt, ":lady_suitor_relation", 25),
+			(gt, ":lady_suitor_relation", 30),
 			(gt, ":suitor_guardian_relation", 0),
 			(eq, ":competitor_preferred_by_lady", -1),
 
 			(troop_slot_eq, ":suitor", slot_troop_betrothed, -1),
 			(troop_slot_eq, ":lady", slot_troop_betrothed, -1),
 
-      (store_random_in_range, ":random", 0, 4), # roll for initiative
+      (store_random_in_range, ":random", 0, 3), # roll for initiative
 			(eq, ":random", 0),
 
 			(call_script, "script_add_log_entry", logent_lady_betrothed_to_suitor_by_choice, ":lady", 0, ":suitor", 0),
@@ -51138,14 +51138,14 @@ scripts = [
 
 		#Lady elopes
 		(else_try),
-			(gt, ":lady_suitor_relation", 30),
+			(gt, ":lady_suitor_relation", 40),
 
 			(eq, ":competitor_preferred_by_lady", -1),
 
 			(this_or_next|troop_slot_eq, ":lady", slot_lord_reputation_type, lrep_adventurous),
       (troop_slot_eq, ":lady", slot_lord_reputation_type, lrep_ambitious),
 
-      (store_random_in_range, ":random", 0, 8), # roll for initiative
+      (store_random_in_range, ":random", 0, 4), # roll for initiative
 			(eq, ":random", 0),
 
 			(troop_slot_eq, ":suitor", slot_troop_betrothed, -1),
@@ -51169,7 +51169,7 @@ scripts = [
 			(eq, ":competitor_preferred_by_guardian", -1),
 			(gt, ":suitor_guardian_relation", 4),
 
-			(store_random_in_range, ":random", 0, 4), 
+			(store_random_in_range, ":random", 0, 5), 
 			(eq, ":random", 0),
 
 			(troop_slot_eq, ":suitor", slot_troop_betrothed, -1),
@@ -51190,9 +51190,9 @@ scripts = [
 
 		#Stalemate -- make patience roll
 		(else_try),
-			(gt, ":lady_suitor_relation", 30),
+			(gt, ":lady_suitor_relation", 40),
 
-			(store_random_in_range, reg3, 0, 20), # 5% chance to break off
+			(store_random_in_range, reg3, 0, 8), # 12% chance to break off
 			(try_begin),
 				(ge, "$cheat_mode", DPLMC_DEBUG_EXPERIMENTAL),
 				(display_message, "str_result_stalemate_patience_roll_=_reg3"),
