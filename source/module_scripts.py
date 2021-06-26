@@ -51720,6 +51720,7 @@ scripts = [
           (party_slot_eq, ":led_party", slot_party_ai_object, ":party_no"),
 
           (party_is_active, ":party_no"),
+          (ge, ":party_no", 1),
           (store_distance_to_party_from_party, ":distance_to_marshal", ":led_party", ":party_no"),
           (lt, ":distance_to_marshal", 15),
           (val_add, ":vassals_already_assembled", 1),
@@ -51747,6 +51748,7 @@ scripts = [
               (eq, ":center_faction", ":faction_no"), #200
               (try_begin),
                 (neq, ":center_no", ":most_threatened_center"),
+                (ge, ":party_no", 1),
                 (store_distance_to_party_from_party, ":dist", ":party_no", ":center_no"),
                 (lt, ":dist", ":minimum_distance"),
                 (assign, ":minimum_distance", ":dist"),
@@ -51765,6 +51767,7 @@ scripts = [
 
             (try_begin),
               (ge, ":most_threatened_center", 0),
+              (ge, ":party_no", 1),
               (store_distance_to_party_from_party, reg12, ":party_no", ":most_threatened_center"),
             (else_try),
               (assign, reg12, 0),
@@ -51775,7 +51778,7 @@ scripts = [
               (store_faction_of_party, ":center_faction", ":center_no"),
               (eq, ":center_faction", ":faction_no"),
               (try_begin),
-                #(ge, ":max_travel_distance", 0),
+                (ge, ":party_no", 1),
                 (store_distance_to_party_from_party, ":dist", ":party_no", ":center_no"),
 
                 (try_begin),
@@ -51805,6 +51808,7 @@ scripts = [
                 (store_faction_of_party, ":center_faction", ":center_no"),
                 (eq, ":center_faction", ":faction_no"),
                 (try_begin),
+                  (ge, ":party_no", 1),
                   (neq, ":center_no", ":most_threatened_center"),
                   (store_distance_to_party_from_party, ":dist", ":party_no", ":center_no"),
                   (lt, ":dist", ":max_travel_distance"),
@@ -52284,6 +52288,7 @@ scripts = [
 	(else_try),
 	  (eq, ":do_only_collecting_rents", 0),
 	  (eq, ":faction_is_at_war", 1),
+    (ge, ":party_no", 1),
 
 	  (assign, ":party_to_support", -1),
 	  (try_for_range, ":allied_hero", active_npcs_begin, active_npcs_end),
@@ -52336,6 +52341,7 @@ scripts = [
 	  (eq, ":do_only_collecting_rents", 0),
 	  (eq, ":faction_is_at_war", 1),
 	  (eq, ":operation_in_progress", 0),
+    (ge, ":party_no", 1),
 
 	  (assign, ":walled_center_to_attack", -1),
 	  (assign, ":walled_center_score", 50),
@@ -52518,6 +52524,7 @@ scripts = [
 
 	#I need money, so I am raiding where the money is
 	(else_try),
+    (ge, ":party_no", 1),
 	  (eq, ":do_only_collecting_rents", 0),
 	  (eq, ":faction_is_at_war", 1),
 	  (eq, ":operation_in_progress", 0),
@@ -52585,6 +52592,7 @@ scripts = [
 
 	#Attacking wealthiest lands
 	(else_try),
+    (ge, ":party_no", 1),
 	  (eq, ":do_only_collecting_rents", 0),
 		(eq, ":faction_is_at_war", 1),
 		(eq, ":operation_in_progress", 0),
@@ -52633,6 +52641,7 @@ scripts = [
 
 	#End the war
 	(else_try),
+    (ge, ":party_no", 1),
 	  (eq, ":do_only_collecting_rents", 0),
 	    ##diplomacy start+
 		(assign, reg0, 0),
@@ -52728,6 +52737,7 @@ scripts = [
 
 	#A lady to court
 	(else_try),
+    (ge, ":party_no", 1),
 	  (eq, ":do_only_collecting_rents", 0),
 		(neg|troop_slot_eq, "trp_player", slot_troop_betrothed, ":troop_no"),
 		(troop_slot_eq, ":troop_no", slot_troop_spouse, -1),
@@ -52771,6 +52781,7 @@ scripts = [
 
 	#Patrolling an alarmed center
 	(else_try),
+    (ge, ":party_no", 1),
 	  (eq, ":do_only_collecting_rents", 0),
 		(assign, ":target_center", -1),
 		(assign, ":score_to_beat", 60),
@@ -52838,6 +52849,7 @@ scripts = [
 
 	#Patrolling the borders
 	(else_try),
+    (ge, ":party_no", 1),
 	  (eq, ":do_only_collecting_rents", 0),
 		(eq, ":faction_is_at_war", 1),
 		(gt, ":aggressiveness", 65),
