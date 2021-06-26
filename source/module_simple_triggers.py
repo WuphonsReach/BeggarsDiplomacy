@@ -863,6 +863,11 @@ simple_triggers = [
           (call_script, "script_change_center_prosperity", ":center_no", ":negative_big_boost"),
         (else_try),     
           (store_random_in_range, ":big_boost", 1, 9),
+          (try_begin),
+            # villages have other things that boost prosperity
+            (is_between, ":center_no", villages_begin, villages_end), 
+            (store_random_in_range, ":big_boost", 0, 4),
+          (try_end),
           (call_script, "script_change_center_prosperity", ":center_no", ":big_boost"),
         (try_end),
       (else_try),
@@ -885,7 +890,7 @@ simple_triggers = [
       (try_begin), #debug
         (ge, "$cheat_mode", DPLMC_DEBUG_MIN),
         (store_distance_to_party_from_party, ":debug_dist_to_main_party", "p_main_party", ":center_no"),
-        (le, ":debug_dist_to_main_party", 50),
+        (le, ":debug_dist_to_main_party", 25),
         (party_get_slot, ":new_prosperity", ":center_no", slot_town_prosperity),
         (str_store_party_name, s20, ":center_no"),
         (assign, reg20, ":prosperity"),
