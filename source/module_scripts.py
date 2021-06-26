@@ -21245,12 +21245,12 @@ scripts = [
 	            #The quest giver is the village elder
 	            (call_script, "script_get_troop_item_amount", ":giver_troop", "itm_grain"),
 	            (le, reg0, 0), # check elder's inventory
-	            (neg|party_slot_ge, ":giver_center_no", slot_town_prosperity, 30),
+	            (neg|party_slot_ge, ":giver_center_no", slot_town_prosperity, 35),
 	            (assign, ":quest_target_center", ":giver_center_no"),
 	            (assign, ":quest_target_item", "itm_grain"), #SB : fix this or add various goods
 	            (store_random_in_range, ":quest_target_amount", 3, 9),
 	            (assign, ":quest_expiration_days", 15),
-              (store_random_in_range, ":random_period", 3, 11),
+              (store_random_in_range, ":random_period", 2, 9),
 	            (assign, ":quest_dont_give_again_period", ":random_period"),
 	            (assign, ":result", ":quest_no"),
 	          (try_end),
