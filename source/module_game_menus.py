@@ -10486,6 +10486,7 @@ TOTAL:  {reg5}"),
      
      (assign, "$g_train_peasants_against_bandits_training_succeeded", 0), #SB : use to track before ending quest
      (party_get_slot, ":merchant_troop", "$current_town", slot_town_elder),
+     (troop_set_slot, ":merchant_troop", slot_troop_met, 1),
      (try_begin),
        (check_quest_active, "qst_eliminate_bandits_infesting_village"),
        (quest_slot_eq, "qst_eliminate_bandits_infesting_village", slot_quest_target_center, "$g_encountered_party"),
