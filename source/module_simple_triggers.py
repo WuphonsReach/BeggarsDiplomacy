@@ -859,10 +859,10 @@ simple_triggers = [
           (gt, ":prosperity", ":ideal_prosperity"),
           # castles never take a big tumble in prosperity
           (neg|is_between, ":center_no", castles_begin, castles_end), 
-          (store_random_in_range, ":negative_big_boost", -7, 0),
+          (store_random_in_range, ":negative_big_boost", -8, 0),
           (call_script, "script_change_center_prosperity", ":center_no", ":negative_big_boost"),
         (else_try),     
-          (store_random_in_range, ":big_boost", 1, 6),
+          (store_random_in_range, ":big_boost", 1, 9),
           (call_script, "script_change_center_prosperity", ":center_no", ":big_boost"),
         (try_end),
       (else_try),
@@ -871,7 +871,14 @@ simple_triggers = [
         (call_script, "script_change_center_prosperity", ":center_no", ":negative_boost"),
       (else_try),
         (lt, ":prosperity", ":ideal_prosperity"),
-        (store_random_in_range, ":boost", 0, 3),
+        (store_random_in_range, ":boost", 0, 4),
+        (try_begin),
+          # villages/towns have other things that boost prosperity
+          # so only let them boost by +0 or +1
+          (this_or_next|is_between, ":center_no", towns_begin, towns_end), 
+          (is_between, ":center_no", villages_begin, villages_end), 
+          (store_random_in_range, ":boost", 0, 2),
+        (try_end),
         (call_script, "script_change_center_prosperity", ":center_no", ":boost"),
       (try_end),
 
