@@ -38,6 +38,8 @@ Almost all features listed here require that DPLMC_GOLD_CHANGES_HIGH and DPLMC_A
 
 ### Quality of Life
 
+- Cattle herds can be dragged across the map (following the player party) instead of driving them.  But you need to have enough hands in your party to handle the size of the herd.
+
 ### Making Money
 
 In general, it is easier to make money in BeggarsDiplomacy but food is more expensive.
@@ -47,12 +49,14 @@ In general, it is easier to make money in BeggarsDiplomacy but food is more expe
 - Most quests reward more gold/denars and/or XP than before.
 - Taking prisoners is still a good source of income, as is loot from battles.
 - Bandit lairs and merchant caravans drop more goods as loot.
+- Towns, castles and villages pay out more in rent income, but only at higher levels of prosperity.
+- Kingdoms pay higher mercenary wages (depending on troop strength, renown, etc.).
 
 ### Balance
 
-
-
 - Lords and lieges (kings/queens) are more stingy about letting you setup a business in a town that they control.
+- Some food is more expensive, but the morale bonuses have also been balanced a bit.
+- Patrols that the player hires are less expensive to maintain.
 
 ## Installation
 
