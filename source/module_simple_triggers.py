@@ -5617,7 +5617,7 @@ simple_triggers = [
       (try_begin),
         (ge, "$cheat_mode", DPLMC_DEBUG_EXPERIMENTAL),
         (store_distance_to_party_from_party, ":debug_dist_to_main_party", "p_main_party", ":center_no"),
-        (le, ":debug_dist_to_main_party", 60),
+        (le, ":debug_dist_to_main_party", 30),
         (str_store_party_name, s90, ":center_no"),
         (display_message, "@{!}INFESTED: {s90} prosp {reg91}->{reg92} cattle {reg93}->{reg94} sheep {reg95}->{reg96}"),
       (try_end),
