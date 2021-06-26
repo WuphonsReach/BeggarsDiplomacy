@@ -21265,7 +21265,7 @@ scripts = [
 	            (assign, ":quest_target_center", ":giver_center_no"),
               # cattle are more expensive now, ask for lower quantity
 	            (store_random_in_range, ":quest_target_amount", 2, 6),
-	            (assign, ":quest_expiration_days", 21),
+	            (assign, ":quest_expiration_days", 15),
               (store_random_in_range, ":random_period", 10, 30),
 	            (assign, ":quest_dont_give_again_period", ":random_period"),
 	            (assign, ":result", ":quest_no"),
