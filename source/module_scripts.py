@@ -21296,11 +21296,12 @@ scripts = [
 	          (store_distance_to_party_from_party, ":dist", ":giver_center_no",":quest_target_center"),
             (val_add, ":dist", 100), # about 120..350
 	          (assign, ":quest_gold_reward", ":dist"),
-	          (val_mul, ":quest_gold_reward", 10), #1200..3500
-	          (val_add, ":quest_gold_reward", 500), #1700..4000
+	          (val_mul, ":quest_gold_reward", 5), #600..1700
+	          (val_add, ":quest_gold_reward", 800), #1400..2500
 	          (val_div, ":quest_gold_reward", 500), # rounding
             (val_mul, ":quest_gold_reward", 500),
-	          (store_random_in_range, ":quest_target_amount", 6, 12),
+            (store_random_in_range, ":quest_target_amount", 15, 25), # size of party required
+            (store_div, ":quest_xp_award", ":quest_gold_reward", 3),
 	          (assign, ":result", ":quest_no"),
 	        (else_try),
               (eq, ":quest_no", "qst_deliver_wine"),
