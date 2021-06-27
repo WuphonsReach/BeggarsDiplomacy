@@ -264,7 +264,7 @@ dplmc_treaty_alliance_days_half_done = (dplmc_treaty_alliance_days_initial + dpl
 dplmc_treaty_provocation_base = dplmc_treaty_truce_days_half_done // 2
 
 # villages will never sell their last N cattle
-dplmc_village_cattle_reserve = 5
+dplmc_village_cattle_reserve = 7
 
 ##diplomacy end+
 

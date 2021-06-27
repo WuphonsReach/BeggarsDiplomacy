@@ -2080,9 +2080,9 @@ simple_triggers = [
 
       # cattle pop
       (try_begin),
-        (lt, ":num_cattle", 5),
-        (gt, ":cattle_capacity", 5),
-        (store_random_in_range, ":add_cattle", 1, 6),
+        (lt, ":num_cattle", 8),
+        (gt, ":cattle_capacity", 8),
+        (store_random_in_range, ":add_cattle", 1, 5),
         (val_add, ":num_cattle", ":add_cattle"),
       (try_end),
       (try_begin), #Overgrazing (-10%)
@@ -2093,21 +2093,21 @@ simple_triggers = [
         (lt, ":cattle_grazing_capacity", 30),
         (val_mul, ":num_cattle", 125),
         (val_div, ":num_cattle", 100),
-      (else_try), #very good grazing (+12%)
+      (else_try), #very good grazing (+15%)
         (lt, ":cattle_grazing_capacity", 60),
-        (val_mul, ":num_cattle", 112),
+        (val_mul, ":num_cattle", 115),
         (val_div, ":num_cattle", 100),
-      (else_try), # +6%
-        (val_mul, ":num_cattle", 106),
+      (else_try), # +10%
+        (val_mul, ":num_cattle", 110),
         (val_div, ":num_cattle", 100),
       (try_end),
       (party_set_slot, ":village_no", slot_center_head_cattle, ":num_cattle"),
 
       # sheep pop
       (try_begin),
-        (lt, ":num_sheep", 5),
-        (gt, ":sheep_capacity", 5),
-        (store_random_in_range, ":add_sheep", 1, 6),
+        (lt, ":num_sheep", 12),
+        (gt, ":sheep_capacity", 12),
+        (store_random_in_range, ":add_sheep", 1, 11),
         (val_add, ":num_sheep", ":add_sheep"),
       (try_end),
       (try_begin), #Overgrazing (-10%)
@@ -2118,12 +2118,12 @@ simple_triggers = [
         (lt, ":sheep_grazing_capacity", 30),
         (val_mul, ":num_sheep", 125),
         (val_div, ":num_sheep", 100),
-      (else_try), #very good grazing (+12%)
+      (else_try), #very good grazing (+15%)
         (lt, ":sheep_grazing_capacity", 60),
-        (val_mul, ":num_sheep", 112),
+        (val_mul, ":num_sheep", 115),
         (val_div, ":num_sheep", 100),
-      (else_try), # +6%
-        (val_mul, ":num_sheep", 106),
+      (else_try), # +10%
+        (val_mul, ":num_sheep", 110),
         (val_div, ":num_sheep", 100),
       (try_end),
       (party_set_slot, ":village_no", slot_center_head_sheep, ":num_sheep"),
