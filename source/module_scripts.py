@@ -41446,11 +41446,21 @@ scripts = [
           (party_set_flags, ":spawned_party_id", pf_quest_party, 1),
         (try_end),
 
+        # maybe spawn a second looter around the town, but closer in
+        (try_begin),
+          (store_random_in_range, ":random_no", 0, 3),
+          (eq, ":random_no", 0),
+          (set_spawn_radius, 12),
+          (spawn_around_party, ":spawn_point", "pt_looters"),
+          (assign, ":spawned_party_id", reg0),
+          (party_set_flags, ":spawned_party_id", pf_quest_party, 1),
+        (try_end),
+
         # maybe spawn a new looter around villages near the town
         (try_for_range_backwards, ":village_no", villages_begin, villages_end),
           (store_distance_to_party_from_party, ":dist_to_spawn_point", ":spawn_point", ":village_no"),
           (le, ":dist_to_spawn_point", 10),
-          (store_random_in_range, ":random_no", 0, 5),
+          (store_random_in_range, ":random_no", 0, 4),
           (eq, ":random_no", 0),
           (set_spawn_radius, 15),
           (spawn_around_party, ":village_no", "pt_looters"),
