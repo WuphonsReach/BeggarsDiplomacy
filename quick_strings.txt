@@ -297,7 +297,7 @@ qstr_{s9}_of_{s3}_asked_y {s9}_of_{s3}_asked_you_to_deliver_{reg5}_units_({reg6}
 qstr_{s9}_of_{s3}_asked_yo {s9}_of_{s3}_asked_you_to_deliver_{reg5}_units_of_{s6}_to_the_merchant's_store_in_{s4}_in_7_days.
 qstr_Escort_the_merchant_ Escort_the_merchant_caravan_to_the_town_of_{s8}.
 qstr_Merchant_{s9}_of_{s4 Merchant_{s9}_of_{s4}_asked_you_to_hunt_down_the_troublesome_bandits_in_the_vicinity_of_the_town.
-qstr_Guildmaster_of_{s4}_ Guildmaster_of_{s4}_gave_you_{reg12}_denars_to_pay_the_ransom_of_a_girl_kidnapped_by_bandits.__You_are_to_meet_the_bandits_near_{s3}_and_pay_them_the_ransom_fee.__After_that_you_are_to_bring_the_girl_back_to_{s4}.
+qstr_Guildmaster_of_{s4}_ Guildmaster_of_{s4}_gave_you_{reg12}_denars_to_pay_the_ransom_of_a_girl_kidnapped_by_bandits._You_are_to_meet_the_bandits_near_{s3}_and_pay_them_the_ransom_fee._After_that_you_are_to_bring_the_girl_back_to_{s4}.
 qstr_Guildmaster_of_{s4}_p Guildmaster_of_{s4}_promised_you_{reg12}_denars_if_you_can_make_sure_that_{s12}_and_{s13}_no_longer_pose_a_threat_to_a_peace_settlement_between_{s15}_and_{s14}.__In_order_to_do_that,_you_must_either_convince_them_or_make_sure_they_fall_captive_and_remain_so_until_a_peace_agreement_is_made.
 qstr_The_Guildmaster_of_{s The_Guildmaster_of_{s14}_has_asked_you_to_deal_with_a_group_of_bandits_terrorising_the_streets_of_{s14}._They_only_come_out_at_night,_and_only_attack_lone_travellers_on_the_streets.
 qstr_Guildmaster_of_{s10} Guildmaster_of_{s10}_asked_you_to_move_a_cattle_herd_to_{s13}._You_will_earn_{reg8}_denars_in_return.
@@ -316,7 +316,7 @@ qstr_{s6}_Our_{reg4?town: {s6}_Our_{reg4?town:village}_and_the_surrounding_lands
 qstr_{s6}_Our_{reg4?town:v {s6}_Our_{reg4?town:village}_and_the_surrounding_lands_belong_to_{s7}_of_{s8}.
 qstr_{s3}_and_{s5} {s3}_and_{s5}
 qstr_{!}{s3}_{s5} {!}{s3},_{s5}
-qstr_{reg20?We_mostly_pro {reg20?We_mostly_produce_{s5}_here:We_don't_produce_much_here_these_days}.__If_you_would_like_to_learn_more,_you_can_speak_with_our_{reg4?guildmaster:village_elder}._He_is_nearby,_right_over_there.
+qstr_{reg20?We_mostly_pro {reg20?We_mostly_produce_{s5}_here:We_don't_produce_much_here_these_days}._If_you_would_like_to_learn_more,_you_can_speak_with_our_{reg4?guildmaster:village_elder}._He_is_nearby,_right_over_there.
 qstr_Current Current
 qstr_Court_Guard Court_Guard
 qstr_Prison_Guard Prison_Guard
