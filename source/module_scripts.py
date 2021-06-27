@@ -300,7 +300,7 @@ scripts = [
       #start some tournaments
       (try_for_range, ":town_no", towns_begin, towns_end),
         (store_random_in_range, ":rand", 0, 100),
-        (lt, ":rand", 20),
+        (lt, ":rand", 10),
         (store_random_in_range, ":random_days", 12, 15),
         (party_set_slot, ":town_no", slot_town_has_tournament, ":random_days"),
       (try_end),

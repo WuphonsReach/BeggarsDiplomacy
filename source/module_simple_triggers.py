@@ -3732,10 +3732,10 @@ simple_triggers = [
     (try_end),
 
 	(try_begin),
-      (lt, ":num_active_tournaments", 3),
+      (lt, ":num_active_tournaments", 2),
       (store_random_in_range, ":random_no", 0, 100),
-      #Add new tournaments with a 30% chance if there are less than 3 tournaments going on
-      (lt, ":random_no", 30),
+      #Add new tournaments with a 15% chance if there are less than 2 tournaments going on
+      (lt, ":random_no", 15),
       (store_random_in_range, ":random_town", towns_begin, towns_end),
       (store_random_in_range, ":random_days", 12, 15),
       (party_set_slot, ":random_town", slot_town_has_tournament, ":random_days"),
