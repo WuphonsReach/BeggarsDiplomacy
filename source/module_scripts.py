@@ -51723,7 +51723,6 @@ scripts = [
           (store_faction_of_troop, ":lord_faction", ":lord"),
           (eq, ":lord_faction", ":faction_no"),
           (troop_get_slot, ":led_party", ":lord", slot_troop_leaded_party),
-          (ge, ":led_party", 0), # make sure the lord still has a party
           (party_is_active, ":led_party"),
           (val_add, ":total_vassals", 1),
 
@@ -51731,7 +51730,6 @@ scripts = [
           (party_slot_eq, ":led_party", slot_party_ai_object, ":party_no"),
 
           (party_is_active, ":party_no"),
-          (ge, ":party_no", 1),
           (store_distance_to_party_from_party, ":distance_to_marshal", ":led_party", ":party_no"),
           (lt, ":distance_to_marshal", 15),
           (val_add, ":vassals_already_assembled", 1),
@@ -51759,7 +51757,6 @@ scripts = [
               (eq, ":center_faction", ":faction_no"), #200
               (try_begin),
                 (neq, ":center_no", ":most_threatened_center"),
-                (ge, ":party_no", 1),
                 (store_distance_to_party_from_party, ":dist", ":party_no", ":center_no"),
                 (lt, ":dist", ":minimum_distance"),
                 (assign, ":minimum_distance", ":dist"),
@@ -51778,7 +51775,6 @@ scripts = [
 
             (try_begin),
               (ge, ":most_threatened_center", 0),
-              (ge, ":party_no", 1),
               (store_distance_to_party_from_party, reg12, ":party_no", ":most_threatened_center"),
             (else_try),
               (assign, reg12, 0),
@@ -51789,7 +51785,7 @@ scripts = [
               (store_faction_of_party, ":center_faction", ":center_no"),
               (eq, ":center_faction", ":faction_no"),
               (try_begin),
-                (ge, ":party_no", 1),
+                #(ge, ":max_travel_distance", 0),
                 (store_distance_to_party_from_party, ":dist", ":party_no", ":center_no"),
 
                 (try_begin),
@@ -51819,7 +51815,6 @@ scripts = [
                 (store_faction_of_party, ":center_faction", ":center_no"),
                 (eq, ":center_faction", ":faction_no"),
                 (try_begin),
-                  (ge, ":party_no", 1),
                   (neq, ":center_no", ":most_threatened_center"),
                   (store_distance_to_party_from_party, ":dist", ":party_no", ":center_no"),
                   (lt, ":dist", ":max_travel_distance"),
@@ -52299,7 +52294,6 @@ scripts = [
 	(else_try),
 	  (eq, ":do_only_collecting_rents", 0),
 	  (eq, ":faction_is_at_war", 1),
-    (ge, ":party_no", 1),
 
 	  (assign, ":party_to_support", -1),
 	  (try_for_range, ":allied_hero", active_npcs_begin, active_npcs_end),
@@ -52352,7 +52346,6 @@ scripts = [
 	  (eq, ":do_only_collecting_rents", 0),
 	  (eq, ":faction_is_at_war", 1),
 	  (eq, ":operation_in_progress", 0),
-    (ge, ":party_no", 1),
 
 	  (assign, ":walled_center_to_attack", -1),
 	  (assign, ":walled_center_score", 50),
@@ -52515,8 +52508,6 @@ scripts = [
 	    (party_get_slot, ":town_lord", ":possible_target", slot_town_lord),
 	    (call_script, "script_troop_get_relation_with_troop", ":troop_no", ":town_lord"),
 	    (assign, ":village_score", reg0),
-      (store_random_in_range, ":relation_noise", -10, 10),
-      (val_add, ":village_score", ":relation_noise"),
 
 	    (lt, ":village_score", ":score_to_beat"),
 	    (assign, ":score_to_beat", ":village_score"),
@@ -52535,7 +52526,6 @@ scripts = [
 
 	#I need money, so I am raiding where the money is
 	(else_try),
-    (ge, ":party_no", 1),
 	  (eq, ":do_only_collecting_rents", 0),
 	  (eq, ":faction_is_at_war", 1),
 	  (eq, ":operation_in_progress", 0),
@@ -52560,7 +52550,7 @@ scripts = [
 	  (eq, ":troop_reputation", lrep_quarrelsome),
 
 	  (troop_get_slot, ":wealth", ":troop_no", slot_troop_wealth),
-	  (lt, ":wealth", 1500),
+	  (lt, ":wealth", 500),
 
 	  (assign, ":score_to_beat", 0),
 	  (assign, ":target_village", -1),
@@ -52574,16 +52564,8 @@ scripts = [
 	    (party_slot_eq, ":possible_target", slot_village_state, svs_being_raided),
 
 	    (party_get_slot, reg17, ":possible_target", slot_town_prosperity),
-      (store_random_in_range, ":prosperity_random", 70, 130),
-      (val_mul, reg17, ":prosperity_random"),
-      (val_div, reg17, 100),
-
 	    (store_distance_to_party_from_party, ":distance", ":party_no", ":possible_target"),
-      (store_random_in_range, ":distance_random", 70, 130),
-      (val_mul, ":distance", ":distance_random"),
-      (val_div, ":distance", 100),
-      
-      (val_sub, reg17, ":distance"),
+	    (val_sub, reg17, ":distance"),
 
 	    (gt, reg17, ":score_to_beat"),
 	    (assign, ":score_to_beat", reg17),
@@ -52603,7 +52585,6 @@ scripts = [
 
 	#Attacking wealthiest lands
 	(else_try),
-    (ge, ":party_no", 1),
 	  (eq, ":do_only_collecting_rents", 0),
 		(eq, ":faction_is_at_war", 1),
 		(eq, ":operation_in_progress", 0),
@@ -52619,15 +52600,8 @@ scripts = [
 			(neg|party_slot_eq, ":possible_target", slot_village_state, svs_looted),
 			(party_get_slot, ":village_prosperity", ":possible_target", slot_town_prosperity),
 			(val_mul, ":village_prosperity", 2),
-      (store_random_in_range, ":prosperity_random", 80, 120),
-      (val_mul, ":village_prosperity", ":prosperity_random"),
-      (val_div, ":village_prosperity", 100),
 
 			(store_distance_to_party_from_party, ":distance", ":party_no", ":possible_target"),
-      (store_random_in_range, ":distance_random", 70, 130),
-      (val_mul, ":distance", ":distance_random"),
-      (val_div, ":distance", 100),
-
 			(val_sub, ":village_prosperity", ":distance"),
 			(gt, ":village_prosperity", ":score_to_beat"),
 
@@ -52652,7 +52626,6 @@ scripts = [
 
 	#End the war
 	(else_try),
-    (ge, ":party_no", 1),
 	  (eq, ":do_only_collecting_rents", 0),
 	    ##diplomacy start+
 		(assign, reg0, 0),
@@ -52745,10 +52718,8 @@ scripts = [
 			(str_store_string, s14, "str_i_wish_to_attend_the_feast_there"),
 			(str_store_string, s16, "str_there_is_a_feast_which_i_wish_to_attend"),
 		(try_end),
-
 	#A lady to court
 	(else_try),
-    (ge, ":party_no", 1),
 	  (eq, ":do_only_collecting_rents", 0),
 		(neg|troop_slot_eq, "trp_player", slot_troop_betrothed, ":troop_no"),
 		(troop_slot_eq, ":troop_no", slot_troop_spouse, -1),
@@ -52777,7 +52748,7 @@ scripts = [
 			(lt, ":distance", ":score_to_beat"),
 			(assign, ":center_to_visit", ":love_interest_center"),
 			(assign, ":score_to_beat", ":distance"),
-    (try_end),
+        (try_end),
 
 		(gt, ":center_to_visit", -1),
 
@@ -52792,7 +52763,6 @@ scripts = [
 
 	#Patrolling an alarmed center
 	(else_try),
-    (ge, ":party_no", 1),
 	  (eq, ":do_only_collecting_rents", 0),
 		(assign, ":target_center", -1),
 		(assign, ":score_to_beat", 60),
@@ -52800,10 +52770,11 @@ scripts = [
 		(gt, ":aggressiveness", 40),
 
 		(try_for_range, ":center_to_patrol", centers_begin, centers_end), #find closest center that has spotted enemies.
-      (store_faction_of_party, ":center_faction", ":center_to_patrol"),
-      (eq, ":center_faction", ":faction_no"),
+            (store_faction_of_party, ":center_faction", ":center_to_patrol"),
+            (eq, ":center_faction", ":faction_no"),
 			(party_slot_ge, ":center_to_patrol", slot_center_last_spotted_enemy, 0),
 
+			#new - begin
 			(party_get_slot, ":sortie_strength", ":center_to_patrol", slot_center_sortie_strength),
 			(party_get_slot, ":enemy_strength", ":center_to_patrol", slot_center_sortie_enemy_strength),
 			(store_mul, ":enemy_strength_mul_14_div_10", ":enemy_strength", 14),
@@ -52814,14 +52785,15 @@ scripts = [
 			(gt, ":sortie_strength", ":enemy_strength_mul_14_div_10"),
 
 			(ge, ":party_strength", 100),
+			#new - end
 
 			(party_get_slot, reg17, ":center_to_patrol", slot_town_lord),
 			(call_script, "script_troop_get_relation_with_troop", reg17, ":troop_no"),
 
 			(this_or_next|eq, ":troop_reputation", lrep_upstanding),
-      (gt, reg0, -5),
+				(gt, reg0, -5),
 
-      (store_distance_to_party_from_party, ":distance", ":party_no", ":center_to_patrol"),
+            (store_distance_to_party_from_party, ":distance", ":party_no", ":center_to_patrol"),
 			(lt, ":distance", ":score_to_beat"),
 
 			(assign, ":target_center", ":center_to_patrol"),
@@ -52860,7 +52832,6 @@ scripts = [
 
 	#Patrolling the borders
 	(else_try),
-    (ge, ":party_no", 1),
 	  (eq, ":do_only_collecting_rents", 0),
 		(eq, ":faction_is_at_war", 1),
 		(gt, ":aggressiveness", 65),
@@ -52958,10 +52929,10 @@ scripts = [
 		(display_message, "str_debug__s10_decides_s14_faction_ai_s15"),
 	(try_end),
 
-  (assign, reg0, ":action"),
+    (assign, reg0, ":action"),
 	(assign, reg1, ":object"),
-]),
-
+	]),
+  
 	#script_npc_decision_checklist_troop_follow_or_not
     # INPUT: troop_no
     # OUTPUT: reg0
