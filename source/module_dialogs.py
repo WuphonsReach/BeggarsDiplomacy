@@ -2051,10 +2051,12 @@ or you won't be able to hang on to a single man you catch.", "ramun_ask_about_ca
 [anyone|plyr, "member_lady_1", [],  "We still have a long way ahead of us.", "member_lady_2a", []],
 [anyone|plyr, "member_lady_1", [],  "Very soon. We're almost there.", "member_lady_2b", []],
 
-[anyone ,"member_lady_2a", [],  "Ah, I am going to enjoy the road for a while longer then. I won't complain. \
- I find riding out in the open so much more pleasant than sitting in the castle all day. \
- You know, I envy you. You can live like this all the time.", "close_window", []],
-[anyone ,"member_lady_2b", [],  "That's good news. Not that I don't like your company, but I did miss my little luxuries. \
+[anyone ,"member_lady_2a", [],  
+"Ah, I am going to enjoy the road for a while longer then. I won't complain. \
+I find riding out in the open so much more pleasant than sitting in the castle all day. \
+You know, I envy you. You can live like this all the time.", "close_window", []],
+[anyone ,"member_lady_2b", [],  
+"That's good news. Not that I don't like your company, but I did miss my little luxuries. \
 Still I am sorry that I'll leave you soon. You must promise me, you'll come visit me when you can.", "close_window", []],
 
 [anyone ,"member_chat", [(is_between, "$g_talk_troop", pretenders_begin, pretenders_end),],
@@ -2153,10 +2155,10 @@ Still I am sorry that I'll leave you soon. You must promise me, you'll come visi
 #Overall, {s30}.", "pretender_progress_2",[]],
 ##NEW:
 "{reg11?We have {reg11} {s11} on our side:We have no {s11} with us yet}, \
- whereas {reg21?{s9} still has {reg21} {s10} supporting {reg0?her:him}:{s9} has no loyal {s10} left}. \
- {reg19?We control {reg13?{reg13} towns:} {reg14?{reg14} castles:} {reg15?and {reg15} villages:}:We don't control any settlements}, \
- while {reg29?they have {reg23?{reg23} towns:} {reg24?{reg24} castles:} {reg25?and {reg25} villages:}:they have no remaining settlements}. \
- Overall, {s30}.", "pretender_progress_2",[]],
+whereas {reg21?{s9} still has {reg21} {s10} supporting {reg0?her:him}:{s9} has no loyal {s10} left}. \
+{reg19?We control {reg13?{reg13} towns:} {reg14?{reg14} castles:} {reg15?and {reg15} villages:}:We don't control any settlements}, \
+while {reg29?they have {reg23?{reg23} towns:} {reg24?{reg24} castles:} {reg25?and {reg25} villages:}:they have no remaining settlements}. \
+Overall, {s30}.", "pretender_progress_2",[]],
 ##diplomacy end+
 
 [anyone|plyr,"pretender_progress_2", [],
@@ -40007,9 +40009,9 @@ I suppose there are plenty of bounty hunters around to get the job done . . .", 
                           (str_store_faction_name, s15, ":quest_object_faction"),
                           (str_store_party_name, s19, "$current_town"),
                          ],
-   "{playername}, it was an incredible feat to get {s14} and {s15} make peace, and you made it happen. \
- Your involvement has not only saved our town from disaster, but it has also saved thousands of lives, and put an end to all the grief this bitter war has caused. \
- As the townspeople of {s19}, know that we'll be good on our word, and we are ready to pay the {reg12} denars we promised.", "lord_persuade_lords_to_make_peace_completed",
+"{playername}, it was an incredible feat to get {s14} and {s15} make peace, and you made it happen. \
+Your involvement has not only saved our town from disaster, but it has also saved thousands of lives, and put an end to all the grief this bitter war has caused. \
+As the townspeople of {s19}, know that we'll be good on our word, and we are ready to pay the {reg12} denars we promised.", "lord_persuade_lords_to_make_peace_completed",
    [(quest_get_slot, ":quest_target_faction", "qst_persuade_lords_to_make_peace", slot_quest_target_faction),
     (quest_get_slot, ":quest_object_faction", "qst_persuade_lords_to_make_peace", slot_quest_object_faction),
     #Forcing 2 factions to make peace within 72 hours.
@@ -40028,9 +40030,9 @@ I suppose there are plenty of bounty hunters around to get the job done . . .", 
    "No need for a payment. I only did what was right.", "lord_persuade_lords_to_make_peace_no_pay",[]],
 
   [anyone ,"lord_persuade_lords_to_make_peace_pay", [],
-   "Oh, yes, of course. We had already got the money for you. \
- Here, please accept these {reg12} denars together with our most sincere thanks. \
- Me and the people of our town will not forget your help.", "close_window",
+"Oh, yes, of course. We had already got the money for you. \
+Here, please accept these {reg12} denars together with our most sincere thanks. \
+Me and the people of our town will not forget your help.", "close_window",
    [(quest_get_slot, ":quest_reward", "qst_persuade_lords_to_make_peace", slot_quest_gold_reward),
     (call_script, "script_troop_add_gold", "trp_player", ":quest_reward"),
     (call_script, "script_change_player_relation_with_center", "$current_town", 5),
@@ -40041,9 +40043,9 @@ I suppose there are plenty of bounty hunters around to get the job done . . .", 
 
     #SB : spelling of impossible
   [anyone ,"lord_persuade_lords_to_make_peace_no_pay", [],
-   "You are indeed an extraordenary person, {sir/madame}, and it is an honour for me to have known you. \
- You not only did what was impossible and put an end to this terrible war, but you won't even accept a reward for it. \
- Very well, I will not insist on the matter, but please know that you will have our eternal respect and gratitude.", "close_window",
+"You are indeed an extraordinary person, {sir/madame}, and it is an honour for me to have known you. \
+You not only did what was impossible and put an end to this terrible war, but you won't even accept a reward for it. \
+Very well, I will not insist on the matter, but please know that you will have our eternal respect and gratitude.", "close_window",
    [
     (call_script, "script_change_player_honor", 3),
     (call_script, "script_change_player_relation_with_center", "$current_town", 8),
@@ -40054,8 +40056,8 @@ I suppose there are plenty of bounty hunters around to get the job done . . .", 
                           (quest_slot_eq, "qst_deal_with_night_bandits", slot_quest_giver_troop, "$g_talk_troop"),
                           (check_quest_succeeded, "qst_deal_with_night_bandits"),
                          ],
-   "Very nice work, {playername}, you made short work of those lawless curs. \
- Thank you kindly for all your help, and please accept this bounty of 250 denars.", "lord_deal_with_night_bandits_completed",
+"Very nice work, {playername}, you made short work of those lawless curs. \
+Thank you kindly for all your help, and please accept this bounty of 250 denars.", "lord_deal_with_night_bandits_completed",
    [
      (add_xp_as_reward,300),
      (call_script, "script_troop_add_gold", "trp_player", 250),
@@ -40123,10 +40125,10 @@ The bounty is {reg2} denars for every band, so that makes {reg1} in total. Here 
         (party_set_flags, ":cur_party_no", pf_quest_party, 0),
       (try_end),
   ],
-   "And that's not the only good news! Thanks to you, the looters have ceased to be a threat. We've not had a single attack reported for some time now. \
-   If there are any of them left, they've either run off or gone deep into hiding. That's good for business, \
-   and what's good for business is good for the town! \
-   I think that concludes our arrangement, {playername}. Please accept this silver as a token of my gratitude. Thank you, and farewell.",
+"And that's not the only good news! Thanks to you, the looters have ceased to be a threat. We've not had a single attack reported for some time now. \
+If there are any of them left, they've either run off or gone deep into hiding. That's good for business, \
+and what's good for business is good for the town! \
+I think that concludes our arrangement, {playername}. Please accept this silver as a token of my gratitude. Thank you, and farewell.",
    "close_window",[
       ]],
   [anyone,"mayor_looters_quest_destroyed_2", [],
@@ -40191,9 +40193,9 @@ The bounty is {reg2} denars for every band, so that makes {reg1} in total. Here 
         (party_set_flags, ":cur_party_no", pf_quest_party, 0),
       (try_end),
   ],
-   "Well done, {playername}, that's the last of the goods I need. Here is the money for your {s6}, and a small bonus for helping me out. \
- I'm afraid I won't be paying for any more goods, nor bounties on looters, but you're welcome to keep hunting the bastards if any remain. \
- Thank you for your help, I won't forget it.",
+"Well done, {playername}, that's the last of the goods I need. Here is the money for your {s6}, and a small bonus for helping me out. \
+I'm afraid I won't be paying for any more goods, nor bounties on looters, but you're welcome to keep hunting the bastards if any remain. \
+Thank you for your help, I won't forget it.",
    "close_window",[
       ]],
 # Ryan END
@@ -40204,9 +40206,9 @@ The bounty is {reg2} denars for every band, so that makes {reg1} in total. Here 
                           (quest_slot_eq, "qst_move_cattle_herd", slot_quest_giver_troop, "$g_talk_troop"),
                           (check_quest_succeeded, "qst_move_cattle_herd"),
                           ],
-   "Good to see you again {playername}. I have heard that you have delivered the cattle successfully. \
- I will tell the merchants how reliable you are. \
- And here is your pay, {reg8} denars.", "close_window",
+"Good to see you again {playername}. I have heard that you have delivered the cattle successfully. \
+I will tell the merchants how reliable you are. \
+And here is your pay, {reg8} denars.", "close_window",
    [(quest_get_slot, ":quest_gold_reward", "qst_move_cattle_herd", slot_quest_gold_reward),
     (call_script, "script_troop_add_gold", "trp_player", ":quest_gold_reward"),
     (store_div, ":xp_reward", ":quest_gold_reward", 3),
@@ -40221,9 +40223,9 @@ The bounty is {reg2} denars for every band, so that makes {reg1} in total. Here 
                           (quest_slot_eq, "qst_move_cattle_herd", slot_quest_giver_troop, "$g_talk_troop"),
                           (check_quest_failed, "qst_move_cattle_herd"),
                           ],
-   "I heard that you have lost the cattle herd on your way to {s9}. \
- I had a very difficult time explaining your failure to the owner of that herd, {sir/madam}. \
- Do you have anything to say?", "move_cattle_herd_failed",
+"I heard that you have lost the cattle herd on your way to {s9}. \
+I had a very difficult time explaining your failure to the owner of that herd, {sir/madam}. \
+Do you have anything to say?", "move_cattle_herd_failed",
    []],
 
   [anyone|plyr ,"move_cattle_herd_failed", [],
@@ -40232,9 +40234,9 @@ The bounty is {reg2} denars for every band, so that makes {reg1} in total. Here 
    "I am sorry. The stupid animals wandered off during the night.", "move_cattle_herd_failed_2",[]],
 
   [anyone,"move_cattle_herd_failed_2", [],
-   "Well, it was your responsibility to deliver that herd safely, no matter what. \
- You should know that the owner of the herd demanded to be compensated for his loss, and I had to pay him 1000 denars. \
- So you now owe me that money.", "merchant_ask_for_debts",
+"Well, it was your responsibility to deliver that herd safely, no matter what. \
+You should know that the owner of the herd demanded to be compensated for his loss, and I had to pay him 1000 denars. \
+So you now owe me that money.", "merchant_ask_for_debts",
    [(val_add, "$debt_to_merchants_guild", 1000), #SB : val_add
     (call_script, "script_end_quest", "qst_move_cattle_herd"),]],
 
@@ -40242,9 +40244,9 @@ The bounty is {reg2} denars for every band, so that makes {reg1} in total. Here 
                           (quest_slot_eq, "qst_kidnapped_girl", slot_quest_current_state, 4),
                           (quest_slot_eq, "qst_kidnapped_girl", slot_quest_giver_troop, "$g_talk_troop"),
                           ],
-   "{playername} -- I am in your debt for bringing back my friend's daughter. \
-  Please take these {reg8} denars that I promised you. \
-  My friend wished he could give more but paying that ransom brought him to his knees.", "close_window",
+"{playername} -- I am in your debt for bringing back my friend's daughter. \
+Please take these {reg8} denars that I promised you. \
+My friend wished he could give more but paying that ransom brought him to his knees.", "close_window",
    [(quest_get_slot, ":quest_gold_reward", "qst_kidnapped_girl", slot_quest_gold_reward),
     (call_script, "script_troop_add_gold", "trp_player", ":quest_gold_reward"),
     (assign, reg8, ":quest_gold_reward"),
@@ -40261,9 +40263,9 @@ The bounty is {reg2} denars for every band, so that makes {reg1} in total. Here 
                           (check_quest_succeeded, "qst_track_down_bandits"),
                           (quest_slot_eq, "qst_track_down_bandits", slot_quest_giver_troop, "$g_talk_troop"),
                           ],
-   "Well -- it sounds like you were able to track down the bandits, and show them what happens to those who would disrupt the flow of commerce. \
- Here is your reward: {reg5} denars. \
- It is well earned, and we are most grateful.",
+"Well -- it sounds like you were able to track down the bandits, and show them what happens to those who would disrupt the flow of commerce. \
+Here is your reward: {reg5} denars. \
+It is well earned, and we are most grateful.",
    "mayor_friendly_pretalk", [(quest_get_slot, ":quest_gold_reward", "qst_track_down_bandits", slot_quest_gold_reward),
                               (call_script, "script_troop_add_gold", "trp_player", ":quest_gold_reward"),
                               (assign, ":xp_reward", ":quest_gold_reward"),
@@ -40279,10 +40281,10 @@ The bounty is {reg2} denars for every band, so that makes {reg1} in total. Here 
                           (check_quest_succeeded, "qst_troublesome_bandits"),
                           (quest_slot_eq, "qst_troublesome_bandits", slot_quest_giver_troop, "$g_talk_troop"),
                           ],
-   "I have heard about your deeds. You have given those bandits the punishment they deserved. \
- You are really as good as they say. \
- Here is your reward: {reg5} denars. \
- I would like to give more but those bandits almost brought me to bankruptcy.",
+"I have heard about your deeds. You have given those bandits the punishment they deserved. \
+You are really as good as they say. \
+Here is your reward: {reg5} denars. \
+I would like to give more but those bandits almost brought me to bankruptcy.",
    "mayor_friendly_pretalk", [(quest_get_slot, ":quest_gold_reward", "qst_troublesome_bandits", slot_quest_gold_reward),
                               (call_script, "script_troop_add_gold", "trp_player", ":quest_gold_reward"),
                               (assign, ":xp_reward", ":quest_gold_reward"),
@@ -40297,8 +40299,9 @@ The bounty is {reg2} denars for every band, so that makes {reg1} in total. Here 
   #destroy lair quest end dialogs taken from here
 
   [anyone,"mayor_begin", [(ge, "$debt_to_merchants_guild", 50)],
-   "According to my accounts, you owe the merchants guild {reg1} denars. \
- I'd better collect that now.", "merchant_ask_for_debts",[(assign,reg(1),"$debt_to_merchants_guild")]],
+"According to my accounts, you owe the merchants guild {reg1} denars. \
+I'd better collect that now.", 
+    "merchant_ask_for_debts",[(assign,reg(1),"$debt_to_merchants_guild")]],
   [anyone|plyr,"merchant_ask_for_debts", [[store_troop_gold,reg(5),"trp_player"],[ge,reg(5),"$debt_to_merchants_guild"]],
    "Alright. I'll pay my debt to you.", "merchant_debts_paid",[[troop_remove_gold, "trp_player","$debt_to_merchants_guild"],
                                                                 [assign,"$debt_to_merchants_guild",0]]],
@@ -40306,9 +40309,9 @@ The bounty is {reg2} denars for every band, so that makes {reg1} in total. Here 
 
   [anyone|plyr, "merchant_ask_for_debts", [], "I'm afraid I can't pay that sum now.", "merchant_debts_not_paid",[]],
   [anyone, "merchant_debts_not_paid", [(assign,reg(1),"$debt_to_merchants_guild")], "In that case, I am afraid, I can't deal with you. Guild rules... \
- Come back when you can pay the {reg1} denars. \
- And know that we'll be charging an interest to your debt. \
- So the sooner you pay it, the better.", "close_window",[]],
+Come back when you can pay the {reg1} denars. \
+And know that we'll be charging an interest to your debt. \
+So the sooner you pay it, the better.", "close_window",[]],
 
 
   [anyone,"mayor_begin", [], "What can I do for you?", "mayor_talk", []],
@@ -40820,8 +40823,8 @@ The bounty is {reg2} denars for every band, so that makes {reg1} in total. Here 
   (call_script, "script_dplmc_get_troop_standing_in_faction", "trp_player", "$g_encountered_party_faction"),
   (ge, reg0, DPLMC_FACTION_STANDING_MARSHALL),
   ],
-    "In practice, to make war is exhausting work. It is easy enough to lay waste to the enemy's farmland, but crops will grow back, and it is a far different matter to capture an enemy stronghold and to hold it. So the monarchs of Calradia will fight a little, sign a truce, fight a little more, and so on and so forth. Often, a monarch will go to war when another realm provokes them. At such times, some bad influences who look to enrich themselves with ransoms and pillage will clamor for retribution, and thus the damage caused by war to a monarch's treasury is less than the damage caused by doing nothing would be to his authority... \
- Of course, your highness is far more experienced in these matters, as I and the humble folks here would not presume to know anything of strategy...", "mayor_prepolitics",[]],
+"In practice, to make war is exhausting work. It is easy enough to lay waste to the enemy's farmland, but crops will grow back, and it is a far different matter to capture an enemy stronghold and to hold it. So the monarchs of Calradia will fight a little, sign a truce, fight a little more, and so on and so forth. Often, a monarch will go to war when another realm provokes them. At such times, some bad influences who look to enrich themselves with ransoms and pillage will clamor for retribution, and thus the damage caused by war to a monarch's treasury is less than the damage caused by doing nothing would be to his authority... \
+Of course, your highness is far more experienced in these matters, as I and the humble folks here would not presume to know anything of strategy...", "mayor_prepolitics",[]],
 
   [anyone,"mayor_war_description_2",[ (faction_get_slot, ":faction_leader","$g_encountered_party_faction",slot_faction_leader),
                                 (call_script, "script_dplmc_store_troop_is_female_reg", ":faction_leader", 4),
@@ -40991,10 +40994,10 @@ The bounty is {reg2} denars for every band, so that makes {reg1} in total. Here 
        (str_store_string,s5,"@village"),
      (try_end),
      ],
-   "We've had some fighting near the {s5} lately, with all the chaos that comes with it, \
- and that's led some of our less upstanding locals to try and make their fortune out of looting the shops and farms during the confusion. \
- A lot of valuable goods were taken. I need somebody to teach those bastards a lesson. \
- Sound like your kind of work?", "merchant_quest_looters_choice", []],
+"We've had some fighting near the {s5} lately, with all the chaos that comes with it, \
+and that's led some of our less upstanding locals to try and make their fortune out of looting the shops and farms during the confusion. \
+A lot of valuable goods were taken. I need somebody to teach those bastards a lesson. \
+Sound like your kind of work?", "merchant_quest_looters_choice", []],
 
   [anyone|plyr,"merchant_quest_looters_choice", [], "Aye, I'll do it.", "merchant_quest_looters_brief", []],
 
@@ -41031,10 +41034,10 @@ The bounty is {reg2} denars for every band, so that makes {reg1} in total. Here 
    (call_script, "script_start_quest", "qst_deal_with_looters", "$g_talk_troop"),
    (assign, "$g_leave_encounter",1),
   ],
-   "Excellent! You'll find the looters roaming around the countryside, probably trying to rob more good people. \
- Kill or capture the bastards, I don't care what you do with them. \
- I'll pay you a bounty of 40 denars on every band of looters you destroy, \
- until all the looters are dealt with.", "close_window",
+"Excellent! You'll find the looters roaming around the countryside, probably trying to rob more good people. \
+Kill or capture the bastards, I don't care what you do with them. \
+I'll pay you a bounty of 150 denars on every band of looters you destroy, \
+until all the looters are dealt with.", "close_window",
    []],
 # Ryan END
 
@@ -41259,9 +41262,10 @@ The bounty is {reg2} denars for every band, so that makes {reg1} in total. Here 
 
 
   #Random quests begin here. Deliver wine:
-  [anyone,"merchant_quest_requested", [(eq,"$random_merchant_quest_no","qst_deliver_wine"),], "You're looking for a job? \
- Actually I was looking for someone to deliver some {s4}. \
- Perhaps you can do that...", "merchant_quest_brief",
+  [anyone,"merchant_quest_requested", [(eq,"$random_merchant_quest_no","qst_deliver_wine"),], 
+"You're looking for a job? \
+Actually I was looking for someone to deliver some {s4}. \
+Perhaps you can do that...", "merchant_quest_brief",
    [(quest_get_slot, ":quest_target_item", "qst_deliver_wine", slot_quest_target_item),
     (str_store_item_name, s4, ":quest_target_item"),
     ]],
@@ -41272,9 +41276,9 @@ The bounty is {reg2} denars for every band, so that makes {reg1} in total. Here 
   (this_or_next|eq, ":quest_target_item", "itm_ale"),
   (is_between, ":quest_target_item", food_begin, food_end)
   ],
-   "I have a cargo of {s6} that needs to be delivered to the tavern in {s4}. \
- If you can take {reg5} units ({reg6} slots) of {s6} to {s4} in 7 days before any goes bad, you may earn {reg8} denars. \
- What do you say?", "merchant_quest_brief_deliver_wine",
+"I have a cargo of {s6} that needs to be delivered to the tavern in {s4}. \
+If you can take {reg5} units ({reg6} slots) of {s6} to {s4} in 7 days before any goes bad, you may earn {reg8} denars. \
+What do you say?", "merchant_quest_brief_deliver_wine",
    [
     (quest_get_slot, reg5, "qst_deliver_wine", slot_quest_target_amount),
     (quest_get_slot, reg8, "qst_deliver_wine", slot_quest_gold_reward),
@@ -41293,9 +41297,9 @@ The bounty is {reg2} denars for every band, so that makes {reg1} in total. Here 
     #s2 should not be changed until the decision is made
    ]],
   [anyone,"merchant_quest_brief", [(eq,"$random_merchant_quest_no","qst_deliver_wine")],
-   "I have a shipment of {s6} that needs to be delivered to the goods merchant in {s4}. \
- If you can take {reg5} units of {s6} to {s4} in 7 days, you may earn {reg8} denars. \
- What do you say?", "merchant_quest_brief_deliver_wine",
+"I have a shipment of {s6} that needs to be delivered to the goods merchant in {s4}. \
+If you can take {reg5} units of {s6} to {s4} in 7 days, you may earn {reg8} denars. \
+What do you say?", "merchant_quest_brief_deliver_wine",
    [(quest_get_slot, reg5, "qst_deliver_wine", slot_quest_target_amount),
     (quest_get_slot, reg8, "qst_deliver_wine", slot_quest_gold_reward),
     (quest_get_slot, ":quest_target_item", "qst_deliver_wine", slot_quest_target_item),
@@ -41338,16 +41342,17 @@ The bounty is {reg2} denars for every band, so that makes {reg1} in total. Here 
   [anyone|plyr,"merchant_quest_brief_deliver_wine", [], "I am afraid I can't carry all that cargo now.", "merchant_quest_stall",[]],
 
 #escort merchant caravan:
-  [anyone,"merchant_quest_requested", [(eq,"$random_merchant_quest_no","qst_escort_merchant_caravan")], "You're looking for a job? \
- Actually I was looking for someone to escort a caravan. \
- Perhaps you can do that...", "merchant_quest_brief",
+  [anyone,"merchant_quest_requested", [(eq,"$random_merchant_quest_no","qst_escort_merchant_caravan")], 
+"You're looking for a job? \
+Actually I was looking for someone to escort a caravan. \
+Perhaps you can do that...", "merchant_quest_brief",
    []],
 
   [anyone,"merchant_quest_brief", [(eq, "$random_merchant_quest_no", "qst_escort_merchant_caravan")],
-   "I am going to send a caravan of goods to {s8}. \
- However with all those bandits and deserters on the roads, I don't want to send them out without an escort. \
- If you can lead that caravan to {s8} in 15 days, you will earn {reg8} denars. \
- Of course your party needs to be at least {reg4} strong to offer them any protection.", "escort_merchant_caravan_quest_brief",
+"I am going to send a caravan of goods to {s8}. \
+However with all those bandits and deserters on the roads, I don't want to send them out without an escort. \
+If you can lead that caravan to {s8} in 15 days, you will earn {reg8} denars. \
+Of course your party needs to be at least {reg4} strong to offer them any protection.", "escort_merchant_caravan_quest_brief",
    [(quest_get_slot, reg8, "qst_escort_merchant_caravan", slot_quest_gold_reward),
     (quest_get_slot, reg4, "qst_escort_merchant_caravan", slot_quest_target_amount),
     (quest_get_slot, ":quest_target_center", "qst_escort_merchant_caravan", slot_quest_target_center),
@@ -41397,31 +41402,32 @@ The bounty is {reg2} denars for every band, so that makes {reg1} in total. Here 
                                            (lt,":dist",4),
                                            (quest_slot_eq, "qst_escort_merchant_caravan", slot_quest_current_state, 1),
                                            ],
-   "Well, we have almost reached {s21}. We can cover the rest of the way ourselves. \
- Here's your pay... {reg14} denars. \
- Thanks for escorting us. Good luck.", "close_window",[(quest_get_slot, ":quest_target_party", "qst_escort_merchant_caravan", slot_quest_target_party),
-                                                       (quest_get_slot, ":quest_target_center", "qst_escort_merchant_caravan", slot_quest_target_center),
-                                                       (quest_get_slot, ":quest_giver_center", "qst_escort_merchant_caravan", slot_quest_giver_center),
-                                                       (quest_get_slot, ":quest_gold_reward", "qst_escort_merchant_caravan", slot_quest_gold_reward),
-                                                       (party_set_ai_behavior, ":quest_target_party", ai_bhvr_travel_to_party),
-                                                       (party_set_ai_object, ":quest_target_party", ":quest_target_center"),
-                                                       (party_set_flags, ":quest_target_party", pf_default_behavior, 0),
-                                                       (str_store_party_name, s21, ":quest_target_center"),
-                                                       (call_script, "script_change_player_relation_with_center", ":quest_giver_center", 4),
-                                                       (call_script, "script_end_quest","qst_escort_merchant_caravan"),
-                                                       (quest_set_slot, "qst_escort_merchant_caravan", slot_quest_current_state, 2),
-                                                       (call_script, "script_troop_add_gold", "trp_player", ":quest_gold_reward"),
-                                                       (assign, ":xp_reward", ":quest_gold_reward"),
-                                                       (val_add, ":xp_reward", 300),
-                                                       (add_xp_as_reward, ":xp_reward"),
-                                                       (call_script, "script_change_troop_renown", "trp_player", 2),
-                                                       (try_begin), #SB : add disguise as reward
-                                                         (eq, "$g_dplmc_player_disguise", 1), #enabled
-                                                         (call_script, "script_acquire_disguise", disguise_guard),
-                                                       (try_end),
-                                                       (assign, reg14, ":quest_gold_reward"),
-                                                       (assign, "$g_leave_encounter", 1),
-                                                       ]],
+"Well, we have almost reached {s21}. We can cover the rest of the way ourselves. \
+Here's your pay... {reg14} denars. \
+Thanks for escorting us. Good luck.", 
+    "close_window",[(quest_get_slot, ":quest_target_party", "qst_escort_merchant_caravan", slot_quest_target_party),
+    (quest_get_slot, ":quest_target_center", "qst_escort_merchant_caravan", slot_quest_target_center),
+    (quest_get_slot, ":quest_giver_center", "qst_escort_merchant_caravan", slot_quest_giver_center),
+    (quest_get_slot, ":quest_gold_reward", "qst_escort_merchant_caravan", slot_quest_gold_reward),
+    (party_set_ai_behavior, ":quest_target_party", ai_bhvr_travel_to_party),
+    (party_set_ai_object, ":quest_target_party", ":quest_target_center"),
+    (party_set_flags, ":quest_target_party", pf_default_behavior, 0),
+    (str_store_party_name, s21, ":quest_target_center"),
+    (call_script, "script_change_player_relation_with_center", ":quest_giver_center", 4),
+    (call_script, "script_end_quest","qst_escort_merchant_caravan"),
+    (quest_set_slot, "qst_escort_merchant_caravan", slot_quest_current_state, 2),
+    (call_script, "script_troop_add_gold", "trp_player", ":quest_gold_reward"),
+    (assign, ":xp_reward", ":quest_gold_reward"),
+    (val_add, ":xp_reward", 300),
+    (add_xp_as_reward, ":xp_reward"),
+    (call_script, "script_change_troop_renown", "trp_player", 2),
+    (try_begin), #SB : add disguise as reward
+      (eq, "$g_dplmc_player_disguise", 1), #enabled
+      (call_script, "script_acquire_disguise", disguise_guard),
+    (try_end),
+    (assign, reg14, ":quest_gold_reward"),
+    (assign, "$g_leave_encounter", 1),
+    ]],
 
   [party_tpl|pt_merchant_caravan,"start", [(quest_get_slot, ":quest_target_party", "qst_escort_merchant_caravan", slot_quest_target_party),
                                            (eq,"$g_encountered_party",":quest_target_party"),
@@ -41458,17 +41464,20 @@ The bounty is {reg2} denars for every band, so that makes {reg1} in total. Here 
 
 # Troublesome bandits:
   [anyone,"merchant_quest_requested", [(eq, "$random_merchant_quest_no", "qst_troublesome_bandits")],
- "Actually, I was looking for an able adventurer like you. \
- There's this group of particularly troublesome bandits. \
- They have infested the vicinity of our town and are preying on my caravans. \
- They have avoided all the soldiers and the militias up to now. \
- If someone doesn't stop them soon, I am going to be ruined...", "merchant_quest_brief",
+"Actually, I was looking for an able adventurer like you. \
+There's this group of particularly troublesome bandits. \
+They have infested the vicinity of our town and are preying on my caravans. \
+They have avoided all the soldiers and the militias up to now. \
+If someone doesn't stop them soon, I am going to be ruined...", 
+    "merchant_quest_brief",
    []],
 
   [anyone,"merchant_quest_brief", [(eq,"$random_merchant_quest_no", "qst_troublesome_bandits")],
-  "I will pay you {reg8} denars if you hunt down those troublesome bandits. \
- It's dangerous work. But I believe that you are the {man/one} for it. \
- What do you say?", "troublesome_bandits_quest_brief",[(quest_get_slot, reg8, "qst_troublesome_bandits", slot_quest_gold_reward),
+"I will pay you {reg8} denars if you hunt down those troublesome bandits. \
+It's dangerous work. But I believe that you are the {man/one} for it. \
+What do you say?", 
+    "troublesome_bandits_quest_brief",
+    [(quest_get_slot, reg8, "qst_troublesome_bandits", slot_quest_gold_reward),
                                                        ]],
 
   [anyone|plyr,"troublesome_bandits_quest_brief", [],
@@ -41494,18 +41503,19 @@ The bounty is {reg2} denars for every band, so that makes {reg1} in total. Here 
 
 # Kidnapped girl:
   [anyone,"merchant_quest_requested", [(eq, "$random_merchant_quest_no", "qst_kidnapped_girl")],
- "Actually, I was looking for a reliable {man/helper} that can undertake an important mission. \
- A group of bandits have kidnapped the daughter of a friend of mine and are holding her for ransom. \
- My friend is ready to pay them, but we still need\
- someone to take the money to those rascals and bring the girl back to safety.", "merchant_quest_brief",
+"Actually, I was looking for a reliable {man/helper} that can undertake an important mission. \
+A group of bandits have kidnapped the daughter of a friend of mine and are holding her for ransom. \
+My friend is ready to pay them, but we still need\
+someone to take the money to those rascals and bring the girl back to safety.", 
+    "merchant_quest_brief",
    []],
 
   [anyone,"merchant_quest_brief", [(eq, "$random_merchant_quest_no", "qst_kidnapped_girl")],
-  "The amount the bandits ask as ransom is {reg12} denars. \
- I will give you that money once you accept to take the quest. \
- You have 15 days to take the money to the bandits who will be waiting near the village of {s4}. \
- Those bastards said that they are going to kill the poor girl if they don't get the money by that time. \
- You will get your pay of {reg8} denars when you bring the girl safely back here.",
+"The amount the bandits ask as ransom is {reg12} denars. \
+I will give you that money once you accept to take the quest. \
+You have 15 days to take the money to the bandits who will be waiting near the village of {s4}. \
+Those bastards said that they are going to kill the poor girl if they don't get the money by that time. \
+You will get your pay of {reg8} denars when you bring the girl safely back here.",
    "kidnapped_girl_quest_brief",[(quest_get_slot, ":quest_target_center", "qst_kidnapped_girl", slot_quest_target_center),
                                  (str_store_party_name, s4, ":quest_target_center"),
                                  (quest_get_slot, reg8, "qst_kidnapped_girl", slot_quest_gold_reward),
@@ -41529,17 +41539,18 @@ The bounty is {reg2} denars for every band, so that makes {reg1} in total. Here 
                                  (str_store_party_name_link, s4, "$g_encountered_party"),
                                  (str_store_party_name_link, s3, ":quest_target_center"),
                                  (setup_quest_text, "qst_kidnapped_girl"),
-                                 (str_store_string, s2, "@Guildmaster of {s4} gave you {reg12} denars to pay the ransom of a girl kidnapped by bandits. \
- You are to meet the bandits near {s3} and pay them the ransom fee. \
- After that you are to bring the girl back to {s4}."),
+                                 (str_store_string, s2, 
+"@Guildmaster of {s4} gave you {reg12} denars to pay the ransom of a girl kidnapped by bandits. \
+You are to meet the bandits near {s3} and pay them the ransom fee. \
+After that you are to bring the girl back to {s4}."),
                                  (call_script, "script_start_quest", "qst_kidnapped_girl", "$g_talk_troop"),
                                  ]],
 
   [anyone,"kidnapped_girl_quest_taken", [], "Good. I knew we could trust you at this. \
- Here is the ransom money, {reg12} denars. \
- Count it before taking it. \
- And please, don't attempt to do anything rash. \
- Keep in mind that the girl's well being is more important than anything else...", "close_window",
+Here is the ransom money, {reg12} denars. \
+Count it before taking it. \
+And please, don't attempt to do anything rash. \
+Keep in mind that the girl's well being is more important than anything else...", "close_window",
    []],
 
   [anyone|plyr,"kidnapped_girl_quest_brief", [],
@@ -41550,8 +41561,8 @@ The bounty is {reg2} denars for every band, so that makes {reg1} in total. Here 
    [
      (eq, "$talk_context", tc_entering_center_quest_talk),
      ],
-   "Thank you so much for bringing me back! \
-  I can't wait to see my family. Good-bye.",
+"Thank you so much for bringing me back! \
+I can't wait to see my family. Good-bye.",
    "close_window",
    [(remove_member_from_party, "trp_kidnapped_girl"),
     (quest_set_slot, "qst_kidnapped_girl", slot_quest_current_state, 4),
@@ -41587,8 +41598,8 @@ The bounty is {reg2} denars for every band, so that makes {reg1} in total. Here 
 
 
   [party_tpl|pt_bandits_awaiting_ransom,"start", [(quest_slot_eq, "qst_kidnapped_girl", slot_quest_current_state, 0),],
-   "Are you the one that brought the ransom? \
- Quick, give us the money now.", "bandits_awaiting_ransom_intro_1",[(quest_set_slot, "qst_kidnapped_girl", slot_quest_current_state, 1),]],
+   "Are you the one that brought the ransom? Quick, give us the money now.", 
+   "bandits_awaiting_ransom_intro_1",[(quest_set_slot, "qst_kidnapped_girl", slot_quest_current_state, 1),]],
   [party_tpl|pt_bandits_awaiting_ransom,"start", [(quest_slot_eq, "qst_kidnapped_girl", slot_quest_current_state, 1),],
    "You came back? \
  Quick, give us the money now.", "bandits_awaiting_ransom_intro_1",[]],
@@ -41598,9 +41609,8 @@ The bounty is {reg2} denars for every band, so that makes {reg1} in total. Here 
                                                                                   ],
    "Here, take the money. Just set the girl free.", "bandits_awaiting_ransom_pay",[]],
   [party_tpl|pt_bandits_awaiting_ransom, "bandits_awaiting_ransom_pay", [],
-   "Heh. You've brought the money all right. \
- You can take the girl now. \
- It was a pleasure doing business with you...", "close_window",
+   "Heh. You've brought the money all right. You can take the girl now. It was a pleasure doing business with you...", 
+ "close_window",
    [(quest_get_slot, ":quest_target_amount", "qst_kidnapped_girl", slot_quest_target_amount),
     (quest_get_slot, ":quest_target_party", "qst_kidnapped_girl", slot_quest_target_party),
     (quest_get_slot, ":quest_target_center", "qst_kidnapped_girl", slot_quest_target_center),
@@ -41674,9 +41684,9 @@ The bounty is {reg2} denars for every band, so that makes {reg1} in total. Here 
   [anyone|plyr,"lost_kidnapped_girl_2", [],
    "I'm sorry. I could do nothing about it.", "lost_kidnapped_girl_3",[]],
   [anyone,"lost_kidnapped_girl_3", [],
-   "You let me down {playername}. I had trusted you. \
- I will let people know of your incompetence at this task. \
- Also, I want back that {reg8} denars I gave you as the ransom fee.", "lost_kidnapped_girl_4",
+"You let me down {playername}. I had trusted you. \
+I will let people know of your incompetence at this task. \
+Also, I want back that {reg8} denars I gave you as the ransom fee.", "lost_kidnapped_girl_4",
    [(quest_get_slot, reg8, "qst_kidnapped_girl", slot_quest_target_amount),
     (try_for_parties, ":cur_party"),
       (party_count_members_of_type, ":num_members", ":cur_party", "trp_kidnapped_girl"),
@@ -41721,19 +41731,21 @@ The bounty is {reg2} denars for every band, so that makes {reg1} in total. Here 
                                        (str_store_troop_name_link, s13, ":quest_target_troop"),
                                        (str_store_faction_name_link, s14, ":quest_target_faction"),
                                        (str_store_faction_name_link, s15, "$g_encountered_party_faction"),],
-   "This war between {s15} and {s14} has brought our town to the verge of ruin. \
- Our caravans get raided before they can reach their destination. \
- Our merchants are afraid to leave the safety of the town walls. \
- And as if those aren't enough, the taxes to maintain the war take away the last bits of our savings. \
- If peace does not come soon, we can not hold on for much longer.", "merchant_quest_persuade_peace_1",
+"This war between {s15} and {s14} has brought our town to the verge of ruin. \
+Our caravans get raided before they can reach their destination. \
+Our merchants are afraid to leave the safety of the town walls. \
+And as if those aren't enough, the taxes to maintain the war take away the last bits of our savings. \
+If peace does not come soon, we can not hold on for much longer.", "merchant_quest_persuade_peace_1",
    []],
 
   [anyone|plyr,"merchant_quest_persuade_peace_1", [], "You are right. But who can stop this madness called war?", "merchant_quest_brief",[]],
   [anyone|plyr,"merchant_quest_persuade_peace_1", [], "It is your duty to help the nobles in their war effort. You shouldn't complain about it.", "merchant_quest_persuade_peace_reject",[]],
 
-  [anyone,"merchant_quest_persuade_peace_reject", [], "Hah. The nobles fight their wars for their greed and their dreams of glory. \
- And it is poor honest folk like us who have to bear the real burden. \
- But you obviously don't want to hear about that.", "close_window",[]],
+  [anyone,"merchant_quest_persuade_peace_reject", [], 
+"Hah. The nobles fight their wars for their greed and their dreams of glory. \
+And it is poor honest folk like us who have to bear the real burden. \
+But you obviously don't want to hear about that.", 
+    "close_window",[]],
 
   [anyone,"merchant_quest_brief", [(eq,"$random_merchant_quest_no","qst_persuade_lords_to_make_peace"),
   ##diplomacy start+ gender correct
@@ -41750,17 +41762,19 @@ The bounty is {reg2} denars for every band, so that makes {reg1} in total. Here 
 # However, there are powerful lords on both sides whose interests lie in continuing the war. \
 # These men urge all others not to heed to the word of sensible men, but to keep fighting. \
 # While these leaders remain influential, no peace settlement can be reached.",
-   "There have been attempts to reconcile the two sides and reach a settlement. \
- However, there are powerful lords on both sides whose interests lie in continuing the war. \
- {reg0?They:These men} urge all others not to heed to the word of sensible men, but to keep fighting. \
- While these leaders remain influential, no peace settlement can be reached.", "merchant_quest_persuade_peace_3",[]],
+"There have been attempts to reconcile the two sides and reach a settlement. \
+However, there are powerful lords on both sides whose interests lie in continuing the war. \
+{reg0?They:These men} urge all others not to heed to the word of sensible men, but to keep fighting. \
+While these leaders remain influential, no peace settlement can be reached.", "merchant_quest_persuade_peace_3",[]],
 ##diplomacy end+
 
   [anyone|plyr,"merchant_quest_persuade_peace_3", [], "Who are these warmongers who block the way of peace?", "merchant_quest_persuade_peace_4",[]],
   [anyone|plyr,"merchant_quest_persuade_peace_3", [], "Who are these lords you speak of?", "merchant_quest_persuade_peace_4",[]],
 
-  [anyone,"merchant_quest_persuade_peace_4", [], "They are {s12} from {s15} and {s13} from {s14}. Until they change their mind or lose their influence, \
- there will be no chance of having peace between the two sides.", "merchant_quest_persuade_peace_5",[
+  [anyone,"merchant_quest_persuade_peace_4", [], 
+"They are {s12} from {s15} and {s13} from {s14}. Until they change their mind or lose their influence, \
+there will be no chance of having peace between the two sides.", 
+      "merchant_quest_persuade_peace_5",[
        (quest_get_slot, ":quest_target_faction", "qst_persuade_lords_to_make_peace", slot_quest_target_faction),
        (quest_get_slot, ":quest_object_troop", "qst_persuade_lords_to_make_peace", slot_quest_object_troop),
        (quest_get_slot, ":quest_target_troop", "qst_persuade_lords_to_make_peace", slot_quest_target_troop),
@@ -41773,21 +41787,23 @@ The bounty is {reg2} denars for every band, so that makes {reg1} in total. Here 
   [anyone|plyr,"merchant_quest_persuade_peace_5", [], "What can be done about this?", "merchant_quest_persuade_peace_6",[]],
   [anyone|plyr,"merchant_quest_persuade_peace_5", [], "Alas, it seems nothing can be done about it.", "merchant_quest_persuade_peace_6",[]],
 
-  [anyone,"merchant_quest_persuade_peace_6", [], "There is a way to resolve the issue. \
- A particularly determined person can perhaps persuade one or both of these lords to accept making peace. \
- And even if that fails, it can be possible to see that these lords are defeated by force and taken prisoner. \
- If they are captive, they will lose their influence and they can no longer oppose a settlement... What do you think? Can you do it?",
+  [anyone,"merchant_quest_persuade_peace_6", [], 
+"There is a way to resolve the issue. \
+A particularly determined person can perhaps persuade one or both of these lords to accept making peace. \
+And even if that fails, it can be possible to see that these lords are defeated by force and taken prisoner. \
+If they are captive, they will lose their influence and they can no longer oppose a settlement... What do you think? Can you do it?",
    "merchant_quest_persuade_peace_7",[]],
 
   [anyone|plyr,"merchant_quest_persuade_peace_7", [], "It seems difficult. But I will try.", "merchant_quest_persuade_peace_8",[]],
   [anyone|plyr,"merchant_quest_persuade_peace_7", [], "If the price is right, I may.", "merchant_quest_persuade_peace_8",[]],
   [anyone|plyr,"merchant_quest_persuade_peace_7", [], "Forget it. This is not my problem.", "merchant_quest_persuade_peace_8",[]],
 
-  [anyone,"merchant_quest_persuade_peace_8", [], "Most of the merchants in the town will gladly open up their purses to support such a plan. \
- I think we can collect {reg12} denars between ourselves. \
- We will be happy to reward you with that sum, if you can work this out. \
- Convince {s12} and {s13} to accept a peace settlement, \
- and if either of them proves too stubborn, make sure he falls captive and can not be ransomed until a peace deal is settled.",
+  [anyone,"merchant_quest_persuade_peace_8", [], 
+"Most of the merchants in the town will gladly open up their purses to support such a plan. \
+I think we can collect {reg12} denars between ourselves. \
+We will be happy to reward you with that sum, if you can work this out. \
+Convince {s12} and {s13} to accept a peace settlement, \
+and if either of them proves too stubborn, make sure he falls captive and can not be ransomed until a peace deal is settled.",
    "merchant_quest_persuade_peace_9",[
        (quest_get_slot, ":quest_object_troop", "qst_persuade_lords_to_make_peace", slot_quest_object_troop),
        (quest_get_slot, ":quest_target_troop", "qst_persuade_lords_to_make_peace", slot_quest_target_troop),
@@ -41799,9 +41815,10 @@ The bounty is {reg2} denars for every band, so that makes {reg1} in total. Here 
   [anyone|plyr,"merchant_quest_persuade_peace_9", [], "All right. I will do my best.", "merchant_quest_persuade_peace_10",[]],
   [anyone|plyr,"merchant_quest_persuade_peace_9", [], "Sorry. I can not do this.", "merchant_quest_persuade_peace_no",[]],
 
-  [anyone,"merchant_quest_persuade_peace_10", [], "Excellent. You will have our blessings. \
- I hope you can deal with those two old goats. \
- We will be waiting and hoping for the good news.", "close_window",[
+  [anyone,"merchant_quest_persuade_peace_10", [], 
+"Excellent. You will have our blessings. \
+I hope you can deal with those two old goats. \
+We will be waiting and hoping for the good news.", "close_window",[
      (str_store_party_name_link, s4, "$g_encountered_party"),
      (quest_get_slot, ":quest_target_faction", "qst_persuade_lords_to_make_peace", slot_quest_target_faction),
      (quest_get_slot, ":quest_object_troop", "qst_persuade_lords_to_make_peace", slot_quest_object_troop),
@@ -41833,24 +41850,24 @@ The bounty is {reg2} denars for every band, so that makes {reg1} in total. Here 
    [
      (eq, "$random_merchant_quest_no", "qst_deal_with_night_bandits"),
      ],
-   "Do I indeed! There's a group of bandits infesting the town, and I'm at the end of my rope as to how to deal with them. \
- They've been ambushing and robbing townspeople under the cover of night, \
- and then fading away quick as lightning when the guards finally show up. We've not been able to catch a one of them. \
- They only attack lone people, never daring to show themselves when there's a group about. \
- I need someone who can take on these bandits alone and win. That seems to be the only way of bringing them to justice. \
- Are you up to the task?", "merchant_quest_deal_with_night_bandits",
+"Do I indeed! There's a group of bandits infesting the town, and I'm at the end of my rope as to how to deal with them. \
+They've been ambushing and robbing townspeople under the cover of night, \
+and then fading away quick as lightning when the guards finally show up. We've not been able to catch a one of them. \
+They only attack lone people, never daring to show themselves when there's a group about. \
+I need someone who can take on these bandits alone and win. That seems to be the only way of bringing them to justice. \
+Are you up to the task?", "merchant_quest_deal_with_night_bandits",
    []],
 
   [anyone,"merchant_quest_brief",
    [
      (eq,"$random_merchant_quest_no","qst_deal_with_night_bandits"),
      ],
-   "There's a group of bandits infesting the town, and I'm at the end of my rope as to how to deal with them. \
- They've been ambushing and robbing townspeople under the cover of night, \
- and then fading away quick as lightning when the guards finally show up. We've not been able to catch a one of them. \
- They only attack lone people, never daring to show themselves when there's a group about. \
- I need someone who can take on these bandits alone and win. That seems to be the only way of bringing them to justice. \
- Are you up to the task?", "merchant_quest_deal_with_night_bandits",
+"There's a group of bandits infesting the town, and I'm at the end of my rope as to how to deal with them. \
+They've been ambushing and robbing townspeople under the cover of night, \
+and then fading away quick as lightning when the guards finally show up. We've not been able to catch a one of them. \
+They only attack lone people, never daring to show themselves when there's a group about. \
+I need someone who can take on these bandits alone and win. That seems to be the only way of bringing them to justice. \
+Are you up to the task?", "merchant_quest_deal_with_night_bandits",
    []],
 
   [anyone|plyr,"merchant_quest_deal_with_night_bandits", [],
@@ -41866,8 +41883,9 @@ The bounty is {reg2} denars for every band, so that makes {reg1} in total. Here 
   [anyone|plyr, "merchant_quest_deal_with_night_bandits", [],
    "My apologies, I'm not interested.", "merchant_quest_stall",[]],
 
-  [anyone,"deal_with_night_bandits_quest_taken", [], "That takes a weight off my shoulders, {playername}. \
- You can expect a fine reward if you come back successful. Just don't get yourself killed, eh?", "mayor_pretalk",[]],
+  [anyone,"deal_with_night_bandits_quest_taken", [], 
+"That takes a weight off my shoulders, {playername}. \
+You can expect a fine reward if you come back successful. Just don't get yourself killed, eh?", "mayor_pretalk",[]],
 
 
 #move cattle herd
@@ -41884,9 +41902,10 @@ The bounty is {reg2} denars for every band, so that makes {reg1} in total. Here 
     (quest_get_slot, ":target_center", "qst_move_cattle_herd", slot_quest_target_center),
     (str_store_party_name, s13, ":target_center"),
     ],
-   "The cattle herd must be at {s13} within 30 days. Sooner is better, much better, \
- but it must be absolutely no later than 30 days. \
- If you can do that, I'd be willing to pay you {reg8} denars for your trouble. Interested?", "move_cattle_herd_quest_brief",
+"The cattle herd must be at {s13} within 30 days. Sooner is better, much better, \
+but it must be absolutely no later than 30 days. \
+If you can do that, I'd be willing to pay you {reg8} denars for your trouble. Interested?", 
+      "move_cattle_herd_quest_brief",
    []],
 
   [anyone|plyr,"move_cattle_herd_quest_brief", [],  "Aye, I can take the herd to {s13}.",
@@ -41905,8 +41924,10 @@ The bounty is {reg2} denars for every band, so that makes {reg1} in total. Here 
   [anyone|plyr,"move_cattle_herd_quest_brief", [],
    "I am sorry, but no.", "merchant_quest_stall",[]],
 
-  [anyone,"move_cattle_herd_quest_taken", [], "Splendid. You can find the herd right outside the town. \
- After you take the animals to {s13}, return back to me and I will give you your pay.", "mayor_pretalk",[]],
+  [anyone,"move_cattle_herd_quest_taken", [], 
+"Splendid. You can find the herd right outside the town. \
+After you take the animals to {s13}, return back to me and I will give you your pay.", 
+      "mayor_pretalk",[]],
 
 
 #################################################
@@ -41996,8 +42017,8 @@ The bounty is {reg2} denars for every band, so that makes {reg1} in total. Here 
 						(str_store_string, s0, "str_dplmc_my_lordlady"),
 					(try_end),
 					],
-   "Welcome to {s9}, {s0}. We were rejoiced by the news that you are the new {lord/lady} of our humble village. \
- I am the village elder and I will be honoured to serve you in any way I can.", "village_elder_talk",[]],#Replced "my {lord/lady}" with "{s0}"
+"Welcome to {s9}, {s0}. We were rejoiced by the news that you are the new {lord/lady} of our humble village. \
+I am the village elder and I will be honoured to serve you in any way I can.", "village_elder_talk",[]],#Replced "my {lord/lady}" with "{s0}"
 
 ##Moved this village_elder_talk line from above, otherwise it wouldn't be able to trigger.
   [anyone,"start", [(is_between,"$g_talk_troop", village_elders_begin, village_elders_end),(eq,"$g_talk_troop_met",0),
@@ -42618,8 +42639,8 @@ The bounty is {reg2} denars for every band, so that makes {reg1} in total. Here 
                                            (assign, reg5, ":num_volunteers"),
                                            (store_add, reg7, ":num_volunteers", -1),
                                            ],
-   "I can think of {reg5} whom I suspect would jump at the chance. If you could pay 10 denars {reg7?each for their equipment:for his equipment}. \
- Does that suit you?", "village_elder_recruit_decision",[]],
+   "I can think of {reg5} whom I suspect would jump at the chance. If you could pay 10 denars {reg7?each for their equipment:for his equipment}. Does that suit you?", 
+      "village_elder_recruit_decision",[]],
 
 #not used:
 ##  [anyone|plyr,"village_elder_recruit_decision", [(party_get_slot, ":num_volunteers", "$current_town", slot_center_volunteer_troop_amount),
@@ -42740,10 +42761,11 @@ The bounty is {reg2} denars for every band, so that makes {reg1} in total. Here 
 
 
   [anyone,"village_elder_tell_mission", [(eq,"$random_quest_no","qst_deliver_grain")],
-   "{My good sir/My good lady}, our village has been going through such hardships lately. \
- The harvest has been bad, and recently some merciless bandits took away our seed grain that we had reserved for the planting season. \
- If we cannot find some grain soon, we will not be able to plant our fields and then we will have nothing to eat for the coming year. \
- If you can help us, we would be indebted to you forever.", "village_elder_tell_deliver_grain_mission",
+"{My good sir/My good lady}, our village has been going through such hardships lately. \
+The harvest has been bad, and recently some merciless bandits took away our seed grain that we had reserved for the planting season. \
+If we cannot find some grain soon, we will not be able to plant our fields and then we will have nothing to eat for the coming year. \
+If you can help us, we would be indebted to you forever.", 
+      "village_elder_tell_deliver_grain_mission",
    [
      (quest_get_slot, ":quest_target_center", "$random_quest_no", slot_quest_target_center),
      (str_store_party_name_link,s3,":quest_target_center"),
@@ -42784,10 +42806,10 @@ The bounty is {reg2} denars for every band, so that makes {reg1} in total. Here 
 
 
   [anyone,"village_elder_tell_mission", [(eq,"$random_quest_no", "qst_train_peasants_against_bandits")],
-   "We are suffering greatly at the hands of a group of bandits. They take our food and livestock, \
- and kill anyone who doesn't obey them immediately. Our men are angry that we cannot defend ourselves, but we are only simple farmers... \
- However, with some help, I think that some of the people here could be more than that. \
- We just need an experienced warrior to teach us how to fight.",
+"We are suffering greatly at the hands of a group of bandits. They take our food and livestock, \
+and kill anyone who doesn't obey them immediately. Our men are angry that we cannot defend ourselves, but we are only simple farmers... \
+However, with some help, I think that some of the people here could be more than that. \
+We just need an experienced warrior to teach us how to fight.",
    "village_elder_tell_train_peasants_against_bandits_mission",
    [
      (quest_get_slot, ":quest_target_center", "$random_quest_no", slot_quest_target_center),
@@ -42913,10 +42935,12 @@ The bounty is {reg2} denars for every band, so that makes {reg1} in total. Here 
 
   [anyone|plyr,"goods_merchant_talk", [], "Nothing. Thanks.", "close_window",[]],
 
-  [anyone,"trade_info_request", [], "That information can be best obtained from caravan masters\
- and travelling merchants. If you want I can send you to the district where foreign merchants stay at when they come to the town. \
- If you spend some time there and listen to the talk, \
- you can learn a lot about what to buy and where to sell it.", "trade_info_request_2",[]],
+  [anyone,"trade_info_request", [], 
+"That information can be best obtained from caravan masters\
+and travelling merchants. If you want I can send you to the district where foreign merchants stay at when they come to the town. \
+If you spend some time there and listen to the talk, \
+you can learn a lot about what to buy and where to sell it.", 
+      "trade_info_request_2",[]],
 
   [anyone|plyr,"trade_info_request_2", [], "Then I'll go and spend some time with these merchants.", "close_window",
     [
@@ -43055,39 +43079,43 @@ The bounty is {reg2} denars for every band, so that makes {reg1} in total. Here 
                      ],
    "Good day friend. If you came to watch the tournaments you came in vain. There won't be a tournament here anytime soon.", "arena_intro_1",[(assign,"$arena_master_first_talk", 1)]],
   [anyone|plyr,"arena_intro_1", [], "Tournaments? So they hold the tournaments here...", "arena_intro_2",[]],
-  [anyone,"arena_intro_2", [], "Yes. You should see this place during one of the tournament fights. \
- Everyone from the town and nearby villages comes here. The crowd becomes mad with excitement. \
- Anyway, as I said, there won't be an event here soon, so there isn't much to see. \
- Except, there is an official duel every now and then, and  of course we have melee fights almost every day.", "arena_intro_3",[]],
+  [anyone,"arena_intro_2", [], 
+"Yes. You should see this place during one of the tournament fights. \
+Everyone from the town and nearby villages comes here. The crowd becomes mad with excitement. \
+Anyway, as I said, there won't be an event here soon, so there isn't much to see. \
+Except, there is an official duel every now and then, and  of course we have melee fights almost every day.", "arena_intro_3",[]],
   [anyone|plyr,"arena_intro_3", [], "Tell me about the melee fights.", "arena_training_melee_intro",[]],
-  [anyone,"arena_training_melee_intro", [], "The fighters and knights get bored waiting for the next tournament, \
- so they have invented the training melee. It is a simple idea really. \
- Fighters jump into the arena with a weapon. There are no rules, no teams. \
- Everyone beats at each other until there is only one fighter left standing. \
- Sounds like fun, eh?", "arena_training_melee_intro_2",[]],
+  [anyone,"arena_training_melee_intro", [], 
+"The fighters and knights get bored waiting for the next tournament, \
+so they have invented the training melee. It is a simple idea really. \
+Fighters jump into the arena with a weapon. There are no rules, no teams. \
+Everyone beats at each other until there is only one fighter left standing. \
+Sounds like fun, eh?", "arena_training_melee_intro_2",[]],
   [anyone|plyr,"arena_training_melee_intro_2", [(eq, "$arena_reward_asked", 0)], "Is there a reward?", "arena_training_melee_intro_reward",[(assign, "$arena_reward_asked", 1)]],
   [anyone,"arena_training_melee_intro_reward", [(assign, reg1, arena_tier1_opponents_to_beat),(assign, reg11, arena_tier1_prize),
       (assign, reg2, arena_tier2_opponents_to_beat),(assign, reg12, arena_tier2_prize),
       (assign, reg3, arena_tier3_opponents_to_beat),(assign, reg13, arena_tier3_prize),
       (assign, reg4, arena_tier4_opponents_to_beat),(assign, reg14, arena_tier4_prize),
       (assign, reg15, arena_grand_prize)
-    ], "There is, actually. Some of the wealthy townsmen offer prizes for those fighters who show great skill in the fights. \
- If you can beat {reg1} opponents before going down, you'll earn {reg11} denars. You'll get {reg12} denars for striking down at least {reg2} opponents, \
- {reg13} denars if you can defeat {reg3} opponents, and {reg14} denars if you can survive long enough to beat {reg4} opponents. \
- If you can manage to be the last {man/fighter} standing, you'll earn the great prize of the fights, {reg15} denars. Sounds good, eh?", "arena_training_melee_intro_2",[(assign, "$arena_tournaments_asked", 1),]],
+    ], 
+"There is, actually. Some of the wealthy townsmen offer prizes for those fighters who show great skill in the fights. \
+If you can beat {reg1} opponents before going down, you'll earn {reg11} denars. You'll get {reg12} denars for striking down at least {reg2} opponents, \
+{reg13} denars if you can defeat {reg3} opponents, and {reg14} denars if you can survive long enough to beat {reg4} opponents. \
+If you can manage to be the last {man/fighter} standing, you'll earn the great prize of the fights, {reg15} denars. Sounds good, eh?", "arena_training_melee_intro_2",[(assign, "$arena_tournaments_asked", 1),]],
   [anyone,"arena_training_melee_explain_reward", [
       (assign, reg1, arena_tier1_opponents_to_beat),(assign, reg11, arena_tier1_prize),
       (assign, reg2, arena_tier2_opponents_to_beat),(assign, reg12, arena_tier2_prize),
       (assign, reg3, arena_tier3_opponents_to_beat),(assign, reg13, arena_tier3_prize),
       (assign, reg4, arena_tier4_opponents_to_beat),(assign, reg14, arena_tier4_prize),
       (assign, reg15, arena_grand_prize)
-      ], "Some of the wealthy townsmen offer prizes for those fighters who show great skill in the fights. \
- If you can beat {reg1} opponents before going down, you'll earn {reg11} denars. You'll get {reg12} denars for striking down at least {reg2} opponents, \
- {reg13} denars if you can defeat {reg3} opponents, and {reg14} denars if you can survive long enough to beat {reg4} opponents. \
- If you can manage to be the last {man/fighter} standing, you'll earn the great prize of the fights, {reg15} denars. Sounds good, eh?", "arena_master_melee_pretalk",[]],
-  [anyone|plyr,"arena_training_melee_intro_2", [], "Can I join too?", "arena_training_melee_intro_3",[]],
-  [anyone,"arena_training_melee_intro_3", [], "Ha ha. You would have to be out of your mind not to. Of course. The melee fights are open to all. \
- Actually there is going to be a fight soon. You can go and hop in if you want to.", "arena_master_melee_talk",[]],
+      ], 
+"Some of the wealthy townsmen offer prizes for those fighters who show great skill in the fights. \
+If you can beat {reg1} opponents before going down, you'll earn {reg11} denars. You'll get {reg12} denars for striking down at least {reg2} opponents, \
+{reg13} denars if you can defeat {reg3} opponents, and {reg14} denars if you can survive long enough to beat {reg4} opponents. \
+If you can manage to be the last {man/fighter} standing, you'll earn the great prize of the fights, {reg15} denars. Sounds good, eh?", "arena_master_melee_pretalk",[]],
+[anyone|plyr,"arena_training_melee_intro_2", [], "Can I join too?", "arena_training_melee_intro_3",[]],
+[anyone,"arena_training_melee_intro_3", [], "Ha ha. You would have to be out of your mind not to. Of course. The melee fights are open to all. \
+Actually there is going to be a fight soon. You can go and hop in if you want to.", "arena_master_melee_talk",[]],
 
 
   [anyone ,"start", [
@@ -43126,8 +43154,8 @@ The bounty is {reg2} denars for every band, so that makes {reg1} in total. Here 
      (lt, "$g_arena_training_kills", arena_tier1_opponents_to_beat),
      (assign, reg8, "$g_arena_training_kills")
      ],
-   "Hey, you managed to take down {reg8} opponents. Not bad. But that won't bring you any prize money. \
- Now, if I were you, I would go back there and show everyone what I can do...", "arena_master_pre_talk",[(assign, "$last_training_fight_town", -1)]],
+"Hey, you managed to take down {reg8} opponents. Not bad. But that won't bring you any prize money. \
+Now, if I were you, I would go back there and show everyone what I can do...", "arena_master_pre_talk",[(assign, "$last_training_fight_town", -1)]],
 
   [anyone ,"arena_master_fight_result",
    [
@@ -43136,8 +43164,8 @@ The bounty is {reg2} denars for every band, so that makes {reg1} in total. Here 
      (assign, reg8, "$g_arena_training_kills"),
      (assign, reg10, arena_tier1_prize),
      ],
-   "You put up quite a good fight there. Good moves. You definitely show promise. \
- And you earned a prize of {reg10} denars for knocking down {reg8} opponents.", "arena_master_pre_talk",[
+"You put up quite a good fight there. Good moves. You definitely show promise. \
+And you earned a prize of {reg10} denars for knocking down {reg8} opponents.", "arena_master_pre_talk",[
      (call_script, "script_troop_add_gold", "trp_player", arena_tier1_prize),
      (add_xp_to_troop,5,"trp_player"),
      (assign, "$last_training_fight_town", -1)]],
@@ -43150,8 +43178,8 @@ The bounty is {reg2} denars for every band, so that makes {reg1} in total. Here 
      (assign, reg10, arena_tier2_prize),
      (assign, reg12, arena_tier2_opponents_to_beat),
      ],
-   "That was a good fight you put up there. You managed to take down no less than {reg8} opponents. \
- And of course, you earned a prize money of {reg10} denars.", "arena_master_pre_talk",[
+"That was a good fight you put up there. You managed to take down no less than {reg8} opponents. \
+And of course, you earned a prize money of {reg10} denars.", "arena_master_pre_talk",[
      (call_script, "script_troop_add_gold", "trp_player", arena_tier2_prize),
      (add_xp_to_troop,10,"trp_player"),
      (assign, "$last_training_fight_town", -1)]],
@@ -43163,8 +43191,8 @@ The bounty is {reg2} denars for every band, so that makes {reg1} in total. Here 
      (assign, reg8, "$g_arena_training_kills"),
      (assign, reg10, arena_tier3_prize)
      ],
-   "Your performance was amazing! You are without doubt a very skilled fighter. \
- Not everyone can knock down {reg8} people in the fights. Of course you deserve a prize with that performance: {reg10} denars. Nice, eh?", "arena_master_pre_talk",[
+"Your performance was amazing! You are without doubt a very skilled fighter. \
+Not everyone can knock down {reg8} people in the fights. Of course you deserve a prize with that performance: {reg10} denars. Nice, eh?", "arena_master_pre_talk",[
      (call_script, "script_troop_add_gold", "trp_player", arena_tier3_prize),
      (add_xp_to_troop,10,"trp_player"),
      (assign, "$last_training_fight_town", -1)]],
@@ -43175,8 +43203,8 @@ The bounty is {reg2} denars for every band, so that makes {reg1} in total. Here 
      (assign, reg8, "$g_arena_training_kills"),
      (assign, reg10, arena_tier4_prize),
      ],
-   "That was damned good fighting, {playername}. You have very good moves, excellent tactics. \
- And you earned a prize of {reg10} denars for knocking down {reg8} opponents.", "arena_master_pre_talk",
+"That was damned good fighting, {playername}. You have very good moves, excellent tactics. \
+And you earned a prize of {reg10} denars for knocking down {reg8} opponents.", "arena_master_pre_talk",
    [
      (call_script, "script_troop_add_gold", "trp_player", arena_tier4_prize),
      (add_xp_to_troop,10,"trp_player"),
@@ -43925,8 +43953,8 @@ The bounty is {reg2} denars for every band, so that makes {reg1} in total. Here 
    "That's too bad. I guess we'll just have to sell you into slavery. Take {him/her}, lads!", "close_window",[(encounter_attack)]],
 
   [anyone,"bandit_barter", [],
-   "Hey, I've heard of you! You slaughter us freebooters like dogs, and now you expect us to let you go for a few stinking coins? \
- Forget it. You gave us no quarter, and you'll get none from us.", "close_window",[
+"Hey, I've heard of you! You slaughter us freebooters like dogs, and now you expect us to let you go for a few stinking coins? \
+Forget it. You gave us no quarter, and you'll get none from us.", "close_window",[
   (encounter_attack),
  ]],
 
@@ -44444,8 +44472,9 @@ The bounty is {reg2} denars for every band, so that makes {reg1} in total. Here 
 										(assign, reg20, 0),
 									(try_end),
 
-                                    (str_store_string, s11, "@{reg20?We mostly produce {s5} here:We don't produce much here these days}. \
- If you would like to learn more, you can speak with our {reg4?guildmaster:village elder}. He is nearby, right over there."),
+                                    (str_store_string, s11, 
+"@{reg20?We mostly produce {s5} here:We don't produce much here these days}. \
+If you would like to learn more, you can speak with our {reg4?guildmaster:village elder}. He is nearby, right over there."),
                                     ],
    "{s10} {s11}", "close_window",[]],
 
@@ -44472,8 +44501,8 @@ The bounty is {reg2} denars for every band, so that makes {reg1} in total. Here 
 										 #diplomacy end+
                                          (eq, ":walker_type", walkert_needs_money)],
    #diplomacy start+ replace {sir/madame} with {my lord/my lady} or {your highness} if appropriate
-   "My life is miserable, {s0}. I haven't been able to find a job for months, and my poor children go to bed hungry each night. \
- My neighbours are too poor themselves to help me.", "town_dweller_poor",[]],
+"My life is miserable, {s0}. I haven't been able to find a job for months, and my poor children go to bed hungry each night. \
+My neighbours are too poor themselves to help me.", "town_dweller_poor",[]],
    #diplomacy end+
   [anyone|plyr,"town_dweller_poor", [(store_troop_gold, ":gold", "trp_player"),
                                      (ge, ":gold", 300),
