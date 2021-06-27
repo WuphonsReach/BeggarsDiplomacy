@@ -40092,15 +40092,16 @@ I suppose there are plenty of bounty hunters around to get the job done . . .", 
    "Not yet, sir. Farewell.", "close_window",[]],
 
   [anyone,"mayor_looters_quest_destroyed", [],
-   "Aye, my scouts saw the whole thing. That should make anyone else think twice before turning outlaw! \
- The bounty is 80 denars for every band, so that makes {reg1} in total. Here is your money, as promised.",
+"Aye, my scouts saw the whole thing. That should make anyone else think twice before turning outlaw! \
+The bounty is {reg2} denars for every band, so that makes {reg1} in total. Here is your money, as promised.",
    "mayor_looters_quest_destroyed_2",[
       (store_num_parties_destroyed_by_player, ":num_looters_destroyed", "pt_looters"),
       (party_template_get_slot,":previous_looters_destroyed","pt_looters",slot_party_template_num_killed),
       (val_sub,":num_looters_destroyed",":previous_looters_destroyed"),
       (quest_get_slot,":looters_paid_for","qst_deal_with_looters",slot_quest_current_state),
       (store_sub,":looter_bounty",":num_looters_destroyed",":looters_paid_for"),
-      (val_mul,":looter_bounty",80),
+      (assign,reg2,150), # per band of looters
+      (val_mul,":looter_bounty",reg2),
       (assign,reg1,":looter_bounty"),
       (call_script, "script_troop_add_gold", "trp_player", ":looter_bounty"),
       (assign,":looters_paid_for",":num_looters_destroyed"),
