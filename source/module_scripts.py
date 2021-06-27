@@ -21341,13 +21341,13 @@ scripts = [
 	          (eq, ":quest_no", "qst_troublesome_bandits"),
 	          (is_between, ":giver_center_no", centers_begin, centers_end),
 	          (store_character_level, ":quest_gold_reward", "trp_player"),
-            (val_clamp, ":quest_gold_reward", 10, 30),
-            (store_random_in_range, ":random_add", 30, 50),
+            (val_clamp, ":quest_gold_reward", 10, 40),
+            (store_random_in_range, ":random_add", 20, 50),
             (val_add, ":quest_gold_reward", ":random_add"), # 40-80
 	          (val_mul, ":quest_gold_reward", 3),
-	          (val_add, ":quest_gold_reward", 300), # total = 300 + 40-80 x 30 = 420-540
-	          (val_div, ":quest_gold_reward", 25), # round to N
-            (val_mul, ":quest_gold_reward", 25),
+	          (val_add, ":quest_gold_reward", 300),
+	          (val_div, ":quest_gold_reward", 100), # round to N
+            (val_mul, ":quest_gold_reward", 100),
 	          (assign, ":quest_expiration_days", 30),
             (store_random_in_range, ":random_period", 20, 50),
             (assign, ":quest_dont_give_again_period", ":random_period"),
