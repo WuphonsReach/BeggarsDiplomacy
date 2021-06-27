@@ -21294,14 +21294,13 @@ scripts = [
 	          (is_between, ":giver_center_no", centers_begin, centers_end),
 	          (store_random_party_in_range, ":quest_target_center", towns_begin, towns_end),
 	          (store_distance_to_party_from_party, ":dist", ":giver_center_no",":quest_target_center"),
-            (val_add, ":dist", 50),
+            (val_add, ":dist", 100), # about 120..350
 	          (assign, ":quest_gold_reward", ":dist"),
-	          (val_add, ":quest_gold_reward", 35),
-	          (val_mul, ":quest_gold_reward", 30),
-	          (val_div, ":quest_gold_reward", 20),
-            (val_add, ":quest_gold_reward", 500),
+	          (val_mul, ":quest_gold_reward", 10), #1200..3500
+	          (val_add, ":quest_gold_reward", 500), #1700..4000
+	          (val_div, ":quest_gold_reward", 500), # rounding
+            (val_mul, ":quest_gold_reward", 500),
 	          (store_random_in_range, ":quest_target_amount", 6, 12),
-	          # (assign, "$escort_merchant_caravan_mode", 0), #SB : useless global, use quest slots if necessary
 	          (assign, ":result", ":quest_no"),
 	        (else_try),
               (eq, ":quest_no", "qst_deliver_wine"),
