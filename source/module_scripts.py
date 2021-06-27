@@ -8329,20 +8329,21 @@ scripts = [
   (call_script, "script_dplmc_add_random_production", "p_town_5", slot_center_head_chicken, 4, 12, -1),
   (call_script, "script_dplmc_add_random_production", "p_town_5", slot_center_head_pigs, 8, 20, -1),
 
-  #Praven (ale, leatherwork, smoked fish, chicken, sheep)
+  #Praven (ale per Katrin, leatherwork, smoked fish, chicken, sheep)
   (call_script, "script_dplmc_add_random_production", "p_town_6", slot_center_mills, 4, 8, -1),
-  (call_script, "script_dplmc_add_random_production", "p_town_6", slot_center_breweries, 3, 6, -1),
+  (call_script, "script_dplmc_add_random_production", "p_town_6", slot_center_breweries, 4, 8, -1),
   (call_script, "script_dplmc_add_random_production", "p_town_6", slot_center_tanneries, 2, 5, 1),
   (call_script, "script_dplmc_add_random_production", "p_town_6", slot_center_fishing_fleet, 8, 15, 1),
   (call_script, "script_dplmc_add_random_production", "p_town_6", slot_center_head_chicken, 10, 20, -1),
   (call_script, "script_dplmc_add_random_production", "p_town_6", slot_center_head_sheep, 12, 25, -1),
   (call_script, "script_dplmc_add_random_production", "p_town_6", slot_center_apiaries, 3, 6, -1),
 
-  #Uxkhal (bread, leatherwork, oil)
+  #Uxkhal (bread, leatherwork, oil, grain per Katrin)
   (call_script, "script_dplmc_add_random_production", "p_town_7", slot_center_mills, 8, 12, 0),
   (call_script, "script_dplmc_add_random_production", "p_town_7", slot_center_tanneries, 3, 6, -1),
   (call_script, "script_dplmc_add_random_production", "p_town_7", slot_center_olive_presses, 3, 6, 1),
   (call_script, "script_dplmc_add_random_production", "p_town_7", slot_center_head_chicken, 3, 12, -1),
+  (call_script, "script_dplmc_add_random_production", "p_town_7", slot_center_acres_grain, 2500, 4500, 1),
 
   #Reyvadin (tools, wool cloth, wine)
   (call_script, "script_dplmc_add_random_production", "p_town_8", slot_center_mills, 4, 8, -1),
@@ -8709,7 +8710,7 @@ scripts = [
       (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_head_sheep, 15, 25, -1),
       (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_acres_grain, 2100, 3200, 0),
 
-    #Uxkhal
+    #Uxkhal - grain per Katrin
     (else_try),
       (eq, "p_town_7", ":min_dist_town"),
       (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_fur_traps, 5, 10, -1),
@@ -8719,8 +8720,8 @@ scripts = [
       (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_head_chicken, 12, 25, -1),
       (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_head_sheep, 12, 20, -1),
       (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_mills, 4, 9, -1),
-      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_acres_grain, 3600, 4500, -1),
-      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_acres_flax, 300, 600, -1),
+      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_acres_grain, 4500, 6500, -1),
+      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_acres_flax, 600, 1200, -1),
       (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_acres_fruit_trees, 100, 200, 0),
 
     #Reyvadin
