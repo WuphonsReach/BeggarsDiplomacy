@@ -16,7 +16,7 @@ pt_mountain_bandits Mountain_Bandits 562949953421321 0 27 312 116 4 60 0 -1 -1 -
 pt_sea_raiders Sea_Raiders 562949953421321 0 2 312 118 5 50 0 -1 -1 -1 -1 -1 
 pt_deserters Deserters 844424930131971 0 26 312 -1 -1 -1 -1 -1 -1 
 pt_merchant_caravan Merchant_Caravan 5629499534606373 0 1 11 134 1 1 0 28 5 25 0 -1 -1 -1 -1 
-pt_troublesome_bandits Troublesome_Bandits 2533274790658057 0 2 312 114 14 55 0 -1 -1 -1 -1 -1 
+pt_troublesome_bandits Troublesome_Bandits 2533274790658057 0 2 312 114 35 65 0 -1 -1 -1 -1 -1 
 pt_bandits_awaiting_ransom Bandits_Awaiting_Ransom 2533274790789129 0 3 312 114 24 58 0 135 1 1 1 -1 -1 -1 -1 
 pt_kidnapped_girl Kidnapped_Girl 262154 0 3 7 135 1 1 0 -1 -1 -1 -1 -1 
 pt_village_farmers Village_Farmers 67108870 0 4 7 25 5 10 0 133 3 8 0 -1 -1 -1 -1 
