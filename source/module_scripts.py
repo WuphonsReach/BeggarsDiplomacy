@@ -21251,7 +21251,8 @@ scripts = [
 	            (assign, ":quest_target_item", "itm_grain"), #SB : fix this or add various goods
 	            (store_random_in_range, ":quest_target_amount", 3, 9),
 	            (assign, ":quest_expiration_days", 15),
-              (store_random_in_range, ":random_period", 2, 9),
+              # give-again period can be short because fewer villages offer it
+              (store_random_in_range, ":random_period", 2, 8),
 	            (assign, ":quest_dont_give_again_period", ":random_period"),
 	            (assign, ":result", ":quest_no"),
 	          (try_end),
