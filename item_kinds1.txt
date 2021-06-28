@@ -484,7 +484,7 @@ itemsfile version 3
  0
 0
 
- itm_bread Bread Bread 1  bread_a 0  34144267 0 80 0 30.000000 110 40 0 0 0 0 0 0 0 50 0 0
+ itm_bread Bread Bread 1  bread_a 0  34144267 0 90 0 30.000000 110 40 0 0 0 0 0 0 0 50 0 0
  0
 0
 
