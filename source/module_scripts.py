@@ -7740,7 +7740,7 @@ scripts = [
     (item_set_slot, "itm_bread", slot_item_input_number, 3),
     (item_set_slot, "itm_bread", slot_item_output_per_run, 5),
     (item_set_slot, "itm_bread", slot_item_overhead_per_run, 50),
-    (item_set_slot, "itm_bread", slot_item_base_price, 80),
+    (item_set_slot, "itm_bread", slot_item_base_price, 90),
     (item_set_slot, "itm_bread", slot_item_enterprise_building_cost, 1500),
 
     (item_set_slot, "itm_ale", slot_item_production_slot, slot_center_breweries),
@@ -7794,7 +7794,7 @@ scripts = [
     (item_set_slot, "itm_leatherwork", slot_item_input_number, 2),
     (item_set_slot, "itm_leatherwork", slot_item_output_per_run, 2),
     (item_set_slot, "itm_leatherwork", slot_item_overhead_per_run, 85),
-	  (item_set_slot, "itm_leatherwork", slot_item_base_price, 360),
+	  (item_set_slot, "itm_leatherwork", slot_item_base_price, 410),
 	  (item_set_slot, "itm_leatherwork", slot_item_enterprise_building_cost, 8000),
 
     # comes from a mix of sheep+cattle+pigs, so the following is unused/incorrect

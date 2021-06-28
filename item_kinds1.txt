@@ -420,7 +420,7 @@ itemsfile version 3
  0
 0
 
- itm_leatherwork Leatherwork Leatherwork 1  leatherwork_frame 0  65547 0 360 0 50.000000 90 0 0 0 0 0 0 0 0 0 0 0
+ itm_leatherwork Leatherwork Leatherwork 1  leatherwork_frame 0  65547 0 410 0 50.000000 90 0 0 0 0 0 0 0 0 0 0 0
  0
 0
 

@@ -199,7 +199,7 @@ items = [
  ["tools","Tools", [("iron_hammer",0)], itp_merchandise|itp_type_goods, 0, 550, weight(50)|abundance(90),imodbits_none],
 
  ["raw_leather","Hides", [("leatherwork_inventory",0)], itp_merchandise|itp_type_goods, 0, 240, weight(60)|abundance(90),imodbits_none],
- ["leatherwork","Leatherwork", [("leatherwork_frame",0)], itp_merchandise|itp_type_goods, 0, 360, weight(50)|abundance(90),imodbits_none],
+ ["leatherwork","Leatherwork", [("leatherwork_frame",0)], itp_merchandise|itp_type_goods, 0, 410, weight(50)|abundance(90),imodbits_none],
 
  ["raw_date_fruit","Date Fruit", [("date_inventory",0)], itp_merchandise|itp_type_goods|itp_consumable|itp_food, 0, 180, weight(40)|food_quality(10)|max_ammo(10),imodbits_none],
  ["furs","Furs", [("fur_pack",0)], itp_merchandise|itp_type_goods, 0, 450, weight(40)|abundance(90),imodbits_none],
@@ -221,7 +221,7 @@ items = [
  ["grain","Grain", [("wheat_sack",0)], itp_merchandise|itp_type_goods|itp_consumable, 0, 30, weight(30)|abundance(110)|food_quality(40)|max_ammo(50),imodbits_none],
 
  ["cattle_meat","Beef", [("raw_meat",0)], itp_merchandise|itp_type_goods|itp_consumable|itp_food, 0, 160, weight(50)|abundance(100)|food_quality(80)|max_ammo(50),imodbits_none],
- ["bread","Bread", [("bread_a",0)], itp_merchandise|itp_type_goods|itp_consumable|itp_food, 0, 80, weight(30)|abundance(110)|food_quality(40)|max_ammo(50),imodbits_none],
+ ["bread","Bread", [("bread_a",0)], itp_merchandise|itp_type_goods|itp_consumable|itp_food, 0, 90, weight(30)|abundance(110)|food_quality(40)|max_ammo(50),imodbits_none],
  ["chicken","Chicken", [("chicken",0)], itp_merchandise|itp_type_goods|itp_consumable|itp_food, 0, 120, weight(25)|abundance(110)|food_quality(40)|max_ammo(50),imodbits_none],
  ["pork","Pork", [("pork",0)], itp_merchandise|itp_type_goods|itp_consumable|itp_food, 0, 140, weight(45)|abundance(100)|food_quality(70)|max_ammo(50),imodbits_none],
  ["butter","Butter", [("butter_pot",0)], itp_merchandise|itp_type_goods|itp_consumable|itp_food, 0, 160,weight(9)|abundance(110)|food_quality(40)|max_ammo(30),imodbits_none],
