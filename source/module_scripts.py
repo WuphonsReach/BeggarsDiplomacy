@@ -300,7 +300,7 @@ scripts = [
       #start some tournaments
       (try_for_range, ":town_no", towns_begin, towns_end),
         (store_random_in_range, ":rand", 0, 100),
-        (lt, ":rand", 20),
+        (lt, ":rand", 10),
         (store_random_in_range, ":random_days", 12, 15),
         (party_set_slot, ":town_no", slot_town_has_tournament, ":random_days"),
       (try_end),
@@ -7737,10 +7737,10 @@ scripts = [
     (item_set_slot, "itm_bread", slot_item_production_slot, slot_center_mills),
     (item_set_slot, "itm_bread", slot_item_production_string, "str_mills"),
     (item_set_slot, "itm_bread", slot_item_primary_raw_material, "itm_grain"),
-    (item_set_slot, "itm_bread", slot_item_input_number, 5),
-    (item_set_slot, "itm_bread", slot_item_output_per_run, 6),
-    (item_set_slot, "itm_bread", slot_item_overhead_per_run, 60),
-    (item_set_slot, "itm_bread", slot_item_base_price, 80),
+    (item_set_slot, "itm_bread", slot_item_input_number, 3),
+    (item_set_slot, "itm_bread", slot_item_output_per_run, 5),
+    (item_set_slot, "itm_bread", slot_item_overhead_per_run, 50),
+    (item_set_slot, "itm_bread", slot_item_base_price, 90),
     (item_set_slot, "itm_bread", slot_item_enterprise_building_cost, 1500),
 
     (item_set_slot, "itm_ale", slot_item_production_slot, slot_center_breweries),
@@ -7791,10 +7791,10 @@ scripts = [
     (item_set_slot, "itm_leatherwork", slot_item_production_slot, slot_center_tanneries),
     (item_set_slot, "itm_leatherwork", slot_item_production_string, "str_tanneries"),
     (item_set_slot, "itm_leatherwork", slot_item_primary_raw_material, "itm_raw_leather"),
-    (item_set_slot, "itm_leatherwork", slot_item_input_number, 3),
-    (item_set_slot, "itm_leatherwork", slot_item_output_per_run, 3),
+    (item_set_slot, "itm_leatherwork", slot_item_input_number, 2),
+    (item_set_slot, "itm_leatherwork", slot_item_output_per_run, 2),
     (item_set_slot, "itm_leatherwork", slot_item_overhead_per_run, 85),
-	  (item_set_slot, "itm_leatherwork", slot_item_base_price, 360),
+	  (item_set_slot, "itm_leatherwork", slot_item_base_price, 410),
 	  (item_set_slot, "itm_leatherwork", slot_item_enterprise_building_cost, 8000),
 
     # comes from a mix of sheep+cattle+pigs, so the following is unused/incorrect
@@ -8329,20 +8329,21 @@ scripts = [
   (call_script, "script_dplmc_add_random_production", "p_town_5", slot_center_head_chicken, 4, 12, -1),
   (call_script, "script_dplmc_add_random_production", "p_town_5", slot_center_head_pigs, 8, 20, -1),
 
-  #Praven (ale, leatherwork, smoked fish, chicken, sheep)
+  #Praven (ale per Katrin, leatherwork, smoked fish, chicken, sheep)
   (call_script, "script_dplmc_add_random_production", "p_town_6", slot_center_mills, 4, 8, -1),
-  (call_script, "script_dplmc_add_random_production", "p_town_6", slot_center_breweries, 3, 6, -1),
+  (call_script, "script_dplmc_add_random_production", "p_town_6", slot_center_breweries, 4, 8, -1),
   (call_script, "script_dplmc_add_random_production", "p_town_6", slot_center_tanneries, 2, 5, 1),
   (call_script, "script_dplmc_add_random_production", "p_town_6", slot_center_fishing_fleet, 8, 15, 1),
   (call_script, "script_dplmc_add_random_production", "p_town_6", slot_center_head_chicken, 10, 20, -1),
   (call_script, "script_dplmc_add_random_production", "p_town_6", slot_center_head_sheep, 12, 25, -1),
   (call_script, "script_dplmc_add_random_production", "p_town_6", slot_center_apiaries, 3, 6, -1),
 
-  #Uxkhal (bread, leatherwork, oil)
+  #Uxkhal (bread, leatherwork, oil, grain per Katrin)
   (call_script, "script_dplmc_add_random_production", "p_town_7", slot_center_mills, 8, 12, 0),
   (call_script, "script_dplmc_add_random_production", "p_town_7", slot_center_tanneries, 3, 6, -1),
   (call_script, "script_dplmc_add_random_production", "p_town_7", slot_center_olive_presses, 3, 6, 1),
   (call_script, "script_dplmc_add_random_production", "p_town_7", slot_center_head_chicken, 3, 12, -1),
+  (call_script, "script_dplmc_add_random_production", "p_town_7", slot_center_acres_grain, 2500, 4500, 1),
 
   #Reyvadin (tools, wool cloth, wine)
   (call_script, "script_dplmc_add_random_production", "p_town_8", slot_center_mills, 4, 8, -1),
@@ -8709,7 +8710,7 @@ scripts = [
       (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_head_sheep, 15, 25, -1),
       (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_acres_grain, 2100, 3200, 0),
 
-    #Uxkhal
+    #Uxkhal - grain per Katrin
     (else_try),
       (eq, "p_town_7", ":min_dist_town"),
       (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_fur_traps, 5, 10, -1),
@@ -8719,8 +8720,8 @@ scripts = [
       (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_head_chicken, 12, 25, -1),
       (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_head_sheep, 12, 20, -1),
       (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_mills, 4, 9, -1),
-      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_acres_grain, 3600, 4500, -1),
-      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_acres_flax, 300, 600, -1),
+      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_acres_grain, 4500, 6500, -1),
+      (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_acres_flax, 600, 1200, -1),
       (call_script, "script_dplmc_add_random_production", ":village_no", slot_center_acres_fruit_trees, 100, 200, 0),
 
     #Reyvadin
@@ -21245,12 +21246,13 @@ scripts = [
 	            #The quest giver is the village elder
 	            (call_script, "script_get_troop_item_amount", ":giver_troop", "itm_grain"),
 	            (le, reg0, 0), # check elder's inventory
-	            (neg|party_slot_ge, ":giver_center_no", slot_town_prosperity, 30),
+	            (neg|party_slot_ge, ":giver_center_no", slot_town_prosperity, 35),
 	            (assign, ":quest_target_center", ":giver_center_no"),
 	            (assign, ":quest_target_item", "itm_grain"), #SB : fix this or add various goods
 	            (store_random_in_range, ":quest_target_amount", 3, 9),
 	            (assign, ":quest_expiration_days", 15),
-              (store_random_in_range, ":random_period", 3, 11),
+              # give-again period can be short because fewer villages offer it
+              (store_random_in_range, ":random_period", 2, 8),
 	            (assign, ":quest_dont_give_again_period", ":random_period"),
 	            (assign, ":result", ":quest_no"),
 	          (try_end),
@@ -21265,7 +21267,7 @@ scripts = [
 	            (assign, ":quest_target_center", ":giver_center_no"),
               # cattle are more expensive now, ask for lower quantity
 	            (store_random_in_range, ":quest_target_amount", 2, 6),
-	            (assign, ":quest_expiration_days", 21),
+	            (assign, ":quest_expiration_days", 15),
               (store_random_in_range, ":random_period", 10, 30),
 	            (assign, ":quest_dont_give_again_period", ":random_period"),
 	            (assign, ":result", ":quest_no"),
@@ -21293,14 +21295,14 @@ scripts = [
 	          (is_between, ":giver_center_no", centers_begin, centers_end),
 	          (store_random_party_in_range, ":quest_target_center", towns_begin, towns_end),
 	          (store_distance_to_party_from_party, ":dist", ":giver_center_no",":quest_target_center"),
-            (val_add, ":dist", 50),
+            (val_add, ":dist", 100), # about 120..350
 	          (assign, ":quest_gold_reward", ":dist"),
-	          (val_add, ":quest_gold_reward", 35),
-	          (val_mul, ":quest_gold_reward", 30),
-	          (val_div, ":quest_gold_reward", 20),
-            (val_add, ":quest_gold_reward", 500),
-	          (store_random_in_range, ":quest_target_amount", 6, 12),
-	          # (assign, "$escort_merchant_caravan_mode", 0), #SB : useless global, use quest slots if necessary
+	          (val_mul, ":quest_gold_reward", 5), #600..1700
+	          (val_add, ":quest_gold_reward", 800), #1400..2500
+	          (val_div, ":quest_gold_reward", 500), # rounding
+            (val_mul, ":quest_gold_reward", 500),
+            (store_random_in_range, ":quest_target_amount", 15, 25), # size of party required
+            (store_div, ":quest_xp_award", ":quest_gold_reward", 3),
 	          (assign, ":result", ":quest_no"),
 	        (else_try),
               (eq, ":quest_no", "qst_deliver_wine"),
@@ -21341,13 +21343,13 @@ scripts = [
 	          (eq, ":quest_no", "qst_troublesome_bandits"),
 	          (is_between, ":giver_center_no", centers_begin, centers_end),
 	          (store_character_level, ":quest_gold_reward", "trp_player"),
-            (val_clamp, ":quest_gold_reward", 10, 30),
-            (store_random_in_range, ":random_add", 30, 50),
+            (val_clamp, ":quest_gold_reward", 10, 40),
+            (store_random_in_range, ":random_add", 20, 50),
             (val_add, ":quest_gold_reward", ":random_add"), # 40-80
 	          (val_mul, ":quest_gold_reward", 3),
-	          (val_add, ":quest_gold_reward", 300), # total = 300 + 40-80 x 30 = 420-540
-	          (val_div, ":quest_gold_reward", 25), # round to N
-            (val_mul, ":quest_gold_reward", 25),
+	          (val_add, ":quest_gold_reward", 300),
+	          (val_div, ":quest_gold_reward", 100), # round to N
+            (val_mul, ":quest_gold_reward", 100),
 	          (assign, ":quest_expiration_days", 30),
             (store_random_in_range, ":random_period", 20, 50),
             (assign, ":quest_dont_give_again_period", ":random_period"),
@@ -33505,7 +33507,10 @@ scripts = [
 
       (try_begin), # charge everyone after a while
         (neq, ":battle_tactic", 0),
-        (ge, ":mission_time", 180),
+        (store_random_in_range, ":charge_after_mission_time", -45, 46),
+        #TODO: Use lord type to determine patience level?
+        (val_add, ":charge_after_mission_time", 200),
+        (ge, ":mission_time", ":charge_after_mission_time"),
         (assign, ":battle_tactic", 0),
         (team_give_order, ":team_no", grc_everyone, mordr_charge),
         (team_get_leader, ":ai_leader", ":team_no"),
@@ -41445,11 +41450,21 @@ scripts = [
           (party_set_flags, ":spawned_party_id", pf_quest_party, 1),
         (try_end),
 
+        # maybe spawn a second looter around the town, but closer in
+        (try_begin),
+          (store_random_in_range, ":random_no", 0, 3),
+          (eq, ":random_no", 0),
+          (set_spawn_radius, 12),
+          (spawn_around_party, ":spawn_point", "pt_looters"),
+          (assign, ":spawned_party_id", reg0),
+          (party_set_flags, ":spawned_party_id", pf_quest_party, 1),
+        (try_end),
+
         # maybe spawn a new looter around villages near the town
         (try_for_range_backwards, ":village_no", villages_begin, villages_end),
           (store_distance_to_party_from_party, ":dist_to_spawn_point", ":spawn_point", ":village_no"),
           (le, ":dist_to_spawn_point", 10),
-          (store_random_in_range, ":random_no", 0, 5),
+          (store_random_in_range, ":random_no", 0, 4),
           (eq, ":random_no", 0),
           (set_spawn_radius, 15),
           (spawn_around_party, ":village_no", "pt_looters"),
@@ -51069,7 +51084,7 @@ scripts = [
 		#RESULTS
 		#Guardian forces lady to be betrothed to suitor now
 		(try_begin),
-			(lt, ":lady_suitor_relation", -30),
+			(lt, ":lady_suitor_relation", -35),
 			(this_or_next|troop_slot_eq, ":guardian", slot_lord_reputation_type, lrep_selfrighteous),
 			(this_or_next|troop_slot_eq, ":guardian", slot_lord_reputation_type, lrep_debauched),
 				(troop_slot_eq, ":guardian", slot_lord_reputation_type, lrep_quarrelsome),
@@ -51079,7 +51094,7 @@ scripts = [
 			(this_or_next|troop_slot_eq, ":suitor", slot_lord_reputation_type, lrep_debauched),
       (troop_slot_eq, ":suitor", slot_lord_reputation_type, lrep_quarrelsome),
 
-      (store_random_in_range, ":random", 0, 5), # roll for initiative
+      (store_random_in_range, ":random", 0, 4), # roll for initiative
 			(eq, ":random", 0),
 
 			(troop_slot_eq, ":suitor", slot_troop_betrothed, -1),
@@ -51112,14 +51127,14 @@ scripts = [
 
 		#A happy engagement, with parental blessing
 		(else_try),
-			(gt, ":lady_suitor_relation", 25),
+			(gt, ":lady_suitor_relation", 30),
 			(gt, ":suitor_guardian_relation", 0),
 			(eq, ":competitor_preferred_by_lady", -1),
 
 			(troop_slot_eq, ":suitor", slot_troop_betrothed, -1),
 			(troop_slot_eq, ":lady", slot_troop_betrothed, -1),
 
-      (store_random_in_range, ":random", 0, 4), # roll for initiative
+      (store_random_in_range, ":random", 0, 3), # roll for initiative
 			(eq, ":random", 0),
 
 			(call_script, "script_add_log_entry", logent_lady_betrothed_to_suitor_by_choice, ":lady", 0, ":suitor", 0),
@@ -51138,14 +51153,14 @@ scripts = [
 
 		#Lady elopes
 		(else_try),
-			(gt, ":lady_suitor_relation", 30),
+			(gt, ":lady_suitor_relation", 40),
 
 			(eq, ":competitor_preferred_by_lady", -1),
 
 			(this_or_next|troop_slot_eq, ":lady", slot_lord_reputation_type, lrep_adventurous),
       (troop_slot_eq, ":lady", slot_lord_reputation_type, lrep_ambitious),
 
-      (store_random_in_range, ":random", 0, 8), # roll for initiative
+      (store_random_in_range, ":random", 0, 4), # roll for initiative
 			(eq, ":random", 0),
 
 			(troop_slot_eq, ":suitor", slot_troop_betrothed, -1),
@@ -51169,7 +51184,7 @@ scripts = [
 			(eq, ":competitor_preferred_by_guardian", -1),
 			(gt, ":suitor_guardian_relation", 4),
 
-			(store_random_in_range, ":random", 0, 4), 
+			(store_random_in_range, ":random", 0, 5), 
 			(eq, ":random", 0),
 
 			(troop_slot_eq, ":suitor", slot_troop_betrothed, -1),
@@ -51190,9 +51205,9 @@ scripts = [
 
 		#Stalemate -- make patience roll
 		(else_try),
-			(gt, ":lady_suitor_relation", 30),
+			(gt, ":lady_suitor_relation", 40),
 
-			(store_random_in_range, reg3, 0, 20), # 5% chance to break off
+			(store_random_in_range, reg3, 0, 8), # 12% chance to break off
 			(try_begin),
 				(ge, "$cheat_mode", DPLMC_DEBUG_EXPERIMENTAL),
 				(display_message, "str_result_stalemate_patience_roll_=_reg3"),
@@ -51712,7 +51727,6 @@ scripts = [
           (store_faction_of_troop, ":lord_faction", ":lord"),
           (eq, ":lord_faction", ":faction_no"),
           (troop_get_slot, ":led_party", ":lord", slot_troop_leaded_party),
-          (ge, ":led_party", 0), # make sure the lord still has a party
           (party_is_active, ":led_party"),
           (val_add, ":total_vassals", 1),
 
@@ -52498,8 +52512,6 @@ scripts = [
 	    (party_get_slot, ":town_lord", ":possible_target", slot_town_lord),
 	    (call_script, "script_troop_get_relation_with_troop", ":troop_no", ":town_lord"),
 	    (assign, ":village_score", reg0),
-      (store_random_in_range, ":relation_noise", -10, 10),
-      (val_add, ":village_score", ":relation_noise"),
 
 	    (lt, ":village_score", ":score_to_beat"),
 	    (assign, ":score_to_beat", ":village_score"),
@@ -52542,7 +52554,7 @@ scripts = [
 	  (eq, ":troop_reputation", lrep_quarrelsome),
 
 	  (troop_get_slot, ":wealth", ":troop_no", slot_troop_wealth),
-	  (lt, ":wealth", 1500),
+	  (lt, ":wealth", 500),
 
 	  (assign, ":score_to_beat", 0),
 	  (assign, ":target_village", -1),
@@ -52556,16 +52568,8 @@ scripts = [
 	    (party_slot_eq, ":possible_target", slot_village_state, svs_being_raided),
 
 	    (party_get_slot, reg17, ":possible_target", slot_town_prosperity),
-      (store_random_in_range, ":prosperity_random", 70, 130),
-      (val_mul, reg17, ":prosperity_random"),
-      (val_div, reg17, 100),
-
 	    (store_distance_to_party_from_party, ":distance", ":party_no", ":possible_target"),
-      (store_random_in_range, ":distance_random", 70, 130),
-      (val_mul, ":distance", ":distance_random"),
-      (val_div, ":distance", 100),
-      
-      (val_sub, reg17, ":distance"),
+	    (val_sub, reg17, ":distance"),
 
 	    (gt, reg17, ":score_to_beat"),
 	    (assign, ":score_to_beat", reg17),
@@ -52600,15 +52604,8 @@ scripts = [
 			(neg|party_slot_eq, ":possible_target", slot_village_state, svs_looted),
 			(party_get_slot, ":village_prosperity", ":possible_target", slot_town_prosperity),
 			(val_mul, ":village_prosperity", 2),
-      (store_random_in_range, ":prosperity_random", 80, 120),
-      (val_mul, ":village_prosperity", ":prosperity_random"),
-      (val_div, ":village_prosperity", 100),
 
 			(store_distance_to_party_from_party, ":distance", ":party_no", ":possible_target"),
-      (store_random_in_range, ":distance_random", 70, 130),
-      (val_mul, ":distance", ":distance_random"),
-      (val_div, ":distance", 100),
-
 			(val_sub, ":village_prosperity", ":distance"),
 			(gt, ":village_prosperity", ":score_to_beat"),
 
@@ -52725,7 +52722,6 @@ scripts = [
 			(str_store_string, s14, "str_i_wish_to_attend_the_feast_there"),
 			(str_store_string, s16, "str_there_is_a_feast_which_i_wish_to_attend"),
 		(try_end),
-
 	#A lady to court
 	(else_try),
 	  (eq, ":do_only_collecting_rents", 0),
@@ -52756,7 +52752,7 @@ scripts = [
 			(lt, ":distance", ":score_to_beat"),
 			(assign, ":center_to_visit", ":love_interest_center"),
 			(assign, ":score_to_beat", ":distance"),
-    (try_end),
+        (try_end),
 
 		(gt, ":center_to_visit", -1),
 
@@ -52778,10 +52774,11 @@ scripts = [
 		(gt, ":aggressiveness", 40),
 
 		(try_for_range, ":center_to_patrol", centers_begin, centers_end), #find closest center that has spotted enemies.
-      (store_faction_of_party, ":center_faction", ":center_to_patrol"),
-      (eq, ":center_faction", ":faction_no"),
+            (store_faction_of_party, ":center_faction", ":center_to_patrol"),
+            (eq, ":center_faction", ":faction_no"),
 			(party_slot_ge, ":center_to_patrol", slot_center_last_spotted_enemy, 0),
 
+			#new - begin
 			(party_get_slot, ":sortie_strength", ":center_to_patrol", slot_center_sortie_strength),
 			(party_get_slot, ":enemy_strength", ":center_to_patrol", slot_center_sortie_enemy_strength),
 			(store_mul, ":enemy_strength_mul_14_div_10", ":enemy_strength", 14),
@@ -52792,14 +52789,15 @@ scripts = [
 			(gt, ":sortie_strength", ":enemy_strength_mul_14_div_10"),
 
 			(ge, ":party_strength", 100),
+			#new - end
 
 			(party_get_slot, reg17, ":center_to_patrol", slot_town_lord),
 			(call_script, "script_troop_get_relation_with_troop", reg17, ":troop_no"),
 
 			(this_or_next|eq, ":troop_reputation", lrep_upstanding),
-      (gt, reg0, -5),
+				(gt, reg0, -5),
 
-      (store_distance_to_party_from_party, ":distance", ":party_no", ":center_to_patrol"),
+            (store_distance_to_party_from_party, ":distance", ":party_no", ":center_to_patrol"),
 			(lt, ":distance", ":score_to_beat"),
 
 			(assign, ":target_center", ":center_to_patrol"),
@@ -52935,9 +52933,9 @@ scripts = [
 		(display_message, "str_debug__s10_decides_s14_faction_ai_s15"),
 	(try_end),
 
-  (assign, reg0, ":action"),
+    (assign, reg0, ":action"),
 	(assign, reg1, ":object"),
-]),
+	]),
 
 	#script_npc_decision_checklist_troop_follow_or_not
     # INPUT: troop_no

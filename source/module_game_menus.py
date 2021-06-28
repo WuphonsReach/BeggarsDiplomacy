@@ -10146,7 +10146,7 @@ TOTAL:  {reg5}"),
         [
           (party_slot_eq, "$current_town", slot_village_state, svs_normal),
           (neg|party_slot_ge, "$current_town", slot_village_infested_by_bandits, 1),
-          (party_slot_ge, "$current_town", slot_center_player_relation, 0), #relationship check, non-negative
+          (party_slot_ge, "$current_town", slot_center_player_relation, 1), #relationship check, non-negative
           (check_quest_active, "qst_hunt_down_fugitive"),
           (quest_slot_eq, "qst_hunt_down_fugitive", slot_quest_target_center, "$current_town"),
           (neg|check_quest_concluded, "qst_hunt_down_fugitive"), #SB : other condition
@@ -10486,6 +10486,7 @@ TOTAL:  {reg5}"),
      
      (assign, "$g_train_peasants_against_bandits_training_succeeded", 0), #SB : use to track before ending quest
      (party_get_slot, ":merchant_troop", "$current_town", slot_town_elder),
+     (troop_set_slot, ":merchant_troop", slot_troop_met, 1),
      (try_begin),
        (check_quest_active, "qst_eliminate_bandits_infesting_village"),
        (quest_slot_eq, "qst_eliminate_bandits_infesting_village", slot_quest_target_center, "$g_encountered_party"),
@@ -13701,44 +13702,44 @@ TOTAL:  {reg5}"),
       (assign, reg6, ":min_dif_divisor"),
       ],
     [
-      ("bet_100_denars", [(store_troop_gold, ":gold", "trp_player"),
-                          (ge, ":gold", 100)
+      ("bet_500_denars", [(store_troop_gold, ":gold", "trp_player"),
+                          (ge, ":gold", 500)
                           ],
+       "500 denars.",
+       [
+         (assign, "$temp", 500),
+         (jump_to_menu, "mnu_tournament_bet_confirm"),
+        ]),
+      ("bet_250_denars", [(store_troop_gold, ":gold", "trp_player"),
+                         (ge, ":gold", 250)
+                         ],
+       "250 denars.",
+       [
+         (assign, "$temp", 250),
+         (jump_to_menu, "mnu_tournament_bet_confirm"),
+        ]),
+      ("bet_100_denars", [(store_troop_gold, ":gold", "trp_player"),
+                         (ge, ":gold", 100)
+                         ],
        "100 denars.",
        [
          (assign, "$temp", 100),
          (jump_to_menu, "mnu_tournament_bet_confirm"),
         ]),
-      ("bet_50_denars", [(store_troop_gold, ":gold", "trp_player"),
-                         (ge, ":gold", 50)
+      ("bet_25_denars", [(store_troop_gold, ":gold", "trp_player"),
+                         (ge, ":gold", 25)
                          ],
-       "50 denars.",
+       "25 denars.",
        [
-         (assign, "$temp", 50),
-         (jump_to_menu, "mnu_tournament_bet_confirm"),
-        ]),
-      ("bet_20_denars", [(store_troop_gold, ":gold", "trp_player"),
-                         (ge, ":gold", 20)
-                         ],
-       "20 denars.",
-       [
-         (assign, "$temp", 20),
+         (assign, "$temp", 25),
          (jump_to_menu, "mnu_tournament_bet_confirm"),
         ]),
       ("bet_10_denars", [(store_troop_gold, ":gold", "trp_player"),
-                         (ge, ":gold", 10)
-                         ],
+                        (ge, ":gold", 10)
+                        ],
        "10 denars.",
        [
          (assign, "$temp", 10),
-         (jump_to_menu, "mnu_tournament_bet_confirm"),
-        ]),
-      ("bet_5_denars", [(store_troop_gold, ":gold", "trp_player"),
-                        (ge, ":gold", 5)
-                        ],
-       "5 denars.",
-       [
-         (assign, "$temp", 5),
          (jump_to_menu, "mnu_tournament_bet_confirm"),
         ]),
       ("go_back_dot", [], "Go back.",

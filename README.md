@@ -12,6 +12,7 @@ The goal of BeggarsDiplomacy is to take the improvements from [DIPLADO develop](
     - [Quality of Life](#quality-of-life)
     - [Making Money](#making-money)
     - [Balance](#balance)
+    - [Politics](#politics)
   - [Installation](#installation)
     - [Download](#download)
     - [Installing](#installing)
@@ -57,6 +58,10 @@ In general, it is easier to make money in BeggarsDiplomacy but food is more expe
 - Lords and lieges (kings/queens) are more stingy about letting you setup a business in a town that they control.
 - Some food is more expensive, but the morale bonuses have also been balanced a bit.
 - Patrols that the player hires are less expensive to maintain.
+
+### Politics
+
+- Truces now last 60 days, but can be cut short by border incidents.  Treaties (trade, defense, alliance) last for 90 days.  Trade treaties are fragile and can also be cut short by border incidents.  This gives a different feel versus the constant chaos of vanilla. Now when two powers become allied, they will stick together for longer.
 
 ## Installation
 

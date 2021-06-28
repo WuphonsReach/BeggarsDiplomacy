@@ -859,10 +859,15 @@ simple_triggers = [
           (gt, ":prosperity", ":ideal_prosperity"),
           # castles never take a big tumble in prosperity
           (neg|is_between, ":center_no", castles_begin, castles_end), 
-          (store_random_in_range, ":negative_big_boost", -7, 0),
+          (store_random_in_range, ":negative_big_boost", -8, 0),
           (call_script, "script_change_center_prosperity", ":center_no", ":negative_big_boost"),
         (else_try),     
-          (store_random_in_range, ":big_boost", 1, 6),
+          (store_random_in_range, ":big_boost", 1, 9),
+          (try_begin),
+            # villages have other things that boost prosperity
+            (is_between, ":center_no", villages_begin, villages_end), 
+            (store_random_in_range, ":big_boost", 0, 4),
+          (try_end),
           (call_script, "script_change_center_prosperity", ":center_no", ":big_boost"),
         (try_end),
       (else_try),
@@ -871,14 +876,21 @@ simple_triggers = [
         (call_script, "script_change_center_prosperity", ":center_no", ":negative_boost"),
       (else_try),
         (lt, ":prosperity", ":ideal_prosperity"),
-        (store_random_in_range, ":boost", 0, 3),
+        (store_random_in_range, ":boost", 0, 4),
+        (try_begin),
+          # villages/towns have other things that boost prosperity
+          # so only let them boost by +0 or +1
+          (this_or_next|is_between, ":center_no", towns_begin, towns_end), 
+          (is_between, ":center_no", villages_begin, villages_end), 
+          (store_random_in_range, ":boost", 0, 2),
+        (try_end),
         (call_script, "script_change_center_prosperity", ":center_no", ":boost"),
       (try_end),
 
       (try_begin), #debug
         (ge, "$cheat_mode", DPLMC_DEBUG_MIN),
         (store_distance_to_party_from_party, ":debug_dist_to_main_party", "p_main_party", ":center_no"),
-        (le, ":debug_dist_to_main_party", 50),
+        (le, ":debug_dist_to_main_party", 25),
         (party_get_slot, ":new_prosperity", ":center_no", slot_town_prosperity),
         (str_store_party_name, s20, ":center_no"),
         (assign, reg20, ":prosperity"),
@@ -2068,9 +2080,9 @@ simple_triggers = [
 
       # cattle pop
       (try_begin),
-        (lt, ":num_cattle", 5),
-        (gt, ":cattle_capacity", 5),
-        (store_random_in_range, ":add_cattle", 1, 6),
+        (lt, ":num_cattle", 8),
+        (gt, ":cattle_capacity", 8),
+        (store_random_in_range, ":add_cattle", 1, 5),
         (val_add, ":num_cattle", ":add_cattle"),
       (try_end),
       (try_begin), #Overgrazing (-10%)
@@ -2081,21 +2093,21 @@ simple_triggers = [
         (lt, ":cattle_grazing_capacity", 30),
         (val_mul, ":num_cattle", 125),
         (val_div, ":num_cattle", 100),
-      (else_try), #very good grazing (+12%)
+      (else_try), #very good grazing (+15%)
         (lt, ":cattle_grazing_capacity", 60),
-        (val_mul, ":num_cattle", 112),
+        (val_mul, ":num_cattle", 115),
         (val_div, ":num_cattle", 100),
-      (else_try), # +6%
-        (val_mul, ":num_cattle", 106),
+      (else_try), # +10%
+        (val_mul, ":num_cattle", 110),
         (val_div, ":num_cattle", 100),
       (try_end),
       (party_set_slot, ":village_no", slot_center_head_cattle, ":num_cattle"),
 
       # sheep pop
       (try_begin),
-        (lt, ":num_sheep", 5),
-        (gt, ":sheep_capacity", 5),
-        (store_random_in_range, ":add_sheep", 1, 6),
+        (lt, ":num_sheep", 12),
+        (gt, ":sheep_capacity", 12),
+        (store_random_in_range, ":add_sheep", 1, 11),
         (val_add, ":num_sheep", ":add_sheep"),
       (try_end),
       (try_begin), #Overgrazing (-10%)
@@ -2106,12 +2118,12 @@ simple_triggers = [
         (lt, ":sheep_grazing_capacity", 30),
         (val_mul, ":num_sheep", 125),
         (val_div, ":num_sheep", 100),
-      (else_try), #very good grazing (+12%)
+      (else_try), #very good grazing (+15%)
         (lt, ":sheep_grazing_capacity", 60),
-        (val_mul, ":num_sheep", 112),
+        (val_mul, ":num_sheep", 115),
         (val_div, ":num_sheep", 100),
-      (else_try), # +6%
-        (val_mul, ":num_sheep", 106),
+      (else_try), # +10%
+        (val_mul, ":num_sheep", 110),
         (val_div, ":num_sheep", 100),
       (try_end),
       (party_set_slot, ":village_no", slot_center_head_sheep, ":num_sheep"),
@@ -2726,30 +2738,12 @@ simple_triggers = [
     ]),
 
 
-   (8,
-   [
-      # Updating trade good prices according to the productions
-      # Only some centers get processed each cycle
-      (call_script, "script_update_trade_good_prices"),
- 
-      # TODO: Move this to another trigger (it was probably daily/weekly before)
-      # Updating player odds
-       (try_for_range, ":cur_center", centers_begin, centers_end),
-         (party_get_slot, ":player_odds", ":cur_center", slot_town_player_odds),
-         (try_begin),
-           (gt, ":player_odds", 1000),
-           (val_mul, ":player_odds", 95),
-           (val_div, ":player_odds", 100),
-           (val_max, ":player_odds", 1000),
-         (else_try),
-           (lt, ":player_odds", 1000),
-           (val_mul, ":player_odds", 105),
-           (val_div, ":player_odds", 100),
-           (val_min, ":player_odds", 1000),
-         (try_end),
-         (party_set_slot, ":cur_center", slot_town_player_odds, ":player_odds"),
-       (try_end),
-    ]),
+  (8,
+  [
+    # Updating trade good prices according to the productions
+    # Only some centers get processed each cycle
+    (call_script, "script_update_trade_good_prices"),
+  ]),
 
 
   #Troop AI: Caravan Merchants thinking about leaving the town
@@ -3353,11 +3347,25 @@ simple_triggers = [
      (try_end),
     ]),
 
-  # Assigning lords to centers with no leaders
   (72,
-   [
-   #(call_script, "script_assign_lords_to_empty_centers"),
-    ]),
+  [
+  # Updating player odds
+    (try_for_range, ":cur_center", centers_begin, centers_end),
+      (party_get_slot, ":player_odds", ":cur_center", slot_town_player_odds),
+      (try_begin),
+        (gt, ":player_odds", 1000),
+        (val_mul, ":player_odds", 95),
+        (val_div, ":player_odds", 100),
+        (val_max, ":player_odds", 1000),
+      (else_try),
+        (lt, ":player_odds", 1000),
+        (val_mul, ":player_odds", 105),
+        (val_div, ":player_odds", 100),
+        (val_min, ":player_odds", 1000),
+      (try_end),
+      (party_set_slot, ":cur_center", slot_town_player_odds, ":player_odds"),
+    (try_end),
+  ]),
 
   # Updating player icon in every frame
   (0,
@@ -3724,10 +3732,10 @@ simple_triggers = [
     (try_end),
 
 	(try_begin),
-      (lt, ":num_active_tournaments", 3),
+      (lt, ":num_active_tournaments", 2),
       (store_random_in_range, ":random_no", 0, 100),
-      #Add new tournaments with a 30% chance if there are less than 3 tournaments going on
-      (lt, ":random_no", 30),
+      #Add new tournaments with a 15% chance if there are less than 2 tournaments going on
+      (lt, ":random_no", 15),
       (store_random_in_range, ":random_town", towns_begin, towns_end),
       (store_random_in_range, ":random_days", 12, 15),
       (party_set_slot, ":random_town", slot_town_has_tournament, ":random_days"),
@@ -5609,7 +5617,7 @@ simple_triggers = [
       (try_begin),
         (ge, "$cheat_mode", DPLMC_DEBUG_EXPERIMENTAL),
         (store_distance_to_party_from_party, ":debug_dist_to_main_party", "p_main_party", ":center_no"),
-        (le, ":debug_dist_to_main_party", 60),
+        (le, ":debug_dist_to_main_party", 30),
         (str_store_party_name, s90, ":center_no"),
         (display_message, "@{!}INFESTED: {s90} prosp {reg91}->{reg92} cattle {reg93}->{reg94} sheep {reg95}->{reg96}"),
       (try_end),
