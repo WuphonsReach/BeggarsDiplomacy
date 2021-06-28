@@ -33506,7 +33506,10 @@ scripts = [
 
       (try_begin), # charge everyone after a while
         (neq, ":battle_tactic", 0),
-        (ge, ":mission_time", 180),
+        (store_random_in_range, ":charge_after_mission_time", -45, 46),
+        #TODO: Use lord type to determine patience level?
+        (val_add, ":charge_after_mission_time", 200),
+        (ge, ":mission_time", ":charge_after_mission_time"),
         (assign, ":battle_tactic", 0),
         (team_give_order, ":team_no", grc_everyone, mordr_charge),
         (team_get_leader, ":ai_leader", ":team_no"),
@@ -52932,7 +52935,7 @@ scripts = [
     (assign, reg0, ":action"),
 	(assign, reg1, ":object"),
 	]),
-  
+
 	#script_npc_decision_checklist_troop_follow_or_not
     # INPUT: troop_no
     # OUTPUT: reg0
