@@ -26730,7 +26730,7 @@ scripts = [
         (set_item_probability_in_merchandise, ":cur_good", ":probability"),
 
         (try_begin),
-          (ge, "$cheat_mode", DPLMC_DEBUG_MIN),
+          (ge, "$cheat_mode", DPLMC_DEBUG_NEVER),
           (store_distance_to_party_from_party, ":debug_dist_to_main_party", "p_main_party", ":cur_center"),
           (le, ":debug_dist_to_main_party", ":debug_dist_to_main_party_limit"), # limit debug output to within range of player
           (str_store_item_name, s20, ":cur_good"),
