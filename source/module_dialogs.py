@@ -5203,9 +5203,14 @@ Overall, {s30}.", "pretender_progress_2",[]],
 []
 ],
 
-[anyone|plyr, "dplmc_patrol_confirm", [(str_store_party_name, s5, "$diplomacy_var"),], "Thank you.", "close_window",
+[anyone|plyr, "dplmc_patrol_confirm", 
 [
-(party_set_name, "$g_encountered_party", "str_s5_patrol"),
+  (str_store_party_name, s5, "$diplomacy_var"),
+], "Thank you.", "close_window",
+[
+(store_current_hours, ":hours"),
+(store_div, reg5, ":hours", 24),
+(party_set_name, "$g_encountered_party", "str_s5_patrol_nr_reg5"),
 (party_set_slot, "$g_encountered_party", slot_party_ai_object, "$diplomacy_var"),
 (party_set_slot, "$g_encountered_party", slot_party_ai_state, spai_patrolling_around_center),
 (party_set_ai_behavior, "$g_encountered_party", ai_bhvr_travel_to_party),
