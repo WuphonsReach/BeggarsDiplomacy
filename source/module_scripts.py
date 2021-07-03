@@ -26640,7 +26640,7 @@ scripts = [
       (party_get_slot, ":merchant_troop", ":cur_center", slot_town_elder),
       (party_get_slot, ":center_prosperity", ":cur_center", slot_town_prosperity),
       (troop_clear_inventory, ":merchant_troop"),
-      (assign, ":debug_dist_to_main_party_limit", 15),
+      (assign, ":debug_dist_to_main_party_limit", 5),
 
       (try_begin),
         (ge, "$cheat_mode", DPLMC_DEBUG_MIN),
