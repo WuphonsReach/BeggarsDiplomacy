@@ -17070,7 +17070,7 @@ scripts = [
       (try_begin),
         (ge, "$cheat_mode", DPLMC_DEBUG_MIN),
         (store_distance_to_party_from_party, ":debug_dist_to_main_party", "p_main_party", ":center_no"),
-        (le, ":debug_dist_to_main_party", 5), # limit debug output to towns within range of the player (otherwise too chatty)
+        (le, ":debug_dist_to_main_party", 3), # limit debug output to towns within range of the player (otherwise too chatty)
         (str_store_item_name, s20, ":cur_good"),
         (str_store_party_name, s21, ":center_no"),
         (assign, reg20, ":production"),
