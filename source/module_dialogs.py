@@ -3131,7 +3131,7 @@ Overall, {s30}.", "pretender_progress_2",[]],
   (neq, ":quest_object", -1),
   (assign, reg12, "$diplomacy_var2")
   ],
-  "Of course, things would go better if I didn't arrive empty-handed - we do still have the {reg12} units of {s11}?", "member_delegate_quest_ask_for_items",
+  "Of course, things would go better if I didn't arrive empty-handed - we do still have the {reg12} servings of {s11}?", "member_delegate_quest_ask_for_items",
   [
     #calculate how much player has in inventory
     (item_get_max_ammo, ":stack_size", "$diplomacy_var"),
@@ -6266,7 +6266,7 @@ Overall, {s30}.", "pretender_progress_2",[]],
 [
 ],
 #SB : to send -> sending
-"I recommend sending 300 units of smoked fish, cheese, or honey. If we have enough in our household I will induce a servant to deliver it.", "dplmc_chancellor_center_gift_select",[
+"I recommend sending 300 servings of smoked fish, cheese, or honey. If we have enough in our household I will induce a servant to deliver it.", "dplmc_chancellor_center_gift_select",[
 ]],
 
 ##send fish
@@ -6435,7 +6435,7 @@ Overall, {s30}.", "pretender_progress_2",[]],
 [
 ],
 #SB : to send -> sending
-"I recommend sending 150 units of Ale, Wine or Oil. If we have enough in our household I will order a porter to deliver it.", "dplmc_chancellor_gift_select",[
+"I recommend sending 150 servings of Ale, Wine or Oil. If we have enough in our household I will order a porter to deliver it.", "dplmc_chancellor_gift_select",[
 ]],
 
 ##send ale
@@ -36777,7 +36777,7 @@ I suppose there are plenty of bounty hunters around to get the job done . . .", 
                                      (assign, reg9, ":quest_target_amount"),
                                      (str_store_item_name, s4, ":quest_target_item"),
                                      ],
-   "I was told to deliver you {reg9} units of {s4}.", "tavernkeeper_deliver_wine",[]],
+   "I was told to deliver you {reg9} servings of {s4}.", "tavernkeeper_deliver_wine",[]],
 #SB : gender string, grammar (quest giver is always "Guild Master")
    [anyone,"tavernkeeper_deliver_wine", [],
  "At last! My stock was almost depleted. \
@@ -36860,7 +36860,8 @@ I suppose there are plenty of bounty hunters around to get the job done . . .", 
                                      (assign, reg9, ":quest_target_amount"),
                                      (str_store_item_name, s4, ":quest_target_item"),
                                      ],
-   "I was told to deliver you {reg9} units of {s4}, but I lost some of the cargo on the way.", "tavernkeeper_deliver_wine_incomplete",[]],
+   "I was told to deliver you {reg9} servings of {s4}, but I lost some of the cargo on the way.", "tavernkeeper_deliver_wine_incomplete",[]],
+
   [anyone,"tavernkeeper_deliver_wine_incomplete", [],
  "Attacked by bandits eh? \
  You are lucky they left you alive. \
@@ -36937,7 +36938,7 @@ I suppose there are plenty of bounty hunters around to get the job done . . .", 
                                      (quest_get_slot, reg9, "qst_deliver_wine", slot_quest_target_amount),
                                      (str_store_item_name, s4, ":quest_target_item"),
                                      ],
-   "I was told to deliver you {reg9} units of {s4}, but I lost the cargo on the way.", "tavernkeeper_deliver_wine_lost",[]],
+   "I was told to deliver you {reg9} servings of {s4}, but I lost the cargo on the way.", "tavernkeeper_deliver_wine_lost",[]],
 
   [anyone,"tavernkeeper_deliver_wine_lost", [],
  "What? I was waiting for that {s4} for weeks! \
@@ -41303,7 +41304,7 @@ What do you say?", "merchant_quest_brief_deliver_wine",
    ]],
   [anyone,"merchant_quest_brief", [(eq,"$random_merchant_quest_no","qst_deliver_wine")],
 "I have a shipment of {s6} that needs to be delivered to the goods merchant in {s4}. \
-If you can take {reg5} units of {s6} to {s4} in 7 days, you may earn {reg8} denars. \
+If you can take {reg5} servings of {s6} to {s4} in 7 days, you may earn {reg8} denars. \
 What do you say?", "merchant_quest_brief_deliver_wine",
    [(quest_get_slot, reg5, "qst_deliver_wine", slot_quest_target_amount),
     (quest_get_slot, reg8, "qst_deliver_wine", slot_quest_gold_reward),
@@ -41317,7 +41318,7 @@ What do you say?", "merchant_quest_brief_deliver_wine",
     (item_get_max_ammo, ":max_amount", ":quest_target_item"),
     (store_div, "$temp", reg5, ":max_amount"),
     (setup_quest_text,"qst_deliver_wine"),
-    (str_store_string, s2, "@{s9} of {s3} asked you to deliver {reg5} units of {s6} to the merchant's store in {s4} in 7 days."),
+    (str_store_string, s2, "@{s9} of {s3} asked you to deliver {reg5} servings of {s6} to the merchant's store in {s4} in 7 days."),
     #s2 should not be changed until the decision is made
    ]],
   [anyone|plyr,"merchant_quest_brief_deliver_wine", [(store_free_inventory_capacity,":capacity"),
@@ -42670,145 +42671,339 @@ I am the village elder and I will be honoured to serve you in any way I can.", "
   [anyone|plyr,"village_elder_recruit_decision", [(party_slot_ge, "$current_town", slot_center_volunteer_troop_amount, 1)],
    "No, not now.", "village_elder_pretalk",[]],
 
-  [anyone,"village_elder_active_mission_1", [], "Yes {sir/madam}, have you made any progress on it?", "village_elder_active_mission_2",[]],
+  [
+    anyone,"village_elder_active_mission_1", 
+    [], 
+    "Yes {sir/madam}, have you made any progress on it?", 
+    "village_elder_active_mission_2",
+    []
+  ],
 
-  [anyone|plyr,"village_elder_active_mission_2",[(store_partner_quest,":elder_quest"),
-                                                 (eq, ":elder_quest", "qst_deliver_grain"),
-                                                 (quest_get_slot, ":quest_target_amount", "qst_deliver_grain", slot_quest_target_amount),
-                                                 (call_script, "script_get_troop_item_amount", "trp_player", "itm_grain"),
-                                                 (assign, ":cur_amount", reg0),
-                                                 (ge, ":cur_amount", ":quest_target_amount"),
-                                                 (assign, reg5, ":quest_target_amount"),
-                                                 ],
-   "Indeed. I brought you {reg5} packs of grain.", "village_elder_deliver_grain_thank",
-   []],
+# VILLAGE QST_DELIVER_GRAIN TURN-IN --------------------------
 
-  [anyone,"village_elder_deliver_grain_thank", [(str_store_party_name, s13, "$current_town")],
-   "My good {lord/lady}. You have saved us from hunger and desperation. We cannot thank you enough, but you'll always be in our prayers. \
- The village of {s13} will not forget what you have done for us.", "village_elder_deliver_grain_thank_2",
-   [(quest_get_slot, ":quest_target_amount", "qst_deliver_grain", slot_quest_target_amount),
-    (troop_remove_items, "trp_player", "itm_grain", ":quest_target_amount"),
-    (add_xp_as_reward, 500),
-    (assign, ":increase_prosperity", ":quest_target_amount"),
-    (val_div, ":increase_prosperity", 2),
-    (val_add, ":increase_prosperity", 2),
-    (assign, ":relation_increase", ":quest_target_amount"),
-    (val_div, ":relation_increase", 3),
-    (val_add, ":relation_increase", 3),
-    (call_script, "script_change_center_prosperity", "$current_town", ":increase_prosperity"),
-    (call_script, "script_change_player_relation_with_center", "$current_town", ":relation_increase"),
-    (call_script, "script_end_quest", "qst_deliver_grain"),
-#Troop commentaries begin
-    (call_script, "script_add_log_entry", logent_helped_peasants, "trp_player",  "$current_town", -1, -1),
-#Troop commentaries end
-   ]],
+  [
+    anyone|plyr,"village_elder_active_mission_2",
+    [
+      (store_partner_quest,":elder_quest"),
+      (eq, ":elder_quest", "qst_deliver_grain"),
+      (quest_get_slot, ":quest_target_amount", "qst_deliver_grain", slot_quest_target_amount),
+      (call_script, "script_get_troop_item_amount", "trp_player", "itm_grain"),
+      (assign, ":cur_amount", reg0),
+      (ge, ":cur_amount", ":quest_target_amount"),
+      (assign, reg5, ":quest_target_amount"),
+    ],
+    "Indeed. I brought you {reg5} packs of grain.", 
+    "village_elder_deliver_grain_thank",
+    []
+  ],
 
-  [anyone,"village_elder_deliver_grain_thank_2", [],
-   "My good {lord/lady}, please, is there anything I can do for you?", "village_elder_talk",[]],
+  [
+    anyone,"village_elder_deliver_grain_thank", 
+    [
+      (str_store_party_name, s13, "$current_town")
+    ],
+"My good {lord/lady}. You have saved us from hunger and desperation. We cannot thank you enough, but you'll always be in our prayers. \
+The village of {s13} will not forget what you have done for us.", 
+    "village_elder_deliver_grain_thank_2",
+    [
+      (quest_get_slot, ":quest_target_amount", "qst_deliver_grain", slot_quest_target_amount),
+      (troop_remove_items, "trp_player", "itm_grain", ":quest_target_amount"),
+      (add_xp_as_reward, 500),
+      (assign, ":increase_prosperity", ":quest_target_amount"),
+      (val_div, ":increase_prosperity", 2),
+      (val_add, ":increase_prosperity", 1),
+      (call_script, "script_change_center_prosperity", "$current_town", ":increase_prosperity"),
+      (assign, ":relation_increase", ":quest_target_amount"),
+      (val_div, ":relation_increase", 3),
+      (val_add, ":relation_increase", 2),
+      (call_script, "script_change_player_relation_with_center", "$current_town", ":relation_increase"),
+      (call_script, "script_end_quest", "qst_deliver_grain"),
+      #Troop commentaries begin
+      (call_script, "script_add_log_entry", logent_helped_peasants, "trp_player",  "$current_town", -1, -1),
+      #Troop commentaries end
+    ]
+  ],
 
+# VILLAGE QUEST: deliver_wedding_food TURN-IN --------------------------
 
-  [anyone|plyr,"village_elder_active_mission_2", [], "I am still working on it.", "village_elder_active_mission_3",[]],
-  [anyone|plyr,"village_elder_active_mission_2", [], "I am afraid I won't be able to finish it.", "village_elder_mission_failed",[]],
+  [
+    anyone|plyr,"village_elder_active_mission_2",
+    [
+      (store_partner_quest,":elder_quest"),
+      (eq, ":elder_quest", "qst_deliver_wedding_food"),
+      
+      (quest_get_slot, ":quest_target_amount", "qst_deliver_wedding_food", slot_quest_target_amount),
+      (quest_get_slot, ":quest_target_item", "qst_deliver_wedding_food", slot_quest_target_item),
+      (call_script, "script_dplmc_get_item_units_in_party_inventory", "trp_player", ":quest_target_item"),
+      (assign, ":cur_amount", reg0),
 
-  [anyone,"village_elder_active_mission_3",
-  ##diplomacy start+ change to use script_dplmc_print_subordinate_says_sir_madame_to_s0
-  #"Thank you, {sir/madam}. We are praying for your success everyday."
+      (try_begin),
+        (ge, "$cheat_mode", DPLMC_DEBUG_MIN),
+        (str_store_item_name, s20, ":quest_target_item"),
+        (assign, reg20, ":quest_target_amount"),
+        (assign, reg21, ":cur_amount"),
+        (display_message, "@{!}QUEST: Player has {reg21} of {s20}, needs {reg20}."),
+      (end_try),
+
+      (ge, ":cur_amount", ":quest_target_amount"),
+      (str_store_item_name, s6, ":quest_target_item"),
+      (assign, reg5, ":quest_target_amount"),
+    ],
+    "Indeed. I brought you {reg5} servings of {s6}.", 
+    "village_elder_deliver_wedding_food_thank",
+    []
+  ],
+
+  [
+    anyone,"village_elder_deliver_wedding_food_thank", 
+    [
+      (str_store_party_name, s13, "$current_town")
+    ],
+"We cannot thank you enough, good {lord/lady}, we will remember your name during the celebration. \
+The village of {s13} will not forget what you have done for us.", 
+    "village_elder_active_mission_thank_2",
+    [
+      (quest_get_slot, ":quest_target_amount", "qst_deliver_wedding_food", slot_quest_target_amount),
+      (quest_get_slot, ":quest_target_item", "qst_deliver_wedding_food", slot_quest_target_item),
+
+      (call_script, "script_dplmc_remove_item_units_from_party_inventory", "trp_player",  ":quest_target_item", ":quest_target_amount"),
+
+      (add_xp_as_reward, 500),
+      
+      # convert from units to stacks
+      (item_get_max_ammo, ":quest_target_item_units", ":quest_target_item"),
+      (val_max, ":quest_target_item_units", 1),
+      (val_div, ":quest_target_amount", ":quest_target_item_units"),
+
+      (assign, ":increase_prosperity", ":quest_target_amount"),
+      (val_add, ":increase_prosperity", 1),
+      (call_script, "script_change_center_prosperity", "$current_town", ":increase_prosperity"),
+      
+      (assign, ":relation_increase", ":quest_target_amount"),
+      (val_div, ":relation_increase", 2),
+      (val_add, ":relation_increase", 2),
+      (call_script, "script_change_player_relation_with_center", "$current_town", ":relation_increase"),
+      
+      (call_script, "script_end_quest", "qst_deliver_wedding_food"),
+      (call_script, "script_add_log_entry", logent_helped_peasants, "trp_player",  "$current_town", -1, -1),
+    ]
+  ],
+
+# ------------------------------------------------------
+
+  [
+    anyone,"village_elder_active_mission_thank_2", 
+    [],
+    "My good {lord/lady}, please, is there anything I can do for you?", 
+    "village_elder_talk",
+    []
+  ],
+
+  [
+    anyone|plyr,"village_elder_active_mission_2", 
+    [], 
+    "I am still working on it.", 
+    "village_elder_active_mission_3",
+    []
+  ],
+
+  [
+    anyone|plyr,"village_elder_active_mission_2", 
+    [], 
+    "I am afraid I won't be able to finish it.", 
+    "village_elder_mission_failed",
+    []
+  ],
+
+  [
+    anyone,"village_elder_active_mission_3",
   [(call_script, "script_dplmc_print_subordinate_says_sir_madame_to_s0"),],
   "Thank you, {s0}. We are praying for your success everyday.", "village_elder_pretalk",[]],
-  ##diplomacy end+
 
-  ##diplomacy start+ change to use script_dplmc_print_subordinate_says_sir_madame_to_s0
-  [anyone,"village_elder_mission_failed", #[], "Ah, I am sorry to hear that {sir/madam}. I'll try to think of something else.",
+  [
+    anyone,"village_elder_mission_failed",
   [(call_script, "script_dplmc_print_subordinate_says_sir_madame_to_s0"),],
   "Ah, I am sorry to hear that {s0}. I'll try to think of something else.",
-  ##diplomacy end+
   "village_elder_pretalk",
    [(store_partner_quest,":elder_quest"),
     (call_script, "script_abort_quest", ":elder_quest", 1)]],
-##
-##  [anyone,"village_elder_generic_mission_thank", [],
-##   "You have been so helpful {sir/madam}. I do not know how to thank you.", "village_elder_generic_mission_completed",[]],
-##
-##  [anyone|plyr,"village_elder_generic_mission_completed", [],
-##   "Speak not of it. I only did what needed to be done.", "village_elder_pretalk",[]],
 
-# Currently not needed.
-##  [anyone|plyr,"village_elder_generic_mission_failed", [],
-##   "TODO: I'm sorry I failed you sir. It won't happen again.", "village_elder_pretalk",
-##   [(store_partner_quest,":elder_quest"),
-##    (call_script, "script_finish_quest", ":elder_quest", 0),
-##    ]],
-
-
-  [anyone,"village_elder_request_mission_ask",
-  ##diplomacy start+ change to use script_dplmc_print_subordinate_says_sir_madame_to_s0
-  #[(store_partner_quest,":elder_quest"),(ge,":elder_quest",0)],
+  [
+    anyone,"village_elder_request_mission_ask",
   [(store_partner_quest,":elder_quest"),
    (ge,":elder_quest",0),
    (call_script, "script_dplmc_print_subordinate_says_sir_madame_to_s0"),],
-  #"Well {sir/madam}, you are already engaged with a task helping us. We cannot ask more from you.", "village_elder_pretalk",[]],
   "Well {s0} you are already engaged with a task helping us. We cannot ask more from you.", "village_elder_pretalk",[]],
-  ##diplomacy end+
 
-  ##diplomacy start+ change to use script_dplmc_print_subordinate_says_sir_madame_to_s0
-  [anyone,"village_elder_request_mission_ask", #[(troop_slot_eq, "$g_talk_troop", slot_troop_does_not_give_quest, 1)],
+  [
+    anyone,"village_elder_request_mission_ask", 
    [(troop_slot_eq, "$g_talk_troop", slot_troop_does_not_give_quest, 1),
     (call_script, "script_dplmc_print_subordinate_says_sir_madame_to_s0"),],
-   #"No {sir/madam}, We don't have any other tasks for you.", "village_elder_pretalk",[]],
    "No {s0}, We don't have any other tasks for you.", "village_elder_pretalk",[]],
-   ##diplomacy end+
 
-  [anyone|auto_proceed,"village_elder_request_mission_ask", [], "A task?", "village_elder_tell_mission",
-   [
-       (call_script, "script_get_quest", "$g_talk_troop"),
-       (assign, "$random_quest_no", reg0),
-   ]],
+  [
+    anyone|auto_proceed,"village_elder_request_mission_ask", 
+    [], 
+    "A task?", 
+    "village_elder_tell_mission",
+    [
+      (call_script, "script_get_quest", "$g_talk_troop"),
+      (assign, "$random_quest_no", reg0),
+    ]
+  ],
 
+# VILLAGE: QST_DELIVER_GRAIN - ASK/ACCEPT/REJECT --------------------------------
 
-  [anyone,"village_elder_tell_mission", [(eq,"$random_quest_no","qst_deliver_grain")],
+  [
+    anyone,"village_elder_tell_mission", 
+    [
+      (eq,"$random_quest_no","qst_deliver_grain")
+    ],
 "{My good sir/My good lady}, our village has been going through such hardships lately. \
 The harvest has been bad, and recently some merciless bandits took away our seed grain that we had reserved for the planting season. \
 If we cannot find some grain soon, we will not be able to plant our fields and then we will have nothing to eat for the coming year. \
 If you can help us, we would be indebted to you forever.", 
-      "village_elder_tell_deliver_grain_mission",
-   [
-     (quest_get_slot, ":quest_target_center", "$random_quest_no", slot_quest_target_center),
-     (str_store_party_name_link,s3,":quest_target_center"),
-     (quest_get_slot, reg5, "$random_quest_no", slot_quest_target_amount),
-     (setup_quest_text,"$random_quest_no"),
-     (str_store_string, s2, "@The elder of the village of {s3} asked you to bring them {reg5} packs of grain."),
-   ]],
+    "village_elder_tell_deliver_grain_mission",
+    [
+      (quest_get_slot, ":quest_target_center", "$random_quest_no", slot_quest_target_center),
+      (str_store_party_name_link,s3,":quest_target_center"),
+      (quest_get_slot, reg5, "$random_quest_no", slot_quest_target_amount),
+      (setup_quest_text,"$random_quest_no"),
+      (str_store_string, s2, "@The elder of the village of {s3} asked you to bring them {reg5} packs of grain."),
+    ]
+  ],
 
-  [anyone|plyr,"village_elder_tell_deliver_grain_mission", [],
-   "Hmmm. How much grain do you need?", "village_elder_tell_deliver_grain_mission_2",[]],
-  [anyone|plyr,"village_elder_tell_deliver_grain_mission", [],
-   "I can't be bothered with this. Ask help from someone else.", "village_elder_deliver_grain_mission_reject",[]],
+  [
+    anyone|plyr,"village_elder_tell_deliver_grain_mission", 
+    [],
+    "Hmmm. How much grain do you need?", 
+    "village_elder_tell_deliver_grain_mission_quantity_needed",
+    []
+  ],
 
-  [anyone,"village_elder_tell_deliver_grain_mission_2", [(quest_get_slot, reg5, "$random_quest_no", slot_quest_target_amount)],
-   "I think {reg5} packs of grain will let us start the planting. Hopefully, we can find charitable people to help us with the rest.", "village_elder_tell_deliver_grain_mission_3",[]],
+  [
+    anyone|plyr,"village_elder_tell_deliver_grain_mission", [],
+   "I can't be bothered with this. Ask help from someone else.", 
+   "village_elder_mission_reject",
+   []
+  ],
 
-  [anyone|plyr,"village_elder_tell_deliver_grain_mission_3", [],
-   "Then I will go and find you the grain you need.", "village_elder_deliver_grain_mission_accept",[]],
-  [anyone|plyr,"village_elder_tell_deliver_grain_mission_3", [],
-   "I am afraid I don't have time for this. You'll need to find help elsewhere.", "village_elder_deliver_grain_mission_reject",[]],
-  ##diplomacy start+ replace {sir/madam} with {my lord/my lady} or your highness if appropriate
-  [anyone,"village_elder_deliver_grain_mission_accept", #[], "Thank you, {sir/madam}. We'll be praying for you night and day.", "close_window",
-   [(call_script, "script_dplmc_print_subordinate_says_sir_madame_to_s0"),],
-   "Thank you, {s0}. We'll be praying for you night and day.", "close_window",
-  ##diplomacy end+
-   [(assign, "$g_leave_encounter",1),
-    (call_script, "script_change_player_relation_with_center", "$current_town", 2),
-    (call_script, "script_start_quest", "$random_quest_no", "$g_talk_troop"),
-    ]],
+  [
+    anyone,"village_elder_tell_deliver_grain_mission_quantity_needed", 
+    [
+      (quest_get_slot, reg5, "$random_quest_no", slot_quest_target_amount)
+    ],
+    "I think {reg5} packs of grain will let us start the planting. Hopefully, we can find charitable people to help us with the rest.", 
+    "village_elder_tell_mission_accept_or_reject",
+    []
+  ],
 
-##diplomacy start+ replace {sir/madam} with {my lord/my lady} or your highness if appropriate
-  [anyone,"village_elder_deliver_grain_mission_reject", #[], "Yes {sir/madam}, of course. I am sorry if I have bothered you with our troubles.", "close_window",
-  [(call_script, "script_dplmc_print_subordinate_says_sir_madame_to_s0"),], "Yes {s0}, of course. I am sorry if I have bothered you with our troubles.", "close_window",
-##diplomacy end+
-   [(troop_set_slot, "$g_talk_troop", slot_troop_does_not_give_quest, 1),
-    ]],
+  [
+    anyone|plyr,"village_elder_tell_mission_accept_or_reject", 
+    [
+      (eq,"$random_quest_no","qst_deliver_grain")
+    ],
+    "Then I will go and find you the grain you need.", 
+    "village_elder_mission_accept",
+    []
+  ],
 
+# VILLAGE QUEST: deliver_wedding_food - ASK/ACCEPT/REJECT --------------------------------
 
+  [
+    anyone,"village_elder_tell_mission", 
+    [
+      (eq,"$random_quest_no","qst_deliver_wedding_food"),
+      (quest_get_slot, ":quest_target_item", "qst_deliver_wedding_food", slot_quest_target_item),
+      (str_store_item_name, s6, ":quest_target_item"),
+    ],
+"{My good sir/My good lady}, we are planning a wedding celebration in a few weeks, but we are short on supplies. \
+Would you be willing to bring us some {s6}? \
+If you can help us, the village would be indebted to you.", 
+    "village_elder_tell_deliver_food_mission",
+    [
+      (quest_get_slot, ":quest_target_center", "$random_quest_no", slot_quest_target_center),
+      (str_store_party_name_link, s3, ":quest_target_center"),
+      (quest_get_slot, reg5, "$random_quest_no", slot_quest_target_amount),
+      (quest_get_slot, ":quest_target_item", "qst_deliver_wedding_food", slot_quest_target_item),
+      (str_store_item_name, s6, ":quest_target_item"),
+      (setup_quest_text,"$random_quest_no"),
+      (str_store_string, s2, "@The elder of the village of {s3} asked you to bring them {reg5} servings of {s6}."),
+    ]
+  ],
+
+  [
+    anyone|plyr,"village_elder_tell_deliver_food_mission", 
+    [],
+    "Hmmm. How much do you need?", 
+    "village_elder_tell_deliver_food_mission_quantity_needed",
+    []
+  ],
+
+  [
+    anyone|plyr,"village_elder_tell_deliver_food_mission", [],
+   "I can't be bothered with this. Ask help from someone else.", 
+   "village_elder_mission_reject",
+   []
+  ],
+
+  [
+    anyone,"village_elder_tell_deliver_food_mission_quantity_needed", 
+    [
+      (quest_get_slot, reg5, "$random_quest_no", slot_quest_target_amount),
+      (quest_get_slot, ":quest_target_item", "qst_deliver_wedding_food", slot_quest_target_item),
+      (str_store_item_name, s6, ":quest_target_item"),
+    ],
+    "We would be grateful if you bring us {reg5} servings of {s6}.", 
+    "village_elder_tell_mission_accept_or_reject",
+    []
+  ],
+
+#-----------------------------------------------------------------------------
+
+  [
+    anyone|plyr,"village_elder_tell_mission_accept_or_reject", 
+    [
+      (eq,"$random_quest_no","qst_deliver_wedding_food"),
+    ],
+    "Then I will go and find you the supplies that you need.", 
+    "village_elder_mission_accept",
+    []
+  ],
+
+  [
+    anyone|plyr,"village_elder_tell_mission_accept_or_reject", 
+    [],
+    "I am afraid I don't have time for this. You'll need to find help elsewhere.", 
+    "village_elder_mission_reject",
+    []
+  ],
+
+  [
+    anyone,"village_elder_mission_accept", 
+    [
+      (call_script, "script_dplmc_print_subordinate_says_sir_madame_to_s0"),
+    ],
+    "Thank you, {s0}. We'll be praying for you night and day.", 
+    "close_window",
+    [
+      (assign, "$g_leave_encounter",1),
+      (call_script, "script_change_player_relation_with_center", "$current_town", 2),
+      (call_script, "script_start_quest", "$random_quest_no", "$g_talk_troop"),
+    ]
+  ],
+
+  [
+    anyone,"village_elder_mission_reject", 
+    [
+      (call_script, "script_dplmc_print_subordinate_says_sir_madame_to_s0"),
+    ], 
+    "Yes {s0}, of course. I am sorry if I have bothered you with our troubles.", 
+    "close_window",
+    [
+      (troop_set_slot, "$g_talk_troop", slot_troop_does_not_give_quest, 1),
+    ]
+  ],
 
   [anyone,"village_elder_tell_mission", [(eq,"$random_quest_no", "qst_train_peasants_against_bandits")],
 "We are suffering greatly at the hands of a group of bandits. They take our food and livestock, \
@@ -42890,25 +43085,6 @@ We just need an experienced warrior to teach us how to fight.",
   #diplomacy start+ replace {sir/madam} with {my lord/my lady} or your highness if appropriate
   [anyone,"village_elder_tell_mission", [(call_script, "script_dplmc_print_subordinate_says_sir_madame_to_s0"),], "Thank you, {s0}, but we do not really need anything right now.", "village_elder_pretalk",[]],
   #diplomacy end+
-
-##  [anyone|plyr,"village_elder_mission_told", [], "TODO: As you wish sir. You can count on me.", "village_elder_mission_accepted",[]],
-##  [anyone|plyr,"village_elder_mission_told", [], "TODO: I'm afraid I can't carry out this mission right now, sir.", "village_elder_mission_rejected",[]],
-##
-##  [anyone,"village_elder_mission_accepted", [], "TODO: Excellent. Do this {playername}. I really have high hopes for you.", "close_window",
-##   [(assign, "$g_leave_encounter",1),
-##    (try_begin),
-##    #TODO: Add quest initializations here
-##    (try_end),
-##    (call_script, "script_start_quest", "$random_quest_no", "$g_talk_troop"),
-##    ]],
-
-##  [anyone,"village_elder_mission_rejected", [], "TODO: Is that so? Perhaps you are not up for the task anyway...", "close_window",
-##   [(assign, "$g_leave_encounter",1),
-##    (call_script, "script_change_player_relation_with_troop", "$g_talk_troop", -1),
-##    (troop_set_slot, "$g_talk_troop", slot_troop_does_not_give_quest, 1),
-##    ]],
-
-
 
 
 #Goods Merchants

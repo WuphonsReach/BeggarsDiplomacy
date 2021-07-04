@@ -1,4 +1,4 @@
-1351
+1358
 qstr_Breaking_camp... Breaking_camp...
 qstr_Removing_disguise... Removing_disguise...
 qstr_{s17}_has_{reg17}_de {s17}_has_{reg17}_denars
@@ -1350,3 +1350,10 @@ qstr_As_a_hunter_provisi As_a_hunter,_provisions_and_raw_goods_are_expected_as_w
 qstr_As_a_caravan_guard_ As_a_caravan_guard,_you_will_be_able_to_bear_weapons_but_bring_only_a_few_personal_belongings.
 qstr_As_a_merchant_you_w As_a_merchant,_you_will_be_able_to_bring_any_assortment_of_goods.
 qstr_As_a_bard_you_will_ As_a_bard,_you_will_be_allowed_some_personal_possessions_and_your_instrument.
+qstr_The_elder_of_the_villag The_elder_of_the_village_of_{s3}_asked_you_to_bring_them_{reg5}_barrels_of_ale.
+qstr_{s9}_of_{s3}_asked_you {s9}_of_{s3}_asked_you_to_deliver_{reg5}_servings_of_{s6}_to_the_merchant's_store_in_{s4}_in_7_days.
+qstr_The_elder_of_the_village The_elder_of_the_village_of_{s3}_asked_you_to_bring_them_{reg5}_servings_of_{s6}.
+qstr_The_elder_of_the_village_ The_elder_of_the_village_of_{s3}_asked_you_to_bring_them_{reg5}_bolts_of_{s6}.
+qstr_{!}QUEST:_Player_has {!}QUEST:_Player_has_{reg21}_of_{s20},_needs_{reg20}.
+qstr_{!}REMOVE:_{reg20}_{ {!}REMOVE:_{reg20}_{s20}_from_{s21},_{reg0}_actual
+qstr_{!}INVENTORY:_{s20}_ {!}INVENTORY:_{s20}_has_{reg0}_units_of_{s20}.

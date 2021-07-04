@@ -21229,22 +21229,23 @@ scripts = [
 	        (assign, ":quest_expiration_days", 0),
 	        (assign, ":quest_dont_give_again_period", 0),
 
-            (store_sub, ":num_possible_old_quests", ":quests_end", ":quests_begin"),
-            (store_sub, ":num_possible_new_quests", ":quests_end_2", ":quests_begin_2"),
-            (store_add, ":num_possible_total_quests", ":num_possible_old_quests", ":num_possible_new_quests"),
+          (store_sub, ":num_possible_old_quests", ":quests_end", ":quests_begin"),
+          (store_sub, ":num_possible_new_quests", ":quests_end_2", ":quests_begin_2"),
+          (store_add, ":num_possible_total_quests", ":num_possible_old_quests", ":num_possible_new_quests"),
 
-            (store_random_in_range, ":quest_no", 0, ":num_possible_total_quests"),
-            (try_begin),
-              (lt, ":quest_no", ":num_possible_old_quests"),
-              (store_random_in_range, ":quest_no", ":quests_begin", ":quests_end"),
-            (else_try),
-              (store_random_in_range, ":quest_no", ":quests_begin_2", ":quests_end_2"),
-            (try_end),
+          (store_random_in_range, ":quest_no", 0, ":num_possible_total_quests"),
+          (try_begin),
+            (lt, ":quest_no", ":num_possible_old_quests"),
+            (store_random_in_range, ":quest_no", ":quests_begin", ":quests_end"),
+          (else_try),
+            (store_random_in_range, ":quest_no", ":quests_begin_2", ":quests_end_2"),
+          (try_end),
 
 	        (neg|check_quest_active,":quest_no"),
 	        (neg|quest_slot_ge, ":quest_no", slot_quest_dont_give_again_remaining_days, 1),
+
+          # Village Elder quests ----------------------------
 	        (try_begin),
-	          # Village Elder quests
 	          (eq, ":quest_no", "qst_deliver_grain"),
 	          (try_begin),
 	            (is_between, ":giver_center_no", villages_begin, villages_end),
@@ -21261,6 +21262,7 @@ scripts = [
 	            (assign, ":quest_dont_give_again_period", ":random_period"),
 	            (assign, ":result", ":quest_no"),
 	          (try_end),
+
 	        (else_try),
 	          (eq, ":quest_no", "qst_deliver_cattle"),
 	          (try_begin),
@@ -21277,6 +21279,7 @@ scripts = [
 	            (assign, ":quest_dont_give_again_period", ":random_period"),
 	            (assign, ":result", ":quest_no"),
 	          (try_end),
+
 	        (else_try),
 	          (eq, ":quest_no", "qst_train_peasants_against_bandits"),
 	          (try_begin),
@@ -21294,8 +21297,46 @@ scripts = [
 	            (assign, ":quest_dont_give_again_period", ":random_period"),
 	            (assign, ":result", ":quest_no"),
 	          (try_end),
+
 	        (else_try),
-	          # Mayor quests
+	          (eq, ":quest_no", "qst_deliver_wedding_food"),
+	          (try_begin),
+	            (assign, ":quest_target_item", "itm_honey"),
+              (item_get_max_ammo, ":quest_target_item_units", ":quest_target_item"),
+	            (is_between, ":giver_center_no", villages_begin, villages_end),
+	            (call_script, "script_get_troop_item_amount", ":giver_troop", ":quest_target_item"),
+	            (le, reg0, 0), # check elder's inventory
+	            (party_slot_ge, ":giver_center_no", slot_town_prosperity, 0), #TODO: Limit to villages above 30 prosperity
+	            (assign, ":quest_target_center", ":giver_center_no"),
+              #TODO: Add more for higher prosperity levels (+1 per 20)
+	            (store_random_in_range, ":quest_target_amount", 3, 6),
+              (item_get_max_ammo, ":quest_target_item_units", ":quest_target_item"),
+              (val_max, ":quest_target_item_units", 1),
+              (val_mul, ":quest_target_amount", ":quest_target_item_units"),
+	            (assign, ":quest_expiration_days", 12),
+              (store_random_in_range, ":random_period", 21, 50),
+	            (assign, ":quest_dont_give_again_period", ":random_period"),
+	            (assign, ":result", ":quest_no"),
+	          (try_end),
+
+#	        (else_try),
+#	          (eq, ":quest_no", "qst_deliver_cloth_to_village"),
+#	          (try_begin),
+#	            (is_between, ":giver_center_no", villages_begin, villages_end),
+#	            (assign, ":quest_target_item", "itm_raw_silk"),
+#	            (call_script, "script_get_troop_item_amount", ":giver_troop", ":quest_target_item"),
+#	            (le, reg0, 0), # check elder's inventory
+#	            (neg|party_slot_ge, ":giver_center_no", slot_town_prosperity, 35),
+#	            (assign, ":quest_target_center", ":giver_center_no"),
+#	            (store_random_in_range, ":quest_target_amount", 2, 4),
+#	            (assign, ":quest_expiration_days", 12),
+#              (store_random_in_range, ":random_period", 21, 50),
+#	            (assign, ":quest_dont_give_again_period", ":random_period"),
+#              (assign, ":result", ":quest_no"),
+#	          (try_end),
+
+          # Mayor quests ---------------------------------
+	        (else_try),	          
 	          (eq, ":quest_no", "qst_escort_merchant_caravan"),
 	          (is_between, ":giver_center_no", centers_begin, centers_end),
 	          (store_random_party_in_range, ":quest_target_center", towns_begin, towns_end),
@@ -21309,6 +21350,7 @@ scripts = [
             (store_random_in_range, ":quest_target_amount", 15, 25), # size of party required
             (store_div, ":quest_xp_award", ":quest_gold_reward", 3),
 	          (assign, ":result", ":quest_no"),
+
 	        (else_try),
               (eq, ":quest_no", "qst_deliver_wine"),
               (is_between, ":giver_center_no", centers_begin, centers_end),
@@ -34012,9 +34054,13 @@ scripts = [
         (assign, ":quest_return_penalty", -3),
         (assign, ":quest_expire_penalty", -4),
       (else_try),
-        (eq, ":quest_no", "qst_train_peasants_against_bandits"),
-        (assign, ":quest_return_penalty", -4),
-        (assign, ":quest_expire_penalty", -5),
+        (eq, ":quest_no", "qst_deliver_wedding_food"),
+        (assign, ":quest_return_penalty", -5),
+        (assign, ":quest_expire_penalty", -8),
+      (else_try),
+        (eq, ":quest_no", "qst_deliver_cloth_to_village"),
+        (assign, ":quest_return_penalty", -5),
+        (assign, ":quest_expire_penalty", -8),
 
       #Mayor quests
       (else_try),
@@ -76045,6 +76091,91 @@ Born at {s43}^Contact in {s44} of the {s45}.^\
     (assign, reg0, ":num_owned_centers"),
     (assign, reg1, ":num_owned_weighted_centers"),
   ]),
+
+  # input:
+  #   arg1: troop number (e.g. "trp_player")
+  #   arg2: item ID (e.g. "itm_honey")
+  #   arg3: units to consume (i.e. 5 units out of a stack of 30 honey)
+  # output:
+  #   reg0: units removed
+  #   reg1: unfulfilled units still needed
+  ("dplmc_remove_item_units_from_party_inventory",
+  [
+    (store_script_param, ":troop_no", 1),
+    (store_script_param, ":target_item", 2),
+    (store_script_param, ":target_quantity", 3),
+
+    (assign, ":units_needed", ":target_quantity"),
+    (troop_get_inventory_capacity, ":capacity", ":troop_no"),
+    (try_for_range_backwards, ":cur_slot", 0, ":capacity"),
+      (gt, ":units_needed", 0),
+      (troop_get_inventory_slot, ":cur_item", ":troop_no", ":cur_slot"),
+      (eq, ":cur_item", ":target_item"), # and the thing we are looking for
+      (assign, ":ok_to_continue", 1),
+      (try_begin),
+        (is_between, ":cur_item", food_begin, food_end),
+        (troop_get_inventory_slot_modifier, ":item_modifier", ":troop_no", ":cur_slot"),
+        (eq, ":item_modifier", imod_rotten), # is rotten
+        (assign, ":ok_to_continue", 0),
+      (try_end),
+      (eq, ":ok_to_continue", 1),
+      (troop_inventory_slot_get_item_amount, ":cur_amount", ":troop_no", ":cur_slot"),
+      (val_min, ":units_needed", ":cur_amount"), # can't remove more than we still need
+      (assign, ":units_removed", ":cur_amount"),
+      (val_sub, ":units_needed", ":units_removed"),
+      (val_sub, ":cur_amount", ":units_removed"),
+      (troop_inventory_slot_set_item_amount, ":troop_no", ":cur_slot", ":cur_amount"),
+    (try_end),
+
+    (store_sub, reg0, ":target_quantity", ":units_needed"), # units removed
+    (assign, reg1, ":units_needed"),
+
+    (try_begin),
+      (ge, "$cheat_mode", DPLMC_DEBUG_MIN),
+      (str_store_item_name, s20, ":target_item"),
+      (str_store_troop_name, s21, ":troop_no"),
+      (assign, reg20, ":target_quantity"),
+      (display_message, "@{!}REMOVE: {reg20} {s20} from {s21}, {reg0} actual"),
+    (end_try),
+  ]),
+
+  # input:
+  #   arg1: troop number (e.g. "trp_player")
+  #   arg2: item ID (e.g. "itm_honey")
+  # output:
+  #   reg0: units found (if food: not rotten)
+  ("dplmc_get_item_units_in_party_inventory",
+  [
+    (store_script_param, ":troop_no", 1),
+    (store_script_param, ":target_item", 2),
+
+    (assign, ":inventory_units", 0),
+    (troop_get_inventory_capacity, ":capacity", ":troop_no"),
+    (try_for_range, ":cur_slot", 0, ":capacity"),
+      (troop_get_inventory_slot, ":cur_item", ":troop_no", ":cur_slot"),
+      (eq, ":cur_item", ":target_item"), # and the thing we are looking for
+      (assign, ":ok_to_continue", 1),
+      (try_begin),
+        (is_between, ":cur_item", food_begin, food_end),
+        (troop_get_inventory_slot_modifier, ":item_modifier", ":troop_no", ":cur_slot"),
+        (eq, ":item_modifier", imod_rotten), # is rotten
+        (assign, ":ok_to_continue", 0),
+      (try_end),
+      (eq, ":ok_to_continue", 1),
+      (troop_inventory_slot_get_item_amount, ":cur_amount", ":troop_no", ":cur_slot"),
+      (val_add, ":inventory_units", ":cur_amount"),
+    (try_end),
+
+    (assign, reg0, ":inventory_units"),
+
+    (try_begin),
+      (ge, "$cheat_mode", DPLMC_DEBUG_MIN),
+      (str_store_item_name, s20, ":target_item"),
+      (str_store_troop_name, s21, ":troop_no"),
+      (display_message, "@{!}INVENTORY: {s20} has {reg0} units of {s20}."),
+    (end_try),
+  ]),
+
 
     # #script_cf_dplmc_disguise_evaluate_contraband
     # #input : party_no, troop_no
