@@ -76121,8 +76121,8 @@ Born at {s43}^Contact in {s44} of the {s45}.^\
       (try_end),
       (eq, ":ok_to_continue", 1),
       (troop_inventory_slot_get_item_amount, ":cur_amount", ":troop_no", ":cur_slot"),
-      (val_min, ":units_needed", ":cur_amount"), # can't remove more than we still need
       (assign, ":units_removed", ":cur_amount"),
+      (val_min, ":units_removed", ":units_needed"), # can't remove more than we still need
       (val_sub, ":units_needed", ":units_removed"),
       (val_sub, ":cur_amount", ":units_removed"),
       (troop_inventory_slot_set_item_amount, ":troop_no", ":cur_slot", ":cur_amount"),
