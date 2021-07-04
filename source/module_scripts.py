@@ -21024,10 +21024,12 @@ scripts = [
     (try_begin),
       (gt, ":giver_party_no", 0),
       (party_get_attached_to, ":giver_center_no", ":giver_party_no"),
+      (is_between, ":giver_center_no", centers_begin, centers_end),
       (party_get_slot, ":giver_center_prosperity", ":giver_center_no", slot_town_prosperity),
     (else_try),
       (is_between, "$g_encountered_party", centers_begin, centers_end),
       (assign, ":giver_center_no", "$g_encountered_party"),
+      (party_get_slot, ":giver_center_prosperity", ":giver_center_no", slot_town_prosperity),
     (try_end),
 
 	  (call_script, "script_troop_get_player_relation", ":giver_troop"),
@@ -21248,12 +21250,11 @@ scripts = [
           # Village Elder quests ----------------------------
 	        (try_begin),
 	          (eq, ":quest_no", "qst_deliver_grain"),
+            (is_between, ":giver_center_no", villages_begin, villages_end),
+            (le, ":giver_center_prosperity", 35), # check prosperity
 	          (try_begin),
-	            (is_between, ":giver_center_no", villages_begin, villages_end),
-	            #The quest giver is the village elder
 	            (call_script, "script_get_troop_item_amount", ":giver_troop", "itm_grain"),
 	            (le, reg0, 0), # check elder's inventory
-	            (neg|party_slot_ge, ":giver_center_no", slot_town_prosperity, 35),
 	            (assign, ":quest_target_center", ":giver_center_no"),
 	            (assign, ":quest_target_item", "itm_grain"), #SB : fix this or add various goods
 	            (store_random_in_range, ":quest_target_amount", 3, 9),
@@ -21266,12 +21267,11 @@ scripts = [
 
 	        (else_try),
 	          (eq, ":quest_no", "qst_deliver_cattle"),
+            (is_between, ":giver_center_no", villages_begin, villages_end),
+            (le, ":giver_center_prosperity", 40), # check prosperity
 	          (try_begin),
-	            (is_between, ":giver_center_no", villages_begin, villages_end),
-	            #The quest giver is the village elder
 	            (party_get_slot, ":num_cattle", ":giver_center_no", slot_village_number_of_cattle),
 	            (le, ":num_cattle", dplmc_village_cattle_reserve),
-              (neg|party_slot_ge, ":giver_center_no", slot_town_prosperity, 45),
 	            (assign, ":quest_target_center", ":giver_center_no"),
               # cattle are more expensive now, ask for lower quantity
 	            (store_random_in_range, ":quest_target_amount", 2, 6),
@@ -21283,9 +21283,9 @@ scripts = [
 
 	        (else_try),
 	          (eq, ":quest_no", "qst_train_peasants_against_bandits"),
+            (is_between, ":giver_center_no", villages_begin, villages_end),
+            (le, ":giver_center_prosperity", 75), # check prosperity
 	          (try_begin),
-	            (is_between, ":giver_center_no", villages_begin, villages_end),
-	            #The quest giver is the village elder
 	            (store_skill_level, ":player_trainer", "skl_trainer", "trp_player"),
 	            (gt, ":player_trainer", 0),
 	            (store_random_in_range, ":quest_target_amount", 4, 7),
