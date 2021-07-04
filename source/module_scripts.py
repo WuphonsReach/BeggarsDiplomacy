@@ -76174,10 +76174,54 @@ Born at {s43}^Contact in {s44} of the {s45}.^\
       (ge, "$cheat_mode", DPLMC_DEBUG_MIN),
       (str_store_item_name, s20, ":target_item"),
       (str_store_troop_name, s21, ":troop_no"),
-      (display_message, "@{!}INVENTORY: {s20} has {reg0} units of {s20}."),
+      (display_message, "@{!}INVENTORY: {s21} has {reg0} units of {s20}."),
     (end_try),
   ]),
 
+  # input:
+  #   arg1: troop number (e.g. "trp_player")
+  # output:
+  #   reg0: item ID (e.g. "itm_honey")
+  ("dplmc_get_missing_luxury_food_in_troop_inventory",
+  [
+    (store_script_param, ":troop_no", 1),
+
+    (assign, ":found_missing_item", -1),
+    (try_for_range, ":attempts", 0, 24), # try 5x number of possibles
+      (le, ":found_missing_item", 0),
+      (assign, ":check_item", "itm_honey"), # default
+      (store_random_in_range, ":random", -1, 5),
+      (try_begin),
+        (eq, ":random", 0),
+        (assign, ":check_item", "itm_butter"),
+      (else_try),
+        (eq, ":random", 1),
+        (assign, ":check_item", "itm_cheese"),
+      (else_try),
+        (eq, ":random", 2),
+        (assign, ":check_item", "itm_pork"),
+      (else_try),
+        (eq, ":random", 3),
+        (assign, ":check_item", "itm_chicken"),
+      (else_try),
+        (eq, ":random", 4),
+        (assign, ":check_item", "itm_cattle_meat"),
+      (try_end),
+      #(call_script, "script_get_troop_item_amount", ":troop_no", ":check_item"),
+      (store_item_kind_count, reg0, ":troop_no", ":check_item"),
+      (le, reg0, 0),
+      (assign, ":found_missing_item", ":check_item"),
+    (try_end),
+
+    (assign, reg0, ":found_missing_item"),
+
+    (try_begin),
+      (ge, "$cheat_mode", DPLMC_DEBUG_MIN),
+      (str_store_item_name, s20, ":found_missing_item"),
+      (str_store_troop_name, s21, ":troop_no"),
+      (display_message, "@{!}INV-CHECK: {s21} has zero {s20}."),
+    (end_try),
+  ]),
 
     # #script_cf_dplmc_disguise_evaluate_contraband
     # #input : party_no, troop_no
