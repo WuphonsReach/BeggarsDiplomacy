@@ -21288,10 +21288,10 @@ scripts = [
 	            #The quest giver is the village elder
 	            (store_skill_level, ":player_trainer", "skl_trainer", "trp_player"),
 	            (gt, ":player_trainer", 0),
-	            (store_random_in_range, ":quest_target_amount", 5, 8),
-                #SB : add condition to have at least this many farmers remaining to show up
-                (party_count_members_of_type, ":num_villagers", ":giver_center_no", "trp_farmer"), #disallow peasant woman
-                (gt, ":num_villagers", ":quest_target_amount"), #+1 for village elder
+	            (store_random_in_range, ":quest_target_amount", 4, 7),
+              #SB : add condition to have at least this many farmers remaining to show up
+              (party_count_members_of_type, ":num_villagers", ":giver_center_no", "trp_farmer"), #disallow peasant woman
+              (gt, ":num_villagers", ":quest_target_amount"), #+1 for village elder
 	            (assign, ":quest_target_center", ":giver_center_no"),
 	            (assign, ":quest_expiration_days", 20),
               (store_random_in_range, ":random_period", 30, 50),
