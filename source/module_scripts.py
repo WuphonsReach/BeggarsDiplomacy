@@ -8331,15 +8331,16 @@ scripts = [
 
   #Praven (ale per Katrin, leatherwork, smoked fish, chicken, sheep)
   (call_script, "script_dplmc_add_random_production", "p_town_6", slot_center_mills, 4, 8, -1),
-  (call_script, "script_dplmc_add_random_production", "p_town_6", slot_center_breweries, 4, 8, -1),
+  (call_script, "script_dplmc_add_random_production", "p_town_6", slot_center_breweries, 5, 9, -1),
   (call_script, "script_dplmc_add_random_production", "p_town_6", slot_center_tanneries, 2, 5, 1),
   (call_script, "script_dplmc_add_random_production", "p_town_6", slot_center_fishing_fleet, 8, 15, 1),
   (call_script, "script_dplmc_add_random_production", "p_town_6", slot_center_head_chicken, 10, 20, -1),
   (call_script, "script_dplmc_add_random_production", "p_town_6", slot_center_head_sheep, 12, 25, -1),
   (call_script, "script_dplmc_add_random_production", "p_town_6", slot_center_apiaries, 3, 6, -1),
 
-  #Uxkhal (bread, leatherwork, oil, grain per Katrin)
+  #Uxkhal (bread, leatherwork, oil, grain per Katrin, ale)
   (call_script, "script_dplmc_add_random_production", "p_town_7", slot_center_mills, 8, 12, 0),
+  (call_script, "script_dplmc_add_random_production", "p_town_7", slot_center_breweries, 3, 6, -1),
   (call_script, "script_dplmc_add_random_production", "p_town_7", slot_center_tanneries, 3, 6, -1),
   (call_script, "script_dplmc_add_random_production", "p_town_7", slot_center_olive_presses, 3, 6, 1),
   (call_script, "script_dplmc_add_random_production", "p_town_7", slot_center_head_chicken, 3, 12, -1),
