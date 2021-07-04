@@ -21301,13 +21301,12 @@ scripts = [
 
 	        (else_try),
 	          (eq, ":quest_no", "qst_deliver_wedding_food"),
+            (is_between, ":giver_center_no", villages_begin, villages_end),
+            (ge, ":giver_center_prosperity", 30), # check prosperity
 	          (try_begin),
-	            (assign, ":quest_target_item", "itm_honey"),
-              (item_get_max_ammo, ":quest_target_item_units", ":quest_target_item"),
-	            (is_between, ":giver_center_no", villages_begin, villages_end),
-	            (call_script, "script_get_troop_item_amount", ":giver_troop", ":quest_target_item"),
-	            (le, reg0, 0), # check elder's inventory
-              (ge, ":giver_center_prosperity", 30), # check prosperity
+              (call_script, "script_dplmc_get_missing_luxury_food_in_troop_inventory", ":giver_troop"),
+              (assign, ":quest_target_item", reg0),
+              (is_between, ":quest_target_item", food_begin, food_end),
 	            (assign, ":quest_target_center", ":giver_center_no"),
 	            (store_random_in_range, ":quest_target_amount", 2, 5),
               (store_div, ":prosperity_boost", ":giver_center_prosperity", 20),
@@ -21316,7 +21315,7 @@ scripts = [
               (val_max, ":quest_target_item_units", 1),
               (val_mul, ":quest_target_amount", ":quest_target_item_units"),
 	            (assign, ":quest_expiration_days", 12),
-              (store_random_in_range, ":random_period", 21, 50),
+              (store_random_in_range, ":random_period", 1, 7), #TODO: Extend to 21-45
 	            (assign, ":quest_dont_give_again_period", ":random_period"),
 	            (assign, ":result", ":quest_no"),
 	          (try_end),
