@@ -21307,10 +21307,11 @@ scripts = [
 	            (is_between, ":giver_center_no", villages_begin, villages_end),
 	            (call_script, "script_get_troop_item_amount", ":giver_troop", ":quest_target_item"),
 	            (le, reg0, 0), # check elder's inventory
-	            (party_slot_ge, ":giver_center_no", slot_town_prosperity, 0), #TODO: Limit to villages above 30 prosperity
+              (ge, ":giver_center_prosperity", 30), # check prosperity
 	            (assign, ":quest_target_center", ":giver_center_no"),
-              #TODO: Add more for higher prosperity levels (+1 per 20)
-	            (store_random_in_range, ":quest_target_amount", 3, 6),
+	            (store_random_in_range, ":quest_target_amount", 2, 5),
+              (store_div, ":prosperity_boost", ":giver_center_prosperity", 20),
+              (val_add, ":quest_target_amount", ":prosperity_boost"),
               (item_get_max_ammo, ":quest_target_item_units", ":quest_target_item"),
               (val_max, ":quest_target_item_units", 1),
               (val_mul, ":quest_target_amount", ":quest_target_item_units"),
