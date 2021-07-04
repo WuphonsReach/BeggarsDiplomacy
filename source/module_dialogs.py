@@ -42704,7 +42704,7 @@ I am the village elder and I will be honoured to serve you in any way I can.", "
     ],
 "My good {lord/lady}. You have saved us from hunger and desperation. We cannot thank you enough, but you'll always be in our prayers. \
 The village of {s13} will not forget what you have done for us.", 
-    "village_elder_deliver_grain_thank_2",
+    "village_elder_active_mission_thank_2",
     [
       (quest_get_slot, ":quest_target_amount", "qst_deliver_grain", slot_quest_target_amount),
       (troop_remove_items, "trp_player", "itm_grain", ":quest_target_amount"),
