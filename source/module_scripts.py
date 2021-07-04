@@ -21010,25 +21010,26 @@ scripts = [
   # Input: arg1 = troop_no (of the troop in conversation), arg2 = min_importance (of the quest)
   # Output: reg0 = quest_no (the slots of the quest will be filled after calling this script)
   ("get_quest",
-    [
-      (store_script_param_1, ":giver_troop"),
+  [
+    (store_script_param_1, ":giver_troop"),
 
-      (store_character_level, ":player_level", "trp_player"),
-      (store_troop_faction, ":giver_faction_no", ":giver_troop"),
+    (store_character_level, ":player_level", "trp_player"),
+    (store_troop_faction, ":giver_faction_no", ":giver_troop"),
 
-      (troop_get_slot, ":giver_party_no", ":giver_troop", slot_troop_leaded_party),
-      (troop_get_slot, ":giver_reputation", ":giver_troop", slot_lord_reputation_type),
+    (troop_get_slot, ":giver_party_no", ":giver_troop", slot_troop_leaded_party),
+    (troop_get_slot, ":giver_reputation", ":giver_troop", slot_lord_reputation_type),
 
-      (assign, ":giver_center_no", -1),
-      (try_begin),
-        (gt, ":giver_party_no", 0),
-        (party_get_attached_to, ":giver_center_no", ":giver_party_no"),
-      (else_try),
-        (is_between, "$g_encountered_party", centers_begin, centers_end),
-        (assign, ":giver_center_no", "$g_encountered_party"),
-      (try_end),
+    (assign, ":giver_center_no", -1),
+    (assign, ":giver_center_prosperity", 0),
+    (try_begin),
+      (gt, ":giver_party_no", 0),
+      (party_get_attached_to, ":giver_center_no", ":giver_party_no"),
+      (party_get_slot, ":giver_center_prosperity", ":giver_center_no", slot_town_prosperity),
+    (else_try),
+      (is_between, "$g_encountered_party", centers_begin, centers_end),
+      (assign, ":giver_center_no", "$g_encountered_party"),
+    (try_end),
 
-	  ##diplomacy start+
 	  (call_script, "script_troop_get_player_relation", ":giver_troop"),
 	  (assign, ":giver_relation", reg0),
 	  (store_relation, ":giver_faction_relation", ":giver_faction_no", "fac_player_faction"),
