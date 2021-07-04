@@ -1,4 +1,4 @@
-1358
+1360
 qstr_Breaking_camp... Breaking_camp...
 qstr_Removing_disguise... Removing_disguise...
 qstr_{s17}_has_{reg17}_de {s17}_has_{reg17}_denars
@@ -1357,3 +1357,5 @@ qstr_The_elder_of_the_village_ The_elder_of_the_village_of_{s3}_asked_you_to_bri
 qstr_{!}QUEST:_Player_has {!}QUEST:_Player_has_{reg21}_of_{s20},_needs_{reg20}.
 qstr_{!}REMOVE:_{reg20}_{ {!}REMOVE:_{reg20}_{s20}_from_{s21},_{reg0}_actual
 qstr_{!}INVENTORY:_{s20}_ {!}INVENTORY:_{s20}_has_{reg0}_units_of_{s20}.
+qstr_{!}INVENTORY:_{s21}_ {!}INVENTORY:_{s21}_has_{reg0}_units_of_{s20}.
+qstr_{!}INV_CHECK:_{s21}_ {!}INV-CHECK:_{s21}_has_zero_{s20}.
