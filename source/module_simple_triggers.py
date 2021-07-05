@@ -3347,10 +3347,12 @@ simple_triggers = [
      (try_end),
     ]),
 
-  (72,
+  # Updating player odds (every 60 days on average) - tilts towards 1:1 odds
+  (48,
   [
-  # Updating player odds
     (try_for_range, ":cur_center", centers_begin, centers_end),
+      (store_random_in_range, ":random", 0, 30),
+      (eq, ":random", 0),
       (party_get_slot, ":player_odds", ":cur_center", slot_town_player_odds),
       (try_begin),
         (gt, ":player_odds", 1000),
