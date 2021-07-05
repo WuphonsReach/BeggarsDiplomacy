@@ -216,7 +216,7 @@ quests = [
 "{!}The elder of the village of {s3} asked you to bring them {reg5} servings of {s6}."
 ), 
 # the bride/groom family demands cloth
-("deliver_cloth_to_village", "Bring {s6} cloth to {s3}", qf_random_quest,
+("deliver_wedding_cloth", "Bring {s6} cloth to {s3}", qf_random_quest,
 "{!}The elder of the village of {s3} asked you to bring them {reg5} bolts of {s6}."
 ), 
 # a building needs repairs
