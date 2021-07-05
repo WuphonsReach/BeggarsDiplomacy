@@ -42789,6 +42789,65 @@ The village of {s13} will not forget what you have done for us.",
     ]
   ],
 
+# VILLAGE QUEST: deliver_wedding_cloth TURN-IN --------------------------
+
+  [
+    anyone|plyr,"village_elder_active_mission_2",
+    [
+      (store_partner_quest,":elder_quest"),
+      (eq, ":elder_quest", "qst_deliver_wedding_cloth"),
+      
+      (quest_get_slot, ":quest_target_amount", "qst_deliver_wedding_cloth", slot_quest_target_amount),
+      (quest_get_slot, ":quest_target_item", "qst_deliver_wedding_cloth", slot_quest_target_item),
+      (call_script, "script_get_troop_item_amount", "trp_player", ":quest_target_item"),
+      (assign, ":cur_amount", reg0),
+
+      (try_begin),
+        (ge, "$cheat_mode", DPLMC_DEBUG_MIN),
+        (str_store_item_name, s20, ":quest_target_item"),
+        (assign, reg20, ":quest_target_amount"),
+        (assign, reg21, ":cur_amount"),
+        (display_message, "@{!}QUEST: Player has {reg21} of {s20}, needs {reg20}."),
+      (end_try),
+
+      (ge, ":cur_amount", ":quest_target_amount"),
+      (str_store_item_name, s6, ":quest_target_item"),
+      (assign, reg5, ":quest_target_amount"),
+    ],
+    "Indeed. I brought you {reg5} bolts of {s6}.", 
+    "village_elder_deliver_wedding_cloth_thank",
+    []
+  ],
+
+  [
+    anyone,"village_elder_deliver_wedding_cloth_thank", 
+    [
+      (str_store_party_name, s13, "$current_town")
+    ],
+"We cannot thank you enough, good {lord/lady}, we will remember your name during the celebration. \
+The village of {s13} will not forget what you have done for us.", 
+    "village_elder_active_mission_thank_2",
+    [
+      (quest_get_slot, ":quest_target_amount", "qst_deliver_wedding_cloth", slot_quest_target_amount),
+      (quest_get_slot, ":quest_target_item", "qst_deliver_wedding_cloth", slot_quest_target_item),
+
+      (troop_remove_items, "trp_player", ":quest_target_item", ":quest_target_amount"),
+
+      (add_xp_as_reward, 500),
+      
+      (assign, ":increase_prosperity", ":quest_target_amount"),
+      (val_add, ":increase_prosperity", 1),
+      (call_script, "script_change_center_prosperity", "$current_town", ":increase_prosperity"),
+      
+      (assign, ":relation_increase", ":quest_target_amount"),
+      (val_add, ":relation_increase", 2),
+      (call_script, "script_change_player_relation_with_center", "$current_town", ":relation_increase"),
+      
+      (call_script, "script_end_quest", "qst_deliver_wedding_cloth"),
+      (call_script, "script_add_log_entry", logent_helped_peasants, "trp_player",  "$current_town", -1, -1),
+    ]
+  ],
+
 # ------------------------------------------------------
 
   [
@@ -42959,13 +43018,62 @@ If you can help us, the village would be indebted to you.",
     []
   ],
 
+# VILLAGE QUEST: deliver_wedding_cloth - ASK/ACCEPT/REJECT --------------------------------
+
+  [
+    anyone,"village_elder_tell_mission", 
+    [
+      (eq,"$random_quest_no","qst_deliver_wedding_cloth"),
+      (quest_get_slot, ":quest_target_item", "qst_deliver_wedding_cloth", slot_quest_target_item),
+      (str_store_item_name, s6, ":quest_target_item"),
+    ],
+"{My good sir/My good lady}, we are planning a wedding celebration in a few weeks, but we are short on supplies. \
+Would you be willing to bring us some {s6} for the wedding clothes? \
+If you can help us, the village would be indebted to you.", 
+    "village_elder_tell_deliver_wedding_cloth_mission",
+    [
+      (quest_get_slot, ":quest_target_center", "$random_quest_no", slot_quest_target_center),
+      (str_store_party_name_link, s3, ":quest_target_center"),
+      (quest_get_slot, reg5, "$random_quest_no", slot_quest_target_amount),
+      (quest_get_slot, ":quest_target_item", "qst_deliver_wedding_cloth", slot_quest_target_item),
+      (str_store_item_name, s6, ":quest_target_item"),
+      (setup_quest_text,"$random_quest_no"),
+      (str_store_string, s2, "@The elder of the village of {s3} asked you to bring them {reg5} bolts of {s6}."),
+    ]
+  ],
+
+  [
+    anyone|plyr,"village_elder_tell_deliver_wedding_cloth_mission", 
+    [],
+    "Hmmm. How much do you need?", 
+    "village_elder_tell_deliver_wedding_cloth_mission_quantity_needed",
+    []
+  ],
+
+  [
+    anyone|plyr,"village_elder_tell_deliver_wedding_cloth_mission", [],
+   "I can't be bothered with this. Ask help from someone else.", 
+   "village_elder_mission_reject",
+   []
+  ],
+
+  [
+    anyone,"village_elder_tell_deliver_wedding_cloth_mission_quantity_needed", 
+    [
+      (quest_get_slot, reg5, "$random_quest_no", slot_quest_target_amount),
+      (quest_get_slot, ":quest_target_item", "qst_deliver_wedding_cloth", slot_quest_target_item),
+      (str_store_item_name, s6, ":quest_target_item"),
+    ],
+    "The families are requesting {reg5} bolts of {s6} for the wedding clothes.", 
+    "village_elder_tell_mission_accept_or_reject",
+    []
+  ],
+
 #-----------------------------------------------------------------------------
 
   [
     anyone|plyr,"village_elder_tell_mission_accept_or_reject", 
-    [
-      (eq,"$random_quest_no","qst_deliver_wedding_food"),
-    ],
+    [],
     "Then I will go and find you the supplies that you need.", 
     "village_elder_mission_accept",
     []

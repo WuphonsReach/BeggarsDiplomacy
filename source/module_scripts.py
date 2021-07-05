@@ -21315,26 +21315,32 @@ scripts = [
               (val_max, ":quest_target_item_units", 1),
               (val_mul, ":quest_target_amount", ":quest_target_item_units"),
 	            (assign, ":quest_expiration_days", 12),
-              (store_random_in_range, ":random_period", 1, 7), #TODO: Extend to 21-45
+              (store_random_in_range, ":random_period", 21, 45),
 	            (assign, ":quest_dont_give_again_period", ":random_period"),
 	            (assign, ":result", ":quest_no"),
 	          (try_end),
 
-#	        (else_try),
-#	          (eq, ":quest_no", "qst_deliver_cloth_to_village"),
-#	          (try_begin),
-#	            (is_between, ":giver_center_no", villages_begin, villages_end),
-#	            (assign, ":quest_target_item", "itm_raw_silk"),
-#	            (call_script, "script_get_troop_item_amount", ":giver_troop", ":quest_target_item"),
-#	            (le, reg0, 0), # check elder's inventory
-#	            (neg|party_slot_ge, ":giver_center_no", slot_town_prosperity, 35),
-#	            (assign, ":quest_target_center", ":giver_center_no"),
-#	            (store_random_in_range, ":quest_target_amount", 2, 4),
-#	            (assign, ":quest_expiration_days", 12),
-#              (store_random_in_range, ":random_period", 21, 50),
-#	            (assign, ":quest_dont_give_again_period", ":random_period"),
-#              (assign, ":result", ":quest_no"),
-#	          (try_end),
+	        (else_try),
+	          (eq, ":quest_no", "qst_deliver_wedding_cloth"),
+            (is_between, ":giver_center_no", villages_begin, villages_end),
+            (ge, ":giver_center_prosperity", 30), # check prosperity
+	          (try_begin),
+              (store_div, ":cloth_tier_limit", ":giver_center_prosperity", 20),
+              (call_script, "script_dplmc_get_missing_cloth_in_troop_inventory", ":giver_troop", ":cloth_tier_limit"),
+              (assign, ":quest_target_item", reg0),
+              (is_between, ":quest_target_item", trade_goods_begin, trade_goods_end),
+	            (assign, ":quest_target_center", ":giver_center_no"),
+	            (store_random_in_range, ":quest_target_amount", 2, 4),
+              (store_div, ":prosperity_boost", ":giver_center_prosperity", 20),
+              (val_add, ":quest_target_amount", ":prosperity_boost"),
+              (item_get_max_ammo, ":quest_target_item_units", ":quest_target_item"),
+              (val_max, ":quest_target_item_units", 1),
+              (val_mul, ":quest_target_amount", ":quest_target_item_units"),
+	            (assign, ":quest_expiration_days", 12),
+              (store_random_in_range, ":random_period", 21, 45),
+	            (assign, ":quest_dont_give_again_period", ":random_period"),
+	            (assign, ":result", ":quest_no"),
+	          (try_end),
 
           # Mayor quests ---------------------------------
 	        (else_try),	          
@@ -34059,7 +34065,7 @@ scripts = [
         (assign, ":quest_return_penalty", -5),
         (assign, ":quest_expire_penalty", -8),
       (else_try),
-        (eq, ":quest_no", "qst_deliver_cloth_to_village"),
+        (eq, ":quest_no", "qst_deliver_wedding_cloth"),
         (assign, ":quest_return_penalty", -5),
         (assign, ":quest_expire_penalty", -8),
 
@@ -76216,7 +76222,56 @@ Born at {s43}^Contact in {s44} of the {s45}.^\
 
     (try_begin),
       (ge, "$cheat_mode", DPLMC_DEBUG_MIN),
-      (str_store_item_name, s20, ":found_missing_item"),
+      (str_store_string, s20, "@nothing-found"),
+      (try_begin),
+        (gt, ":found_missing_item", 0),
+        (str_store_item_name, s20, ":found_missing_item"),
+      (try_end),
+      (str_store_troop_name, s21, ":troop_no"),
+      (display_message, "@{!}INV-CHECK: {s21} has zero {s20}."),
+    (end_try),
+  ]),
+
+  # input:
+  #   arg1: troop number (e.g. "trp_player")
+  #   arg2: cloth tier limit (0=wool, 1=linen, 2=silk, 3=velvet)
+  # output:
+  #   reg0: item ID (e.g. "itm_wool_cloth")
+  ("dplmc_get_missing_cloth_in_troop_inventory",
+  [
+    (store_script_param, ":troop_no", 1),
+    (store_script_param, ":tier_limit", 2),
+    (val_clamp, ":tier_limit", 0, 3),
+
+    (assign, ":found_missing_item", -1),
+    (try_for_range, ":attempts", 0, 15), # try 5x number of possibles
+      (le, ":found_missing_item", 0),
+      (assign, ":check_item", "itm_wool_cloth"), # default
+      (store_random_in_range, ":random", -1, ":tier_limit"),
+      (try_begin),
+        (eq, ":random", 0),
+        (assign, ":check_item", "itm_linen"),
+      (else_try),
+        (eq, ":random", 1),
+        (assign, ":check_item", "itm_raw_silk"),
+      (else_try),
+        (eq, ":random", 2),
+        (assign, ":check_item", "itm_velvet"),
+      (try_end),
+      (store_item_kind_count, reg0, ":troop_no", ":check_item"),
+      (le, reg0, 0),
+      (assign, ":found_missing_item", ":check_item"),
+    (try_end),
+
+    (assign, reg0, ":found_missing_item"),
+
+    (try_begin),
+      (ge, "$cheat_mode", DPLMC_DEBUG_MIN),
+      (str_store_string, s20, "@nothing-found"),
+      (try_begin),
+        (gt, ":found_missing_item", 0),
+        (str_store_item_name, s20, ":found_missing_item"),
+      (try_end),
       (str_store_troop_name, s21, ":troop_no"),
       (display_message, "@{!}INV-CHECK: {s21} has zero {s20}."),
     (end_try),

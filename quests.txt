@@ -41,7 +41,7 @@ qst_deliver_cattle Deliver_{reg5}_Heads_of_Cattle_to_{s3} 2 {!}The_elder_of_the_
 qst_train_peasants_against_bandits Train_the_Peasants_of_{s13}_Against_Bandits. 2 {!}None 
 qst_deliver_food Bring_{s6}_to_{s3} 2 {!}The_elder_of_the_village_of_{s3}_asked_you_to_bring_them_{reg5}_units_of_{s6}. 
 qst_deliver_wedding_food Bring_{s6}_to_{s3} 2 {!}The_elder_of_the_village_of_{s3}_asked_you_to_bring_them_{reg5}_servings_of_{s6}. 
-qst_deliver_cloth_to_village Bring_{s6}_cloth_to_{s3} 2 {!}The_elder_of_the_village_of_{s3}_asked_you_to_bring_them_{reg5}_bolts_of_{s6}. 
+qst_deliver_wedding_cloth Bring_{s6}_cloth_to_{s3} 2 {!}The_elder_of_the_village_of_{s3}_asked_you_to_bring_them_{reg5}_bolts_of_{s6}. 
 qst_deliver_tools_to_village Bring_{s6}_to_{s3} 2 {!}The_elder_of_the_village_of_{s3}_asked_you_to_bring_them_{reg5}_units_of_{s6}. 
 qst_eliminate_bandits_infesting_village Save_the_Village_of_{s7}_from_Marauding_Bandits 2 {!}A_villager_from_{s7}_begged_you_to_save_their_village_from_the_bandits_that_took_refuge_there. 
 qst_visit_lady Visit_Lady 2 {!}None 
