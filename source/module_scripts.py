@@ -16976,7 +16976,7 @@ scripts = [
         (store_mul, ":offset", 5, ":prosperity"), # 35*5/75 = 2, 50*5/75= 3
         (val_div, ":offset", 75), # target prosperity
         (val_clamp, ":offset", 0, 9),
-        (val_add, ":offset", 102), # base price factor (towns are more expensive)
+        (val_add, ":offset", 105), # base price factor (towns are more expensive)
         (val_mul, ":target_price_factor", ":offset"),
         (val_div, ":target_price_factor", 100),
       (else_try),
@@ -16984,7 +16984,7 @@ scripts = [
         (store_mul, ":offset", 5, ":prosperity"), # 35*5/80=2, 50*5/80=3
         (val_div, ":offset", 80), # target prosperity
         (val_clamp, ":offset", 0, 8),
-        (val_add, ":offset", 85), # base price factor (villages discount a bit)
+        (val_add, ":offset", 82), # base price factor (villages discount a bit)
         (val_mul, ":target_price_factor", ":offset"),
         (val_div, ":target_price_factor", 100),
       (try_end),
