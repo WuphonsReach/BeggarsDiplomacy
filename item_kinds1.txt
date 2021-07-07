@@ -444,7 +444,7 @@ itemsfile version 3
  0
 0
 
- itm_cheese Cheese Cheese 1  cheese_b 0  34144267 0 95 0 8.000000 110 40 0 0 0 0 0 0 0 30 0 0
+ itm_cheese Cheese Cheese 1  cheese_b 0  34144267 0 145 0 8.000000 110 40 0 0 0 0 0 0 0 30 0 0
  0
 0
 

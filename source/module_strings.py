@@ -4546,6 +4546,7 @@ We apologize sincerely if you contributed your suggestions and feedback but were
   ("s5_reinf", "Reinforcements from {s5}"),
   ("s5_scout", "{s5} Scout"),
   ("s5_patrol", "{s5} Patrol"),
+  ("s5_patrol_nr_reg5", "{s5} Patrol #{reg5}"),
   
   #companion mission strings
   ("preparing_prison_break", "Preparing a prison break in {s9}"),

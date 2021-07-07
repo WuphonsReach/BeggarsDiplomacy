@@ -787,3 +787,7 @@ script_initialize_food_morale_bonuses = 785
 script_dplmc_center_get_price_factor_index = 786
 script_initialize_dplmc_preferences_defaults = 787
 script_dplmc_get_owned_center_points = 788
+script_dplmc_remove_item_units_from_party_inventory = 789
+script_dplmc_get_item_units_in_party_inventory = 790
+script_dplmc_get_missing_luxury_food_in_troop_inventory = 791
+script_dplmc_get_missing_cloth_in_troop_inventory = 792

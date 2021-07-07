@@ -30,6 +30,7 @@ The goal of BeggarsDiplomacy is to take the improvements from [DIPLADO develop](
     - [Balance (Parties)](#balance-parties)
     - [Bug Fixes](#bug-fixes)
   - [Making Changes](#making-changes)
+  - [References](#references)
   - [Parentage](#parentage)
   - [Credits](#credits)
 
@@ -214,6 +215,10 @@ You must have a copy of Python 2.7 installed.  Edit either [compile.bat](source/
 If you are using the [compile.sh](source/compile.sh), take a look inside and edit the INSTALLDIR variable.  That way any updated files will automatically be copied to your "Modules" folder.
 
 You must exit and restart Mount & Blade: Warband after compiling and installing your changes for them to work.
+
+## References
+
+- [Mount and Blade: Warband Modding Wikipedia](https://mbmodwiki.github.io/Main_Page)
 
 ## Parentage
 

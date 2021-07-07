@@ -123,9 +123,12 @@ dplmc_ek_alt_item_c = 12
 dplmc_ek_alt_item_d = 13
 dplmc_ek_alt_item_e = 14
 dplmc_ek_alt_item_f = 15
+dplmc_ek_alt_item_g = 16
+dplmc_ek_alt_item_h = 17
+dplmc_ek_alt_item_i = 18
 
 dplmc_ek_alt_items_begin = dplmc_ek_alt_item_a
-dplmc_ek_alt_items_end   = dplmc_ek_alt_item_f + 1
+dplmc_ek_alt_items_end   = dplmc_ek_alt_item_i + 1
 
 #SB : meta-item type
 meta_itp_mask = 100

@@ -1,5 +1,5 @@
 stringsfile version 1
-3844
+3845
 str_no_string NO_STRING!
 str_empty_string _
 str_yes Yes.
@@ -3401,6 +3401,7 @@ str_s5_transfer Transfer_to_{s5}
 str_s5_reinf Reinforcements_from_{s5}
 str_s5_scout {s5}_Scout
 str_s5_patrol {s5}_Patrol
+str_s5_patrol_nr_reg5 {s5}_Patrol_#{reg5}
 str_preparing_prison_break Preparing_a_prison_break_in_{s9}
 str_on_loan On_loan
 str_accompanying_s5 Accompanying_{s5}

@@ -88,9 +88,11 @@ bodyguard_trigger_a = (
         (assign, ":mission_tpl", "mt_town_center"),
         (try_end),
         (else_try),
-        (eq, "$talk_context", tc_tavern_talk),
-        (assign, ":entry_point", 17),  # First NPC Tavern Entry
+          (eq, "$talk_context", tc_tavern_talk),
+          (val_min, ":max_guards", 2), # limit to 2 guards
+          (assign, ":entry_point", 17),  # First NPC Tavern Entry
         (try_end),
+
         (try_begin),
         (neq, "$talk_context", tc_tavern_talk),
         (gt, ":use_horse", 0),
