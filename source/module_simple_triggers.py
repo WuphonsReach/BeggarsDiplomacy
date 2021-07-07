@@ -930,45 +930,6 @@ simple_triggers = [
    [
    (call_script, "script_randomly_start_war_peace_new", 1),
 
-   (try_begin), # check for border incident
-		(store_random_in_range, ":acting_village", villages_begin, villages_end),
-		(store_random_in_range, ":target_village", villages_begin, villages_end),
-		(store_faction_of_party, ":acting_faction", ":acting_village"),
-		(store_faction_of_party, ":target_faction", ":target_village"), #target faction receives the provocation
-		(neq, ":acting_village", ":target_village"),
-		(neq, ":acting_faction", ":target_faction"),
-
-		(call_script, "script_diplomacy_faction_get_diplomatic_status_with_faction", ":target_faction", ":acting_faction"),
-    # reg0 -- TRUCE/TREATY = 1, PEACE = 0, CASUS BELLI = -1, WAR = -2
-    (assign, ":diplo_status_with_faction", reg0),
-    (assign, ":diplo_status_duration", reg1),
-    (try_begin),
-			(ge, "$cheat_mode", DPLMC_DEBUG_EXPERIMENTAL),
-      (str_store_faction_name, s91, ":acting_faction"),
-      (str_store_faction_name, s92, ":target_faction"),
-			(assign, reg90, ":diplo_status_with_faction"),
-      (assign, reg91, ":diplo_status_duration"),
-			(display_message, "@{!}PROVOCATION-TEST: {s91} vs {s92} status: {reg90} days: {reg91}"),
-		(try_end),
-    # Must be at peace, or have a truce/treaty
-		(this_or_next|eq, ":diplo_status_with_faction", 0),
-    (eq, ":diplo_status_with_faction", 1),
-    (le, ":diplo_status_duration", dplmc_treaty_trade_days_initial), # truce or trade treaty
-
-    (store_random_in_range, ":random", 0, 2),
-		(try_begin),
-      (eq, ":random", 0),
-			(this_or_next|party_slot_eq, ":acting_village", slot_center_original_faction, ":target_faction"),
-			(party_slot_eq, ":acting_village", slot_center_ex_faction, ":target_faction"),
-			(call_script, "script_add_notification_menu", "mnu_notification_border_incident", ":acting_village", -1),
-		(else_try),
-			(store_distance_to_party_from_party, ":distance", ":acting_village", ":target_village"),
-      #The two villages must be relatively close
-			(lt, ":distance", 25),
-			(call_script, "script_add_notification_menu", "mnu_notification_border_incident", ":acting_village", ":target_village"),
-		(try_end),
-   (try_end),
-
    (try_for_range, ":faction_1", kingdoms_begin, kingdoms_end),
 		(faction_slot_eq, ":faction_1", slot_faction_state, sfs_active),
 		(try_for_range, ":faction_2", kingdoms_begin, kingdoms_end),
@@ -986,8 +947,6 @@ simple_triggers = [
 					(call_script, "script_update_faction_notes", ":faction_1"),
 					(lt, ":faction_1", ":faction_2"),
 					(call_script, "script_add_notification_menu", "mnu_notification_truce_expired", ":faction_1", ":faction_2"),
-				##diplomacy begin
-		##nested diplomacy start+ Replace "magic numbers" with named constants
         (else_try),
           (eq, ":truce_days", dplmc_treaty_alliance_days_expire + 1),#replaced 61
           (call_script, "script_update_faction_notes", ":faction_1"),
@@ -1003,8 +962,6 @@ simple_triggers = [
           (call_script, "script_update_faction_notes", ":faction_1"),
           (lt, ":faction_1", ":faction_2"),
           (call_script, "script_add_notification_menu", "mnu_dplmc_notification_trade_expired", ":faction_1", ":faction_2"),
-  	    ##nested diplomacy end+
-        ##diplomacy end
 				(try_end),
 				(val_sub, ":truce_days", 1),
 				(faction_set_slot, ":faction_1", ":slot_truce_days", ":truce_days"),
@@ -1015,13 +972,13 @@ simple_triggers = [
 			(faction_get_slot, ":provocation_days", ":faction_1", ":slot_provocation_days"),
 			(try_begin),
 				(ge, ":provocation_days", 1),
+        (store_relation, ":relation", ":faction_1", ":faction_2"),
 				(try_begin),#factions already at war
-					(store_relation, ":relation", ":faction_1", ":faction_2"),
 					(lt, ":relation", 0),
 					(faction_set_slot, ":faction_1", ":slot_provocation_days", 0),
 				(else_try), #Provocation expires
           # Must be at peace in order to have casus belli that is counting down
-		      (eq, ":diplo_status_with_faction", 0),
+		      (eq, ":relation", 0),
           (eq, ":provocation_days", 1),
 					(call_script, "script_add_notification_menu", "mnu_notification_casus_belli_expired", ":faction_1", ":faction_2"),
 					(faction_set_slot, ":faction_1", ":slot_provocation_days", 0),
@@ -1151,92 +1108,77 @@ simple_triggers = [
       (try_end),
       ]),
 
-  # Hold regular marshall elections for players_kingdom
-   (24, #Disabled in favor of new system
-    [
-    #  (val_add, "$g_election_date", 1),
-    #  (ge, "$g_election_date", 90), #elections holds once in every 90 days.
-    #  (is_between, "$players_kingdom", kingdoms_begin, kingdoms_end),
-    #  (neq, "$players_kingdom", "fac_player_supporters_faction"),
-    #  (assign, "$g_presentation_input", -1),
-    #  (assign, "$g_presentation_marshall_selection_1_vote", 0),
-    #  (assign, "$g_presentation_marshall_selection_2_vote", 0),
+  (2, # check for border incident - it can take dozens of attempts before conditions are satisfied
+  [
+    # Put a limit on how close together border incidents can fire.
+    # This only sets the "start trying again" time.
+    # Because we pick two villages at random, it can take multiple dozens of tries.
+    # Or, because random is random, the first try could succeed.
+    (store_current_hours, ":cur_hours"),
+    (val_max, "$dplmc_next_border_incident_time", ":cur_hours"),
+    (ge, ":cur_hours", "$dplmc_next_border_incident_time"),
+    (assign, ":border_incident_occurred", 0),
 
-    #  (assign, "$g_presentation_marshall_selection_max_renown_1", -10000),
-    #  (assign, "$g_presentation_marshall_selection_max_renown_2", -10000),
-    #  (assign, "$g_presentation_marshall_selection_max_renown_3", -10000),
-    #  (assign, "$g_presentation_marshall_selection_max_renown_1_troop", -10000),
-    #  (assign, "$g_presentation_marshall_selection_max_renown_2_troop", -10000),
-    #  (assign, "$g_presentation_marshall_selection_max_renown_3_troop", -10000),
-    #  (assign, ":num_men", 0),
-    #  (try_for_range, ":loop_var", "trp_kingdom_heroes_including_player_begin", active_npcs_end),
-    #    (assign, ":cur_troop", ":loop_var"),
-    #    (assign, ":continue", 0),
-    #    (try_begin),
-    #      (eq, ":loop_var", "trp_kingdom_heroes_including_player_begin"),
-    #      (assign, ":cur_troop", "trp_player"),
-    #      (try_begin),
-    #        (eq, "$g_player_is_captive", 0),
-    #        (assign, ":continue", 1),
-    #      (try_end),
-    #    (else_try),
-#		  (troop_slot_eq, ":cur_troop", slot_troop_occupation, slto_kingdom_hero),
- #         (store_troop_faction, ":cur_troop_faction", ":cur_troop"),
- #         (eq, "$players_kingdom", ":cur_troop_faction"),
-  #        #(troop_slot_eq, ":cur_troop", slot_troop_is_prisoner, 0),
-  #        (neg|troop_slot_ge, ":cur_troop", slot_troop_prisoner_of_party, 0),
-   #       (troop_slot_ge, ":cur_troop", slot_troop_leaded_party, 1),
-    #      (troop_slot_eq, ":cur_troop", slot_troop_occupation, slto_kingdom_hero),
-    #      (neg|faction_slot_eq, ":cur_troop_faction", slot_faction_leader, ":cur_troop"),
-    #      (troop_get_slot, ":cur_party", ":cur_troop", slot_troop_leaded_party),
-    #      (gt, ":cur_party", 0),
-    #      (party_is_active, ":cur_party"),
-    #      (call_script, "script_party_count_fit_for_battle", ":cur_party"),
-    #      (assign, ":party_fit_for_battle", reg0),
-    #      (call_script, "script_party_get_ideal_size", ":cur_party"),
-    #      (assign, ":ideal_size", reg0),
-    #      (store_mul, ":relative_strength", ":party_fit_for_battle", 100),
-    #      (val_div, ":relative_strength", ":ideal_size"),
-    #      (ge, ":relative_strength", 25),
-    #      (assign, ":continue", 1),
-    #    (try_end),
-    #    (eq, ":continue", 1),
-    #    (val_add, ":num_men", 1),
-    #    (troop_get_slot, ":renown", ":cur_troop", slot_troop_renown),
-    #    (try_begin),
-    #      (gt, ":renown", "$g_presentation_marshall_selection_max_renown_1"),
-    #      (assign, "$g_presentation_marshall_selection_max_renown_3", "$g_presentation_marshall_selection_max_renown_2"),
-    #      (assign, "$g_presentation_marshall_selection_max_renown_2", "$g_presentation_marshall_selection_max_renown_1"),
-    #      (assign, "$g_presentation_marshall_selection_max_renown_1", ":renown"),
-    #      (assign, "$g_presentation_marshall_selection_max_renown_3_troop", "$g_presentation_marshall_selection_max_renown_2_troop"),
-    #      (assign, "$g_presentation_marshall_selection_max_renown_2_troop", "$g_presentation_marshall_selection_max_renown_1_troop"),
-    #      (assign, "$g_presentation_marshall_selection_max_renown_1_troop", ":cur_troop"),
-    #    (else_try),
-    #      (gt, ":renown", "$g_presentation_marshall_selection_max_renown_2"),
-    #      (assign, "$g_presentation_marshall_selection_max_renown_3", "$g_presentation_marshall_selection_max_renown_2"),
-    #      (assign, "$g_presentation_marshall_selection_max_renown_2", ":renown"),
-    #      (assign, "$g_presentation_marshall_selection_max_renown_3_troop", "$g_presentation_marshall_selection_max_renown_2_troop"),
-    #      (assign, "$g_presentation_marshall_selection_max_renown_2_troop", ":cur_troop"),
-    #    (else_try),
-    #      (gt, ":renown", "$g_presentation_marshall_selection_max_renown_3"),
-    #      (assign, "$g_presentation_marshall_selection_max_renown_3", ":renown"),
-    #      (assign, "$g_presentation_marshall_selection_max_renown_3_troop", ":cur_troop"),
-    #    (try_end),
-    #  (try_end),
-    #  (ge, "$g_presentation_marshall_selection_max_renown_1_troop", 0),
-    #  (ge, "$g_presentation_marshall_selection_max_renown_2_troop", 0),
-    #  (ge, "$g_presentation_marshall_selection_max_renown_3_troop", 0),
-    #  (gt, ":num_men", 2), #at least 1 voter
-    #  (assign, "$g_election_date", 0),
-    #  (assign, "$g_presentation_marshall_selection_ended", 0),
-    #  (try_begin),
-    #    (neq, "$g_presentation_marshall_selection_max_renown_1_troop", "trp_player"),
-    #    (neq, "$g_presentation_marshall_selection_max_renown_2_troop", "trp_player"),
-    #    (start_presentation, "prsnt_marshall_selection"),
-    #  (else_try),
-    #    (jump_to_menu, "mnu_marshall_selection_candidate_ask"),
-    #  (try_end),
-      ]),#
+    (try_begin), 
+      (store_random_in_range, ":acting_village", villages_begin, villages_end),
+      (store_random_in_range, ":target_village", villages_begin, villages_end),
+      (store_faction_of_party, ":acting_faction", ":acting_village"),
+      (store_faction_of_party, ":target_faction", ":target_village"), #target faction receives the provocation
+      (neq, ":acting_village", ":target_village"), # can't be the same village
+      (neq, ":acting_faction", ":target_faction"), # can't be the same faction
+
+      (call_script, "script_diplomacy_faction_get_diplomatic_status_with_faction", ":target_faction", ":acting_faction"),
+      # reg0 -- TRUCE/TREATY = 1, PEACE = 0, CASUS BELLI = -1, WAR = -2
+      (assign, ":diplo_status_with_faction", reg0),
+      (assign, ":diplo_status_duration", reg1),
+      (try_begin),
+        (ge, "$cheat_mode", DPLMC_DEBUG_NEVER),
+        (str_store_faction_name, s91, ":acting_faction"),
+        (str_store_faction_name, s92, ":target_faction"),
+        (assign, reg90, ":diplo_status_with_faction"),
+        (assign, reg91, ":diplo_status_duration"),
+        (display_message, "@{!}PROVOCATION-TEST: {s91} vs {s92} ({reg90} status, {reg91} days)"),
+      (try_end),
+      (this_or_next|eq, ":diplo_status_with_faction", 0), # be at peace
+      (eq, ":diplo_status_with_faction", 1), # have a truce or treaty
+      (le, ":diplo_status_duration", dplmc_treaty_trade_days_initial), # truce or trade treaty
+
+      (try_begin),
+        (store_distance_to_party_from_party, ":distance", ":acting_village", ":target_village"),
+        (lt, ":distance", 24), #The two villages must be relatively close
+        (call_script, "script_add_notification_menu", "mnu_notification_border_incident", ":acting_village", ":target_village"),
+        (assign, ":border_incident_occurred", 1),
+      (else_try),
+        (this_or_next|party_slot_eq, ":acting_village", slot_center_original_faction, ":target_faction"),
+        (party_slot_eq, ":acting_village", slot_center_ex_faction, ":target_faction"),
+        (call_script, "script_add_notification_menu", "mnu_notification_border_incident", ":acting_village", -1),
+        (assign, ":border_incident_occurred", 1),
+      (try_end),
+    (try_end),
+
+    (try_begin),
+      (ge, ":border_incident_occurred", 1),
+      (try_begin),
+        (ge, "$cheat_mode", DPLMC_DEBUG_EXPERIMENTAL),
+        (call_script, "script_game_get_date_text", 0, ":cur_hours"),
+        (str_store_string, s2, s1),
+        (call_script, "script_game_get_date_text", 0, "$dplmc_next_border_incident_time"),
+        (display_message, "@{!}PROVOCATION: Provocation checks started on {s1}, succeeded on {s2}."),
+      (try_end),
+
+      (store_random_in_range, ":add_hours", 24 * 2, 24 * 12), # next start-timer in M to N days
+      (assign, "$dplmc_next_border_incident_time", ":cur_hours"),
+      (val_add, "$dplmc_next_border_incident_time", ":add_hours"),
+
+      (try_begin),
+        (ge, "$cheat_mode", DPLMC_DEBUG_EXPERIMENTAL),
+        (store_div, ":add_days", ":add_hours", 24),
+        (assign, reg20, ":add_days"),
+        (call_script, "script_game_get_date_text", 0, "$dplmc_next_border_incident_time"),
+        (display_message, "@{!}PROVOCATION-NEXT: Next provocation on/after {s1} (+{reg20} days)."),
+      (try_end),
+    (try_end),
+  ]),
 
    (24,
     [

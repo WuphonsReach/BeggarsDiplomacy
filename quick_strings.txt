@@ -1,4 +1,4 @@
-1361
+1360
 qstr_Breaking_camp... Breaking_camp...
 qstr_Removing_disguise... Removing_disguise...
 qstr_{s17}_has_{reg17}_de {s17}_has_{reg17}_denars
@@ -7,7 +7,8 @@ qstr_{!}_Commanded_party_ {!}_Commanded_party_#{reg4}_is_{s3},_troop_leaded_part
 qstr_Morale_for_{s9}_troo Morale_for_{s9}_troops:_{reg6}
 qstr_{!}Hire_reinforcemen {!}Hire_reinforcements_for_{s11}_from_{s12}_for_{reg11}_denars.
 qstr_{!}CONVERGE:_{s20}__ {!}CONVERGE:_{s20}_({reg22})_{reg20}_->_{reg21}
-qstr_{!}PROVOCATION_TEST: {!}PROVOCATION-TEST:_{s91}_vs_{s92}_status:_{reg90}_days:_{reg91}
+qstr_{!}PROVOCATION_TEST: {!}PROVOCATION-TEST:_{s91}_vs_{s92}_({reg90}_status,_{reg91}_days)
+qstr_{!}PROVOCATION_NEXT: {!}PROVOCATION-NEXT:_Next_provocation_on/after_{s1}_(+{reg20}_days).
 qstr_{!}DEBUG____Doing_po {!}DEBUG_--_Doing_political_calculations_for_{s9}
 qstr_{!}DEBUG___{s4}_fact {!}DEBUG_-_{s4}_faction_changed_in_defection
 qstr_{s5}_has_decided_to_ {s5}_has_decided_to_grant_{s4}_to_another_lord_of_the_{s7}.
@@ -294,7 +295,7 @@ qstr_{!}{s9}_must_be_impo {!}{s9}_must_be_imported,_modifying_the_price_from_{re
 qstr_yet_to_be_announced yet_to_be_announced
 qstr_The_Guildmaster_of_{ The_Guildmaster_of_{s13}_has_asked_you_to_deal_with_looters_in_the_surrounding_countryside.
 qstr_{s9}_of_{s3}_asked_y {s9}_of_{s3}_asked_you_to_deliver_{reg5}_units_({reg6}_slots)_of_{s6}_to_the_tavern_in_{s4}_in_7_days.
-qstr_{s9}_of_{s3}_asked_yo {s9}_of_{s3}_asked_you_to_deliver_{reg5}_units_of_{s6}_to_the_merchant's_store_in_{s4}_in_7_days.
+qstr_{s9}_of_{s3}_asked_yo {s9}_of_{s3}_asked_you_to_deliver_{reg5}_servings_of_{s6}_to_the_merchant's_store_in_{s4}_in_7_days.
 qstr_Escort_the_merchant_ Escort_the_merchant_caravan_to_the_town_of_{s8}.
 qstr_Merchant_{s9}_of_{s4 Merchant_{s9}_of_{s4}_asked_you_to_hunt_down_the_troublesome_bandits_in_the_vicinity_of_the_town.
 qstr_Guildmaster_of_{s4}_ Guildmaster_of_{s4}_gave_you_{reg12}_denars_to_pay_the_ransom_of_a_girl_kidnapped_by_bandits._You_are_to_meet_the_bandits_near_{s3}_and_pay_them_the_ransom_fee._After_that_you_are_to_bring_the_girl_back_to_{s4}.
@@ -303,9 +304,12 @@ qstr_The_Guildmaster_of_{s The_Guildmaster_of_{s14}_has_asked_you_to_deal_with_a
 qstr_Guildmaster_of_{s10} Guildmaster_of_{s10}_asked_you_to_move_a_cattle_herd_to_{s13}._You_will_earn_{reg8}_denars_in_return.
 qstr_{reg4?She:He}_is_not {reg4?She:He}_is_not_commanding_any_soldiers_at_the_moment.
 qstr_{reg4?She:He}_curren {reg4?She:He}_currently_commands_{reg0}_men{reg1?,_of_which_around_{reg1}_are_wounded:}.
+qstr_{!}QUEST:_Player_has {!}QUEST:_Player_has_{reg21}_of_{s20},_needs_{reg20}.
 qstr_The_elder_of_the_vil The_elder_of_the_village_of_{s3}_asked_you_to_bring_them_{reg5}_packs_of_grain.
-qstr_The_elder_of_the_vill The_elder_of_the_village_of_{s13}_asked_you_to_train_{reg5}_peasants_to_fight_against_local_bandits.
-qstr_The_elder_of_the_villa The_elder_of_the_village_of_{s3}_asked_you_to_bring_them_{reg5}_heads_of_cattle.
+qstr_The_elder_of_the_vill The_elder_of_the_village_of_{s3}_asked_you_to_bring_them_{reg5}_servings_of_{s6}.
+qstr_The_elder_of_the_villa The_elder_of_the_village_of_{s3}_asked_you_to_bring_them_{reg5}_bolts_of_{s6}.
+qstr_The_elder_of_the_villag The_elder_of_the_village_of_{s13}_asked_you_to_train_{reg5}_peasants_to_fight_against_local_bandits.
+qstr_The_elder_of_the_village The_elder_of_the_village_of_{s3}_asked_you_to_bring_them_{reg5}_heads_of_cattle.
 qstr_{s16}_and_{s15} {s16}_and_{s15}
 qstr_{!}{s16}_{s15} {!}{s16},_{s15}
 qstr_your_lordship your_lordship
@@ -922,6 +926,10 @@ qstr_Under_Siege Under_Siege
 qstr_{!}DCGTVP:_{s21}/{s2 {!}DCGTVP:_{s21}/{s20}_({reg20}/{reg21}/{reg22}_prod)
 qstr_{!}DCGMTP:_{s21}__{s {!}DCGMTP:_{s21}_({s23})_{s20}_({reg20}/{reg21}/{reg22}_prod)
 qstr_{!}SCRIPT:_initialize_f {!}SCRIPT:_initialize_food_morale_bonuses.
+qstr_{!}REMOVE:_{reg20}_{ {!}REMOVE:_{reg20}_{s20}_from_{s21},_{reg0}_actual
+qstr_{!}INVENTORY:_{s21}_ {!}INVENTORY:_{s21}_has_{reg0}_units_of_{s20}.
+qstr_nothing_found nothing-found
+qstr_{!}INV_CHECK:_{s21}_ {!}INV-CHECK:_{s21}_has_zero_{s20}.
 qstr_{!}DEBUG____Wanted_b {!}DEBUG_--_Wanted_bandits_spotted_by_{s4}
 qstr_Checking_rejoin_of_{ Checking_rejoin_of_{s10}_days_on_mission:_{reg0}
 qstr_{!}DEBUG_:_chamberla {!}DEBUG_:_chamberlain:_{reg0}
@@ -1350,13 +1358,4 @@ qstr_As_a_hunter_provisi As_a_hunter,_provisions_and_raw_goods_are_expected_as_w
 qstr_As_a_caravan_guard_ As_a_caravan_guard,_you_will_be_able_to_bear_weapons_but_bring_only_a_few_personal_belongings.
 qstr_As_a_merchant_you_w As_a_merchant,_you_will_be_able_to_bring_any_assortment_of_goods.
 qstr_As_a_bard_you_will_ As_a_bard,_you_will_be_allowed_some_personal_possessions_and_your_instrument.
-qstr_The_elder_of_the_villag The_elder_of_the_village_of_{s3}_asked_you_to_bring_them_{reg5}_barrels_of_ale.
-qstr_{s9}_of_{s3}_asked_you {s9}_of_{s3}_asked_you_to_deliver_{reg5}_servings_of_{s6}_to_the_merchant's_store_in_{s4}_in_7_days.
-qstr_The_elder_of_the_village The_elder_of_the_village_of_{s3}_asked_you_to_bring_them_{reg5}_servings_of_{s6}.
-qstr_The_elder_of_the_village_ The_elder_of_the_village_of_{s3}_asked_you_to_bring_them_{reg5}_bolts_of_{s6}.
-qstr_{!}QUEST:_Player_has {!}QUEST:_Player_has_{reg21}_of_{s20},_needs_{reg20}.
-qstr_{!}REMOVE:_{reg20}_{ {!}REMOVE:_{reg20}_{s20}_from_{s21},_{reg0}_actual
-qstr_{!}INVENTORY:_{s20}_ {!}INVENTORY:_{s20}_has_{reg0}_units_of_{s20}.
-qstr_{!}INVENTORY:_{s21}_ {!}INVENTORY:_{s21}_has_{reg0}_units_of_{s20}.
-qstr_{!}INV_CHECK:_{s21}_ {!}INV-CHECK:_{s21}_has_zero_{s20}.
-qstr_nothing_found nothing-found
+qstr_{!}PROVOCATION:_Prov {!}PROVOCATION:_Provocation_checks_started_on_{s1},_succeeded_on_{s2}.
