@@ -888,7 +888,7 @@ simple_triggers = [
       (try_end),
 
       (try_begin), #debug
-        (ge, "$cheat_mode", DPLMC_DEBUG_MIN),
+        (ge, "$cheat_mode", DPLMC_DEBUG_NEVER),
         (store_distance_to_party_from_party, ":debug_dist_to_main_party", "p_main_party", ":center_no"),
         (le, ":debug_dist_to_main_party", 25),
         (party_get_slot, ":new_prosperity", ":center_no", slot_town_prosperity),
