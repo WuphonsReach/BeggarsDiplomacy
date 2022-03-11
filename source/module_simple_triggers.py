@@ -1368,7 +1368,10 @@ simple_triggers = [
 			(eq, ":faction", "fac_player_supporters_faction"),
 			(val_add, ":num_centers", 1),
 		  (try_end),
-			
+
+            (store_random_in_range, ":continue_check", 0, 3),
+            (eq, ":continue_check", 0),
+
             (call_script, "script_troop_get_relation_with_troop", ":troop_no", ":faction_leader"),
             (this_or_next|le, reg0, -50), #was -75
             (eq, ":num_centers", 0), #if there is no walled centers that faction has defection happens 100%.
