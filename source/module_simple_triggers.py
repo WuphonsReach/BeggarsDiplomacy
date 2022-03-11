@@ -6983,10 +6983,10 @@ simple_triggers = [
 			(display_message, "@{!}DEBUG - no eligible lords in exile"),
 		 (try_end),
 	    (else_try),
-			#If there were fewer than 3 lords in exile, random chance that none will return.
-			(lt, ":num_exiles", 3),
-			(store_random_in_range, ":random", 0, 256),
-			(ge, ":random", 128),
+			#If there were fewer than 6 lords in exile, random chance that none will return.
+			(lt, ":num_exiles", 6),
+			(store_random_in_range, ":random", 0, 1000),
+			(le, ":random", 200), # percent chance
 			(try_begin),
 				(ge, "$cheat_mode", DPLMC_DEBUG_MIN),
 				(assign, reg0, ":num_exiles"),
