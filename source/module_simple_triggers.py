@@ -1583,8 +1583,9 @@ simple_triggers = [
 				(store_sub, ":chance_of_convergence", 0, reg0),
 				(store_random_in_range, ":random", 0, 300),
 				(lt, ":random", ":chance_of_convergence"),
-				(call_script, "script_troop_change_relation_with_troop", ":troop_no", ":active_npc", 1),
-				(val_add, "$total_relation_changes_through_convergence", 1),
+        (store_random_in_range, ":random_boost", 0, 4),
+				(call_script, "script_troop_change_relation_with_troop", ":troop_no", ":active_npc", ":random_boost"),
+				(val_add, "$total_relation_changes_through_convergence", ":random_boost"),
 			(try_end),
 		(try_end),
 	#Finish loop over the ":iteration" variable.
