@@ -372,7 +372,7 @@ itemsfile version 3
  0
 0
 
- itm_oil Oil Oil 1  oil 0  33619979 0 485 0 50.000000 60 0 0 0 0 0 0 0 0 50 0 0
+ itm_oil Oil Oil 1  oil 0  33619979 0 495 0 50.000000 60 0 0 0 0 0 0 0 0 50 0 0
  0
 0
 
@@ -420,7 +420,7 @@ itemsfile version 3
  0
 0
 
- itm_leatherwork Leatherwork Leatherwork 1  leatherwork_frame 0  65547 0 410 0 50.000000 90 0 0 0 0 0 0 0 0 0 0 0
+ itm_leatherwork Leatherwork Leatherwork 1  leatherwork_frame 0  65547 0 420 0 50.000000 90 0 0 0 0 0 0 0 0 0 0 0
  0
 0
 
@@ -432,7 +432,7 @@ itemsfile version 3
  0
 0
 
- itm_wine Wine Wine 1  amphora_slim 0  33619979 0 405 0 30.000000 60 0 0 0 0 0 0 0 0 50 0 0
+ itm_wine Wine Wine 1  amphora_slim 0  33619979 0 425 0 30.000000 60 0 0 0 0 0 0 0 0 50 0 0
  0
 0
 
@@ -484,7 +484,7 @@ itemsfile version 3
  0
 0
 
- itm_bread Bread Bread 1  bread_a 0  34144267 0 90 0 30.000000 110 40 0 0 0 0 0 0 0 50 0 0
+ itm_bread Bread Bread 1  bread_a 0  34144267 0 95 0 30.000000 110 40 0 0 0 0 0 0 0 50 0 0
  0
 0
 
