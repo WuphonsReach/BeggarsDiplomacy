@@ -1369,7 +1369,7 @@ simple_triggers = [
 			(val_add, ":num_centers", 1),
 		  (try_end),
 
-            (store_random_in_range, ":continue_check", 0, 3),
+            (store_random_in_range, ":continue_check", 0, 10),
             (eq, ":continue_check", 0),
 
             (call_script, "script_troop_get_relation_with_troop", ":troop_no", ":faction_leader"),
