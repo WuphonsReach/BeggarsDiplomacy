@@ -76007,33 +76007,33 @@ Born at {s43}^Contact in {s44} of the {s45}.^\
 
 	  #Staples
     (item_set_slot, "itm_bread", slot_item_food_bonus, 8),
-    (item_set_slot, "itm_grain", slot_item_food_bonus, 2),
+    (item_set_slot, "itm_grain", slot_item_food_bonus, 3),
 
 	  #Fat sources - preserved
-    (item_set_slot, "itm_smoked_fish", slot_item_food_bonus, 4),
+    (item_set_slot, "itm_smoked_fish", slot_item_food_bonus, 5),
     (item_set_slot, "itm_dried_meat", slot_item_food_bonus, 5),
-    (item_set_slot, "itm_cheese", slot_item_food_bonus, 5),
+    (item_set_slot, "itm_cheese", slot_item_food_bonus, 6),
     (item_set_slot, "itm_sausages", slot_item_food_bonus, 5),
-    (item_set_slot, "itm_butter", slot_item_food_bonus, 5),
+    (item_set_slot, "itm_butter", slot_item_food_bonus, 7),
 
 	  #Fat sources - perishable
-    (item_set_slot, "itm_chicken", slot_item_food_bonus, 9),
-    (item_set_slot, "itm_cattle_meat", slot_item_food_bonus, 9),
-    (item_set_slot, "itm_pork", slot_item_food_bonus, 9),
+    (item_set_slot, "itm_chicken", slot_item_food_bonus, 10),
+    (item_set_slot, "itm_cattle_meat", slot_item_food_bonus, 10),
+    (item_set_slot, "itm_pork", slot_item_food_bonus, 10),
 
 	  #Produce
-    (item_set_slot, "itm_raw_olives", slot_item_food_bonus, 3),
-    (item_set_slot, "itm_cabbages", slot_item_food_bonus, 2),
-    (item_set_slot, "itm_raw_grapes", slot_item_food_bonus, 4),
+    (item_set_slot, "itm_raw_olives", slot_item_food_bonus, 5),
+    (item_set_slot, "itm_cabbages", slot_item_food_bonus, 3),
+    (item_set_slot, "itm_raw_grapes", slot_item_food_bonus, 5),
     (item_set_slot, "itm_apples", slot_item_food_bonus, 4),
 
 	  #Sweet items
-    (item_set_slot, "itm_honey", slot_item_food_bonus, 6),
+    (item_set_slot, "itm_honey", slot_item_food_bonus, 7),
 
     # these never get used in the party morale calculations
     (item_set_slot, "itm_raw_date_fruit", slot_item_food_bonus, 4),
-    (item_set_slot, "itm_wine", slot_item_food_bonus, 5),
-    (item_set_slot, "itm_ale", slot_item_food_bonus, 4),
+    (item_set_slot, "itm_wine", slot_item_food_bonus, 7),
+    (item_set_slot, "itm_ale", slot_item_food_bonus, 7),
   ]),
 
   ("dplmc_center_get_price_factor_index",
