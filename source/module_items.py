@@ -181,22 +181,22 @@ items = [
 
  #["flour","Flour", [("salt_sack",0)], itp_merchandise|itp_type_goods|itp_consumable, 0, 40,weight(50)|abundance(100)|food_quality(45)|max_ammo(50),imodbits_none],
 
- ["oil","Oil", [("oil",0)], itp_merchandise|itp_type_goods|itp_consumable, 0, 495, weight(50)|abundance(60)|max_ammo(50),imodbits_none],
+ ["oil","Oil", [("oil",0)], itp_merchandise|itp_type_goods|itp_consumable, 0, 500, weight(50)|abundance(60)|max_ammo(50),imodbits_none],
 
- ["pottery","Pottery", [("jug",0)], itp_merchandise|itp_type_goods, 0, 280, weight(50)|abundance(90),imodbits_none],
+ ["pottery","Pottery", [("jug",0)], itp_merchandise|itp_type_goods, 0, 350, weight(50)|abundance(90),imodbits_none],
 
  ["raw_flax","Flax Bundle", [("raw_flax",0)], itp_merchandise|itp_type_goods, 0, 230, weight(40)|abundance(90),imodbits_none],
- ["linen","Linen", [("linen",0)], itp_merchandise|itp_type_goods, 0, 470, weight(40)|abundance(90),imodbits_none],
+ ["linen","Linen", [("linen",0)], itp_merchandise|itp_type_goods, 0, 500, weight(40)|abundance(90),imodbits_none],
 
  ["wool","Wool", [("wool_sack",0)], itp_merchandise|itp_type_goods, 0, 175, weight(35)|abundance(90),imodbits_none],
- ["wool_cloth","Wool Cloth", [("wool_cloth",0)], itp_merchandise|itp_type_goods, 0, 380, weight(40)|abundance(90),imodbits_none],
+ ["wool_cloth","Wool Cloth", [("wool_cloth",0)], itp_merchandise|itp_type_goods, 0, 400, weight(40)|abundance(90),imodbits_none],
 
- ["raw_silk","Raw Silk", [("raw_silk_bundle",0)], itp_merchandise|itp_type_goods, 0, 675, weight(30)|abundance(90),imodbits_none],
+ ["raw_silk","Raw Silk", [("raw_silk_bundle",0)], itp_merchandise|itp_type_goods, 0, 700, weight(30)|abundance(90),imodbits_none],
  ["raw_dyes","Dyes", [("dyes",0)], itp_merchandise|itp_type_goods, 0, 320, weight(10)|abundance(90),imodbits_none],
- ["velvet","Velvet", [("velvet",0)], itp_merchandise|itp_type_goods, 0, 1150, weight(45)|abundance(30),imodbits_none],
+ ["velvet","Velvet", [("velvet",0)], itp_merchandise|itp_type_goods, 0, 1300, weight(45)|abundance(30),imodbits_none],
 
- ["iron","Iron", [("iron",0)], itp_merchandise|itp_type_goods, 0, 295, weight(75)|abundance(60),imodbits_none],
- ["tools","Tools", [("iron_hammer",0)], itp_merchandise|itp_type_goods, 0, 550, weight(50)|abundance(90),imodbits_none],
+ ["iron","Iron", [("iron",0)], itp_merchandise|itp_type_goods, 0, 300, weight(75)|abundance(60),imodbits_none],
+ ["tools","Tools", [("iron_hammer",0)], itp_merchandise|itp_type_goods, 0, 600, weight(50)|abundance(90),imodbits_none],
 
  ["raw_leather","Hides", [("leatherwork_inventory",0)], itp_merchandise|itp_type_goods, 0, 240, weight(60)|abundance(90),imodbits_none],
  ["leatherwork","Leatherwork", [("leatherwork_frame",0)], itp_merchandise|itp_type_goods, 0, 420, weight(50)|abundance(90),imodbits_none],
@@ -204,7 +204,7 @@ items = [
  ["raw_date_fruit","Date Fruit", [("date_inventory",0)], itp_merchandise|itp_type_goods|itp_consumable|itp_food, 0, 180, weight(40)|food_quality(10)|max_ammo(10),imodbits_none],
  ["furs","Furs", [("fur_pack",0)], itp_merchandise|itp_type_goods, 0, 450, weight(40)|abundance(90),imodbits_none],
 
- ["wine","Wine", [("amphora_slim",0)], itp_merchandise|itp_type_goods|itp_consumable, 0, 425, weight(30)|abundance(60)|max_ammo(50),imodbits_none],
+ ["wine","Wine", [("amphora_slim",0)], itp_merchandise|itp_type_goods|itp_consumable, 0, 450, weight(30)|abundance(60)|max_ammo(50),imodbits_none],
  ["ale","Ale", [("ale_barrel",0)], itp_merchandise|itp_type_goods|itp_consumable, 0, 250, weight(35)|abundance(70)|max_ammo(50),imodbits_none],
 
 # ["dry_bread", "wheat_sack", itp_type_goods|itp_consumable, 0, slt_none,view_goods,95,weight(2),max_ammo(50),imodbits_none],

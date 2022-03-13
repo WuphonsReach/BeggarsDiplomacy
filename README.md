@@ -73,22 +73,22 @@ Here is the list of adjusted base prices for trade goods and foods.  Prices at i
 Raw Goods (used in profitable enterprises):
 - 230 Raw Flax / Flax Bundle
 - 175 Wool / Wool Sack
-- 675 Raw Silk / Silk Bundle
+- 700 Raw Silk / Silk Bundle
 - 320 Dyes
-- 295 Iron / Iron Ore
+- 300 Iron / Iron Ore
 - 240 Raw Leather / Hides
 - 75 Grapes
 - 100 Olives
 - 30 Grain
 
 Produced Goods:
-- 470 Linen (2 Flax => 2 Linen)
-- 380 Wool Cloth (2 Wool => 2 Wool Cloth)
-- 1150 Velvet (2 Raw Silk + 1 Dye => 2 Velvet)
-- 550 Tools (2 Iron => 2 Tools)
+- 500 Linen (2 Flax => 2 Linen)
+- 400 Wool Cloth (2 Wool => 2 Wool Cloth)
+- 1300 Velvet (2 Raw Silk + 2 Dye => 2 Velvet)
+- 600 Tools (2 Iron => 2 Tools)
 - 420 Leatherwork (2 Hides => 2 Leatherwork)
-- 425 Wine (5 Grapes => 2 Wine)
-- 495 Oil (6 Olives => 2 Oil)
+- 450 Wine (5 Grapes => 2 Wine)
+- 500 Oil (6 Olives => 2 Oil)
 - 250 Ale (3 Grain => 2 Ale)
 - 95 Bread (3 Grain => 5 Bread)
 
@@ -107,7 +107,7 @@ Foods:
 - 180 Date Fruit
 
 Misc:
-- 280 Pottery
+- 350 Pottery
 - 450 Furs
 
 ## Installation
