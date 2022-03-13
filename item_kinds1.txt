@@ -372,11 +372,11 @@ itemsfile version 3
  0
 0
 
- itm_oil Oil Oil 1  oil 0  33619979 0 495 0 50.000000 60 0 0 0 0 0 0 0 0 50 0 0
+ itm_oil Oil Oil 1  oil 0  33619979 0 500 0 50.000000 60 0 0 0 0 0 0 0 0 50 0 0
  0
 0
 
- itm_pottery Pottery Pottery 1  jug 0  65547 0 280 0 50.000000 90 0 0 0 0 0 0 0 0 0 0 0
+ itm_pottery Pottery Pottery 1  jug 0  65547 0 350 0 50.000000 90 0 0 0 0 0 0 0 0 0 0 0
  0
 0
 
@@ -384,7 +384,7 @@ itemsfile version 3
  0
 0
 
- itm_linen Linen Linen 1  linen 0  65547 0 470 0 40.000000 90 0 0 0 0 0 0 0 0 0 0 0
+ itm_linen Linen Linen 1  linen 0  65547 0 500 0 40.000000 90 0 0 0 0 0 0 0 0 0 0 0
  0
 0
 
@@ -392,11 +392,11 @@ itemsfile version 3
  0
 0
 
- itm_wool_cloth Wool_Cloth Wool_Cloth 1  wool_cloth 0  65547 0 380 0 40.000000 90 0 0 0 0 0 0 0 0 0 0 0
+ itm_wool_cloth Wool_Cloth Wool_Cloth 1  wool_cloth 0  65547 0 400 0 40.000000 90 0 0 0 0 0 0 0 0 0 0 0
  0
 0
 
- itm_raw_silk Raw_Silk Raw_Silk 1  raw_silk_bundle 0  65547 0 675 0 30.000000 90 0 0 0 0 0 0 0 0 0 0 0
+ itm_raw_silk Raw_Silk Raw_Silk 1  raw_silk_bundle 0  65547 0 700 0 30.000000 90 0 0 0 0 0 0 0 0 0 0 0
  0
 0
 
@@ -404,15 +404,15 @@ itemsfile version 3
  0
 0
 
- itm_velvet Velvet Velvet 1  velvet 0  65547 0 1150 0 45.000000 30 0 0 0 0 0 0 0 0 0 0 0
+ itm_velvet Velvet Velvet 1  velvet 0  65547 0 1300 0 45.000000 30 0 0 0 0 0 0 0 0 0 0 0
  0
 0
 
- itm_iron Iron Iron 1  iron 0  65547 0 295 0 75.000000 60 0 0 0 0 0 0 0 0 0 0 0
+ itm_iron Iron Iron 1  iron 0  65547 0 300 0 75.000000 60 0 0 0 0 0 0 0 0 0 0 0
  0
 0
 
- itm_tools Tools Tools 1  iron_hammer 0  65547 0 550 0 50.000000 90 0 0 0 0 0 0 0 0 0 0 0
+ itm_tools Tools Tools 1  iron_hammer 0  65547 0 600 0 50.000000 90 0 0 0 0 0 0 0 0 0 0 0
  0
 0
 
@@ -432,7 +432,7 @@ itemsfile version 3
  0
 0
 
- itm_wine Wine Wine 1  amphora_slim 0  33619979 0 425 0 30.000000 60 0 0 0 0 0 0 0 0 50 0 0
+ itm_wine Wine Wine 1  amphora_slim 0  33619979 0 450 0 30.000000 60 0 0 0 0 0 0 0 0 50 0 0
  0
 0
 
