@@ -392,7 +392,7 @@ itemsfile version 3
  0
 0
 
- itm_wool_cloth Wool_Cloth Wool_Cloth 1  wool_cloth 0  65547 0 375 0 40.000000 90 0 0 0 0 0 0 0 0 0 0 0
+ itm_wool_cloth Wool_Cloth Wool_Cloth 1  wool_cloth 0  65547 0 380 0 40.000000 90 0 0 0 0 0 0 0 0 0 0 0
  0
 0
 
@@ -464,7 +464,7 @@ itemsfile version 3
  0
 0
 
- itm_apples Fruit Fruit 1  apple_basket 0  34144267 0 44 0 30.000000 110 40 0 0 0 0 0 0 0 50 0 0
+ itm_apples Fruit Fruit 1  apple_basket 0  34144267 0 50 0 30.000000 110 40 0 0 0 0 0 0 0 50 0 0
  0
 0
 
@@ -480,7 +480,7 @@ itemsfile version 3
  0
 0
 
- itm_cattle_meat Beef Beef 1  raw_meat 0  34144267 0 160 0 50.000000 100 80 0 0 0 0 0 0 0 50 0 0
+ itm_cattle_meat Beef Beef 1  raw_meat 0  34144267 0 180 0 50.000000 100 80 0 0 0 0 0 0 0 50 0 0
  0
 0
 
