@@ -1468,11 +1468,11 @@ itemsfile version 3
  0
 0
 
- itm_wooden_stick Wooden_Stick Wooden_Stick 1  wooden_stick 0  4653058 9223388529554358286 4 0 2.500000 100 0 0 0 0 0 99 0 63 0 256 525
+ itm_wooden_stick Wooden_Stick Wooden_Stick 1  wooden_stick 0  4653058 9223388529554358286 4 0 2.500000 100 0 0 0 0 0 95 0 63 0 256 525
  0
 0
 
- itm_cudgel Cudgel Cudgel 1  club 0  4653058 9223388529554358286 4 0 2.500000 100 0 0 0 0 0 99 0 70 0 256 525
+ itm_cudgel Cudgel Cudgel 1  club 0  4653058 9223388529554358286 4 0 2.500000 100 0 0 0 0 0 99 0 70 0 256 527
  0
 0
 
@@ -1488,11 +1488,11 @@ itemsfile version 3
  0
 0
 
- itm_spiked_mace Spiked_Mace Spiked_Mace 1  spiked_mace_new 0  274882428930 9223388532775583758 180 270356 3.500000 100 0 0 0 0 0 98 0 70 0 256 540
+ itm_spiked_mace Spiked_Mace Spiked_Mace 1  spiked_mace_new 0  274882428930 9223388532775583758 180 270356 3.500000 100 0 0 0 0 0 98 0 72 0 256 540
  0
 0
 
- itm_military_hammer Military_Hammer Military_Hammer 1  military_hammer 0  274882428930 9223388532775583758 317 262164 2.000000 100 0 0 0 0 0 95 0 70 0 256 543
+ itm_military_hammer Military_Hammer Military_Hammer 1  military_hammer 0  274882428930 9223388532775583758 317 262164 2.000000 100 0 0 0 0 0 95 0 72 0 256 544
  0
 0
 
@@ -1816,11 +1816,11 @@ itemsfile version 3
  0
 0
 
- itm_mace_3 Spiked_Mace Spiked_Mace 1  mace_c 0  274882428930 9223388532775583758 152 262164 2.750000 100 0 0 0 0 0 98 0 70 0 256 535
+ itm_mace_3 Spiked_Mace Spiked_Mace 1  mace_c 0  274882428930 9223388532775583758 152 262164 2.750000 100 0 0 0 0 0 98 0 72 0 256 535
  0
 0
 
- itm_mace_4 Winged_Mace Winged_Mace 1  mace_b 0  274882428930 9223388532775583758 212 262164 2.750000 100 0 0 0 0 0 98 0 70 0 256 536
+ itm_mace_4 Winged_Mace Winged_Mace 1  mace_b 0  274882428930 9223388532775583758 212 262164 2.750000 100 0 0 0 0 0 98 0 75 0 256 537
  0
 0
 
