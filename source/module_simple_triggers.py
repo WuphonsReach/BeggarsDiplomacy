@@ -5585,7 +5585,7 @@ simple_triggers = [
     (store_distance_to_party_from_party, ":debug_dist_to_main_party", "p_main_party", "p_village_66"),
     (le, ":debug_dist_to_main_party", 15),
 
-    (this_or_next|eq, "$cheat_mode", DPLMC_DEBUG_EXPERIMENTAL),
+    (this_or_next|eq, "$cheat_mode", DPLMC_DEBUG_MIN),
     (eq, "$g_infinite_camping", 1),
 
     (call_script, "script_initialize_item_info"),
