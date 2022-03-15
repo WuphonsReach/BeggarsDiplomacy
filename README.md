@@ -82,14 +82,14 @@ Raw Goods (used in profitable enterprises):
 - 30 Grain
 
 Produced Goods:
-- 500 Linen (2 Flax => 2 Linen)
-- 400 Wool Cloth (2 Wool => 2 Wool Cloth)
+- 520 Linen (2 Flax => 2 Linen)
+- 420 Wool Cloth (2 Wool => 2 Wool Cloth)
 - 1300 Velvet (2 Raw Silk + 2 Dye => 2 Velvet)
 - 600 Tools (2 Iron => 2 Tools)
-- 420 Leatherwork (2 Hides => 2 Leatherwork)
-- 450 Wine (5 Grapes => 2 Wine)
+- 480 Leatherwork (2 Hides => 2 Leatherwork)
+- 470 Wine (5 Grapes => 2 Wine)
 - 500 Oil (6 Olives => 2 Oil)
-- 250 Ale (3 Grain => 2 Ale)
+- 260 Ale (3 Grain => 2 Ale)
 - 95 Bread (3 Grain => 5 Bread)
 
 Foods:
