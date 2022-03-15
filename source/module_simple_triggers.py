@@ -1108,7 +1108,7 @@ simple_triggers = [
       (try_end),
       ]),
 
-  (9, # check for border incident - it can take dozens of attempts before conditions are satisfied
+  (7, # check for border incident - it can take dozens of attempts before conditions are satisfied
   [
     # Put a limit on how close together border incidents can fire.
     # This only sets the "start trying again" time.
