@@ -7749,7 +7749,7 @@ scripts = [
     (item_set_slot, "itm_ale", slot_item_input_number, 3),
     (item_set_slot, "itm_ale", slot_item_output_per_run, 2),
     (item_set_slot, "itm_ale", slot_item_overhead_per_run, 80),
-    (item_set_slot, "itm_ale", slot_item_base_price, 250),
+    (item_set_slot, "itm_ale", slot_item_base_price, 260),
     (item_set_slot, "itm_ale", slot_item_enterprise_building_cost, 2500),
 
     (item_set_slot, "itm_wine", slot_item_production_slot, slot_center_wine_presses),
@@ -7758,7 +7758,7 @@ scripts = [
     (item_set_slot, "itm_wine", slot_item_input_number, 5),
     (item_set_slot, "itm_wine", slot_item_output_per_run, 2),
     (item_set_slot, "itm_wine", slot_item_overhead_per_run, 150),
-    (item_set_slot, "itm_wine", slot_item_base_price, 450),
+    (item_set_slot, "itm_wine", slot_item_base_price, 470),
     (item_set_slot, "itm_wine", slot_item_enterprise_building_cost, 5000),
 
     (item_set_slot, "itm_raw_grapes", slot_item_production_slot, slot_center_acres_vineyard),
@@ -7794,7 +7794,7 @@ scripts = [
     (item_set_slot, "itm_leatherwork", slot_item_input_number, 2),
     (item_set_slot, "itm_leatherwork", slot_item_output_per_run, 2),
     (item_set_slot, "itm_leatherwork", slot_item_overhead_per_run, 85),
-	  (item_set_slot, "itm_leatherwork", slot_item_base_price, 420),
+	  (item_set_slot, "itm_leatherwork", slot_item_base_price, 480),
 	  (item_set_slot, "itm_leatherwork", slot_item_enterprise_building_cost, 8000),
 
     # comes from a mix of sheep+cattle+pigs, so the following is unused/incorrect
@@ -7818,7 +7818,7 @@ scripts = [
     (item_set_slot, "itm_wool_cloth", slot_item_input_number, 2),
     (item_set_slot, "itm_wool_cloth", slot_item_output_per_run, 2),
     (item_set_slot, "itm_wool_cloth", slot_item_overhead_per_run, 120),
-	  (item_set_slot, "itm_wool_cloth", slot_item_base_price, 400),
+	  (item_set_slot, "itm_wool_cloth", slot_item_base_price, 420),
 	  (item_set_slot, "itm_wool_cloth", slot_item_enterprise_building_cost, 6000),
 
     (item_set_slot, "itm_raw_flax", slot_item_production_slot, slot_center_acres_flax),
@@ -7831,8 +7831,8 @@ scripts = [
     (item_set_slot, "itm_linen", slot_item_primary_raw_material, "itm_raw_flax"),
     (item_set_slot, "itm_linen", slot_item_input_number, 2),
     (item_set_slot, "itm_linen", slot_item_output_per_run, 2),
-    (item_set_slot, "itm_linen", slot_item_overhead_per_run, 150),
-	  (item_set_slot, "itm_linen", slot_item_base_price, 500),
+    (item_set_slot, "itm_linen", slot_item_overhead_per_run, 180),
+	  (item_set_slot, "itm_linen", slot_item_base_price, 520),
 	  (item_set_slot, "itm_linen", slot_item_enterprise_building_cost, 6000),
 
     (item_set_slot, "itm_iron", slot_item_production_slot, slot_center_iron_deposits),
