@@ -76277,7 +76277,6 @@ Born at {s43}^Contact in {s44} of the {s45}.^\
 
   # input:
   #   arg1: item_no (to be produced)
-  #   arg2: 
   # output:
   #   s3: "...on which you may build your {s3} will..." (enterprise name)
   # reg7: "...will cost you {reg7} denars..." (investment cost)
@@ -76290,25 +76289,27 @@ Born at {s43}^Contact in {s44} of the {s45}.^\
   # reg0: "...your profit would be {reg0} denars..." (estimated profit/week)
   ("dplmc_enterprise_investment_summary_calc",
   [
+    (store_script_param, ":enterprise_production", 1),
+
     #(item_get_slot, ":base_price", "$enterprise_production", slot_item_base_price),
     #(item_get_slot, ":number_runs", "$enterprise_production", slot_item_output_per_run),
     #(store_mul, "$enterprise_cost", ":base_price", ":number_runs"),
     #(val_mul, "$enterprise_cost", 5),
-    (item_get_slot, "$enterprise_cost", "$enterprise_production", slot_item_enterprise_building_cost),
+    (item_get_slot, "$enterprise_cost", ":enterprise_production", slot_item_enterprise_building_cost),
 
     (assign, reg7, "$enterprise_cost"),
 
-    (str_store_item_name, s4, "$enterprise_production"),
+    (str_store_item_name, s4,":enterprise_production"),
 
-    (call_script, "script_get_enterprise_name", "$enterprise_production"),
+    (call_script, "script_get_enterprise_name", ":enterprise_production"),
     (str_store_string, s3, reg0),
 
-    (call_script, "script_process_player_enterprise", "$enterprise_production", "$g_encountered_party"),
+    (call_script, "script_process_player_enterprise", ":enterprise_production", "$g_encountered_party"),
     #reg0: Profit per cycle
     #reg1: Selling price of total goods
     #reg2: Selling price of total goods
 
-    (item_get_slot, ":primary_raw_material", "$enterprise_production", slot_item_primary_raw_material),
+    (item_get_slot, ":primary_raw_material", ":enterprise_production", slot_item_primary_raw_material),
     (str_store_item_name, s6, ":primary_raw_material"),
     
     ##diplomacy start+ For testing, print some additional diagnostics
@@ -76319,7 +76320,7 @@ Born at {s43}^Contact in {s44} of the {s45}.^\
       (try_begin),
         (call_script, "script_dplmc_good_produced_at_center_or_its_villages", ":primary_raw_material", "$g_encountered_party"),
         (ge, reg0, 1),
-        (display_message, "@{!}There is a local supply of {s6}."),
+        #(display_message, "@{!}There is a local supply of {s6}."),
       (else_try),
         (store_sub, ":item_slot_no", ":primary_raw_material", trade_goods_begin),
         (val_add, ":item_slot_no", slot_town_trade_good_prices_begin),
@@ -76333,7 +76334,7 @@ Born at {s43}^Contact in {s44} of the {s45}.^\
         (val_mul, reg1, reg0),
         (val_div, reg1, average_price_factor),
         (assign, reg0, ":base_price"),
-        (display_message, "@{!}{s6} must be imported, modifying the price from {reg0} to {reg1}."),
+        #(display_message, "@{!}{s6} must be imported, modifying the price from {reg0} to {reg1}."),
       (try_end),
     (try_end),
     ##diplomacy end+
@@ -76342,7 +76343,7 @@ Born at {s43}^Contact in {s44} of the {s45}.^\
     (assign, ":cost_of_secondary_input", reg10),
     (try_begin),
 	  (gt, ":cost_of_secondary_input", 0),
-	  (item_get_slot, ":secondary_raw_material", "$enterprise_production", slot_item_secondary_raw_material),
+	  (item_get_slot, ":secondary_raw_material", ":enterprise_production", slot_item_secondary_raw_material),
       (str_store_item_name, s11, ":secondary_raw_material"),
       (str_store_string, s9, "str_describe_secondary_input"),
     (try_end),
@@ -76353,7 +76354,7 @@ Born at {s43}^Contact in {s44} of the {s45}.^\
 		(try_begin),
 			(call_script, "script_dplmc_good_produced_at_center_or_its_villages", ":secondary_raw_material", "$g_encountered_party"),
 			(ge, reg0, 1),
-			(display_message, "@{!}There is a local supply of {s11}."),
+			#(display_message, "@{!}There is a local supply of {s11}."),
 		(else_try),
 			(store_sub, ":item_slot_no", ":secondary_raw_material", trade_goods_begin),
 			(val_add, ":item_slot_no", slot_town_trade_good_prices_begin),
@@ -76367,7 +76368,7 @@ Born at {s43}^Contact in {s44} of the {s45}.^\
 			(val_mul, reg1, reg0),
 			(val_div, reg1, average_price_factor),
 			(assign, reg0, ":base_price"),
-			(display_message, "@{!}{s9} must be imported, modifying the price from {reg0} to {reg1}."),
+			#(display_message, "@{!}{s9} must be imported, modifying the price from {reg0} to {reg1}."),
 		(try_end),
 	(try_end),
 	(assign, reg0, ":save_reg0"),

@@ -40539,49 +40539,58 @@ So the sooner you pay it, the better.", "close_window",[]],
   [anyone,"mayor_investment_advice",[], "A couple of things to keep in mind -- skilled laborers are always at a premium, so I doubt that you will be able to open up more than one enterprise here. In order to make a profit for yourself, you should choose a commodity which is in relatively short supply, but for which the raw materials are cheap. What sort of enterprise would you like to start?", "investment_choose_enterprise",[
   ]],
 
-  [anyone|plyr,"investment_choose_enterprise",[], "A mill and bakery, to make bread from grain (est: {reg0})", "investment_summary",[
-  (assign, "$enterprise_production", "itm_bread"),
-  (call_script, "script_dplmc_enterprise_investment_summary_calc", "$enterprise_production"),
+  [anyone|plyr,"investment_choose_enterprise",[
+    (call_script, "script_dplmc_enterprise_investment_summary_calc", "itm_bread"),
+  ], "A mill and bakery, to make bread from grain (est: {reg0})", "investment_summary",[
+    (assign, "$enterprise_production", "itm_bread"),
   ]],
 
-  [anyone|plyr,"investment_choose_enterprise",[], "A brewery, to make ale from grain (est: {reg0})", "investment_summary",[
-  (assign, "$enterprise_production", "itm_ale"),
-  (call_script, "script_dplmc_enterprise_investment_summary_calc", "$enterprise_production"),
+  [anyone|plyr,"investment_choose_enterprise",[
+    (call_script, "script_dplmc_enterprise_investment_summary_calc", "itm_ale"),
+  ], "A brewery, to make ale from grain (est: {reg0})", "investment_summary",[
+    (assign, "$enterprise_production", "itm_ale"),
   ]],
 
-  [anyone|plyr,"investment_choose_enterprise",[], "A tannery, to make leather from hides (est: {reg0})", "investment_summary",[
-  (assign, "$enterprise_production", "itm_leatherwork"),
-  (call_script, "script_dplmc_enterprise_investment_summary_calc", "$enterprise_production"),
+  [anyone|plyr,"investment_choose_enterprise",[
+    (call_script, "script_dplmc_enterprise_investment_summary_calc", "itm_leatherwork"),
+  ], "A tannery, to make leather from hides (est: {reg0})", "investment_summary",[
+    (assign, "$enterprise_production", "itm_leatherwork"),
   ]],
 
-  [anyone|plyr,"investment_choose_enterprise",[], "A wine press, to make wine from grapes (est: {reg0})", "investment_summary",[
-  (assign, "$enterprise_production", "itm_wine"),
-  (call_script, "script_dplmc_enterprise_investment_summary_calc", "$enterprise_production"),
+  [anyone|plyr,"investment_choose_enterprise",[
+    (call_script, "script_dplmc_enterprise_investment_summary_calc", "itm_wine"),
+  ], "A wine press, to make wine from grapes (est: {reg0})", "investment_summary",[
+    (assign, "$enterprise_production", "itm_wine"),
   ]],
 
-  [anyone|plyr,"investment_choose_enterprise",[], "An oil press, to make oil from olives (est: {reg0})", "investment_summary",[
-  (assign, "$enterprise_production", "itm_oil"),
-  (call_script, "script_dplmc_enterprise_investment_summary_calc", "$enterprise_production"),
+  [anyone|plyr,"investment_choose_enterprise",[
+    (call_script, "script_dplmc_enterprise_investment_summary_calc", "itm_oil"),
+  ], "An oil press, to make oil from olives (est: {reg0})", "investment_summary",[
+    (assign, "$enterprise_production", "itm_oil"),
   ]],
 
-  [anyone|plyr,"investment_choose_enterprise",[], "An ironworks, to make tools from iron (est: {reg0})", "investment_summary",[
-  (assign, "$enterprise_production", "itm_tools"),
-  (call_script, "script_dplmc_enterprise_investment_summary_calc", "$enterprise_production"),
+  [anyone|plyr,"investment_choose_enterprise",[
+    (call_script, "script_dplmc_enterprise_investment_summary_calc", "itm_tools"),
+  ], "An ironworks, to make tools from iron (est: {reg0})", "investment_summary",[
+    (assign, "$enterprise_production", "itm_tools"),
   ]],
 
-  [anyone|plyr,"investment_choose_enterprise",[], "A weavery and dyeworks, to make velvet from silk and dye (est: {reg0})", "investment_summary",[
-  (assign, "$enterprise_production", "itm_velvet"),
-  (call_script, "script_dplmc_enterprise_investment_summary_calc", "$enterprise_production"),
+  [anyone|plyr,"investment_choose_enterprise",[
+    (call_script, "script_dplmc_enterprise_investment_summary_calc", "itm_velvet"),
+  ], "A weavery and dyeworks, to make velvet from silk and dye (est: {reg0})", "investment_summary",[
+    (assign, "$enterprise_production", "itm_velvet"),
   ]],
 
-  [anyone|plyr,"investment_choose_enterprise",[], "A weavery, to make wool cloth from wool (est: {reg0})", "investment_summary",[
-  (assign, "$enterprise_production", "itm_wool_cloth"),
-  (call_script, "script_dplmc_enterprise_investment_summary_calc", "$enterprise_production"),
+  [anyone|plyr,"investment_choose_enterprise",[
+    (call_script, "script_dplmc_enterprise_investment_summary_calc", "itm_wool_cloth"),
+  ], "A weavery, to make wool cloth from wool (est: {reg0})", "investment_summary",  [
+    (assign, "$enterprise_production", "itm_wool_cloth"),
   ]],
 
-  [anyone|plyr,"investment_choose_enterprise",[], "A weavery, to make linen from flax (est: {reg0})", "investment_summary",[
-  (assign, "$enterprise_production", "itm_linen"),
-  (call_script, "script_dplmc_enterprise_investment_summary_calc", "$enterprise_production"),
+  [anyone|plyr,"investment_choose_enterprise",[
+    (call_script, "script_dplmc_enterprise_investment_summary_calc", "itm_linen"),
+  ], "A weavery, to make linen from flax (est: {reg0})", "investment_summary",[
+    (assign, "$enterprise_production", "itm_linen"),
   ]],
 
   [anyone|plyr,"investment_choose_enterprise",[], "Never mind.", "mayor_pretalk",[
