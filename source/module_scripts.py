@@ -76275,6 +76275,106 @@ Born at {s43}^Contact in {s44} of the {s45}.^\
     (end_try),
   ]),
 
+  # input:
+  #   arg1: item_no (to be produced)
+  #   arg2: 
+  # output:
+  #   s3: "...on which you may build your {s3} will..." (enterprise name)
+  # reg7: "...will cost you {reg7} denars..." (investment cost)
+  #   s4: "...will produce {s4} worth..." (product)
+  # reg1: "...worth {reg1} denars each ...week" (estimated sell price)
+  #   s6: "...while the {s6} needed to..." (primary input name)
+  # reg2: "...batch will be {reg2} and..." (primary input estimated cost)
+  # reg3: "...labor and upkeep will be {reg3}..." (labor/upkeep cost)
+  #   s9: (empty string or secondary input description)
+  # reg0: "...your profit would be {reg0} denars..." (estimated profit/week)
+  ("dplmc_enterprise_investment_summary_calc",
+  [
+    #(item_get_slot, ":base_price", "$enterprise_production", slot_item_base_price),
+    #(item_get_slot, ":number_runs", "$enterprise_production", slot_item_output_per_run),
+    #(store_mul, "$enterprise_cost", ":base_price", ":number_runs"),
+    #(val_mul, "$enterprise_cost", 5),
+    (item_get_slot, "$enterprise_cost", "$enterprise_production", slot_item_enterprise_building_cost),
+
+    (assign, reg7, "$enterprise_cost"),
+
+    (str_store_item_name, s4, "$enterprise_production"),
+
+    (call_script, "script_get_enterprise_name", "$enterprise_production"),
+    (str_store_string, s3, reg0),
+
+    (call_script, "script_process_player_enterprise", "$enterprise_production", "$g_encountered_party"),
+    #reg0: Profit per cycle
+    #reg1: Selling price of total goods
+    #reg2: Selling price of total goods
+
+    (item_get_slot, ":primary_raw_material", "$enterprise_production", slot_item_primary_raw_material),
+    (str_store_item_name, s6, ":primary_raw_material"),
+    
+    ##diplomacy start+ For testing, print some additional diagnostics
+    (assign, ":save_reg0", reg0),
+    (assign, ":save_reg1", reg1),
+    (try_begin),
+      (ge, "$g_dplmc_gold_changes", DPLMC_GOLD_CHANGES_MEDIUM),
+      (try_begin),
+        (call_script, "script_dplmc_good_produced_at_center_or_its_villages", ":primary_raw_material", "$g_encountered_party"),
+        (ge, reg0, 1),
+        (display_message, "@{!}There is a local supply of {s6}."),
+      (else_try),
+        (store_sub, ":item_slot_no", ":primary_raw_material", trade_goods_begin),
+        (val_add, ":item_slot_no", slot_town_trade_good_prices_begin),
+        (item_get_slot, reg0, ":primary_raw_material", slot_item_base_price),
+        (party_get_slot, reg1, "$g_encountered_party", ":item_slot_no"),
+        (val_mul, reg0, reg1),
+        (val_div, reg0, average_price_factor),
+        (assign, ":base_price", reg0),
+        (call_script, "script_dplmc_assess_ability_to_purchase_good_from_center", ":primary_raw_material", "$g_encountered_party"),
+        (item_get_slot, reg1, ":primary_raw_material", slot_item_base_price),
+        (val_mul, reg1, reg0),
+        (val_div, reg1, average_price_factor),
+        (assign, reg0, ":base_price"),
+        (display_message, "@{!}{s6} must be imported, modifying the price from {reg0} to {reg1}."),
+      (try_end),
+    (try_end),
+    ##diplomacy end+
+
+    (str_clear, s9),
+    (assign, ":cost_of_secondary_input", reg10),
+    (try_begin),
+	  (gt, ":cost_of_secondary_input", 0),
+	  (item_get_slot, ":secondary_raw_material", "$enterprise_production", slot_item_secondary_raw_material),
+      (str_store_item_name, s11, ":secondary_raw_material"),
+      (str_store_string, s9, "str_describe_secondary_input"),
+    (try_end),
+	##diplomacy end+
+	(try_begin),
+		(ge, "$g_dplmc_gold_changes", DPLMC_GOLD_CHANGES_MEDIUM),
+		(gt, ":cost_of_secondary_input", 0),
+		(try_begin),
+			(call_script, "script_dplmc_good_produced_at_center_or_its_villages", ":secondary_raw_material", "$g_encountered_party"),
+			(ge, reg0, 1),
+			(display_message, "@{!}There is a local supply of {s11}."),
+		(else_try),
+			(store_sub, ":item_slot_no", ":secondary_raw_material", trade_goods_begin),
+			(val_add, ":item_slot_no", slot_town_trade_good_prices_begin),
+			(item_get_slot, reg0, ":secondary_raw_material", slot_item_base_price),
+			(party_get_slot, reg1, "$g_encountered_party", ":item_slot_no"),
+			(val_mul, reg0, reg1),
+			(val_div, reg0, average_price_factor),
+			(assign, ":base_price", reg0),
+			(call_script, "script_dplmc_assess_ability_to_purchase_good_from_center", ":secondary_raw_material", "$g_encountered_party"),
+			(item_get_slot, reg1, ":secondary_raw_material", slot_item_base_price),
+			(val_mul, reg1, reg0),
+			(val_div, reg1, average_price_factor),
+			(assign, reg0, ":base_price"),
+			(display_message, "@{!}{s9} must be imported, modifying the price from {reg0} to {reg1}."),
+		(try_end),
+	(try_end),
+	(assign, reg0, ":save_reg0"),
+	(assign, reg1, ":save_reg1"),
+	##diplomacy end+
+  ]),
+
     # #script_cf_dplmc_disguise_evaluate_contraband
     # #input : party_no, troop_no
     # #output : reg0 (total risk), reg1 (number of contraband, marked by temp slot?)
