@@ -1108,7 +1108,7 @@ simple_triggers = [
       (try_end),
       ]),
 
-  (2, # check for border incident - it can take dozens of attempts before conditions are satisfied
+  (7, # check for border incident - it can take dozens of attempts before conditions are satisfied
   [
     # Put a limit on how close together border incidents can fire.
     # This only sets the "start trying again" time.
@@ -1316,16 +1316,22 @@ simple_triggers = [
 			(troop_get_slot, ":troop_reputation", ":troop_no", slot_lord_reputation_type),
 			(try_begin),
 				(this_or_next|eq, ":troop_reputation", lrep_quarrelsome),
-				(this_or_next|eq, ":troop_reputation", lrep_selfrighteous),
-				(this_or_next|eq, ":troop_reputation", lrep_cunning),
 				(eq, ":troop_reputation", lrep_debauched),
-				(call_script, "script_troop_change_relation_with_troop", ":troop_no", ":faction_leader", -4),
-				(val_add, "$total_no_fief_changes", -4),
+        (store_random_in_range, ":random_adjust", -6, 1),
+				(call_script, "script_troop_change_relation_with_troop", ":troop_no", ":faction_leader", ":random_adjust"),
+				(val_add, "$total_no_fief_changes", ":random_adjust"),
 			(else_try),
-				(this_or_next|eq, ":troop_reputation", lrep_ambitious),#add support for lady personalities
+				(this_or_next|eq, ":troop_reputation", lrep_selfrighteous),
+				(eq, ":troop_reputation", lrep_cunning),
+        (store_random_in_range, ":random_adjust", -4, 1),
+				(call_script, "script_troop_change_relation_with_troop", ":troop_no", ":faction_leader", ":random_adjust"),
+				(val_add, "$total_no_fief_changes", ":random_adjust"),
+			(else_try),
+				(this_or_next|eq, ":troop_reputation", lrep_ambitious), #add support for lady personalities
 				(eq, ":troop_reputation", lrep_martial),
-				(call_script, "script_troop_change_relation_with_troop", ":troop_no", ":faction_leader", -2),
-				(val_add, "$total_no_fief_changes", -2),
+        (store_random_in_range, ":random_adjust", -2, 1),
+				(call_script, "script_troop_change_relation_with_troop", ":troop_no", ":faction_leader", ":random_adjust"),
+				(val_add, "$total_no_fief_changes", ":random_adjust"),
 			(try_end),
         (try_end),
 
@@ -1362,7 +1368,10 @@ simple_triggers = [
 			(eq, ":faction", "fac_player_supporters_faction"),
 			(val_add, ":num_centers", 1),
 		  (try_end),
-			
+
+            (store_random_in_range, ":continue_check", 0, 10),
+            (eq, ":continue_check", 0),
+
             (call_script, "script_troop_get_relation_with_troop", ":troop_no", ":faction_leader"),
             (this_or_next|le, reg0, -50), #was -75
             (eq, ":num_centers", 0), #if there is no walled centers that faction has defection happens 100%.
@@ -1574,8 +1583,9 @@ simple_triggers = [
 				(store_sub, ":chance_of_convergence", 0, reg0),
 				(store_random_in_range, ":random", 0, 300),
 				(lt, ":random", ":chance_of_convergence"),
-				(call_script, "script_troop_change_relation_with_troop", ":troop_no", ":active_npc", 1),
-				(val_add, "$total_relation_changes_through_convergence", 1),
+        (store_random_in_range, ":random_boost", 0, 4),
+				(call_script, "script_troop_change_relation_with_troop", ":troop_no", ":active_npc", ":random_boost"),
+				(val_add, "$total_relation_changes_through_convergence", ":random_boost"),
 			(try_end),
 		(try_end),
 	#Finish loop over the ":iteration" variable.
@@ -5575,7 +5585,7 @@ simple_triggers = [
     (store_distance_to_party_from_party, ":debug_dist_to_main_party", "p_main_party", "p_village_66"),
     (le, ":debug_dist_to_main_party", 15),
 
-    (this_or_next|eq, "$cheat_mode", DPLMC_DEBUG_EXPERIMENTAL),
+    (this_or_next|eq, "$cheat_mode", DPLMC_DEBUG_MIN),
     (eq, "$g_infinite_camping", 1),
 
     (call_script, "script_initialize_item_info"),
@@ -6973,10 +6983,10 @@ simple_triggers = [
 			(display_message, "@{!}DEBUG - no eligible lords in exile"),
 		 (try_end),
 	    (else_try),
-			#If there were fewer than 3 lords in exile, random chance that none will return.
-			(lt, ":num_exiles", 3),
-			(store_random_in_range, ":random", 0, 256),
-			(ge, ":random", 128),
+			#If there were fewer than 6 lords in exile, random chance that none will return.
+			(lt, ":num_exiles", 6),
+			(store_random_in_range, ":random", 0, 1000),
+			(le, ":random", 200), # percent chance
 			(try_begin),
 				(ge, "$cheat_mode", DPLMC_DEBUG_MIN),
 				(assign, reg0, ":num_exiles"),

@@ -7677,7 +7677,7 @@ scripts = [
     (item_set_slot, "itm_raw_date_fruit", slot_item_desert_demand, 18),
 
     (item_set_slot, "itm_wool", slot_item_urban_demand, 8),
-	  (item_set_slot, "itm_wool", slot_item_rural_demand, 6),
+	  (item_set_slot, "itm_wool", slot_item_rural_demand, 11),
 	  (item_set_slot, "itm_wool", slot_item_desert_demand, 8),
 
 	  (item_set_slot, "itm_wool_cloth", slot_item_urban_demand, 24),
@@ -7693,22 +7693,22 @@ scripts = [
     (item_set_slot, "itm_leatherwork", slot_item_desert_demand, 16),
 
 	  (item_set_slot, "itm_raw_flax", slot_item_urban_demand, 3),
-	  (item_set_slot, "itm_raw_flax", slot_item_rural_demand, 3),
-	  (item_set_slot, "itm_raw_flax", slot_item_desert_demand, 3),
+	  (item_set_slot, "itm_raw_flax", slot_item_rural_demand, 5),
+	  (item_set_slot, "itm_raw_flax", slot_item_desert_demand, 8),
 
 	  (item_set_slot, "itm_linen", slot_item_urban_demand, 24),
-	  (item_set_slot, "itm_linen", slot_item_rural_demand, 15),
+	  (item_set_slot, "itm_linen", slot_item_rural_demand, 20),
 	  (item_set_slot, "itm_linen", slot_item_desert_demand, 32),
 
 	  (item_set_slot, "itm_iron", slot_item_urban_demand, 6),
-	  (item_set_slot, "itm_iron", slot_item_rural_demand, 3),
+	  (item_set_slot, "itm_iron", slot_item_rural_demand, 4),
 	  (item_set_slot, "itm_iron", slot_item_desert_demand, 6),
 
 	  (item_set_slot, "itm_tools", slot_item_urban_demand, 20),
 	  (item_set_slot, "itm_tools", slot_item_rural_demand, 12),
 	  (item_set_slot, "itm_tools", slot_item_desert_demand, 20),
 
-	  (item_set_slot, "itm_pottery", slot_item_urban_demand, 20),
+	  (item_set_slot, "itm_pottery", slot_item_urban_demand, 25),
 	  (item_set_slot, "itm_pottery", slot_item_rural_demand, 12),
 	  (item_set_slot, "itm_pottery", slot_item_desert_demand, 22),
 
@@ -7716,15 +7716,15 @@ scripts = [
 	  (item_set_slot, "itm_raw_silk", slot_item_rural_demand, 3),
     (item_set_slot, "itm_raw_silk", slot_item_desert_demand, 14),
 
-	  (item_set_slot, "itm_raw_dyes", slot_item_urban_demand, 10),
+	  (item_set_slot, "itm_raw_dyes", slot_item_urban_demand, 12),
 	  (item_set_slot, "itm_raw_dyes", slot_item_rural_demand, 2),
 	  (item_set_slot, "itm_raw_dyes", slot_item_desert_demand, 10),
 
-	  (item_set_slot, "itm_velvet", slot_item_urban_demand, 30),
+	  (item_set_slot, "itm_velvet", slot_item_urban_demand, 35),
 	  (item_set_slot, "itm_velvet", slot_item_rural_demand, 10),
 	  (item_set_slot, "itm_velvet", slot_item_desert_demand, 6),
 
-	  (item_set_slot, "itm_furs", slot_item_urban_demand, 20),
+	  (item_set_slot, "itm_furs", slot_item_urban_demand, 25),
 	  (item_set_slot, "itm_furs", slot_item_rural_demand, 12),
 	  (item_set_slot, "itm_furs", slot_item_desert_demand, 6),
 
@@ -7740,7 +7740,7 @@ scripts = [
     (item_set_slot, "itm_bread", slot_item_input_number, 3),
     (item_set_slot, "itm_bread", slot_item_output_per_run, 5),
     (item_set_slot, "itm_bread", slot_item_overhead_per_run, 50),
-    (item_set_slot, "itm_bread", slot_item_base_price, 90),
+    (item_set_slot, "itm_bread", slot_item_base_price, 95),
     (item_set_slot, "itm_bread", slot_item_enterprise_building_cost, 1500),
 
     (item_set_slot, "itm_ale", slot_item_production_slot, slot_center_breweries),
@@ -7749,7 +7749,7 @@ scripts = [
     (item_set_slot, "itm_ale", slot_item_input_number, 3),
     (item_set_slot, "itm_ale", slot_item_output_per_run, 2),
     (item_set_slot, "itm_ale", slot_item_overhead_per_run, 80),
-    (item_set_slot, "itm_ale", slot_item_base_price, 250),
+    (item_set_slot, "itm_ale", slot_item_base_price, 260),
     (item_set_slot, "itm_ale", slot_item_enterprise_building_cost, 2500),
 
     (item_set_slot, "itm_wine", slot_item_production_slot, slot_center_wine_presses),
@@ -7757,8 +7757,8 @@ scripts = [
     (item_set_slot, "itm_wine", slot_item_primary_raw_material, "itm_raw_grapes"),
     (item_set_slot, "itm_wine", slot_item_input_number, 5),
     (item_set_slot, "itm_wine", slot_item_output_per_run, 2),
-    (item_set_slot, "itm_wine", slot_item_overhead_per_run, 75),
-    (item_set_slot, "itm_wine", slot_item_base_price, 405),
+    (item_set_slot, "itm_wine", slot_item_overhead_per_run, 150),
+    (item_set_slot, "itm_wine", slot_item_base_price, 470),
     (item_set_slot, "itm_wine", slot_item_enterprise_building_cost, 5000),
 
     (item_set_slot, "itm_raw_grapes", slot_item_production_slot, slot_center_acres_vineyard),
@@ -7768,7 +7768,7 @@ scripts = [
 
     (item_set_slot, "itm_apples", slot_item_production_slot, slot_center_acres_fruit_trees),
     (item_set_slot, "itm_apples", slot_item_production_string, "str_acres_fruit_trees"),
-    (item_set_slot, "itm_apples", slot_item_base_price, 44),
+    (item_set_slot, "itm_apples", slot_item_base_price, 50),
 
     (item_set_slot, "itm_smoked_fish", slot_item_production_slot, slot_center_fishing_fleet),
     (item_set_slot, "itm_smoked_fish", slot_item_production_string, "str_boats"),
@@ -7794,7 +7794,7 @@ scripts = [
     (item_set_slot, "itm_leatherwork", slot_item_input_number, 2),
     (item_set_slot, "itm_leatherwork", slot_item_output_per_run, 2),
     (item_set_slot, "itm_leatherwork", slot_item_overhead_per_run, 85),
-	  (item_set_slot, "itm_leatherwork", slot_item_base_price, 410),
+	  (item_set_slot, "itm_leatherwork", slot_item_base_price, 480),
 	  (item_set_slot, "itm_leatherwork", slot_item_enterprise_building_cost, 8000),
 
     # comes from a mix of sheep+cattle+pigs, so the following is unused/incorrect
@@ -7817,8 +7817,8 @@ scripts = [
 	  (item_set_slot, "itm_wool_cloth", slot_item_primary_raw_material, "itm_wool"),
     (item_set_slot, "itm_wool_cloth", slot_item_input_number, 2),
     (item_set_slot, "itm_wool_cloth", slot_item_output_per_run, 2),
-    (item_set_slot, "itm_wool_cloth", slot_item_overhead_per_run, 100),
-	  (item_set_slot, "itm_wool_cloth", slot_item_base_price, 375),
+    (item_set_slot, "itm_wool_cloth", slot_item_overhead_per_run, 120),
+	  (item_set_slot, "itm_wool_cloth", slot_item_base_price, 420),
 	  (item_set_slot, "itm_wool_cloth", slot_item_enterprise_building_cost, 6000),
 
     (item_set_slot, "itm_raw_flax", slot_item_production_slot, slot_center_acres_flax),
@@ -7831,22 +7831,22 @@ scripts = [
     (item_set_slot, "itm_linen", slot_item_primary_raw_material, "itm_raw_flax"),
     (item_set_slot, "itm_linen", slot_item_input_number, 2),
     (item_set_slot, "itm_linen", slot_item_output_per_run, 2),
-    (item_set_slot, "itm_linen", slot_item_overhead_per_run, 120),
-	  (item_set_slot, "itm_linen", slot_item_base_price, 470),
+    (item_set_slot, "itm_linen", slot_item_overhead_per_run, 180),
+	  (item_set_slot, "itm_linen", slot_item_base_price, 520),
 	  (item_set_slot, "itm_linen", slot_item_enterprise_building_cost, 6000),
 
     (item_set_slot, "itm_iron", slot_item_production_slot, slot_center_iron_deposits),
     (item_set_slot, "itm_iron", slot_item_production_string, "str_deposits"),
     (item_set_slot, "itm_iron", slot_item_is_raw_material_only_for, "itm_tools"),
-	  (item_set_slot, "itm_iron", slot_item_base_price, 295),
+	  (item_set_slot, "itm_iron", slot_item_base_price, 300),
 
     (item_set_slot, "itm_tools", slot_item_production_slot, slot_center_smithies),
     (item_set_slot, "itm_tools", slot_item_production_string, "str_smithies"),
     (item_set_slot, "itm_tools", slot_item_primary_raw_material, "itm_iron"),
     (item_set_slot, "itm_tools", slot_item_input_number, 2),
     (item_set_slot, "itm_tools", slot_item_output_per_run, 2),
-    (item_set_slot, "itm_tools", slot_item_overhead_per_run, 100),
-	  (item_set_slot, "itm_tools", slot_item_base_price, 550),
+    (item_set_slot, "itm_tools", slot_item_overhead_per_run, 200),
+	  (item_set_slot, "itm_tools", slot_item_base_price, 600),
 	  (item_set_slot, "itm_tools", slot_item_enterprise_building_cost, 3500),
 
     (item_set_slot, "itm_pottery", slot_item_production_slot, slot_center_pottery_kilns),
@@ -7857,8 +7857,8 @@ scripts = [
     (item_set_slot, "itm_oil", slot_item_primary_raw_material, "itm_raw_olives"),
     (item_set_slot, "itm_oil", slot_item_input_number, 6),
     (item_set_slot, "itm_oil", slot_item_output_per_run, 2),
-    (item_set_slot, "itm_oil", slot_item_overhead_per_run, 80),
-	  (item_set_slot, "itm_oil", slot_item_base_price, 485),
+    (item_set_slot, "itm_oil", slot_item_overhead_per_run, 100),
+	  (item_set_slot, "itm_oil", slot_item_base_price, 500),
 	  (item_set_slot, "itm_oil", slot_item_enterprise_building_cost, 4500),
 
     (item_set_slot, "itm_raw_olives", slot_item_production_slot, slot_center_acres_olives),
@@ -7871,14 +7871,14 @@ scripts = [
 	  (item_set_slot, "itm_velvet", slot_item_primary_raw_material, "itm_raw_silk"),
     (item_set_slot, "itm_velvet", slot_item_input_number, 2),
     (item_set_slot, "itm_velvet", slot_item_output_per_run, 2),
-    (item_set_slot, "itm_velvet", slot_item_overhead_per_run, 200),
-	  (item_set_slot, "itm_velvet", slot_item_base_price, 1150),
+    (item_set_slot, "itm_velvet", slot_item_overhead_per_run, 300),
+	  (item_set_slot, "itm_velvet", slot_item_base_price, 1300),
 	  (item_set_slot, "itm_velvet", slot_item_secondary_raw_material, "itm_raw_dyes"),
 	  (item_set_slot, "itm_velvet", slot_item_enterprise_building_cost, 10000),
 
     (item_set_slot, "itm_raw_silk", slot_item_production_slot, slot_center_silk_farms),
     (item_set_slot, "itm_raw_silk", slot_item_production_string, "str_mulberry_groves"),
-    (item_set_slot, "itm_raw_silk", slot_item_base_price, 675),
+    (item_set_slot, "itm_raw_silk", slot_item_base_price, 700),
 
     (item_set_slot, "itm_raw_dyes", slot_item_production_slot, slot_center_kirmiz_farms),
 	  (item_set_slot, "itm_raw_dyes", slot_item_production_string, "str_kirmiz_farms"),
@@ -36044,13 +36044,14 @@ scripts = [
       (try_begin),
         (party_slot_eq, "$current_town", slot_party_type, spt_village),
         (assign, ":spawn_amount", 2),
-        (store_div, ":level_fac",  ":level", 10),
+        (store_div, ":level_fac",  ":level", 7),
         (val_add, ":spawn_amount", ":level_fac"),
-        (try_for_range, ":unused", 0, 3),
+        (try_for_range, ":unused", 0, 5),
           (gt, ":level", 10),
           (store_random_in_range, ":random_no", 0, 100),
           (lt, ":random_no", ":level"),
-          (val_add, ":spawn_amount", 1),
+          (store_random_in_range, ":spawn_add", 1, 3),
+          (val_add, ":spawn_amount", ":spawn_add"),
         (try_end),
         (set_visitors, 4, ":bandit_troop", ":spawn_amount"),
         (assign, "$num_center_bandits", ":spawn_amount"),
@@ -36062,7 +36063,8 @@ scripts = [
           (gt, ":level", 15),
           (store_random_in_range, ":random_no", 0, 100),
           (lt, ":random_no", ":level"),
-          (assign, ":spawn_amount", 2),
+          (store_random_in_range, ":spawn_add15", 2, 5),
+          (assign, ":spawn_amount", ":spawn_add15"),
         (try_end),
         (val_add, "$num_center_bandits",  ":spawn_amount"),
         (set_visitors, 11, ":bandit_troop", ":spawn_amount"),
@@ -36071,7 +36073,8 @@ scripts = [
           (gt, ":level", 20),
           (store_random_in_range, ":random_no", 0, 100),
           (lt, ":random_no", ":level"),
-          (assign, ":spawn_amount", 2),
+          (store_random_in_range, ":spawn_add20", 2, 5),
+          (assign, ":spawn_amount", ":spawn_add20"),
         (try_end),
         (set_visitors, 27, ":bandit_troop", ":spawn_amount"),
         (val_add, "$num_center_bandits",  ":spawn_amount"),
@@ -51147,7 +51150,7 @@ scripts = [
 			(this_or_next|troop_slot_eq, ":suitor", slot_lord_reputation_type, lrep_debauched),
       (troop_slot_eq, ":suitor", slot_lord_reputation_type, lrep_quarrelsome),
 
-      (store_random_in_range, ":random", 0, 4), # roll for initiative
+      (store_random_in_range, ":random", 0, 5), # roll for initiative
 			(eq, ":random", 0),
 
 			(troop_slot_eq, ":suitor", slot_troop_betrothed, -1),
@@ -51168,7 +51171,7 @@ scripts = [
 		(else_try),
 			(lt, ":lady_suitor_relation", -25),
 
-      (store_random_in_range, ":random", 0, 3), # roll for initiative
+      (store_random_in_range, ":random", 0, 4), # roll for initiative
 			(eq, ":random", 0),
 
 			(call_script, "script_add_log_entry", logent_lady_rejects_suitor, ":lady", 0, ":suitor", 0),
@@ -51213,7 +51216,7 @@ scripts = [
 			(this_or_next|troop_slot_eq, ":lady", slot_lord_reputation_type, lrep_adventurous),
       (troop_slot_eq, ":lady", slot_lord_reputation_type, lrep_ambitious),
 
-      (store_random_in_range, ":random", 0, 4), # roll for initiative
+      (store_random_in_range, ":random", 0, 8), # roll for initiative
 			(eq, ":random", 0),
 
 			(troop_slot_eq, ":suitor", slot_troop_betrothed, -1),
@@ -51237,7 +51240,7 @@ scripts = [
 			(eq, ":competitor_preferred_by_guardian", -1),
 			(gt, ":suitor_guardian_relation", 4),
 
-			(store_random_in_range, ":random", 0, 5), 
+			(store_random_in_range, ":random", 0, 6), 
 			(eq, ":random", 0),
 
 			(troop_slot_eq, ":suitor", slot_troop_betrothed, -1),
@@ -51260,7 +51263,7 @@ scripts = [
 		(else_try),
 			(gt, ":lady_suitor_relation", 40),
 
-			(store_random_in_range, reg3, 0, 8), # 12% chance to break off
+			(store_random_in_range, reg3, 0, 10), # 10% chance to break off
 			(try_begin),
 				(ge, "$cheat_mode", DPLMC_DEBUG_EXPERIMENTAL),
 				(display_message, "str_result_stalemate_patience_roll_=_reg3"),
@@ -76007,33 +76010,33 @@ Born at {s43}^Contact in {s44} of the {s45}.^\
 
 	  #Staples
     (item_set_slot, "itm_bread", slot_item_food_bonus, 8),
-    (item_set_slot, "itm_grain", slot_item_food_bonus, 2),
+    (item_set_slot, "itm_grain", slot_item_food_bonus, 3),
 
 	  #Fat sources - preserved
-    (item_set_slot, "itm_smoked_fish", slot_item_food_bonus, 4),
+    (item_set_slot, "itm_smoked_fish", slot_item_food_bonus, 5),
     (item_set_slot, "itm_dried_meat", slot_item_food_bonus, 5),
-    (item_set_slot, "itm_cheese", slot_item_food_bonus, 5),
+    (item_set_slot, "itm_cheese", slot_item_food_bonus, 6),
     (item_set_slot, "itm_sausages", slot_item_food_bonus, 5),
-    (item_set_slot, "itm_butter", slot_item_food_bonus, 5),
+    (item_set_slot, "itm_butter", slot_item_food_bonus, 7),
 
 	  #Fat sources - perishable
-    (item_set_slot, "itm_chicken", slot_item_food_bonus, 9),
-    (item_set_slot, "itm_cattle_meat", slot_item_food_bonus, 9),
-    (item_set_slot, "itm_pork", slot_item_food_bonus, 9),
+    (item_set_slot, "itm_chicken", slot_item_food_bonus, 10),
+    (item_set_slot, "itm_cattle_meat", slot_item_food_bonus, 10),
+    (item_set_slot, "itm_pork", slot_item_food_bonus, 10),
 
 	  #Produce
-    (item_set_slot, "itm_raw_olives", slot_item_food_bonus, 3),
-    (item_set_slot, "itm_cabbages", slot_item_food_bonus, 2),
-    (item_set_slot, "itm_raw_grapes", slot_item_food_bonus, 4),
+    (item_set_slot, "itm_raw_olives", slot_item_food_bonus, 5),
+    (item_set_slot, "itm_cabbages", slot_item_food_bonus, 3),
+    (item_set_slot, "itm_raw_grapes", slot_item_food_bonus, 5),
     (item_set_slot, "itm_apples", slot_item_food_bonus, 4),
 
 	  #Sweet items
-    (item_set_slot, "itm_honey", slot_item_food_bonus, 6),
+    (item_set_slot, "itm_honey", slot_item_food_bonus, 7),
 
     # these never get used in the party morale calculations
     (item_set_slot, "itm_raw_date_fruit", slot_item_food_bonus, 4),
-    (item_set_slot, "itm_wine", slot_item_food_bonus, 5),
-    (item_set_slot, "itm_ale", slot_item_food_bonus, 4),
+    (item_set_slot, "itm_wine", slot_item_food_bonus, 7),
+    (item_set_slot, "itm_ale", slot_item_food_bonus, 7),
   ]),
 
   ("dplmc_center_get_price_factor_index",
@@ -76270,6 +76273,107 @@ Born at {s43}^Contact in {s44} of the {s45}.^\
       (str_store_troop_name, s21, ":troop_no"),
       (display_message, "@{!}INV-CHECK: {s21} has zero {s20}."),
     (end_try),
+  ]),
+
+  # input:
+  #   arg1: item_no (to be produced)
+  # output:
+  #   s3: "...on which you may build your {s3} will..." (enterprise name)
+  # reg7: "...will cost you {reg7} denars..." (investment cost)
+  #   s4: "...will produce {s4} worth..." (product)
+  # reg1: "...worth {reg1} denars each ...week" (estimated sell price)
+  #   s6: "...while the {s6} needed to..." (primary input name)
+  # reg2: "...batch will be {reg2} and..." (primary input estimated cost)
+  # reg3: "...labor and upkeep will be {reg3}..." (labor/upkeep cost)
+  #   s9: (empty string or secondary input description)
+  # reg0: "...your profit would be {reg0} denars..." (estimated profit/week)
+  ("dplmc_enterprise_investment_summary_calc",
+  [
+    (store_script_param, ":enterprise_production", 1),
+
+    #(item_get_slot, ":base_price", "$enterprise_production", slot_item_base_price),
+    #(item_get_slot, ":number_runs", "$enterprise_production", slot_item_output_per_run),
+    #(store_mul, "$enterprise_cost", ":base_price", ":number_runs"),
+    #(val_mul, "$enterprise_cost", 5),
+    (item_get_slot, "$enterprise_cost", ":enterprise_production", slot_item_enterprise_building_cost),
+
+    (assign, reg7, "$enterprise_cost"),
+
+    (str_store_item_name, s4,":enterprise_production"),
+
+    (call_script, "script_get_enterprise_name", ":enterprise_production"),
+    (str_store_string, s3, reg0),
+
+    (call_script, "script_process_player_enterprise", ":enterprise_production", "$g_encountered_party"),
+    #reg0: Profit per cycle
+    #reg1: Selling price of total goods
+    #reg2: Selling price of total goods
+
+    (item_get_slot, ":primary_raw_material", ":enterprise_production", slot_item_primary_raw_material),
+    (str_store_item_name, s6, ":primary_raw_material"),
+    
+    ##diplomacy start+ For testing, print some additional diagnostics
+    (assign, ":save_reg0", reg0),
+    (assign, ":save_reg1", reg1),
+    (try_begin),
+      (ge, "$g_dplmc_gold_changes", DPLMC_GOLD_CHANGES_MEDIUM),
+      (try_begin),
+        (call_script, "script_dplmc_good_produced_at_center_or_its_villages", ":primary_raw_material", "$g_encountered_party"),
+        (ge, reg0, 1),
+        #(display_message, "@{!}There is a local supply of {s6}."),
+      (else_try),
+        (store_sub, ":item_slot_no", ":primary_raw_material", trade_goods_begin),
+        (val_add, ":item_slot_no", slot_town_trade_good_prices_begin),
+        (item_get_slot, reg0, ":primary_raw_material", slot_item_base_price),
+        (party_get_slot, reg1, "$g_encountered_party", ":item_slot_no"),
+        (val_mul, reg0, reg1),
+        (val_div, reg0, average_price_factor),
+        (assign, ":base_price", reg0),
+        (call_script, "script_dplmc_assess_ability_to_purchase_good_from_center", ":primary_raw_material", "$g_encountered_party"),
+        (item_get_slot, reg1, ":primary_raw_material", slot_item_base_price),
+        (val_mul, reg1, reg0),
+        (val_div, reg1, average_price_factor),
+        (assign, reg0, ":base_price"),
+        #(display_message, "@{!}{s6} must be imported, modifying the price from {reg0} to {reg1}."),
+      (try_end),
+    (try_end),
+    ##diplomacy end+
+
+    (str_clear, s9),
+    (assign, ":cost_of_secondary_input", reg10),
+    (try_begin),
+	  (gt, ":cost_of_secondary_input", 0),
+	  (item_get_slot, ":secondary_raw_material", ":enterprise_production", slot_item_secondary_raw_material),
+      (str_store_item_name, s11, ":secondary_raw_material"),
+      (str_store_string, s9, "str_describe_secondary_input"),
+    (try_end),
+	##diplomacy end+
+	(try_begin),
+		(ge, "$g_dplmc_gold_changes", DPLMC_GOLD_CHANGES_MEDIUM),
+		(gt, ":cost_of_secondary_input", 0),
+		(try_begin),
+			(call_script, "script_dplmc_good_produced_at_center_or_its_villages", ":secondary_raw_material", "$g_encountered_party"),
+			(ge, reg0, 1),
+			#(display_message, "@{!}There is a local supply of {s11}."),
+		(else_try),
+			(store_sub, ":item_slot_no", ":secondary_raw_material", trade_goods_begin),
+			(val_add, ":item_slot_no", slot_town_trade_good_prices_begin),
+			(item_get_slot, reg0, ":secondary_raw_material", slot_item_base_price),
+			(party_get_slot, reg1, "$g_encountered_party", ":item_slot_no"),
+			(val_mul, reg0, reg1),
+			(val_div, reg0, average_price_factor),
+			(assign, ":base_price", reg0),
+			(call_script, "script_dplmc_assess_ability_to_purchase_good_from_center", ":secondary_raw_material", "$g_encountered_party"),
+			(item_get_slot, reg1, ":secondary_raw_material", slot_item_base_price),
+			(val_mul, reg1, reg0),
+			(val_div, reg1, average_price_factor),
+			(assign, reg0, ":base_price"),
+			#(display_message, "@{!}{s9} must be imported, modifying the price from {reg0} to {reg1}."),
+		(try_end),
+	(try_end),
+	(assign, reg0, ":save_reg0"),
+	(assign, reg1, ":save_reg1"),
+	##diplomacy end+
   ]),
 
     # #script_cf_dplmc_disguise_evaluate_contraband

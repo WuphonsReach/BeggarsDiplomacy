@@ -791,3 +791,4 @@ script_dplmc_remove_item_units_from_party_inventory = 789
 script_dplmc_get_item_units_in_party_inventory = 790
 script_dplmc_get_missing_luxury_food_in_troop_inventory = 791
 script_dplmc_get_missing_cloth_in_troop_inventory = 792
+script_dplmc_enterprise_investment_summary_calc = 793

@@ -40539,40 +40539,58 @@ So the sooner you pay it, the better.", "close_window",[]],
   [anyone,"mayor_investment_advice",[], "A couple of things to keep in mind -- skilled laborers are always at a premium, so I doubt that you will be able to open up more than one enterprise here. In order to make a profit for yourself, you should choose a commodity which is in relatively short supply, but for which the raw materials are cheap. What sort of enterprise would you like to start?", "investment_choose_enterprise",[
   ]],
 
-  [anyone|plyr,"investment_choose_enterprise",[], "A mill and bakery, to make bread from grain", "investment_summary",[
-  (assign, "$enterprise_production", "itm_bread"),
+  [anyone|plyr,"investment_choose_enterprise",[
+    (call_script, "script_dplmc_enterprise_investment_summary_calc", "itm_bread"),
+  ], "A mill and bakery, to make bread from grain (est: {reg0})", "investment_summary",[
+    (assign, "$enterprise_production", "itm_bread"),
   ]],
 
-  [anyone|plyr,"investment_choose_enterprise",[], "A brewery, to make ale from grain", "investment_summary",[
-  (assign, "$enterprise_production", "itm_ale"),
+  [anyone|plyr,"investment_choose_enterprise",[
+    (call_script, "script_dplmc_enterprise_investment_summary_calc", "itm_ale"),
+  ], "A brewery, to make ale from grain (est: {reg0})", "investment_summary",[
+    (assign, "$enterprise_production", "itm_ale"),
   ]],
 
-  [anyone|plyr,"investment_choose_enterprise",[], "A tannery, to make leather from hides", "investment_summary",[
-  (assign, "$enterprise_production", "itm_leatherwork"),
+  [anyone|plyr,"investment_choose_enterprise",[
+    (call_script, "script_dplmc_enterprise_investment_summary_calc", "itm_leatherwork"),
+  ], "A tannery, to make leather from hides (est: {reg0})", "investment_summary",[
+    (assign, "$enterprise_production", "itm_leatherwork"),
   ]],
 
-  [anyone|plyr,"investment_choose_enterprise",[], "A wine press, to make wine from grapes", "investment_summary",[
-  (assign, "$enterprise_production", "itm_wine"),
+  [anyone|plyr,"investment_choose_enterprise",[
+    (call_script, "script_dplmc_enterprise_investment_summary_calc", "itm_wine"),
+  ], "A wine press, to make wine from grapes (est: {reg0})", "investment_summary",[
+    (assign, "$enterprise_production", "itm_wine"),
   ]],
 
-  [anyone|plyr,"investment_choose_enterprise",[], "An oil press, to make oil from olives", "investment_summary",[
-  (assign, "$enterprise_production", "itm_oil"),
+  [anyone|plyr,"investment_choose_enterprise",[
+    (call_script, "script_dplmc_enterprise_investment_summary_calc", "itm_oil"),
+  ], "An oil press, to make oil from olives (est: {reg0})", "investment_summary",[
+    (assign, "$enterprise_production", "itm_oil"),
   ]],
 
-  [anyone|plyr,"investment_choose_enterprise",[], "An ironworks, to make tools from iron", "investment_summary",[
-  (assign, "$enterprise_production", "itm_tools"),
+  [anyone|plyr,"investment_choose_enterprise",[
+    (call_script, "script_dplmc_enterprise_investment_summary_calc", "itm_tools"),
+  ], "An ironworks, to make tools from iron (est: {reg0})", "investment_summary",[
+    (assign, "$enterprise_production", "itm_tools"),
   ]],
 
-  [anyone|plyr,"investment_choose_enterprise",[], "A weavery and dyeworks, to make velvet from silk and dye", "investment_summary",[
-  (assign, "$enterprise_production", "itm_velvet"),
+  [anyone|plyr,"investment_choose_enterprise",[
+    (call_script, "script_dplmc_enterprise_investment_summary_calc", "itm_velvet"),
+  ], "A weavery and dyeworks, to make velvet from silk and dye (est: {reg0})", "investment_summary",[
+    (assign, "$enterprise_production", "itm_velvet"),
   ]],
 
-  [anyone|plyr,"investment_choose_enterprise",[], "A weavery, to make wool cloth from wool", "investment_summary",[
-  (assign, "$enterprise_production", "itm_wool_cloth"),
+  [anyone|plyr,"investment_choose_enterprise",[
+    (call_script, "script_dplmc_enterprise_investment_summary_calc", "itm_wool_cloth"),
+  ], "A weavery, to make wool cloth from wool (est: {reg0})", "investment_summary",  [
+    (assign, "$enterprise_production", "itm_wool_cloth"),
   ]],
 
-  [anyone|plyr,"investment_choose_enterprise",[], "A weavery, to make linen from flax", "investment_summary",[
-  (assign, "$enterprise_production", "itm_linen"),
+  [anyone|plyr,"investment_choose_enterprise",[
+    (call_script, "script_dplmc_enterprise_investment_summary_calc", "itm_linen"),
+  ], "A weavery, to make linen from flax (est: {reg0})", "investment_summary",[
+    (assign, "$enterprise_production", "itm_linen"),
   ]],
 
   [anyone|plyr,"investment_choose_enterprise",[], "Never mind.", "mayor_pretalk",[
@@ -40580,88 +40598,7 @@ So the sooner you pay it, the better.", "close_window",[]],
 
   [anyone,"investment_summary",[], "Very good, sir. The land and the materials on which you may build your {s3} will cost you {reg7} denars. Right now, your {s3} will produce {s4} worth {reg1} denars each week, while the {s6} needed to manufacture that batch will be {reg2} and labor and upkeep will be {reg3}.{s9} I should guess that your profit would be {reg0} denars a week. This assumes of course that prices remain constant -- which, I can virtually guarantee you, they will not. Do you wish to proceed?", "mayor_investment_confirm",
   [
-    #(item_get_slot, ":base_price", "$enterprise_production", slot_item_base_price),
-    #(item_get_slot, ":number_runs", "$enterprise_production", slot_item_output_per_run),
-    #(store_mul, "$enterprise_cost", ":base_price", ":number_runs"),
-    #(val_mul, "$enterprise_cost", 5),
-    (item_get_slot, "$enterprise_cost", "$enterprise_production", slot_item_enterprise_building_cost),
-
-    (assign, reg7, "$enterprise_cost"),
-
-    (str_store_item_name, s4, "$enterprise_production"),
-
-    (call_script, "script_get_enterprise_name", "$enterprise_production"),
-    (str_store_string, s3, reg0),
-
-    (call_script, "script_process_player_enterprise", "$enterprise_production", "$g_encountered_party"),
-    #reg0: Profit per cycle
-    #reg1: Selling price of total goods
-    #reg2: Selling price of total goods
-
-    (item_get_slot, ":primary_raw_material", "$enterprise_production", slot_item_primary_raw_material),
-    (str_store_item_name, s6, ":primary_raw_material"),
-	##diplomacy start+ For testing, print some additional diagnostics
-	(assign, ":save_reg0", reg0),
-	(assign, ":save_reg1", reg1),
-	(try_begin),
-		(ge, "$g_dplmc_gold_changes", DPLMC_GOLD_CHANGES_MEDIUM),
-		(try_begin),
-			(call_script, "script_dplmc_good_produced_at_center_or_its_villages", ":primary_raw_material", "$g_encountered_party"),
-			(ge, reg0, 1),
-			(display_message, "@{!}There is a local supply of {s6}."),
-		(else_try),
-			(store_sub, ":item_slot_no", ":primary_raw_material", trade_goods_begin),
-			(val_add, ":item_slot_no", slot_town_trade_good_prices_begin),
-			(item_get_slot, reg0, ":primary_raw_material", slot_item_base_price),
-			(party_get_slot, reg1, "$g_encountered_party", ":item_slot_no"),
-			(val_mul, reg0, reg1),
-			(val_div, reg0, average_price_factor),
-			(assign, ":base_price", reg0),
-			(call_script, "script_dplmc_assess_ability_to_purchase_good_from_center", ":primary_raw_material", "$g_encountered_party"),
-			(item_get_slot, reg1, ":primary_raw_material", slot_item_base_price),
-			(val_mul, reg1, reg0),
-			(val_div, reg1, average_price_factor),
-			(assign, reg0, ":base_price"),
-			(display_message, "@{!}{s6} must be imported, modifying the price from {reg0} to {reg1}."),
-		(try_end),
-	(try_end),
-	##diplomacy end+
-
-    (str_clear, s9),
-    (assign, ":cost_of_secondary_input", reg10),
-    (try_begin),
-	  (gt, ":cost_of_secondary_input", 0),
-	  (item_get_slot, ":secondary_raw_material", "$enterprise_production", slot_item_secondary_raw_material),
-      (str_store_item_name, s11, ":secondary_raw_material"),
-      (str_store_string, s9, "str_describe_secondary_input"),
-    (try_end),
-	##diplomacy end+
-	(try_begin),
-		(ge, "$g_dplmc_gold_changes", DPLMC_GOLD_CHANGES_MEDIUM),
-		(gt, ":cost_of_secondary_input", 0),
-		(try_begin),
-			(call_script, "script_dplmc_good_produced_at_center_or_its_villages", ":secondary_raw_material", "$g_encountered_party"),
-			(ge, reg0, 1),
-			(display_message, "@{!}There is a local supply of {s11}."),
-		(else_try),
-			(store_sub, ":item_slot_no", ":secondary_raw_material", trade_goods_begin),
-			(val_add, ":item_slot_no", slot_town_trade_good_prices_begin),
-			(item_get_slot, reg0, ":secondary_raw_material", slot_item_base_price),
-			(party_get_slot, reg1, "$g_encountered_party", ":item_slot_no"),
-			(val_mul, reg0, reg1),
-			(val_div, reg0, average_price_factor),
-			(assign, ":base_price", reg0),
-			(call_script, "script_dplmc_assess_ability_to_purchase_good_from_center", ":secondary_raw_material", "$g_encountered_party"),
-			(item_get_slot, reg1, ":secondary_raw_material", slot_item_base_price),
-			(val_mul, reg1, reg0),
-			(val_div, reg1, average_price_factor),
-			(assign, reg0, ":base_price"),
-			(display_message, "@{!}{s9} must be imported, modifying the price from {reg0} to {reg1}."),
-		(try_end),
-	(try_end),
-	(assign, reg0, ":save_reg0"),
-	(assign, reg1, ":save_reg1"),
-	##diplomacy end+
+    (call_script, "script_dplmc_enterprise_investment_summary_calc", "$enterprise_production"),
   ]],
 
 

@@ -13,6 +13,7 @@ The goal of BeggarsDiplomacy is to take the improvements from [DIPLADO develop](
     - [Making Money](#making-money)
     - [Balance](#balance)
     - [Politics](#politics)
+  - [Goods Prices](#goods-prices)
   - [Installation](#installation)
     - [Download](#download)
     - [Installing](#installing)
@@ -63,6 +64,51 @@ In general, it is easier to make money in BeggarsDiplomacy but food is more expe
 ### Politics
 
 - Truces now last 60 days, but can be cut short by border incidents.  Treaties (trade, defense, alliance) last for 90 days.  Trade treaties are fragile and can also be cut short by border incidents.  This gives a different feel versus the constant chaos of vanilla. Now when two powers become allied, they will stick together for longer.
+
+## Goods Prices
+
+Here is the list of adjusted base prices for trade goods and foods.  Prices at individual centers will vary based on supply / demand.
+
+
+Raw Goods (used in profitable enterprises):
+- 230 Raw Flax / Flax Bundle
+- 175 Wool / Wool Sack
+- 700 Raw Silk / Silk Bundle
+- 320 Dyes
+- 300 Iron / Iron Ore
+- 240 Raw Leather / Hides
+- 75 Grapes
+- 100 Olives
+- 30 Grain
+
+Produced Goods:
+- 520 Linen (2 Flax => 2 Linen)
+- 420 Wool Cloth (2 Wool => 2 Wool Cloth)
+- 1300 Velvet (2 Raw Silk + 2 Dye => 2 Velvet)
+- 600 Tools (2 Iron => 2 Tools)
+- 480 Leatherwork (2 Hides => 2 Leatherwork)
+- 470 Wine (5 Grapes => 2 Wine)
+- 500 Oil (6 Olives => 2 Oil)
+- 260 Ale (3 Grain => 2 Ale)
+- 95 Bread (3 Grain => 5 Bread)
+
+Foods:
+- 65 Smoked Fish
+- 145 Cheese
+- 240 Honey
+- 85 Sausages
+- 30 Cabbages
+- 100 Dried Meat
+- 50 Fruit
+- 180 Beef
+- 120 Chicken
+- 140 Pork
+- 160 Butter
+- 180 Date Fruit
+
+Misc:
+- 350 Pottery
+- 450 Furs
 
 ## Installation
 

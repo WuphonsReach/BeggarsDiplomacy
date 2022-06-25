@@ -372,11 +372,11 @@ itemsfile version 3
  0
 0
 
- itm_oil Oil Oil 1  oil 0  33619979 0 485 0 50.000000 60 0 0 0 0 0 0 0 0 50 0 0
+ itm_oil Oil Oil 1  oil 0  33619979 0 500 0 50.000000 60 0 0 0 0 0 0 0 0 50 0 0
  0
 0
 
- itm_pottery Pottery Pottery 1  jug 0  65547 0 280 0 50.000000 90 0 0 0 0 0 0 0 0 0 0 0
+ itm_pottery Pottery Pottery 1  jug 0  65547 0 350 0 50.000000 90 0 0 0 0 0 0 0 0 0 0 0
  0
 0
 
@@ -384,7 +384,7 @@ itemsfile version 3
  0
 0
 
- itm_linen Linen Linen 1  linen 0  65547 0 470 0 40.000000 90 0 0 0 0 0 0 0 0 0 0 0
+ itm_linen Linen Linen 1  linen 0  65547 0 520 0 40.000000 90 0 0 0 0 0 0 0 0 0 0 0
  0
 0
 
@@ -392,11 +392,11 @@ itemsfile version 3
  0
 0
 
- itm_wool_cloth Wool_Cloth Wool_Cloth 1  wool_cloth 0  65547 0 375 0 40.000000 90 0 0 0 0 0 0 0 0 0 0 0
+ itm_wool_cloth Wool_Cloth Wool_Cloth 1  wool_cloth 0  65547 0 420 0 40.000000 90 0 0 0 0 0 0 0 0 0 0 0
  0
 0
 
- itm_raw_silk Raw_Silk Raw_Silk 1  raw_silk_bundle 0  65547 0 675 0 30.000000 90 0 0 0 0 0 0 0 0 0 0 0
+ itm_raw_silk Raw_Silk Raw_Silk 1  raw_silk_bundle 0  65547 0 700 0 30.000000 90 0 0 0 0 0 0 0 0 0 0 0
  0
 0
 
@@ -404,15 +404,15 @@ itemsfile version 3
  0
 0
 
- itm_velvet Velvet Velvet 1  velvet 0  65547 0 1150 0 45.000000 30 0 0 0 0 0 0 0 0 0 0 0
+ itm_velvet Velvet Velvet 1  velvet 0  65547 0 1300 0 45.000000 30 0 0 0 0 0 0 0 0 0 0 0
  0
 0
 
- itm_iron Iron Iron 1  iron 0  65547 0 295 0 75.000000 60 0 0 0 0 0 0 0 0 0 0 0
+ itm_iron Iron Iron 1  iron 0  65547 0 300 0 75.000000 60 0 0 0 0 0 0 0 0 0 0 0
  0
 0
 
- itm_tools Tools Tools 1  iron_hammer 0  65547 0 550 0 50.000000 90 0 0 0 0 0 0 0 0 0 0 0
+ itm_tools Tools Tools 1  iron_hammer 0  65547 0 600 0 50.000000 90 0 0 0 0 0 0 0 0 0 0 0
  0
 0
 
@@ -420,7 +420,7 @@ itemsfile version 3
  0
 0
 
- itm_leatherwork Leatherwork Leatherwork 1  leatherwork_frame 0  65547 0 410 0 50.000000 90 0 0 0 0 0 0 0 0 0 0 0
+ itm_leatherwork Leatherwork Leatherwork 1  leatherwork_frame 0  65547 0 480 0 50.000000 90 0 0 0 0 0 0 0 0 0 0 0
  0
 0
 
@@ -432,11 +432,11 @@ itemsfile version 3
  0
 0
 
- itm_wine Wine Wine 1  amphora_slim 0  33619979 0 405 0 30.000000 60 0 0 0 0 0 0 0 0 50 0 0
+ itm_wine Wine Wine 1  amphora_slim 0  33619979 0 470 0 30.000000 60 0 0 0 0 0 0 0 0 50 0 0
  0
 0
 
- itm_ale Ale Ale 1  ale_barrel 0  33619979 0 250 0 35.000000 70 0 0 0 0 0 0 0 0 50 0 0
+ itm_ale Ale Ale 1  ale_barrel 0  33619979 0 260 0 35.000000 70 0 0 0 0 0 0 0 0 50 0 0
  0
 0
 
@@ -464,7 +464,7 @@ itemsfile version 3
  0
 0
 
- itm_apples Fruit Fruit 1  apple_basket 0  34144267 0 44 0 30.000000 110 40 0 0 0 0 0 0 0 50 0 0
+ itm_apples Fruit Fruit 1  apple_basket 0  34144267 0 50 0 30.000000 110 40 0 0 0 0 0 0 0 50 0 0
  0
 0
 
@@ -480,11 +480,11 @@ itemsfile version 3
  0
 0
 
- itm_cattle_meat Beef Beef 1  raw_meat 0  34144267 0 160 0 50.000000 100 80 0 0 0 0 0 0 0 50 0 0
+ itm_cattle_meat Beef Beef 1  raw_meat 0  34144267 0 180 0 50.000000 100 80 0 0 0 0 0 0 0 50 0 0
  0
 0
 
- itm_bread Bread Bread 1  bread_a 0  34144267 0 90 0 30.000000 110 40 0 0 0 0 0 0 0 50 0 0
+ itm_bread Bread Bread 1  bread_a 0  34144267 0 95 0 30.000000 110 40 0 0 0 0 0 0 0 50 0 0
  0
 0
 
@@ -1468,11 +1468,11 @@ itemsfile version 3
  0
 0
 
- itm_wooden_stick Wooden_Stick Wooden_Stick 1  wooden_stick 0  4653058 9223388529554358286 4 0 2.500000 100 0 0 0 0 0 99 0 63 0 256 525
+ itm_wooden_stick Wooden_Stick Wooden_Stick 1  wooden_stick 0  4653058 9223388529554358286 4 0 2.500000 100 0 0 0 0 0 95 0 63 0 256 525
  0
 0
 
- itm_cudgel Cudgel Cudgel 1  club 0  4653058 9223388529554358286 4 0 2.500000 100 0 0 0 0 0 99 0 70 0 256 525
+ itm_cudgel Cudgel Cudgel 1  club 0  4653058 9223388529554358286 4 0 2.500000 100 0 0 0 0 0 99 0 70 0 256 527
  0
 0
 
@@ -1488,11 +1488,11 @@ itemsfile version 3
  0
 0
 
- itm_spiked_mace Spiked_Mace Spiked_Mace 1  spiked_mace_new 0  274882428930 9223388532775583758 180 270356 3.500000 100 0 0 0 0 0 98 0 70 0 256 540
+ itm_spiked_mace Spiked_Mace Spiked_Mace 1  spiked_mace_new 0  274882428930 9223388532775583758 180 270356 3.500000 100 0 0 0 0 0 98 0 72 0 256 540
  0
 0
 
- itm_military_hammer Military_Hammer Military_Hammer 1  military_hammer 0  274882428930 9223388532775583758 317 262164 2.000000 100 0 0 0 0 0 95 0 70 0 256 543
+ itm_military_hammer Military_Hammer Military_Hammer 1  military_hammer 0  274882428930 9223388532775583758 317 262164 2.000000 100 0 0 0 0 0 95 0 72 0 256 544
  0
 0
 
@@ -1816,11 +1816,11 @@ itemsfile version 3
  0
 0
 
- itm_mace_3 Spiked_Mace Spiked_Mace 1  mace_c 0  274882428930 9223388532775583758 152 262164 2.750000 100 0 0 0 0 0 98 0 70 0 256 535
+ itm_mace_3 Spiked_Mace Spiked_Mace 1  mace_c 0  274882428930 9223388532775583758 152 262164 2.750000 100 0 0 0 0 0 98 0 72 0 256 535
  0
 0
 
- itm_mace_4 Winged_Mace Winged_Mace 1  mace_b 0  274882428930 9223388532775583758 212 262164 2.750000 100 0 0 0 0 0 98 0 70 0 256 536
+ itm_mace_4 Winged_Mace Winged_Mace 1  mace_b 0  274882428930 9223388532775583758 212 262164 2.750000 100 0 0 0 0 0 98 0 75 0 256 537
  0
 0
 

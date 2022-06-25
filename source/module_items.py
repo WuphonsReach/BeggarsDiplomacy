@@ -181,31 +181,31 @@ items = [
 
  #["flour","Flour", [("salt_sack",0)], itp_merchandise|itp_type_goods|itp_consumable, 0, 40,weight(50)|abundance(100)|food_quality(45)|max_ammo(50),imodbits_none],
 
- ["oil","Oil", [("oil",0)], itp_merchandise|itp_type_goods|itp_consumable, 0, 485, weight(50)|abundance(60)|max_ammo(50),imodbits_none],
+ ["oil","Oil", [("oil",0)], itp_merchandise|itp_type_goods|itp_consumable, 0, 500, weight(50)|abundance(60)|max_ammo(50),imodbits_none],
 
- ["pottery","Pottery", [("jug",0)], itp_merchandise|itp_type_goods, 0, 280, weight(50)|abundance(90),imodbits_none],
+ ["pottery","Pottery", [("jug",0)], itp_merchandise|itp_type_goods, 0, 350, weight(50)|abundance(90),imodbits_none],
 
  ["raw_flax","Flax Bundle", [("raw_flax",0)], itp_merchandise|itp_type_goods, 0, 230, weight(40)|abundance(90),imodbits_none],
- ["linen","Linen", [("linen",0)], itp_merchandise|itp_type_goods, 0, 470, weight(40)|abundance(90),imodbits_none],
+ ["linen","Linen", [("linen",0)], itp_merchandise|itp_type_goods, 0, 520, weight(40)|abundance(90),imodbits_none],
 
  ["wool","Wool", [("wool_sack",0)], itp_merchandise|itp_type_goods, 0, 175, weight(35)|abundance(90),imodbits_none],
- ["wool_cloth","Wool Cloth", [("wool_cloth",0)], itp_merchandise|itp_type_goods, 0, 375, weight(40)|abundance(90),imodbits_none],
+ ["wool_cloth","Wool Cloth", [("wool_cloth",0)], itp_merchandise|itp_type_goods, 0, 420, weight(40)|abundance(90),imodbits_none],
 
- ["raw_silk","Raw Silk", [("raw_silk_bundle",0)], itp_merchandise|itp_type_goods, 0, 675, weight(30)|abundance(90),imodbits_none],
+ ["raw_silk","Raw Silk", [("raw_silk_bundle",0)], itp_merchandise|itp_type_goods, 0, 700, weight(30)|abundance(90),imodbits_none],
  ["raw_dyes","Dyes", [("dyes",0)], itp_merchandise|itp_type_goods, 0, 320, weight(10)|abundance(90),imodbits_none],
- ["velvet","Velvet", [("velvet",0)], itp_merchandise|itp_type_goods, 0, 1150, weight(45)|abundance(30),imodbits_none],
+ ["velvet","Velvet", [("velvet",0)], itp_merchandise|itp_type_goods, 0, 1300, weight(45)|abundance(30),imodbits_none],
 
- ["iron","Iron", [("iron",0)], itp_merchandise|itp_type_goods, 0, 295, weight(75)|abundance(60),imodbits_none],
- ["tools","Tools", [("iron_hammer",0)], itp_merchandise|itp_type_goods, 0, 550, weight(50)|abundance(90),imodbits_none],
+ ["iron","Iron", [("iron",0)], itp_merchandise|itp_type_goods, 0, 300, weight(75)|abundance(60),imodbits_none],
+ ["tools","Tools", [("iron_hammer",0)], itp_merchandise|itp_type_goods, 0, 600, weight(50)|abundance(90),imodbits_none],
 
  ["raw_leather","Hides", [("leatherwork_inventory",0)], itp_merchandise|itp_type_goods, 0, 240, weight(60)|abundance(90),imodbits_none],
- ["leatherwork","Leatherwork", [("leatherwork_frame",0)], itp_merchandise|itp_type_goods, 0, 410, weight(50)|abundance(90),imodbits_none],
+ ["leatherwork","Leatherwork", [("leatherwork_frame",0)], itp_merchandise|itp_type_goods, 0, 480, weight(50)|abundance(90),imodbits_none],
 
  ["raw_date_fruit","Date Fruit", [("date_inventory",0)], itp_merchandise|itp_type_goods|itp_consumable|itp_food, 0, 180, weight(40)|food_quality(10)|max_ammo(10),imodbits_none],
  ["furs","Furs", [("fur_pack",0)], itp_merchandise|itp_type_goods, 0, 450, weight(40)|abundance(90),imodbits_none],
 
- ["wine","Wine", [("amphora_slim",0)], itp_merchandise|itp_type_goods|itp_consumable, 0, 405, weight(30)|abundance(60)|max_ammo(50),imodbits_none],
- ["ale","Ale", [("ale_barrel",0)], itp_merchandise|itp_type_goods|itp_consumable, 0, 250, weight(35)|abundance(70)|max_ammo(50),imodbits_none],
+ ["wine","Wine", [("amphora_slim",0)], itp_merchandise|itp_type_goods|itp_consumable, 0, 470, weight(30)|abundance(60)|max_ammo(50),imodbits_none],
+ ["ale","Ale", [("ale_barrel",0)], itp_merchandise|itp_type_goods|itp_consumable, 0, 260, weight(35)|abundance(70)|max_ammo(50),imodbits_none],
 
 # ["dry_bread", "wheat_sack", itp_type_goods|itp_consumable, 0, slt_none,view_goods,95,weight(2),max_ammo(50),imodbits_none],
 #foods (first one is smoked_fish)
@@ -215,13 +215,13 @@ items = [
  ["sausages","Sausages", [("sausages",0)], itp_merchandise|itp_type_goods|itp_consumable|itp_food, 0, 85, weight(12)|abundance(110)|food_quality(40)|max_ammo(40),imodbits_none],
  ["cabbages","Cabbages", [("cabbage",0)], itp_merchandise|itp_type_goods|itp_consumable|itp_food, 0, 30, weight(15)|abundance(110)|food_quality(40)|max_ammo(50),imodbits_none],
  ["dried_meat","Dried Meat", [("smoked_meat",0)], itp_merchandise|itp_type_goods|itp_consumable|itp_food, 0, 100, weight(25)|abundance(100)|food_quality(70)|max_ammo(50),imodbits_none],
- ["apples","Fruit", [("apple_basket",0)], itp_merchandise|itp_type_goods|itp_consumable|itp_food, 0, 44, weight(30)|abundance(110)|food_quality(40)|max_ammo(50),imodbits_none],
+ ["apples","Fruit", [("apple_basket",0)], itp_merchandise|itp_type_goods|itp_consumable|itp_food, 0, 50, weight(30)|abundance(110)|food_quality(40)|max_ammo(50),imodbits_none],
  ["raw_grapes","Grapes", [("grapes_inventory",0)], itp_merchandise|itp_consumable|itp_type_goods, 0, 75, weight(40)|abundance(90)|food_quality(10)|max_ammo(10),imodbits_none], #x2 for wine
  ["raw_olives","Olives", [("olive_inventory",0)], itp_merchandise|itp_consumable|itp_type_goods, 0, 100, weight(40)|abundance(90)|food_quality(10)|max_ammo(10),imodbits_none], #x3 for oil
  ["grain","Grain", [("wheat_sack",0)], itp_merchandise|itp_type_goods|itp_consumable, 0, 30, weight(30)|abundance(110)|food_quality(40)|max_ammo(50),imodbits_none],
 
- ["cattle_meat","Beef", [("raw_meat",0)], itp_merchandise|itp_type_goods|itp_consumable|itp_food, 0, 160, weight(50)|abundance(100)|food_quality(80)|max_ammo(50),imodbits_none],
- ["bread","Bread", [("bread_a",0)], itp_merchandise|itp_type_goods|itp_consumable|itp_food, 0, 90, weight(30)|abundance(110)|food_quality(40)|max_ammo(50),imodbits_none],
+ ["cattle_meat","Beef", [("raw_meat",0)], itp_merchandise|itp_type_goods|itp_consumable|itp_food, 0, 180, weight(50)|abundance(100)|food_quality(80)|max_ammo(50),imodbits_none],
+ ["bread","Bread", [("bread_a",0)], itp_merchandise|itp_type_goods|itp_consumable|itp_food, 0, 95, weight(30)|abundance(110)|food_quality(40)|max_ammo(50),imodbits_none],
  ["chicken","Chicken", [("chicken",0)], itp_merchandise|itp_type_goods|itp_consumable|itp_food, 0, 120, weight(25)|abundance(110)|food_quality(40)|max_ammo(50),imodbits_none],
  ["pork","Pork", [("pork",0)], itp_merchandise|itp_type_goods|itp_consumable|itp_food, 0, 140, weight(45)|abundance(100)|food_quality(70)|max_ammo(50),imodbits_none],
  ["butter","Butter", [("butter_pot",0)], itp_merchandise|itp_type_goods|itp_consumable|itp_food, 0, 160,weight(9)|abundance(110)|food_quality(40)|max_ammo(30),imodbits_none],
@@ -645,9 +645,9 @@ items = [
 
 #WEAPONS
 ["wooden_stick",         "Wooden Stick", [("wooden_stick",0)], itp_type_one_handed_wpn|itp_merchandise| itp_primary|itp_wooden_parry|itp_wooden_attack, itc_scimitar,
-4 , weight(2.5)|difficulty(0)|spd_rtng(99) | weapon_length(63)|swing_damage(13 , blunt) | thrust_damage(0 ,  pierce),imodbits_none ],
+4 , weight(2.5)|difficulty(0)|spd_rtng(95) | weapon_length(63)|swing_damage(13 , blunt) | thrust_damage(0 ,  pierce),imodbits_none ],
 ["cudgel",         "Cudgel", [("club",0)], itp_type_one_handed_wpn|itp_merchandise| itp_primary|itp_wooden_parry|itp_wooden_attack, itc_scimitar,
-4 , weight(2.5)|difficulty(0)|spd_rtng(99) | weapon_length(70)|swing_damage(13 , blunt) | thrust_damage(0 ,  pierce),imodbits_none ],
+4 , weight(2.5)|difficulty(0)|spd_rtng(99) | weapon_length(70)|swing_damage(15 , blunt) | thrust_damage(0 ,  pierce),imodbits_none ],
 ["hammer",         "Hammer", [("iron_hammer_new",0)], itp_type_one_handed_wpn|itp_can_knock_down|itp_merchandise| itp_primary|itp_wooden_parry, itc_scimitar,
 7 , weight(2)|difficulty(0)|spd_rtng(100) | weapon_length(55)|swing_damage(24 , blunt) | thrust_damage(0 ,  pierce),imodbits_mace ],
 ["club",         "Club", [("club",0)], itp_type_one_handed_wpn|itp_merchandise| itp_can_knock_down|itp_primary|itp_wooden_parry|itp_wooden_attack, itc_scimitar,
@@ -655,9 +655,9 @@ items = [
 ["winged_mace",         "Flanged Mace", [("flanged_mace",0)], itp_type_one_handed_wpn|itp_can_knock_down|itp_merchandise| itp_primary|itp_wooden_parry, itc_scimitar|itcf_carry_mace_left_hip,
 122 , weight(3.5)|difficulty(0)|spd_rtng(103) | weapon_length(70)|swing_damage(24 , blunt) | thrust_damage(0 ,  pierce),imodbits_mace ],
 ["spiked_mace",         "Spiked Mace", [("spiked_mace_new",0)], itp_type_one_handed_wpn|itp_can_knock_down|itp_merchandise| itp_primary|itp_wooden_parry, itc_scimitar|itcf_carry_mace_left_hip,
-180 , weight(3.5)|difficulty(0)|spd_rtng(98) | weapon_length(70)|swing_damage(28 , blunt) | thrust_damage(0 ,  pierce),imodbits_pick ],
+180 , weight(3.5)|difficulty(0)|spd_rtng(98) | weapon_length(72)|swing_damage(28 , blunt) | thrust_damage(0 ,  pierce),imodbits_pick ],
 ["military_hammer", "Military Hammer", [("military_hammer",0)], itp_type_one_handed_wpn|itp_can_knock_down|itp_merchandise| itp_primary|itp_wooden_parry, itc_scimitar|itcf_carry_mace_left_hip,
-317 , weight(2)|difficulty(0)|spd_rtng(95) | weapon_length(70)|swing_damage(31 , blunt) | thrust_damage(0 ,  pierce),imodbits_mace ],
+317 , weight(2)|difficulty(0)|spd_rtng(95) | weapon_length(72)|swing_damage(32 , blunt) | thrust_damage(0 ,  pierce),imodbits_mace ],
 ["maul",         "Maul", [("maul_b",0)], itp_crush_through|itp_type_two_handed_wpn|itp_merchandise|itp_can_knock_down |itp_primary|itp_two_handed|itp_wooden_parry|itp_wooden_attack|itp_unbalanced, itc_nodachi|itcf_carry_spear,
 97 , weight(6)|difficulty(11)|spd_rtng(83) | weapon_length(79)|swing_damage(36 , blunt) | thrust_damage(0 ,  pierce),imodbits_mace ],
 ["sledgehammer", "Sledgehammer", [("maul_c",0)], itp_crush_through|itp_type_two_handed_wpn|itp_merchandise|itp_can_knock_down|itp_primary|itp_two_handed|itp_wooden_parry|itp_wooden_attack|itp_unbalanced, itc_nodachi|itcf_carry_spear,
@@ -867,9 +867,9 @@ items = [
 ["mace_2",         "Knobbed_Mace", [("mace_a",0)], itp_type_one_handed_wpn|itp_can_knock_down|itp_merchandise| itp_primary|itp_wooden_parry, itc_scimitar|itcf_carry_mace_left_hip,
  98 , weight(2.5)|difficulty(0)|spd_rtng(98) | weapon_length(70)|swing_damage(21 , blunt) | thrust_damage(0 ,  pierce),imodbits_mace ],
 ["mace_3",         "Spiked Mace", [("mace_c",0)], itp_type_one_handed_wpn|itp_can_knock_down|itp_merchandise| itp_primary|itp_wooden_parry, itc_scimitar|itcf_carry_mace_left_hip,
- 152 , weight(2.75)|difficulty(0)|spd_rtng(98) | weapon_length(70)|swing_damage(23 , blunt) | thrust_damage(0 ,  pierce),imodbits_mace ],
+ 152 , weight(2.75)|difficulty(0)|spd_rtng(98) | weapon_length(72)|swing_damage(23 , blunt) | thrust_damage(0 ,  pierce),imodbits_mace ],
 ["mace_4",         "Winged_Mace", [("mace_b",0)], itp_type_one_handed_wpn|itp_can_knock_down|itp_merchandise| itp_primary|itp_wooden_parry, itc_scimitar|itcf_carry_mace_left_hip,
- 212 , weight(2.75)|difficulty(0)|spd_rtng(98) | weapon_length(70)|swing_damage(24 , blunt) | thrust_damage(0 ,  pierce),imodbits_mace ],
+ 212 , weight(2.75)|difficulty(0)|spd_rtng(98) | weapon_length(75)|swing_damage(25 , blunt) | thrust_damage(0 ,  pierce),imodbits_mace ],
 # Goedendag
  ["club_with_spike_head",  "Spiked Staff", [("mace_e",0)],  itp_type_two_handed_wpn|itp_merchandise|itp_can_knock_down|itp_primary|itp_wooden_parry, itc_bastardsword|itcf_carry_axe_back,
  200 , weight(2.80)|difficulty(9)|spd_rtng(95) | weapon_length(117)|swing_damage(24 , blunt) | thrust_damage(20 ,  pierce),imodbits_mace ],
