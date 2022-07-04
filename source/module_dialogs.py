@@ -19845,8 +19845,10 @@ I'll send some men to take him to our prison with due haste.", "lord_pretalk", [
 [anyone,"lord_respond_to_insult", [
 (eq, "$g_last_comment_copied_to_s42", "str_comment_intro_female_sadistic_admiring"),
 ], "Hah! I admire a quick tongue. Perhaps some day I shall remove it, with tongs, to admire it at greater leisure, but today, at least, I shall salute your wit and courage.", "lord_pretalk", [
-(call_script, "script_troop_change_relation_with_troop", "trp_player", "$g_talk_troop", 5),
-(call_script, "script_change_troop_renown", "trp_player", 2),
+  (store_random_in_range, ":relation_change", 1, 7),
+  (call_script, "script_troop_change_relation_with_troop", "trp_player", "$g_talk_troop", ":relation_change"),
+  (store_random_in_range, ":renown_gain", 1, 4),
+  (call_script, "script_change_troop_renown", "trp_player", ":renown_gain"),
 ]],
 
 
@@ -19859,8 +19861,10 @@ I'll send some men to take him to our prison with due haste.", "lord_pretalk", [
 ##diplomacy start+
 ], "I meant no offense, {sir/madame}.", "lord_pretalk", [#madame to {sir/madame}
 ##diplomacy end+
-(call_script, "script_troop_change_relation_with_troop", "trp_player", "$g_talk_troop", -2),
-(call_script, "script_change_troop_renown", "trp_player", 2),
+  (store_random_in_range, ":relation_change", -4, 0),
+  (call_script, "script_troop_change_relation_with_troop", "trp_player", "$g_talk_troop", ":relation_change"),
+  (store_random_in_range, ":renown_gain", 1, 6),
+  (call_script, "script_change_troop_renown", "trp_player", ":renown_gain"),
 ]],
 
 
@@ -19913,7 +19917,7 @@ I'll send some men to take him to our prison with due haste.", "lord_pretalk", [
   "lord_respond_to_insult_challenge_battle",
 ##diplomacy end+
 [
-  (store_random_in_range, ":relation_penalty", -15, -4),
+  (store_random_in_range, ":relation_penalty", -17, -4),
   (call_script, "script_troop_change_relation_with_troop", "trp_player", "$g_talk_troop", ":relation_penalty"),
   (store_random_in_range, ":renown_gain", 2, 16),
   (call_script, "script_change_troop_renown", "trp_player", ":renown_gain"),
@@ -19940,7 +19944,7 @@ I'll send some men to take him to our prison with due haste.", "lord_pretalk", [
   "lord_respond_to_insult_challenge_duel",
 ##diplomacy end+
 [
-  (store_random_in_range, ":relation_penalty", -12, -4),
+  (store_random_in_range, ":relation_penalty", -15, -5),
   (call_script, "script_troop_change_relation_with_troop", "trp_player", "$g_talk_troop", ":relation_penalty"),
   (store_random_in_range, ":renown_gain", 2, 11),
   (call_script, "script_change_troop_renown", "trp_player", ":renown_gain"),
@@ -19967,9 +19971,9 @@ I'll send some men to take him to our prison with due haste.", "lord_pretalk", [
   "close_window",
 ##diplomacy end+
 [
-  (store_random_in_range, ":relation_penalty", -8, -2),
+  (store_random_in_range, ":relation_penalty", -10, -2),
   (call_script, "script_troop_change_relation_with_troop", "trp_player", "$g_talk_troop", ":relation_penalty"),
-  (store_random_in_range, ":renown_gain", 2, 9),
+  (store_random_in_range, ":renown_gain", 2, 10),
   (call_script, "script_change_troop_renown", "trp_player", ":renown_gain"),
   (assign, "$g_leave_encounter", 1),
 ]],
@@ -19978,7 +19982,7 @@ I'll send some men to take him to our prison with due haste.", "lord_pretalk", [
 [anyone|plyr,"lord_respond_to_insult_challenge_battle", [
 ], "I would like to see them try.", "lord_respond_to_insult_challenge_battle_confirm",
 [
-  (store_random_in_range, ":relation_penalty", -8, -2),
+  (store_random_in_range, ":relation_penalty", -10, -2),
   (call_script, "script_troop_change_relation_with_troop", "trp_player", "$g_talk_troop", ":relation_penalty"),
   (store_random_in_range, ":renown_gain", 5, 16),
   (call_script, "script_change_troop_renown", "trp_player", ":renown_gain"),
@@ -19987,9 +19991,9 @@ I'll send some men to take him to our prison with due haste.", "lord_pretalk", [
 [anyone|plyr,"lord_respond_to_insult_challenge_battle", [
 ], "This is not worth the shedding of blood.", "close_window",
 [
-  (store_random_in_range, ":relation_change", 1, 3),
+  (store_random_in_range, ":relation_change", 2, 6),
   (call_script, "script_troop_change_relation_with_troop", "trp_player", "$g_talk_troop", ":relation_change"),
-  (store_random_in_range, ":renown_loss", -5, -1),
+  (store_random_in_range, ":renown_loss", -8, -1),
   (call_script, "script_change_troop_renown", "trp_player", ":renown_loss"),
   (assign, "$g_leave_encounter", 1),
 ]],
@@ -20015,16 +20019,16 @@ I'll send some men to take him to our prison with due haste.", "lord_pretalk", [
   (call_script, "script_start_quest", "qst_duel_avenge_insult", "$g_talk_troop"),
   (quest_set_slot, "qst_duel_avenge_insult", slot_quest_target_troop, "$g_talk_troop"),
 
-  (store_random_in_range, ":relation_penalty", -8, -2),
+  (store_random_in_range, ":relation_penalty", -12, -2),
   (call_script, "script_troop_change_relation_with_troop", "trp_player", "$g_talk_troop", ":relation_penalty"),
 ]],
 
 [anyone|plyr,"lord_respond_to_insult_challenge_duel", [
 ], "This is not worth the shedding of blood.", "close_window",
 [
-  (store_random_in_range, ":relation_change", 1, 2),
+  (store_random_in_range, ":relation_change", 1, 5),
   (call_script, "script_troop_change_relation_with_troop", "trp_player", "$g_talk_troop", ":relation_change"),
-  (store_random_in_range, ":renown_loss", -5, -1),
+  (store_random_in_range, ":renown_loss", -9, -1),
   (call_script, "script_change_troop_renown", "trp_player", ":renown_loss"),
   (assign, "$g_leave_encounter", 1),
 ]],
