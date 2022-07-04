@@ -41592,18 +41592,30 @@ scripts = [
           (store_troop_faction, ":faction_no", ":troop_no"),
           (faction_get_slot, ":tier_1_troop", ":faction_no", slot_faction_tier_1_troop),
           
-          #TODO: Make a roll here for mixed-level parties, larger parties, dangerous parties
-
           (store_character_level, ":level", "trp_player"),
-          (store_mul, ":max_number_to_add", ":level", 2),
-          (val_add, ":max_number_to_add", 11),
-          (store_random_in_range, ":number_to_add", 10, ":max_number_to_add"),
-          (party_add_members, ":new_party", ":tier_1_troop", ":number_to_add"),
+          (store_div, ":max_upgrade_rounds", ":level", 3), # 0..20
+          (store_random_in_range, ":add_rounds_chance", 20, ":level"), # random 20..60
+          (store_mul, ":limit_number_troops_to_add", 3, ":level"), # absolute approximate limit
+          (store_div, ":max_add_per_round", ":level", 5), # 0..12
+          (val_add, ":max_add_per_round", 6), # 6..18
+          (store_mul, ":upgrade_xp_per_round", ":max_add_per_round", 1000),
 
-          # TODO: Have mixed deserter parties instead of always single-type
-          (store_random_in_range, ":random_no", 1, 4),
+          (store_random_in_range, ":new_party_size", 10, ":max_add_per_round"), # start with random 10..25
+          
+          # now randomly increase the party size
+          (try_for_range, ":party_size_iteration", 0, 8),
+            (store_random_in_range, ":party_size_add_round", 0, 100),
+            (lt, ":party_size_add_round", ":add_rounds_chance"),
+            (lt, ":new_party_size", ":limit_number_troops_to_add"),
+            (store_random_in_range, ":additional_number_to_add", 5, ":max_add_per_round"), # add 5..18
+            (val_add, ":new_party_size", ":additional_number_to_add"),
+          (try_end),
+
+          (party_add_members, ":new_party", ":tier_1_troop", ":new_party_size"),
+
+          (store_random_in_range, ":random_no", 0, ":max_upgrade_rounds"),
           (try_for_range, ":unused", 0, ":random_no"),
-            (party_upgrade_with_xp, ":new_party", 1000000, 0),
+            (party_upgrade_with_xp, ":new_party", ":upgrade_xp_per_round", 0),
           (try_end),
 
           # assign to the deserters faction after creation and upgrades
