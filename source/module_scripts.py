@@ -20820,8 +20820,10 @@ scripts = [
           (val_div, ":cur_town_score", 100),
         (try_end),
 
+        #TODO: Store distance to nearest town as fallback
+
         (try_begin),
-          (lt, ":consider_distance", 25), # percent of time to consider distance
+          (lt, ":consider_distance", 40), # percent of time to consider distance
           (store_distance_to_party_from_party, ":dist", ":perspective_party",":cur_town"),
           #Avoid asymptotic effects and undue weighting.
           #Further explanation: What we really care about is time, not distance.
@@ -20829,18 +20831,20 @@ scripts = [
           #the distance doesn't double the expected profit per month.
           #most towns are ~100 units away, map is ~300-320 across
           (val_div, ":dist", 50), # dist -> 0..6
-          (val_add, ":dist", 3), # dist -> 3..9
-          (store_random_in_range, ":dist_fuzzing", -2, 3),
+          (val_add, ":dist", 4), # dist -> 4..10
+          (store_random_in_range, ":dist_fuzzing", -2, 3), # dist -> 2..12
           (val_add, ":dist", ":dist_fuzzing"),
           (val_max, ":dist", 1),
           (val_div, ":cur_town_score", ":dist"),
         (try_end),
 
+        #TODO: If centralization is enabled, have a penalty for distance from capital
+
       (try_end),
 
       (try_begin), # fuzz the results so that caravans choose different destinations
         (ge, "$g_dplmc_gold_changes", DPLMC_GOLD_CHANGES_MEDIUM),
-        (store_random_in_range, ":score_bonus_percent", 800, 1200),
+        (store_random_in_range, ":score_bonus_percent", 750, 1250),
         (val_mul, ":cur_town_score", ":score_bonus_percent"),
         (val_div, ":cur_town_score", 1000),
       (try_end),
