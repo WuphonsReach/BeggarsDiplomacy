@@ -13818,7 +13818,7 @@ TOTAL:  {reg5}"),
      (assign, ":tax_quest_expected_revenue", 3000),
      (try_begin),
        (party_slot_eq, "$current_town", slot_party_type, spt_town),
-       (assign, ":tax_quest_expected_revenue", 6000),
+       (assign, ":tax_quest_expected_revenue", 10000),
      (try_end),
 
      (try_begin),
